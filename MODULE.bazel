@@ -1,0 +1,10 @@
+module(
+    name = "dataminer",
+    version = "1.0.0",
+)
+
+bazel_dep(
+    name = "abseil-cpp",
+    version = "20240116.0"
+)
+
