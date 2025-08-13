@@ -7,6 +7,7 @@
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
+#include "adjust_recipe_data.h"
 #include "libjson/json/reader.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
@@ -22,10 +23,14 @@ ABSL_FLAG(int, max_members, 2,
 ABSL_FLAG(std::string, debug_print_path, "",
           "The dot-separated path to the JSON fields to debug print. ");
 ABSL_FLAG(std::string, rank_up_unit, "", "The unit to rank up");
-ABSL_FLAG(int, starting_rank, 0,
+ABSL_FLAG(std::string, starting_rank, "STONE_1",
           "The starting rank for the unit. 1 = stone 1, 4 = iron 1, etc.");
-ABSL_FLAG(int, ending_rank, 0,
+ABSL_FLAG(std::string, ending_rank, "ADAMANTINE_1",
           "The ending rank for the unit. 2 = stone 2, 4 = iron 1, etc.");
+ABSL_FLAG(std::string, rank_up_file, "/dev/null",
+          "The file to write rank up information to.");
+ABSL_FLAG(std::string, recipe_data, "",
+          "If not empty, writes all upgrade recipes to the specified file.");
 
 namespace dataminer {
 namespace {
@@ -246,8 +251,9 @@ std::map<std::string, const Upgrades::Upgrade*> BuildUpgradesMap(
   return upgrades_map;
 }
 
-void PrintRankUp(const GameConfig& config, const absl::string_view name,
-                 const Rank::Enum starting_rank, const Rank::Enum ending_rank) {
+void EmitRankUp(const GameConfig& config, const absl::string_view name,
+                const Rank::Enum starting_rank, const Rank::Enum ending_rank,
+                const absl::string_view output_path) {
   const Unit* unit = nullptr;
   for (const auto& u : config.client_game_config().units().units()) {
     if (u.name() == name) {
@@ -259,7 +265,6 @@ void PrintRankUp(const GameConfig& config, const absl::string_view name,
     std::cerr << "Unit '" << unit << "' not found in GameConfig.\n";
     return;
   }
-  std::cerr << unit->DebugString() << "\n";
   const std::map<std::string, const Upgrades::Upgrade*> upgrades_map =
       BuildUpgradesMap(config);
   if (starting_rank < 1 || ending_rank < 1 || starting_rank > ending_rank ||
@@ -288,13 +293,25 @@ void PrintRankUp(const GameConfig& config, const absl::string_view name,
     ExpandMats(upgrades_map, per_rank_mats[i],
                unit->rank_up_requirements(i).bottom_row_damage());
   }
+  std::ofstream out(std::string(output_path).c_str());
+  out << "material";
   for (int i = starting_rank; i < ending_rank; ++i) {
-    std::cerr << "Rank " << Rank::Enum_Name(i + 1) << ":\n";
-    for (const auto& mat : per_rank_mats[i - 1]) {  
-      std::cerr << "  " << mat.first << ": " << mat.second << "\n";
-      total_mats[mat.first] += mat.second;
-    }
+    out << "," << Rank::Enum_Name(i) << "->" << Rank::Enum_Name(i + 1);
   }
+  out << "\n";
+  for (auto it = total_mats.begin(); it != total_mats.end(); ++it) {
+    out << it->first;
+    for (int i = starting_rank; i < ending_rank; ++i) {
+      auto mat_it = per_rank_mats[i - 1].find(it->first);
+      if (mat_it != per_rank_mats[i - 1].end()) {
+        out << "," << mat_it->second;
+      } else {
+        out << ",";
+      }
+    }
+    out << "\n";
+  }
+  out.close();
 }
 
 void Main() {
@@ -337,10 +354,35 @@ void Main() {
   std::cout << "\n";
 
   const std::string rank_up_unit = absl::GetFlag(FLAGS_rank_up_unit);
-  if (rank_up_unit.empty()) return;
-  PrintRankUp(*config, rank_up_unit,
-              static_cast<Rank::Enum>(absl::GetFlag(FLAGS_starting_rank)),
-              static_cast<Rank::Enum>(absl::GetFlag(FLAGS_ending_rank)));
+  if (!rank_up_unit.empty()) {
+    Rank::Enum starting_rank;
+    if (!Rank::Enum_Parse(absl::GetFlag(FLAGS_starting_rank), &starting_rank)) {
+      std::cerr << "Invalid starting rank: "
+                << absl::GetFlag(FLAGS_starting_rank) << "\n";
+      return;
+    }
+    Rank::Enum ending_rank;
+    if (!Rank::Enum_Parse(absl::GetFlag(FLAGS_ending_rank), &ending_rank)) {
+      std::cerr << "Invalid ending rank: " << absl::GetFlag(FLAGS_ending_rank)
+                << "\n";
+      return;
+    }
+    if (starting_rank >= ending_rank) {
+      std::cerr << "Starting rank must be less than ending rank.\n";
+      return;
+    }
+    EmitRankUp(*config, rank_up_unit, starting_rank, ending_rank,
+               absl::GetFlag(FLAGS_rank_up_file));
+  }
+
+  const std::string recipe_data_file = absl::GetFlag(FLAGS_recipe_data);
+  if (!recipe_data_file.empty()) {
+    if (const absl::Status status =
+            AdjustRecipeData(recipe_data_file, *config);
+        !status.ok()) {
+      std::cerr << "Error adjusting recipe data: " << status.message() << "\n";
+    }
+  }
 }
 
 }  // namespace

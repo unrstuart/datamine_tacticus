@@ -2,6 +2,7 @@ cc_binary(
     name = "miner",
     srcs = ["miner.cc"],
     deps = [
+      ":adjust_recipe_data",
       ":miner_cc_proto",
       ":parse_enum",
       ":parse_upgrades",
@@ -16,6 +17,18 @@ cc_binary(
     data = [
       "gameconfig_1_31.json",
     ]
+)
+
+cc_library(
+  name = "adjust_recipe_data",
+  srcs = ["adjust_recipe_data.cc"],
+  hdrs = ["adjust_recipe_data.h"],
+  deps = [
+      ":miner_cc_proto",
+      "//libjson:json",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/strings",
+  ]
 )
 
 cc_library(
