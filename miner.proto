@@ -2,6 +2,31 @@ syntax = "proto2";
 
 package dataminer;
 
+message Rank {
+  enum Enum {
+    UNKNOWN_RANK = 0;
+    STONE_1 = 1; // Stone 1
+    STONE_2 = 2; // Stone 2
+    STONE_3 = 3; // Stone 3
+    IRON_1 = 4; // Iron 1
+    IRON_2 = 5; // Iron 2
+    IRON_3 = 6; // Iron 3
+    BRONZE_1 = 7; // Bronze 1
+    BRONZE_2 = 8; // Bronze 2
+    BRONZE_3 = 9; // Bronze 3
+    SILVER_1 = 10; // Silver 1
+    SILVER_2 = 11; // Silver 2
+    SILVER_3 = 12; // Silver 3
+    GOLD_1 = 13; // Gold 1
+    GOLD_2 = 14; // Gold 2
+    GOLD_3 = 15; // Gold 3
+    DIAMOND_1 = 16; // Diamond 1
+    DIAMOND_2 = 17; // Diamond 2
+    DIAMOND_3 = 18; // Diamond 3
+    ADAMANTINE_1 = 19; // Adamantine 1
+  }
+}
+
 message Rarity {
   enum Enum {
     UNKNOWN_RARITY = 0;
@@ -26,12 +51,129 @@ message Alliance {
 message Faction {
   enum Enum {
     UNKNOWN_FACTION = 0;
+    ADEPTA_SORORITAS = 1; // Adepta Sororitas
+    ADEPTUS_CUSTODES = 2; // Adeptus Custodes
+    ADEPTUS_MECHANICUS = 3; // Adeptus Mechanicus 
+    AELDARI = 9; // Aeldari
+    ASTRA_MILITARUM = 4; // Astra Militarum
+    BLACK_LEGION = 5; // Black Legion
+    BLACK_TEMPLARS = 17; // Black Templars
+    BLOOD_ANGELS = 6; // Blood Angels
+    DARK_ANGELS = 7; // Dark Angels
+    DEATH_GUARD = 8; // Death Guard
+    EMPERORS_CHILDREN = 10; // Emperor's Children
+    GENESTEALER_CULTS = 11; // Genestealer Cults
+    NECRONS = 12; // Necrons
+    ORKS = 13; // Orks
+    SPACE_WOLVES = 14; // Space Wolves
+    TAU_EMPIRE = 15; // T'au Empire
+    THOUSAND_SONS = 18; // Thousand Sons
+    TYRANIDS = 16; // Tyranids
+    ULTRAMARINES = 19; // Ultramarines
+    WORLD_EATERS = 20; // World Eaters
   }
 }
 
 message UnitId {
   enum Enum {
     UNKNOWN_UNIT_ID = 0;
+    ROSWITHA = 1;
+    CELESTINE = 2;
+    ISABELLA = 3;
+    MORVENN_VAHL = 4;
+    VINDICTA = 5;
+    SY_GEX = 6;
+    VITRUVIUS = 7;
+    ACTUS = 8;
+    TAN_GI_DA = 9;
+    EXITOR_RHO = 10;
+    KUT = 11;
+    CREED = 12;
+    THADDEUS = 13;
+    SIBYLL = 14;
+    YARRICK = 15;
+    ABADDON = 16;
+    HAARKEN = 17;
+    VOLK = 18;
+    ARCHIMATOS = 19;
+    ANGRAX = 20;
+    DANTE = 21;
+    LUCIEN = 22;
+    MATANEO = 23;
+    MEPHISTON = 24;
+    NICODEMUS = 25;
+    ATLACOYA = 26;
+    KARIYAN = 27;
+    TRAJANN = 28;
+    AESOTH = 29;
+    ASMODAI = 30;
+    AZRAEL = 31;
+    FORCAS = 32;
+    SARQUAEL = 33;
+    BARAQIEL = 34;
+    CORRODIUS = 35;
+    MALADUS = 36;
+    PESTILLIAN = 37;
+    NAUSEOUS = 38;
+    TYPHUS = 39;
+    AETHANA = 40;
+    ELDRYON = 41;
+    JAIN_ZAR = 42;
+    MAUGAN_RA = 43;
+    CALANDIS = 44;
+    LUCIUS = 45;
+    SHIRON = 46;
+    HOLLAN = 47;
+    JUDH = 48;
+    XYBIA = 49;
+    THE_PATERMINE = 50;
+    ISAAK = 51;
+    IMOSPEKH = 52;
+    ANUPHET = 53;
+    THUTMOSE = 54;
+    ALEPH_NULL = 55;
+    MAKHOTEP = 56;
+    GIBBASCRAPZ = 57;
+    SNAPPAWRECKA = 58;
+    TANKSMASHA = 59;
+    SNOTFLOGGA = 60;
+    GULGORTZ = 61;
+    RAGNAR = 62;
+    TJARK = 63;
+    ARJAC = 64;
+    NJAL = 65;
+    ULF = 66;
+    AUN_SHI = 67;
+    RE_VAS = 68;
+    DARKSTRIDER = 69;
+    SHO_SYL = 70;
+    SHADOWSUN = 71;
+    BURCHARD = 72;
+    THOREAD = 73;
+    JAEGER = 74;
+    HELBRECHT = 75;
+    GODSWYL = 76;
+    AHRIMAN = 77;
+    ABRAXAS = 78;
+    THAUMACHUS = 79;
+    TOTH = 80;
+    YAZAGHOR = 81;
+    DEATHLEAPER = 82;
+    NEUROTHROPE = 83;
+    PARASITE_OF_MORTREX = 84;
+    TYRANT_GUARD = 85;
+    WINGED_PRIME = 86;
+    INCISUS = 87;
+    CALGAR = 88;
+    CERTUS = 89;
+    BELLATOR = 90;
+    TIGURIUS = 91;
+    TITUS = 92;
+    AZKOR = 93;
+    TARVAKH = 94;
+    MACER = 95;
+    KHARN = 96;
+    WRASK = 97;
   }
 }
 
@@ -244,7 +386,7 @@ message Units {
   // abilityPowerModifiers
   // abilityUpgradeCosts (gold and badges)
   // abilityUpgradeCostsMoW (gold, salvage, badges, components, forge badges)
-  repeated DamagePierceRatio damage_profile_modifiers = 1; // damageProfileModifiers
+  // repeated DamagePierceRatio damage_profile_modifiers = 1; // damageProfileModifiers
   // heroProgressionSteps
   // heroProgressionStepsMoW
   // heroProgressionStepsPerUnit
@@ -276,7 +418,7 @@ message Upgrades {
     optional string stat_type = 5; // statType
     optional Recipe recipe = 6; // crafting
   }
-  repeated Upgrades upgrades = 1; // [index]
+  repeated Upgrade upgrades = 1; // [index]
 }
 
 message ClientGameConfig {

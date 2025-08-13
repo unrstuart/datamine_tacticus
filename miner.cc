@@ -10,6 +10,8 @@
 #include "libjson/json/reader.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
+#include "parse_units.h"
+#include "parse_upgrades.h"
 
 ABSL_FLAG(std::string, game_config, "", "The GameConfig.json file to parse");
 ABSL_FLAG(int, max_depth, 2,
@@ -19,6 +21,11 @@ ABSL_FLAG(int, max_members, 2,
           "The maximum number of members to print for each object/array. ");
 ABSL_FLAG(std::string, debug_print_path, "",
           "The dot-separated path to the JSON fields to debug print. ");
+ABSL_FLAG(std::string, rank_up_unit, "", "The unit to rank up");
+ABSL_FLAG(int, starting_rank, 0,
+          "The starting rank for the unit. 1 = stone 1, 4 = iron 1, etc.");
+ABSL_FLAG(int, ending_rank, 0,
+          "The ending rank for the unit. 2 = stone 2, 4 = iron 1, etc.");
 
 namespace dataminer {
 namespace {
@@ -144,6 +151,18 @@ absl::StatusOr<ClientGameConfig> ParseClientGameConfig(
   for (const Achievement& achievement : *achievements) {
     *client_config.add_achievements() = std::move(achievement);
   }
+  absl::StatusOr<Upgrades> upgrades = ParseUpgrades(root.get("upgrades", {}));
+  if (!upgrades.ok()) {
+    return absl::InvalidArgumentError(
+        absl::StrCat("Error parsing upgrades: ", upgrades.status().message()));
+  }
+  *client_config.mutable_upgrades() = std::move(*upgrades);
+  absl::StatusOr<Units> units = ParseUnits(root.get("units", {}));
+  if (!units.ok()) {
+    return absl::InvalidArgumentError(
+        absl::StrCat("Error parsing units: ", units.status().message()));
+  }
+  *client_config.mutable_units() = std::move(*units);
   return client_config;
 }
 
@@ -194,6 +213,90 @@ void ParsePath(const absl::string_view path, std::string& path_comp,
   }
 }
 
+void ExpandMats(
+    const std::map<std::string, const Upgrades::Upgrade*>& upgrades_map,
+    std::map<std::string, int>& total_mats,
+    const absl::string_view upgrade_material) {
+  const auto it = upgrades_map.find(std::string(upgrade_material));
+  if (it == upgrades_map.end()) {
+    std::cerr << "Material '" << upgrade_material
+              << "' not found in upgrades_map.\n";
+    return;
+  }
+  const Upgrades::Upgrade* mat = it->second;
+  if (!mat->has_recipe()) {
+    total_mats[mat->name()]++;
+    total_mats["gold"] += mat->gold();
+  } else {
+    for (const auto& mat_item : mat->recipe().ingredients()) {
+      for (int i = 0; i < mat_item.amount(); ++i) {
+        ExpandMats(upgrades_map, total_mats, mat_item.id());
+      }
+    }
+  }
+}
+
+std::map<std::string, const Upgrades::Upgrade*> BuildUpgradesMap(
+    const GameConfig& config) {
+  std::map<std::string, const Upgrades::Upgrade*> upgrades_map;
+  for (const auto& upgrade :
+       config.client_game_config().upgrades().upgrades()) {
+    upgrades_map[upgrade.id()] = &upgrade;
+  }
+  return upgrades_map;
+}
+
+void PrintRankUp(const GameConfig& config, const absl::string_view name,
+                 const Rank::Enum starting_rank, const Rank::Enum ending_rank) {
+  const Unit* unit = nullptr;
+  for (const auto& u : config.client_game_config().units().units()) {
+    if (u.name() == name) {
+      unit = &u;
+      break;
+    }
+  }
+  if (!unit) {
+    std::cerr << "Unit '" << unit << "' not found in GameConfig.\n";
+    return;
+  }
+  std::cerr << unit->DebugString() << "\n";
+  const std::map<std::string, const Upgrades::Upgrade*> upgrades_map =
+      BuildUpgradesMap(config);
+  if (starting_rank < 1 || ending_rank < 1 || starting_rank > ending_rank ||
+      ending_rank > unit->rank_up_requirements_size()) {
+    std::cerr << "Invalid rank range: " << starting_rank << " to "
+              << ending_rank << ".\n";
+    return;
+  }
+  std::map<std::string, int> total_mats;
+  std::map<int, std::map<std::string, int>> per_rank_mats;
+  for (int i = starting_rank - 1; i < ending_rank - 1; ++i) {
+    if (i >= unit->rank_up_requirements_size()) {
+      std::cerr << "No rank up requirements for rank " << i + 1 << ".\n";
+      continue;
+    }
+    ExpandMats(upgrades_map, per_rank_mats[i],
+               unit->rank_up_requirements(i).top_row_health());
+    ExpandMats(upgrades_map, per_rank_mats[i],
+               unit->rank_up_requirements(i).bottom_row_health());
+    ExpandMats(upgrades_map, per_rank_mats[i],
+               unit->rank_up_requirements(i).top_row_armor());
+    ExpandMats(upgrades_map, per_rank_mats[i],
+               unit->rank_up_requirements(i).bottom_row_armor());
+    ExpandMats(upgrades_map, per_rank_mats[i],
+               unit->rank_up_requirements(i).top_row_damage());
+    ExpandMats(upgrades_map, per_rank_mats[i],
+               unit->rank_up_requirements(i).bottom_row_damage());
+  }
+  for (int i = starting_rank; i < ending_rank; ++i) {
+    std::cerr << "Rank " << Rank::Enum_Name(i + 1) << ":\n";
+    for (const auto& mat : per_rank_mats[i - 1]) {  
+      std::cerr << "  " << mat.first << ": " << mat.second << "\n";
+      total_mats[mat.first] += mat.second;
+    }
+  }
+}
+
 void Main() {
   Json::Value root;
   Json::Reader reader;
@@ -212,6 +315,8 @@ void Main() {
     std::cerr << "Error parsing GameConfig: " << config.status().message();
     return;
   }
+  std::cerr << "game config:\n";
+  std::cerr << config->DebugString() << "\n";
 
   // std::cout << "\nParsed GameConfig:\n";
   // std::cout << "\n" << config->DebugString() << "\n";
@@ -230,6 +335,12 @@ void Main() {
   Print(value, absl::GetFlag(FLAGS_max_depth),
         absl::GetFlag(FLAGS_max_members));
   std::cout << "\n";
+
+  const std::string rank_up_unit = absl::GetFlag(FLAGS_rank_up_unit);
+  if (rank_up_unit.empty()) return;
+  PrintRankUp(*config, rank_up_unit,
+              static_cast<Rank::Enum>(absl::GetFlag(FLAGS_starting_rank)),
+              static_cast<Rank::Enum>(absl::GetFlag(FLAGS_ending_rank)));
 }
 
 }  // namespace
