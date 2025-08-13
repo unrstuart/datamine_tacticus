@@ -1,0 +1,322 @@
+syntax = "proto2";
+
+package dataminer;
+
+message Rarity {
+  enum Enum {
+    UNKNOWN_RARITY = 0;
+    COMMON = 1;
+    UNCOMMON = 2;
+    RARE = 3;
+    EPIC = 4;
+    LEGENDARY = 5;
+    MYTHIC = 6;
+  }
+}
+
+message Alliance {
+  enum Enum {
+    UNKNOWN_ALLIANCE = 0;
+    IMPERIAL = 1; // Imperial
+    CHAOS = 2; // Chaos
+    XENOS = 3; // Xenos
+  }
+}
+
+message Faction {
+  enum Enum {
+    UNKNOWN_FACTION = 0;
+  }
+}
+
+message UnitId {
+  enum Enum {
+    UNKNOWN_UNIT_ID = 0;
+  }
+}
+
+// battleSets.legendary_event_<int>_lane_<1-3>
+message LegendaryEvent {
+  message Battle {
+    message Objective {
+      optional string type = 1; // objectiveType
+      optional string target = 2; // objectiveTarget
+      optional int32 points = 3; // score
+    }
+    message Wave {
+      repeated string enemies = 1; // army
+      optional int32 power = 2; // power
+      optional int32 round = 3; // round
+    }
+    optional int32 number = 1; // battleNr
+    optional string map_id = 2; // boardId
+    optional string disallowed_factions = 3; // disallowedFactions
+    optional int32 power = 4; // power
+    optional int32 tier = 5;  // tier
+    repeated Wave waves = 6; // waves
+  }
+}
+
+// battleSets.campaigns.(Elite|EliteMirror|Mirror|Standard|Event)[index]
+message Campaign {
+  enum CampaignId {
+    UNKNOWN_CAMPAIGN_ID = 0;
+    INDOMITUS = 1;
+    INDOMITUS_MIRROR = 2;
+    INDOMITUS_ELITE = 3;
+    INDOMITUS_MIRROR_ELITE = 4;
+    FALL_OF_CADIA = 5;
+    FALL_OF_CADIA_MIRROR = 6;
+    FALL_OF_CADIA_ELITE = 7;
+    FALL_OF_CADIA_MIRROR_ELITE = 8;
+    OCTARIUS = 9;
+    OCTARIUS_MIRROR = 10;
+    OCTARIUS_ELITE = 11;
+    OCTARIUS_MIRROR_ELITE = 12;
+    SAIM_HANN = 13;
+    SAIM_HANN_MIRROR = 14;
+    SAIM_HANN_ELITE = 15;
+    SAIM_HANN_MIRROR_ELITE = 16;
+    AD_MECH_STANDARD = 17;
+    AD_MECH_EXTREMIS = 18;
+    TYRANIDS_STANDARD = 19;
+    TYRANIDS_EXTREMIS = 20;
+    TAU_STANDARD = 21;
+    TAU_EXTREMIS = 22;
+  }
+  // battes[index]
+  message Battle {
+    // loot
+    message Reward {
+      repeated string base = 1; // base
+      optional string chanceOf = 2; // chanceOf
+      optional string star1 = 3; // star1
+      optional string star2 = 4; // star2
+      optional string star3 = 5; // star3
+
+      // The medal rewards aren't in the battle, I still
+      // need to find them.
+
+      optional string bronze_medal = 6; // type = "bronze"
+      optional string silver_medal = 7; // type = "silver"
+      optional string gold_medal = 8; // type = "gold"
+    }
+    optional int32 id = 1; // battleId
+    optional CampaignId campaign_id = 2; // campaignId
+    optional int32 difficulty_multiplier = 3; // difficultyMultiplier
+    optional int32 lightning_victory = 4; // lightningVictory
+    optional Reward reward = 5; // loot
+    optional int32 max_attempts = 6; // maxAttempts
+    optional int32 power = 7; // power
+    optional string required_units = 8; // requiredUnits
+    optional int32 spawn_points = 9; // spawnPoints
+    optional int32 energy_cost = 10; // staminaCost
+    repeated string enemies = 11; // enemies
+  }
+  optional string id = 1; // id
+  optional int32 last_playable_level = 2; // lastPlayableLevel
+  repeated string allowed_factions = 3; // unlockConditions.requiredUnits.allowedFactions
+  repeated string required_units = 4; // unlockConditions.requiredUnits.unlockUnitIds
+}
+
+// battleSets.campaigns
+message Battles {
+  repeated Campaign standard_campaigns = 1; // campaigns.Standard
+  repeated Campaign elite_campaigns = 2; // campaigns.Elite
+  repeated Campaign mirror_campaigns = 3; // campaigns.Mirror
+  repeated Campaign mirror_elite_campaigns = 4; // campaigns.EliteMirror
+  repeated Campaign standard_campaign_events = 5; // campaigns.Event
+  repeated Campaign extremis_campaign_events = 6; // campaigns.Event
+}
+
+// globalValues
+message GlobalValues {
+  repeated string supported_units = 1; // supportedUnits
+  repeated string unlockable_factions = 2; // unlockableFactions
+}
+
+// itemStatCapMultipliers
+message ItemStatCapMultipliers {
+  repeated int32 common = 1; // common
+  repeated int32 uncommon = 2; // uncommon
+  repeated int32 rare = 3; // rare
+  repeated int32 epic = 4; // epic
+  repeated int32 legendary = 5; // legendary
+  repeated int32 mythic = 6; // mythic
+}
+
+// items[index]
+message Item {
+  enum ItemType {
+    UNKNOWN_ITEM_TYPE = 0;
+    BLOCK = 1; // I_Block
+    CRIT = 2; // I_Crit
+    BLOCK_BOOSTER = 3; // I_Booster_Block
+    CRIT_BOOSTER = 4; // I_Booster_Crit
+    DEFENSIVE = 5; // I_Defensive
+  }
+  message Stats {
+    optional int32 block_chance = 1; // blockChance
+    optional int32 block_damage = 2; // blockDamage
+    optional int32 fixed_armor = 3; // fixedArmor
+    optional int32 hp = 4; // hp
+  }
+  message Level {
+    optional int32 salvage_cost = 1; // dustCost
+    optional int32 gold_cost = 2; // goldCost
+    optional Stats stats = 3; // stats
+    optional int32 mythic_salvage_cost = 4; // mythicDustCost
+  }
+  optional string id = 1; // the id of the object
+  optional Rarity.Enum rarity = 2; // rarity
+  repeated string allowed_factions = 3; // allowedFactions
+  optional ItemType item_type = 4; // itemType
+  repeated Level levels = 5; // levels
+  optional string next_in_series = 6; // nextInSeries
+  optional string ability_id = 7; // abilityId
+  optional bool is_relic = 8; // isRelic
+  optional bool is_unique_relic = 9; // isUniqueRelic
+  repeated string allowed_units = 10; // allowedUnits
+}
+
+message Achievement {
+  message Milestone {
+    optional int32 goal = 1;
+    optional string reward = 2;
+  }
+  optional string id = 1;
+  optional string task_id = 2;
+  repeated Milestone milestones = 3;
+}
+
+message Unit {
+  message Stats {
+    optional int32 damage = 1; // Damage
+    optional int32 armor = 2; // FixedArmor
+    optional int32 health = 3; // Health
+    optional int32 progression_index = 5; // ProgressionIndex
+  }
+  message Trait {
+    enum Enum {
+      UNKNOWN_TRAIT = 0;
+    }
+  }
+  message Attack {
+    optional string damage_type = 1; // DamageProfile
+    optional int32 hits = 2; // hits
+    optional int32 range = 3; // Range
+  }
+  // upgrades
+  message RankUpRequirements {
+    optional string top_row_health = 1;  // upgrades[0]
+    optional string top_row_armor = 2;  // upgrades[2]
+    optional string top_row_damage = 3;  // upgrades[4]
+    optional string bottom_row_health = 4;  // upgrades[1]
+    optional string bottom_row_armor = 5;  // upgrades[3]
+    optional string bottom_row_damage = 6;  // upgrades[5]
+  }
+  optional UnitId.Enum id = 1; // the id of the unit
+  optional Rarity.Enum base_rarity = 2; // BaseRarity
+  optional Faction.Enum faction_id = 3; // FactionId
+  optional Alliance.Enum alliance = 4; // GrandAllianceId
+  optional int32 movement = 5; // Movement
+  repeated string active_abilities = 6; // activeAbilities
+  // eligibilityRequirements
+  repeated Item.ItemType item_slots = 7; // itemSlots
+  repeated int32 item_slots_relic = 8; // itemSlotsRelic
+  optional string name = 9; // name
+  optional Stats stats = 10; // stats
+  repeated Trait.Enum traits = 11; // traits
+  repeated RankUpRequirements rank_up_requirements = 12; // upgrades
+  // upgradesStatIncrease
+  optional Attack melee_attack = 13; // weapons[0]
+  optional Attack ranged_attack = 14; // weapons[1]
+}
+
+message Units {
+  message DamagePierceRatio {
+    optional string id = 1; // the id of the array element
+    optional int32 pierce_ratio = 2; // PiercingRatio
+    repeated string traits = 3; // traits - this should be an enum
+  }
+  // abilities
+  // abilityPowerCurve
+  // abilityPowerModifiers
+  // abilityUpgradeCosts (gold and badges)
+  // abilityUpgradeCostsMoW (gold, salvage, badges, components, forge badges)
+  repeated DamagePierceRatio damage_profile_modifiers = 1; // damageProfileModifiers
+  // heroProgressionSteps
+  // heroProgressionStepsMoW
+  // heroProgressionStepsPerUnit
+  repeated Unit units = 2; // lineup
+
+  // npc
+  // skip sortings
+  // summons
+  // skip traitPowerModifiers
+  // skip upgradeSlots
+  // skip useShardsToUnlockUnits
+
+  repeated int64 xp_levels = 7; // xpLevels
+}
+
+message Upgrades {
+  message Upgrade {
+    message Recipe {
+      message Ingredient {
+        optional string id = 1; // id
+        optional int32 amount = 2; // amount
+      }
+      repeated Ingredient ingredients = 1; // list of ingredients
+    }
+    optional string id = 1; // id of the object
+    optional int32 gold = 2; // gold (cost to apply?)
+    optional string name = 3; // name
+    optional Rarity.Enum rarity = 4; // rarity
+    optional string stat_type = 5; // statType
+    optional Recipe recipe = 6; // crafting
+  }
+  repeated Upgrades upgrades = 1; // [index]
+}
+
+message ClientGameConfig {
+  repeated Achievement achievements = 1;
+  // skip aiUtilities
+  // skip avatars
+  optional Battles battles = 2;
+  // skip boardsToInclude
+  // skip consumables
+  // skip defeatTips
+  // skip dialogues
+  // skip featureIntros
+  // skip filters
+  optional GlobalValues global_values = 3;
+  // skip guilds
+  optional ItemStatCapMultipliers item_stat_cap_multipliers = 4;
+  repeated Item items = 5;  
+  // skip liveEvents
+  // skip loot for now, but come back to it, all the chests are there.
+  // skip loyalty
+  // skip onlineFeatures
+  // skip player (themes, avatars, power levels, and referral milestones)
+
+  // skips quests for now, but come back to it since things like LE missions
+  // are in there. Look in quests.groups.
+
+  // skip resourceCrafting, it's about forging e.g. badges and orbs.
+  // skip shop
+  // skip subscriptions
+  // skip summoningPortal
+  // skip timedReminders
+  // skip tips (things like high-grass)
+
+  optional Units units = 6; // units
+  optional Upgrades upgrades = 7; // upgrades
+}
+
+message GameConfig {
+  optional ClientGameConfig client_game_config = 1;
+  optional string client_game_config_version = 2;
+  optional bool full_config = 3;
+  optional string full_config_hash = 4;
+}

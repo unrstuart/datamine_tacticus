@@ -8,3 +8,7 @@ bazel_dep(
     version = "20240116.0"
 )
 
+bazel_dep(
+    name = "protobuf",
+    version = "32.0-rc1"
+)
