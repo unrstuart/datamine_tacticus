@@ -17,11 +17,7 @@
 
 ABSL_FLAG(std::string, game_config, "", "The GameConfig.json file to parse");
 ABSL_FLAG(std::string, rank_up_unit, "", "The unit to rank up");
-ABSL_FLAG(std::string, starting_rank, "STONE_1",
-          "The starting rank for the unit. 1 = stone 1, 4 = iron 1, etc.");
-ABSL_FLAG(std::string, ending_rank, "ADAMANTINE_1",
-          "The ending rank for the unit. 2 = stone 2, 4 = iron 1, etc.");
-ABSL_FLAG(std::string, rank_up_file, "/dev/null",
+ABSL_FLAG(std::string, rank_up_file, "",
           "The file to write rank up information to.");
 ABSL_FLAG(std::string, recipe_data, "",
           "If not empty, writes all upgrade recipes to the specified file.");
@@ -186,7 +182,6 @@ std::map<std::string, const Upgrades::Upgrade*> BuildUpgradesMap(
 }
 
 void EmitRankUp(const GameConfig& config, const absl::string_view name,
-                const Rank::Enum starting_rank, const Rank::Enum ending_rank,
                 const absl::string_view output_path) {
   const Unit* unit = nullptr;
   for (const auto& u : config.client_game_config().units().units()) {
@@ -201,17 +196,12 @@ void EmitRankUp(const GameConfig& config, const absl::string_view name,
   }
   const std::map<std::string, const Upgrades::Upgrade*> upgrades_map =
       BuildUpgradesMap(config);
-  if (starting_rank < 1 || ending_rank < 1 || starting_rank > ending_rank ||
-      ending_rank > unit->rank_up_requirements_size()) {
-    std::cerr << "Invalid rank range: " << starting_rank << " to "
-              << ending_rank << ".\n";
-    return;
-  }
   std::map<std::string, int> total_mats;
   std::map<int, std::map<std::string, int>> per_rank_mats;
-  for (int i = starting_rank - 1; i < ending_rank - 1; ++i) {
+  for (int rank = Rank::STONE_1; rank < Rank::ADAMANTINE_1; ++rank) {
+    int i = rank - 1;
     if (i >= unit->rank_up_requirements_size()) {
-      std::cerr << "No rank up requirements for rank " << i + 1 << ".\n";
+      std::cerr << "No rank up requirements for rank " << rank << ".\n";
       continue;
     }
     ExpandMats(upgrades_map, per_rank_mats[i],
@@ -227,25 +217,37 @@ void EmitRankUp(const GameConfig& config, const absl::string_view name,
     ExpandMats(upgrades_map, per_rank_mats[i],
                unit->rank_up_requirements(i).bottom_row_damage());
   }
-  std::ofstream out(std::string(output_path).c_str());
-  out << "material";
-  for (int i = starting_rank; i < ending_rank; ++i) {
-    out << "," << Rank::Enum_Name(i) << "->" << Rank::Enum_Name(i + 1);
+  for (const auto& rank_mats : per_rank_mats) {
+    for (const auto&[mat, amount] : rank_mats.second) {
+      total_mats[mat] += amount;
+    }
   }
-  out << "\n";
+  std::ostream* out;
+  std::unique_ptr<std::ofstream> file_out;
+  if (output_path.empty()) {
+    out = &std::cout;
+  } else {
+    file_out = std::make_unique<std::ofstream>(std::string(output_path).c_str());
+    out = file_out.get();
+  }
+  *out << "material";
+  for (int i = Rank::STONE_1; i < Rank::ADAMANTINE_1; ++i) {
+    *out << "," << Rank::Enum_Name(i) << "->" << Rank::Enum_Name(i + 1);
+  }
+  *out << "\n";
   for (auto it = total_mats.begin(); it != total_mats.end(); ++it) {
-    out << it->first;
-    for (int i = starting_rank; i < ending_rank; ++i) {
+    *out << it->first;
+    for (int i = Rank::STONE_1; i < Rank::ADAMANTINE_1; ++i) {
       auto mat_it = per_rank_mats[i - 1].find(it->first);
       if (mat_it != per_rank_mats[i - 1].end()) {
-        out << "," << mat_it->second;
+        *out << "," << mat_it->second;
       } else {
-        out << ",";
+        *out << ",";
       }
     }
-    out << "\n";
+    *out << "\n";
   }
-  out.close();
+  if (file_out != nullptr) file_out->close();
 }
 
 void Main() {
@@ -269,23 +271,7 @@ void Main() {
 
   const std::string rank_up_unit = absl::GetFlag(FLAGS_rank_up_unit);
   if (!rank_up_unit.empty()) {
-    Rank::Enum starting_rank;
-    if (!Rank::Enum_Parse(absl::GetFlag(FLAGS_starting_rank), &starting_rank)) {
-      std::cerr << "Invalid starting rank: "
-                << absl::GetFlag(FLAGS_starting_rank) << "\n";
-      return;
-    }
-    Rank::Enum ending_rank;
-    if (!Rank::Enum_Parse(absl::GetFlag(FLAGS_ending_rank), &ending_rank)) {
-      std::cerr << "Invalid ending rank: " << absl::GetFlag(FLAGS_ending_rank)
-                << "\n";
-      return;
-    }
-    if (starting_rank >= ending_rank) {
-      std::cerr << "Starting rank must be less than ending rank.\n";
-      return;
-    }
-    EmitRankUp(*config, rank_up_unit, starting_rank, ending_rank,
+    EmitRankUp(*config, rank_up_unit,
                absl::GetFlag(FLAGS_rank_up_file));
   }
 
