@@ -74,109 +74,6 @@ message Faction {
   }
 }
 
-message UnitId {
-  enum Enum {
-    UNKNOWN_UNIT_ID = 0;
-    ROSWITHA = 1;
-    CELESTINE = 2;
-    ISABELLA = 3;
-    MORVENN_VAHL = 4;
-    VINDICTA = 5;
-    SY_GEX = 6;
-    VITRUVIUS = 7;
-    ACTUS = 8;
-    TAN_GI_DA = 9;
-    EXITOR_RHO = 10;
-    KUT = 11;
-    CREED = 12;
-    THADDEUS = 13;
-    SIBYLL = 14;
-    YARRICK = 15;
-    ABADDON = 16;
-    HAARKEN = 17;
-    VOLK = 18;
-    ARCHIMATOS = 19;
-    ANGRAX = 20;
-    DANTE = 21;
-    LUCIEN = 22;
-    MATANEO = 23;
-    MEPHISTON = 24;
-    NICODEMUS = 25;
-    ATLACOYA = 26;
-    KARIYAN = 27;
-    TRAJANN = 28;
-    AESOTH = 29;
-    ASMODAI = 30;
-    AZRAEL = 31;
-    FORCAS = 32;
-    SARQUAEL = 33;
-    BARAQIEL = 34;
-    CORRODIUS = 35;
-    MALADUS = 36;
-    PESTILLIAN = 37;
-    NAUSEOUS = 38;
-    TYPHUS = 39;
-    AETHANA = 40;
-    ELDRYON = 41;
-    JAIN_ZAR = 42;
-    MAUGAN_RA = 43;
-    CALANDIS = 44;
-    LUCIUS = 45;
-    SHIRON = 46;
-    HOLLAN = 47;
-    JUDH = 48;
-    XYBIA = 49;
-    THE_PATERMINE = 50;
-    ISAAK = 51;
-    IMOSPEKH = 52;
-    ANUPHET = 53;
-    THUTMOSE = 54;
-    ALEPH_NULL = 55;
-    MAKHOTEP = 56;
-    GIBBASCRAPZ = 57;
-    SNAPPAWRECKA = 58;
-    TANKSMASHA = 59;
-    SNOTFLOGGA = 60;
-    GULGORTZ = 61;
-    RAGNAR = 62;
-    TJARK = 63;
-    ARJAC = 64;
-    NJAL = 65;
-    ULF = 66;
-    AUN_SHI = 67;
-    RE_VAS = 68;
-    DARKSTRIDER = 69;
-    SHO_SYL = 70;
-    SHADOWSUN = 71;
-    BURCHARD = 72;
-    THOREAD = 73;
-    JAEGER = 74;
-    HELBRECHT = 75;
-    GODSWYL = 76;
-    AHRIMAN = 77;
-    ABRAXAS = 78;
-    THAUMACHUS = 79;
-    TOTH = 80;
-    YAZAGHOR = 81;
-    DEATHLEAPER = 82;
-    NEUROTHROPE = 83;
-    PARASITE_OF_MORTREX = 84;
-    TYRANT_GUARD = 85;
-    WINGED_PRIME = 86;
-    INCISUS = 87;
-    CALGAR = 88;
-    CERTUS = 89;
-    BELLATOR = 90;
-    TIGURIUS = 91;
-    TITUS = 92;
-    AZKOR = 93;
-    TARVAKH = 94;
-    MACER = 95;
-    KHARN = 96;
-    WRASK = 97;
-  }
-}
-
 // battleSets.legendary_event_<int>_lane_<1-3>
 message LegendaryEvent {
   message Battle {
@@ -357,7 +254,7 @@ message Unit {
     optional string bottom_row_armor = 5;  // upgrades[3]
     optional string bottom_row_damage = 6;  // upgrades[5]
   }
-  optional UnitId.Enum id = 1; // the id of the unit
+  optional string id = 1; // the id of the unit
   optional Rarity.Enum base_rarity = 2; // BaseRarity
   optional Faction.Enum faction_id = 3; // FactionId
   optional Alliance.Enum alliance = 4; // GrandAllianceId

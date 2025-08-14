@@ -45,11 +45,11 @@ absl::StatusOr<std::vector<Unit::RankUpRequirements>> ParseRankUpRequirements(
     }
     Unit::RankUpRequirements requirement;
     requirement.set_top_row_health(rank_up[0].asString());
-    requirement.set_top_row_armor(rank_up[2].asString());
-    requirement.set_top_row_damage(rank_up[4].asString());
     requirement.set_bottom_row_health(rank_up[1].asString());
-    requirement.set_bottom_row_armor(rank_up[3].asString());
-    requirement.set_bottom_row_damage(rank_up[5].asString());
+    requirement.set_top_row_damage(rank_up[2].asString());
+    requirement.set_bottom_row_damage(rank_up[3].asString());
+    requirement.set_top_row_armor(rank_up[4].asString());
+    requirement.set_bottom_row_armor(rank_up[5].asString());
     requirements.push_back(std::move(requirement));
   }
 
@@ -90,16 +90,8 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
     // unit.add_item_slots(slot.asString());
   }
   unit.set_name(root["name"].asString());
-  unit.set_id(ParseUnitId(unit.name()));
+  unit.set_id(id);
 
-  auto format_unit_id = [](absl::string_view name) {
-    return absl::AsciiStrToUpper(
-        absl::StrReplaceAll(name, {{" ", "_"}, {"-", "_"}, {"'", "_"}}));
-  };
-  if (unit.id() == UnitId::UNKNOWN_UNIT_ID) {
-    std::cerr << "{UnitId::" << format_unit_id(unit.name()) << ", \""
-              << unit.name() << "\" },\n";
-  }
   auto upgrades = ParseRankUpRequirements(id, root["upgrades"]);
   if (!upgrades.ok()) {
     return absl::InvalidArgumentError(

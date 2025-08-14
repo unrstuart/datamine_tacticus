@@ -7,7 +7,8 @@
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
-#include "adjust_recipe_data.h"
+#include "create_rank_up_data.h"
+#include "create_recipe_data.h"
 #include "libjson/json/reader.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
@@ -31,6 +32,8 @@ ABSL_FLAG(std::string, rank_up_file, "/dev/null",
           "The file to write rank up information to.");
 ABSL_FLAG(std::string, recipe_data, "",
           "If not empty, writes all upgrade recipes to the specified file.");
+ABSL_FLAG(std::string, rank_up_data, "",
+          "If not empty, writes all rank-up recipes to the specified file.");
 
 namespace dataminer {
 namespace {
@@ -332,9 +335,6 @@ void Main() {
     std::cerr << "Error parsing GameConfig: " << config.status().message();
     return;
   }
-  std::cerr << "game config:\n";
-  std::cerr << config->DebugString() << "\n";
-
   // std::cout << "\nParsed GameConfig:\n";
   // std::cout << "\n" << config->DebugString() << "\n";
   Json::Value value = root;
@@ -377,10 +377,18 @@ void Main() {
 
   const std::string recipe_data_file = absl::GetFlag(FLAGS_recipe_data);
   if (!recipe_data_file.empty()) {
-    if (const absl::Status status =
-            AdjustRecipeData(recipe_data_file, *config);
+    if (const absl::Status status = CreateRecipeData(recipe_data_file, *config);
         !status.ok()) {
       std::cerr << "Error adjusting recipe data: " << status.message() << "\n";
+    }
+  }
+
+  const std::string rank_up_data_file = absl::GetFlag(FLAGS_rank_up_data);
+  if (!rank_up_data_file.empty()) {
+    if (const absl::Status status =
+            CreateRankUpData(rank_up_data_file, *config);
+        !status.ok()) {
+      std::cerr << "Error creating rank up data: " << status.message() << "\n";
     }
   }
 }

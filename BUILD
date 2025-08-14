@@ -2,7 +2,8 @@ cc_binary(
     name = "miner",
     srcs = ["miner.cc"],
     deps = [
-      ":adjust_recipe_data",
+      ":create_rank_up_data",
+      ":create_recipe_data",
       ":miner_cc_proto",
       ":parse_enum",
       ":parse_upgrades",
@@ -20,12 +21,22 @@ cc_binary(
 )
 
 cc_library(
-  name = "adjust_recipe_data",
-  srcs = ["adjust_recipe_data.cc"],
-  hdrs = ["adjust_recipe_data.h"],
+  name = "create_rank_up_data",
+  srcs = ["create_rank_up_data.cc"],
+  hdrs = ["create_rank_up_data.h"],
   deps = [
       ":miner_cc_proto",
-      "//libjson:json",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "create_recipe_data",
+  srcs = ["create_recipe_data.cc"],
+  hdrs = ["create_recipe_data.h"],
+  deps = [
+      ":miner_cc_proto",
       "@abseil-cpp//absl/status:status",
       "@abseil-cpp//absl/strings",
   ]

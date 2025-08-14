@@ -1,4 +1,4 @@
-#include "adjust_recipe_data.h"
+#include "create_recipe_data.h"
 
 #include <fstream>
 #include <iostream>
@@ -6,8 +6,6 @@
 
 #include "absl/status/status.h"
 #include "absl/strings/string_view.h"
-#include "libjson/json/reader.h"
-#include "libjson/json/value.h"
 #include "miner.pb.h"
 
 namespace dataminer {
@@ -44,9 +42,9 @@ std::string ConvertRarity(const Rarity::Enum rarity) {
 
 }  // namespace
 
-// Adjusts the recipe data in the provided JSON root.
-// Returns an error status if the adjustment fails.
-absl::Status AdjustRecipeData(const absl::string_view path,
+// Creates the recipe data in the provided JSON root.
+// Returns an error status if the creation fails.
+absl::Status CreateRecipeData(const absl::string_view path,
                               const GameConfig& game_config) {
   std::cout << "writing recipe data to " << path << "\n";
 
