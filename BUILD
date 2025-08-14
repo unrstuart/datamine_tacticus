@@ -9,6 +9,8 @@ cc_binary(
       ":parse_upgrades",
       ":parse_units",
       "//libjson:json",
+      "@abseil-cpp//absl/log:initialize",
+      "@abseil-cpp//absl/log:log",
       "@abseil-cpp//absl/flags:flag",
       "@abseil-cpp//absl/flags:parse",
       "@abseil-cpp//absl/status:status",
@@ -17,6 +19,7 @@ cc_binary(
     ],
     data = [
       "gameconfig_1_31.json",
+      "I2Languages_en.json",
     ]
 )
 cc_binary(
@@ -38,6 +41,7 @@ cc_binary(
     ],
     data = [
       "gameconfig_1_31.json",
+      "I2Languages_en.json",
     ]
 )
 
@@ -94,6 +98,7 @@ cc_library(
       "//libjson:json",
       "@abseil-cpp//absl/flags:flag",
       "@abseil-cpp//absl/flags:parse",
+      "@abseil-cpp//absl/log",
       "@abseil-cpp//absl/status:status",
       "@abseil-cpp//absl/status:statusor",
       "@abseil-cpp//absl/strings",

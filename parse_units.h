@@ -9,6 +9,9 @@ namespace dataminer {
 
 absl::StatusOr<Units> ParseUnits(const Json::Value& root);
 
+absl::Status AmendUnitsWithDisplayStrings(const Json::Value& root,
+                                          Units* units);
+
 }  // namespace dataminer
 
 #endif  // __PARSE_UNITS_H__

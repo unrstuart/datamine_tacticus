@@ -251,6 +251,11 @@ message Unit {
   repeated string equipment_slots = 7; // itemSlots
   repeated int32 item_slots_relic = 8; // itemSlotsRelic
   optional string name = 9; // name
+  optional string full_name = 18; // from i18n file
+  optional string short_name = 15; // from i18n file
+  optional string extra_short_name = 16; // from i18n file
+  optional string title = 17; // from i18n file
+  optional string description = 19; // from i18n file
   optional Stats stats = 10; // stats
   repeated string traits = 11; // traits
   repeated RankUpRequirements rank_up_requirements = 12; // upgrades

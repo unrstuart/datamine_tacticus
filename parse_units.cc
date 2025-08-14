@@ -1,7 +1,10 @@
 #include "parse_units.h"
 
+#include "absl/log/log.h"
 #include "absl/status/statusor.h"
 #include "absl/strings/ascii.h"
+#include "absl/strings/match.h"
+#include "absl/strings/str_join.h"
 #include "absl/strings/str_replace.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
@@ -153,6 +156,109 @@ absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
     units.add_xp_levels(xp_level.asInt());
   }
   return units;
+}
+
+absl::Status AmendUnitsWithDisplayStrings(const Json::Value& root,
+                                          Units* units) {
+  std::map<std::string, std::string> full_names, short_names, shorter_names,
+      titles, descs;
+  static std::map<std::string, std::map<std::string, std::string>*> suffixes = {
+      {"_Name", &full_names},
+      {"_ShortName", &short_names},
+      {"_ExtraShortName", &shorter_names},
+      {"_Title", &titles},
+      {"_Description", &descs}};
+  if (!root.isObject()) {
+    return absl::InvalidArgumentError("Parsed JSON is not an object.");
+  }
+  if (!root.isMember("mSource")) {
+    return absl::InvalidArgumentError("Missing 'mSource' in JSON.");
+  }
+  const Json::Value& source = root["mSource"];
+  if (!source.isObject()) {
+    return absl::InvalidArgumentError("'mSource' is not an object.");
+  }
+  if (!source.isObject()) {
+    return absl::InvalidArgumentError("'mSource' is not an object.");
+  }
+  if (!source.isMember("mTerms")) {
+    return absl::InvalidArgumentError("Missing 'mTerms' in 'mSource'.");
+  }
+  const Json::Value& terms = source["mTerms"];
+  if (!terms.isArray()) {
+    return absl::InvalidArgumentError("'mTerms' is not an array.");
+  }
+  for (const Json::Value& term_entry : terms) {
+    if (!term_entry.isObject()) {
+      return absl::InvalidArgumentError("'mTerms' entry is not an object.");
+    }
+    if (!term_entry.isMember("Term")) {
+      return absl::InvalidArgumentError(
+          "'mTerms' entry does not have 'Term' field.");
+    }
+    if (!term_entry.isMember("Languages")) {
+      return absl::InvalidArgumentError(
+          "'mTerms' entry does not have 'Languages' field.");
+    }
+    const Json::Value& term = term_entry["Term"];
+    if (!term.isString()) {
+      return absl::InvalidArgumentError(
+          "'mTerms' entry 'Term' field is not a string.");
+    }
+    const Json::Value& languages = term_entry["Languages"];
+    if (!languages.isArray() || languages.size() < 1) {
+      return absl::InvalidArgumentError(
+          "'mTerms' entry 'Languages' field is not an array or is empty.");
+    }
+    const Json::Value& english = languages[0];
+    if (!english.isString()) {
+      return absl::InvalidArgumentError(
+          "'mTerms' entry 'Languages' field is not a string.");
+    }
+    const std::string key = term.asString();
+    const std::string value = english.asString();
+    for (const auto& [suffix, map] : suffixes) {
+      if (!absl::EndsWith(key, suffix)) continue;
+      std::string base_key = key.substr(0, key.size() - suffix.size());
+      if (!absl::StartsWith(base_key, "Units/")) continue;  // not a character.
+      base_key = base_key.substr(6);  // Remove "Units/" prefix.
+      map->insert({base_key, value});
+    }
+  }
+  for (Unit& unit : *units->mutable_units()) {
+    const std::string id = unit.id();
+    auto it = full_names.find(id);
+    if (it != full_names.end()) {
+      unit.set_full_name(it->second);
+    } else {
+      LOG(ERROR) << "No full name for unit: " << id;
+    }
+    it = short_names.find(id);
+    if (it != short_names.end()) {
+      unit.set_short_name(it->second);
+    } else {
+      LOG(ERROR) << "No short name for unit: " << id;
+    }
+    it = shorter_names.find(id);
+    if (it != shorter_names.end()) {
+      unit.set_extra_short_name(it->second);
+    } else {
+      LOG(ERROR) << "No extra short name for unit: " << id;
+    }
+    it = titles.find(id);
+    if (it != titles.end()) {
+      unit.set_title(it->second);
+    } else {
+      LOG(ERROR) << "No title for unit: " << id;
+    }
+    it = descs.find(id);
+    if (it != descs.end()) {
+      unit.set_description(it->second);
+    } else {
+      LOG(ERROR) << "No description for unit: " << id;
+    }
+  }
+  return absl::OkStatus();
 }
 
 }  // namespace dataminer

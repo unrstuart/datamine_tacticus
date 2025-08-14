@@ -3,6 +3,7 @@
 
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
+#include "absl/log/log.h"
 #include "absl/status/statusor.h"
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_join.h"
@@ -16,6 +17,9 @@
 #include "parse_upgrades.h"
 
 ABSL_FLAG(std::string, game_config, "", "The GameConfig.json file to parse");
+ABSL_FLAG(std::string, i18n_strings_json, "",
+          "The json file with the i18n'd display strings for things like the "
+          "characters' names and titles.");
 ABSL_FLAG(std::string, rank_up_unit, "", "The unit to rank up");
 ABSL_FLAG(std::string, rank_up_file, "",
           "The file to write rank up information to.");
@@ -154,8 +158,8 @@ void ExpandMats(
     const absl::string_view upgrade_material) {
   const auto it = upgrades_map.find(std::string(upgrade_material));
   if (it == upgrades_map.end()) {
-    std::cerr << "Material '" << upgrade_material
-              << "' not found in upgrades_map.\n";
+    LOG(ERROR) << "Material '" << upgrade_material
+               << "' not found in upgrades_map.\n";
     return;
   }
   const Upgrades::Upgrade* mat = it->second;
@@ -191,7 +195,7 @@ void EmitRankUp(const GameConfig& config, const absl::string_view name,
     }
   }
   if (!unit) {
-    std::cerr << "Unit '" << unit << "' not found in GameConfig.\n";
+    LOG(ERROR) << "Unit '" << unit << "' not found in GameConfig.\n";
     return;
   }
   const std::map<std::string, const Upgrades::Upgrade*> upgrades_map =
@@ -201,7 +205,7 @@ void EmitRankUp(const GameConfig& config, const absl::string_view name,
   for (int rank = Rank::STONE_1; rank < Rank::ADAMANTINE_1; ++rank) {
     int i = rank - 1;
     if (i >= unit->rank_up_requirements_size()) {
-      std::cerr << "No rank up requirements for rank " << rank << ".\n";
+      LOG(ERROR) << "No rank up requirements for rank " << rank << ".\n";
       continue;
     }
     ExpandMats(upgrades_map, per_rank_mats[i],
@@ -218,7 +222,7 @@ void EmitRankUp(const GameConfig& config, const absl::string_view name,
                unit->rank_up_requirements(i).bottom_row_damage());
   }
   for (const auto& rank_mats : per_rank_mats) {
-    for (const auto&[mat, amount] : rank_mats.second) {
+    for (const auto& [mat, amount] : rank_mats.second) {
       total_mats[mat] += amount;
     }
   }
@@ -227,7 +231,8 @@ void EmitRankUp(const GameConfig& config, const absl::string_view name,
   if (output_path.empty()) {
     out = &std::cout;
   } else {
-    file_out = std::make_unique<std::ofstream>(std::string(output_path).c_str());
+    file_out =
+        std::make_unique<std::ofstream>(std::string(output_path).c_str());
     out = file_out.get();
   }
   *out << "material";
@@ -251,44 +256,68 @@ void EmitRankUp(const GameConfig& config, const absl::string_view name,
 }
 
 void Main() {
-  Json::Value root;
-  Json::Reader reader;
+  GameConfig config;
+  {
+    Json::Value root;
+    Json::Reader reader;
 
-  const std::string input_file = absl::GetFlag(FLAGS_game_config);
-  std::ifstream in(input_file);
-  if (!reader.parse(in, root)) {
-    std::cerr << "Couldn't parse json file: '" << input_file << "'.";
+    const std::string input_file = absl::GetFlag(FLAGS_game_config);
+    std::ifstream in(input_file);
+    if (!reader.parse(in, root)) {
+      LOG(ERROR) << "Couldn't parse json file: '" << input_file << "'.";
+    }
+    if (!root.isObject()) {
+      LOG(ERROR) << "Parsed JSON is not an object.";
+      return;
+    }
+    auto parsed_config = ParseGameConfig(root);
+    if (!parsed_config.ok()) {
+      LOG(ERROR) << "Error parsing GameConfig: "
+                 << parsed_config.status().message();
+      return;
+    }
+    config = std::move(*parsed_config);
   }
-  if (!root.isObject()) {
-    std::cerr << "Parsed JSON is not an object.";
-    return;
-  }
-  auto config = ParseGameConfig(root);
-  if (!config.ok()) {
-    std::cerr << "Error parsing GameConfig: " << config.status().message();
-    return;
+
+  {
+    Json::Value root;
+    Json::Reader reader;
+
+    const std::string input_file = absl::GetFlag(FLAGS_i18n_strings_json);
+    std::ifstream in(input_file);
+    if (!reader.parse(in, root)) {
+      LOG(ERROR) << "Couldn't parse json file: '" << input_file << "'.";
+    }
+    if (!root.isObject()) {
+      LOG(ERROR) << "Parsed JSON is not an object.";
+      return;
+    }
+    absl::Status status = AmendUnitsWithDisplayStrings(
+        root, config.mutable_client_game_config()->mutable_units());
+    if (!status.ok()) {
+      LOG(ERROR) << "Error parsing i18n strings: " << status.message() << "\n";
+      return;
+    }
   }
 
   const std::string rank_up_unit = absl::GetFlag(FLAGS_rank_up_unit);
   if (!rank_up_unit.empty()) {
-    EmitRankUp(*config, rank_up_unit,
-               absl::GetFlag(FLAGS_rank_up_file));
+    EmitRankUp(config, rank_up_unit, absl::GetFlag(FLAGS_rank_up_file));
   }
 
   const std::string recipe_data_file = absl::GetFlag(FLAGS_recipe_data);
   if (!recipe_data_file.empty()) {
-    if (const absl::Status status = CreateRecipeData(recipe_data_file, *config);
+    if (const absl::Status status = CreateRecipeData(recipe_data_file, config);
         !status.ok()) {
-      std::cerr << "Error adjusting recipe data: " << status.message() << "\n";
+      LOG(ERROR) << "Error adjusting recipe data: " << status.message() << "\n";
     }
   }
 
   const std::string rank_up_data_file = absl::GetFlag(FLAGS_rank_up_data);
   if (!rank_up_data_file.empty()) {
-    if (const absl::Status status =
-            CreateRankUpData(rank_up_data_file, *config);
+    if (const absl::Status status = CreateRankUpData(rank_up_data_file, config);
         !status.ok()) {
-      std::cerr << "Error creating rank up data: " << status.message() << "\n";
+      LOG(ERROR) << "Error creating rank up data: " << status.message() << "\n";
     }
   }
 }
