@@ -186,14 +186,6 @@ message ItemStatCapMultipliers {
 
 // items[index]
 message Item {
-  enum ItemType {
-    UNKNOWN_ITEM_TYPE = 0;
-    BLOCK = 1; // I_Block
-    CRIT = 2; // I_Crit
-    BLOCK_BOOSTER = 3; // I_Booster_Block
-    CRIT_BOOSTER = 4; // I_Booster_Crit
-    DEFENSIVE = 5; // I_Defensive
-  }
   message Stats {
     optional int32 block_chance = 1; // blockChance
     optional int32 block_damage = 2; // blockDamage
@@ -209,7 +201,7 @@ message Item {
   optional string id = 1; // the id of the object
   optional Rarity.Enum rarity = 2; // rarity
   repeated string allowed_factions = 3; // allowedFactions
-  optional ItemType item_type = 4; // itemType
+  optional string equipment_type = 4; // itemType
   repeated Level levels = 5; // levels
   optional string next_in_series = 6; // nextInSeries
   optional string ability_id = 7; // abilityId
@@ -235,11 +227,6 @@ message Unit {
     optional int32 health = 3; // Health
     optional int32 progression_index = 5; // ProgressionIndex
   }
-  message Trait {
-    enum Enum {
-      UNKNOWN_TRAIT = 0;
-    }
-  }
   message Attack {
     optional string damage_type = 1; // DamageProfile
     optional int32 hits = 2; // hits
@@ -261,11 +248,11 @@ message Unit {
   optional int32 movement = 5; // Movement
   repeated string active_abilities = 6; // activeAbilities
   // eligibilityRequirements
-  repeated Item.ItemType item_slots = 7; // itemSlots
+  repeated string equipment_slots = 7; // itemSlots
   repeated int32 item_slots_relic = 8; // itemSlotsRelic
   optional string name = 9; // name
   optional Stats stats = 10; // stats
-  repeated Trait.Enum traits = 11; // traits
+  repeated string traits = 11; // traits
   repeated RankUpRequirements rank_up_requirements = 12; // upgrades
   // upgradesStatIncrease
   optional Attack melee_attack = 13; // weapons[0]

@@ -16,13 +16,6 @@
 #include "parse_upgrades.h"
 
 ABSL_FLAG(std::string, game_config, "", "The GameConfig.json file to parse");
-ABSL_FLAG(int, max_depth, 2,
-          "Maximum depth to print the JSON structure. "
-          "Use 0 for no limit, or a negative number for unlimited depth.");
-ABSL_FLAG(int, max_members, 2,
-          "The maximum number of members to print for each object/array. ");
-ABSL_FLAG(std::string, debug_print_path, "",
-          "The dot-separated path to the JSON fields to debug print. ");
 ABSL_FLAG(std::string, rank_up_unit, "", "The unit to rank up");
 ABSL_FLAG(std::string, starting_rank, "STONE_1",
           "The starting rank for the unit. 1 = stone 1, 4 = iron 1, etc.");
@@ -37,51 +30,6 @@ ABSL_FLAG(std::string, rank_up_data, "",
 
 namespace dataminer {
 namespace {
-
-void Print(const Json::Value& value, int max_depth, int max_members,
-           int current_depth = 0) {
-  if (current_depth > max_depth) return;
-  if (value.isBool()) {
-    std::cout << (value.asBool() ? "true" : "false");
-  } else if (value.isInt()) {
-    std::cout << value.asInt();
-  } else if (value.isUInt()) {
-    std::cout << value.asUInt();
-  } else if (value.isDouble()) {
-    std::cout << value.asDouble();
-  } else if (value.isString()) {
-    std::cout << '"' << value.asString() << '"';
-  } else if (value.isArray()) {
-    if (current_depth + 1 > max_depth) {
-      std::cout << "[...]";
-      return;
-    }
-    std::cout << "[\n";
-    int num_members = 0;
-    for (const auto& item : value) {
-      if (num_members++ >= max_members) break;
-      std::cout << std::string(current_depth * 2 + 2, ' ');
-      Print(item, max_depth, max_members, current_depth + 1);
-      std::cout << "\n";
-    }
-    std::cout << std::string(current_depth * 2, ' ') << "]";
-  } else if (value.isObject()) {
-    if (current_depth + 1 > max_depth) {
-      std::cout << "{...}";
-      return;
-    }
-    std::cout << "{\n";
-    int num_members = 0;
-    for (const auto& key : value.getMemberNames()) {
-      if (num_members++ >= max_members) break;
-      std::cout << std::string(current_depth * 2 + 2, ' ') << '"' << key
-                << "\": ";
-      Print(value[key], max_depth, max_members, current_depth + 1);
-      std::cout << "\n";
-    }
-    std::cout << std::string(current_depth * 2, ' ') << "}\n";
-  }
-}
 
 absl::StatusOr<std::vector<Achievement::Milestone>> ParseMilestones(
     const Json::Value& milestones) {
@@ -204,23 +152,6 @@ absl::StatusOr<GameConfig> ParseGameConfig(Json::Value& root) {
   return config;
 }
 
-void ParsePath(const absl::string_view path, std::string& path_comp,
-               std::optional<int>& index) {
-  path_comp = std::string(path);
-  auto ind = path.find('[');
-  if (ind != absl::string_view::npos) {
-    path_comp = std::string(path.substr(0, ind));
-    auto ind_str = path.substr(ind + 1);
-    int ind_ret;
-    if (!absl::SimpleAtoi(ind_str.substr(0, ind_str.size() - 1), &ind_ret)) {
-      std::cerr << "Invalid index in path: " << path << "\n";
-      index = std::nullopt;
-      return;
-    }
-    index = ind_ret;
-  }
-}
-
 void ExpandMats(
     const std::map<std::string, const Upgrades::Upgrade*>& upgrades_map,
     std::map<std::string, int>& total_mats,
@@ -335,23 +266,6 @@ void Main() {
     std::cerr << "Error parsing GameConfig: " << config.status().message();
     return;
   }
-  // std::cout << "\nParsed GameConfig:\n";
-  // std::cout << "\n" << config->DebugString() << "\n";
-  Json::Value value = root;
-  for (const absl::string_view path :
-       absl::StrSplit(absl::GetFlag(FLAGS_debug_print_path), ".")) {
-    std::string path_comp;
-    std::optional<int> index;
-    ParsePath(path, path_comp, index);
-    value = value[path_comp];
-    if (index.has_value()) {
-      value = value[*index];
-    }
-  }
-
-  Print(value, absl::GetFlag(FLAGS_max_depth),
-        absl::GetFlag(FLAGS_max_members));
-  std::cout << "\n";
 
   const std::string rank_up_unit = absl::GetFlag(FLAGS_rank_up_unit);
   if (!rank_up_unit.empty()) {
