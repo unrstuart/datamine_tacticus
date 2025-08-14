@@ -5,7 +5,6 @@
 #include "absl/strings/string_view.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
-#include "parse_enum.h"
 
 namespace dataminer {
 
@@ -68,7 +67,7 @@ absl::StatusOr<Upgrades> ParseUpgrades(const Json::Value& root) {
     }
     upgrade.set_gold(value.get("gold", {}).asInt());
     upgrade.set_name(value.get("name", {}).asString());
-    upgrade.set_rarity(ParseRarity(value.get("rarity", {}).asString()));
+    upgrade.set_rarity(value.get("rarity", {}).asString());
     upgrade.set_stat_type(value.get("statType", {}).asString());
     if (value.isMember("crafting")) {
       Json::Value recipe = value["crafting"];

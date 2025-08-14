@@ -9,13 +9,9 @@
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
-#include "create_rank_up_data.h"
-#include "create_recipe_data.h"
 #include "libjson/json/reader.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
-#include "parse_units.h"
-#include "parse_upgrades.h"
 
 ABSL_FLAG(std::string, json_file, "", "The JSON file to explore.");
 ABSL_FLAG(int, max_depth, 0,
@@ -120,6 +116,10 @@ void PrintPathsToSearchString(const Json::Value& value,
 
   if (value.isObject()) {
     for (const auto& key : value.getMemberNames()) {
+      const std::string value_str = absl::AsciiStrToLower(key);
+      if (value_str.find(search_string) != std::string::npos) {
+        std::cout << absl::StrJoin(current_path, "") << "." << key << "\n";
+      }
       Json::Value child_value = value[key];
       std::vector<std::string> new_path = current_path;
       if (!new_path.empty()) new_path.push_back(".");

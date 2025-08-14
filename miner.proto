@@ -27,53 +27,6 @@ message Rank {
   }
 }
 
-message Rarity {
-  enum Enum {
-    UNKNOWN_RARITY = 0;
-    COMMON = 1;
-    UNCOMMON = 2;
-    RARE = 3;
-    EPIC = 4;
-    LEGENDARY = 5;
-    MYTHIC = 6;
-  }
-}
-
-message Alliance {
-  enum Enum {
-    UNKNOWN_ALLIANCE = 0;
-    IMPERIAL = 1; // Imperial
-    CHAOS = 2; // Chaos
-    XENOS = 3; // Xenos
-  }
-}
-
-message Faction {
-  enum Enum {
-    UNKNOWN_FACTION = 0;
-    ADEPTA_SORORITAS = 1; // Adepta Sororitas
-    ADEPTUS_CUSTODES = 2; // Adeptus Custodes
-    ADEPTUS_MECHANICUS = 3; // Adeptus Mechanicus 
-    AELDARI = 9; // Aeldari
-    ASTRA_MILITARUM = 4; // Astra Militarum
-    BLACK_LEGION = 5; // Black Legion
-    BLACK_TEMPLARS = 17; // Black Templars
-    BLOOD_ANGELS = 6; // Blood Angels
-    DARK_ANGELS = 7; // Dark Angels
-    DEATH_GUARD = 8; // Death Guard
-    EMPERORS_CHILDREN = 10; // Emperor's Children
-    GENESTEALER_CULTS = 11; // Genestealer Cults
-    NECRONS = 12; // Necrons
-    ORKS = 13; // Orks
-    SPACE_WOLVES = 14; // Space Wolves
-    TAU_EMPIRE = 15; // T'au Empire
-    THOUSAND_SONS = 18; // Thousand Sons
-    TYRANIDS = 16; // Tyranids
-    ULTRAMARINES = 19; // Ultramarines
-    WORLD_EATERS = 20; // World Eaters
-  }
-}
-
 // battleSets.legendary_event_<int>_lane_<1-3>
 message LegendaryEvent {
   message Battle {
@@ -199,7 +152,7 @@ message Item {
     optional int32 mythic_salvage_cost = 4; // mythicDustCost
   }
   optional string id = 1; // the id of the object
-  optional Rarity.Enum rarity = 2; // rarity
+  optional string rarity = 2; // rarity
   repeated string allowed_factions = 3; // allowedFactions
   optional string equipment_type = 4; // itemType
   repeated Level levels = 5; // levels
@@ -242,9 +195,9 @@ message Unit {
     optional string bottom_row_damage = 6;  // upgrades[5]
   }
   optional string id = 1; // the id of the unit
-  optional Rarity.Enum base_rarity = 2; // BaseRarity
-  optional Faction.Enum faction_id = 3; // FactionId
-  optional Alliance.Enum alliance = 4; // GrandAllianceId
+  optional string base_rarity = 2; // BaseRarity
+  optional string faction_id = 3; // FactionId
+  optional string alliance = 4; // GrandAllianceId
   optional int32 movement = 5; // Movement
   repeated string active_abilities = 6; // activeAbilities
   // eligibilityRequirements
@@ -262,6 +215,8 @@ message Unit {
   // upgradesStatIncrease
   optional Attack melee_attack = 13; // weapons[0]
   optional Attack ranged_attack = 14; // weapons[1]
+  repeated string activeAbilities = 20;
+  repeated string passiveAbilities = 21;
 }
 
 message Units {
@@ -270,7 +225,6 @@ message Units {
     optional int32 pierce_ratio = 2; // PiercingRatio
     repeated string traits = 3; // traits - this should be an enum
   }
-  // abilities
   // abilityPowerCurve
   // abilityPowerModifiers
   // abilityUpgradeCosts (gold and badges)
@@ -303,7 +257,7 @@ message Upgrades {
     optional string id = 1; // id of the object
     optional int32 gold = 2; // gold (cost to apply?)
     optional string name = 3; // name
-    optional Rarity.Enum rarity = 4; // rarity
+    optional string rarity = 4; // rarity
     optional string stat_type = 5; // statType
     optional Recipe recipe = 6; // crafting
   }

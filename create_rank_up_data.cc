@@ -26,8 +26,6 @@ constexpr absl::string_view kRanks[] = {
 // Returns an error status if the creation fails.
 absl::Status CreateRankUpData(const absl::string_view path,
                               const GameConfig& game_config) {
-  std::cout << "writing rank-up data to " << path << "\n";
-
   std::ofstream out(std::string(path).c_str());
 
   out << "{";

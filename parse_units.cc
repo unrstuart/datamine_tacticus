@@ -8,7 +8,6 @@
 #include "absl/strings/str_replace.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
-#include "parse_enum.h"
 
 namespace dataminer {
 
@@ -74,9 +73,9 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
     }
   }
 
-  unit.set_base_rarity(ParseRarity(root["BaseRarity"].asString()));
-  unit.set_faction_id(ParseFaction(root["FactionId"].asString()));
-  unit.set_alliance(ParseAlliance(root["GrandAllianceId"].asString()));
+  unit.set_base_rarity(root["BaseRarity"].asString());
+  unit.set_faction_id(root["FactionId"].asString());
+  unit.set_alliance(root["GrandAllianceId"].asString());
   unit.set_movement(root["Movement"].asInt());
   for (const Json::Value& ability : root["activeAbilities"]) {
     if (!ability.isString()) {
@@ -85,13 +84,77 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
     }
     unit.add_active_abilities(ability.asString());
   }
+  for (const Json::Value& trait : root["traits"]) {
+    if (!trait.isString()) {
+      return absl::InvalidArgumentError(
+          absl::StrCat("Trait is not a string for unit: ", id));
+    }
+    if (trait.asString() == "Hero") continue;
+    LOG(ERROR) << "trait for unit " << id << ": " << trait.asString();
+    unit.add_traits(trait.asString());
+  }
   for (const Json::Value& slot : root["itemSlots"]) {
     if (!slot.isString()) {
       return absl::InvalidArgumentError(
           absl::StrCat("Item slot is not a string for unit: ", id));
     }
-    // unit.add_item_slots(slot.asString());
+    unit.add_equipment_slots(slot.asString());
   }
+  if (!root["stats"].isObject()) {
+    return absl::InvalidArgumentError(
+        absl::StrCat("'stats' is not an object for unit: ", id));
+  }
+  for (const absl::string_view field : {"Health", "Damage", "FixedArmor"}) {
+    if (!root["stats"].isMember(field)) {
+      return absl::InvalidArgumentError(
+          absl::StrCat("'stats.'", field, "' is missing for unit: ", id));
+    }
+    if (!root["stats"][field].isInt()) {
+      return absl::InvalidArgumentError(absl::StrCat(
+          "'stats.'", field, "' is not an integer for unit: ", id));
+    }
+  }
+  unit.mutable_stats()->set_health(root["stats"]["Health"].asInt());
+  unit.mutable_stats()->set_damage(root["stats"]["Damage"].asInt());
+  unit.mutable_stats()->set_armor(root["stats"]["FixedArmor"].asInt());
+
+  if (!root.isMember("weapons") || !root["weapons"].isArray() ||
+      root["weapons"].size() < 1) {
+    // If no weapons are defined, we assume the unit has no weapons.
+    return absl::InvalidArgumentError(
+        absl::StrCat("Missing or invalid 'weapons' for unit: ", id));
+  }
+  const Json::Value& melee = root["weapons"][0];
+  if (!melee.isMember("DamageProfile") || !melee.isMember("hits") ||
+      !melee["DamageProfile"].isString() || !melee["hits"].isInt()) {
+    return absl::InvalidArgumentError(
+        absl::StrCat("Melee weapon for unit '", id,
+                     "' is missing 'DamageProfile' or 'hits'."));
+  }
+  unit.mutable_melee_attack()->set_damage_type(
+      melee["DamageProfile"].asString());
+  unit.mutable_melee_attack()->set_hits(melee["hits"].asInt());
+  if (root["weapons"].size() > 1) {
+    const Json::Value& ranged = root["weapons"][1];
+    if (!ranged.isMember("DamageProfile") || !ranged.isMember("hits") ||
+        !ranged.isMember("Range") || !ranged["DamageProfile"].isString() ||
+        !ranged["hits"].isInt() || !ranged["Range"].isInt()) {
+      return absl::InvalidArgumentError(
+          absl::StrCat("Ranged weapon for unit '", id,
+                       "' is missing 'DamageProfile', 'hits' or 'Range'."));
+    }
+    unit.mutable_ranged_attack()->set_damage_type(
+        ranged["DamageProfile"].asString());
+    unit.mutable_ranged_attack()->set_hits(ranged["hits"].asInt());
+    unit.mutable_ranged_attack()->set_range(ranged["Range"].asInt());
+  }
+  for (const Json::Value& weapon : root["weapons"]) {
+    if (!weapon.isObject()) {
+      return absl::InvalidArgumentError(
+          absl::StrCat("Weapon is not an object for unit: ", id));
+    }
+  }
+
   unit.set_name(root["name"].asString());
   unit.set_id(id);
 

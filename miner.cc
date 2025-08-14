@@ -8,6 +8,7 @@
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
+#include "create_character_data.h"
 #include "create_rank_up_data.h"
 #include "create_recipe_data.h"
 #include "libjson/json/reader.h"
@@ -27,6 +28,8 @@ ABSL_FLAG(std::string, recipe_data, "",
           "If not empty, writes all upgrade recipes to the specified file.");
 ABSL_FLAG(std::string, rank_up_data, "",
           "If not empty, writes all rank-up recipes to the specified file.");
+ABSL_FLAG(std::string, character_data, "",
+          "If not empty, writes all character data to the specified file.");
 
 namespace dataminer {
 namespace {
@@ -307,17 +310,29 @@ void Main() {
 
   const std::string recipe_data_file = absl::GetFlag(FLAGS_recipe_data);
   if (!recipe_data_file.empty()) {
+    LOG(INFO) << "Writing recipe data to: " << recipe_data_file;
     if (const absl::Status status = CreateRecipeData(recipe_data_file, config);
         !status.ok()) {
-      LOG(ERROR) << "Error adjusting recipe data: " << status.message() << "\n";
+      LOG(ERROR) << "Error adjusting recipe data: " << status.message();
     }
   }
 
   const std::string rank_up_data_file = absl::GetFlag(FLAGS_rank_up_data);
   if (!rank_up_data_file.empty()) {
+    LOG(INFO) << "Writing rank up data to: " << rank_up_data_file;
     if (const absl::Status status = CreateRankUpData(rank_up_data_file, config);
         !status.ok()) {
-      LOG(ERROR) << "Error creating rank up data: " << status.message() << "\n";
+      LOG(ERROR) << "Error creating rank up data: " << status.message();
+    }
+  }
+
+  const std::string character_data_file = absl::GetFlag(FLAGS_character_data);
+  if (!character_data_file.empty()) {
+    LOG(INFO) << "Writing character data to: " << character_data_file;
+    if (const absl::Status status =
+            CreateCharacterData(character_data_file, config);
+        !status.ok()) {
+      LOG(ERROR) << "Error creating character data: " << status.message();
     }
   }
 }

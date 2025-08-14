@@ -20,34 +20,12 @@ std::string ConvertStat(const absl::string_view stat_type) {
   return "unknown";
 }
 
-std::string ConvertRarity(const Rarity::Enum rarity) {
-  switch (rarity) {
-    case Rarity::COMMON:
-      return "Common";
-    case Rarity::UNCOMMON:
-      return "Uncommon";
-    case Rarity::RARE:
-      return "Rare";
-    case Rarity::EPIC:
-      return "Epic";
-    case Rarity::LEGENDARY:
-      return "Legendary";
-    case Rarity::MYTHIC:
-      return "Mythic";
-    default:
-      std::cerr << "Unknown rarity: " << rarity << "\n";
-      return "Unknown";
-  }
-}
-
 }  // namespace
 
 // Creates the recipe data in the provided JSON root.
 // Returns an error status if the creation fails.
 absl::Status CreateRecipeData(const absl::string_view path,
                               const GameConfig& game_config) {
-  std::cout << "writing recipe data to " << path << "\n";
-
   std::ofstream out(std::string(path).c_str());
 
   out << "{";
@@ -59,7 +37,7 @@ absl::Status CreateRecipeData(const absl::string_view path,
     first = false;
     out << "    \"" << recipe.id() << "\": {\n";
     out << "        \"material\": \"" << recipe.name() << "\",\n";
-    out << "        \"rarity\": \"" << ConvertRarity(recipe.rarity()) << "\",\n";
+    out << "        \"rarity\": \"" << recipe.rarity() << "\",\n";
     out << "        \"stat\": \"" << ConvertStat(recipe.stat_type()) << "\",\n";
     out << "        \"icon\": \"snowprint/" << recipe.id() << ".png\",\n";
     out << "        \"craftable\": "
