@@ -63,10 +63,10 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
                                const Json::Value& root) {
   Unit unit;
 
-  const auto fields = {"BaseRarity", "FactionId",       "GrandAllianceId",
-                       "Movement",   "activeAbilities", "itemSlots",
-                       "name",       "stats",           "traits",
-                       "upgrades",   "weapons"};
+  const auto fields = {
+      "BaseRarity",      "FactionId",        "GrandAllianceId", "Movement",
+      "activeAbilities", "passiveAbilities", "itemSlots",       "name",
+      "stats",           "traits",           "upgrades",        "weapons"};
   for (const auto& field : fields) {
     if (!root.isMember(field)) {
       return absl::InvalidArgumentError(
@@ -82,6 +82,11 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
     RET_CHECK(ability.isString()).SetCode(absl::StatusCode::kInvalidArgument)
         << id;
     unit.add_active_abilities(ability.asString());
+  }
+  for (const Json::Value& ability : root["passiveAbilities"]) {
+    RET_CHECK(ability.isString()).SetCode(absl::StatusCode::kInvalidArgument)
+        << id;
+    unit.add_passive_abilities(ability.asString());
   }
   for (const Json::Value& trait : root["traits"]) {
     RET_CHECK(trait.isString()) << id;
@@ -150,6 +155,7 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
 absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
   RET_CHECK(root.isObject()) << "Parsed JSON is not an object.";
   RET_CHECK(root.isMember("lineup")) << "Missing 'lineup' in JSON.";
+  RET_CHECK(root.isMember("abilities")) << "Missing 'abilities' in JSON.";
   RET_CHECK(root.isMember("damageProfileModifiers"))
       << "Missing 'damageProfileModifiers' in JSON.";
   RET_CHECK(root.isMember("xpLevels")) << "Missing 'xpLevels' in JSON.";
@@ -170,6 +176,30 @@ absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
   RET_CHECK(root["xpLevels"].isArray()) << "'xpLevels' is not an array.";
   for (const Json::Value& xp_level : root["xpLevels"]) {
     units.add_xp_levels(xp_level.asInt());
+  }
+
+  RET_CHECK(root["abilities"].isObject()) << "'abilities' is not an object.";
+  for (const absl::string_view id : root["abilities"].getMemberNames()) {
+    Json::Value ability = root["abilities"].get(id, {});
+    if (!ability.isObject() || !ability.isMember("constants")) {
+      // skip for now.
+      continue;
+    }
+    Units::Ability& new_ability = *units.add_abilities();
+    new_ability.set_id(id);
+
+    Json::Value constants = ability["constants"];
+    RET_CHECK(constants.isObject())
+        << "Ability constants for '" << id << "' must be an object.";
+    for (const absl::string_view field : constants.getMemberNames()) {
+      if (absl::StartsWith(field, "damageProfile")) {
+        Json::Value damage_profile = constants[field];
+        RET_CHECK(damage_profile.isString())
+            << "Damage profile for ability '" << id << "' field '" << field
+            << "' is not a string.";
+        new_ability.add_damage_types(damage_profile.asString());
+      }
+    }
   }
   return units;
 }

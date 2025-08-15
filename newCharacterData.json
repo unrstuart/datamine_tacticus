@@ -21,7 +21,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["ActOfFaith"]
+        "Traits": ["ActOfFaith"],
+        "Active Ability": ["Flame"]
     },
     {
         "id": "adeptCelestine",
@@ -87,7 +88,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["ActOfFaith", "BigTarget", "Explodes", "Mechanical"]
+        "Traits": ["ActOfFaith", "BigTarget", "Explodes", "Mechanical"],
+        "Active Ability": ["Blast"],
+        "Passive Ability": ["Power"]
     },
     {
         "id": "adeptRetributor",
@@ -111,7 +114,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["ActOfFaith", "HeavyWeapon"]
+        "Traits": ["ActOfFaith", "HeavyWeapon"],
+        "Active Ability": ["Flame"],
+        "Passive Ability": ["Flame"]
     },
     {
         "id": "admecDestroyer",
@@ -135,7 +140,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Mechanical", "HeavyWeapon", "Overwatch", "Vehicle"]
+        "Traits": ["Mechanical", "HeavyWeapon", "Overwatch", "Vehicle"],
+        "Active Ability": ["Physical"]
     },
     {
         "id": "admecDominus",
@@ -159,7 +165,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Mechanical", "Mechanic"]
+        "Traits": ["Mechanical", "Mechanic"],
+        "Active Ability": ["Toxic"]
     },
     {
         "id": "admecManipulus",
@@ -228,7 +235,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Mechanical", "Camouflage", "Infiltrate", "Unstoppable"]
+        "Traits": ["Mechanical", "Camouflage", "Infiltrate", "Unstoppable"],
+        "Active Ability": ["DirectDamage"],
+        "Passive Ability": ["Energy"]
     },
     {
         "id": "astraBullgryn",
@@ -249,7 +258,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Defensive",
-        "Traits": ["BigTarget"]
+        "Traits": ["BigTarget"],
+        "Active Ability": ["Blast"]
     },
     {
         "id": "astraCreed",
@@ -294,7 +304,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["SuppressiveFire", "IndirectFire"]
+        "Traits": ["SuppressiveFire", "IndirectFire"],
+        "Active Ability": ["Blast"]
     },
     {
         "id": "astraPrimarisPsy",
@@ -318,7 +329,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Psyker"]
+        "Traits": ["Psyker"],
+        "Active Ability": ["Psychic"]
     },
     {
         "id": "astraYarrick",
@@ -366,7 +378,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["DeathToTheFalseEmperor", "Resilient", "TerminatorArmour"]
+        "Traits": ["DeathToTheFalseEmperor", "Resilient", "TerminatorArmour"],
+        "Active Ability": ["Piercing", "Power"]
     },
     {
         "id": "blackHaarken",
@@ -387,7 +400,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["DeathToTheFalseEmperor", "Flying", "Terrifying"]
+        "Traits": ["DeathToTheFalseEmperor", "Flying", "Terrifying"],
+        "Active Ability": ["Piercing"]
     },
     {
         "id": "blackObliterator",
@@ -411,7 +425,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["DeathToTheFalseEmperor", "BigTarget", "Daemon", "SuppressiveFire"]
+        "Traits": ["DeathToTheFalseEmperor", "BigTarget", "Daemon", "SuppressiveFire"],
+        "Active Ability": ["HeavyRound"]
     },
     {
         "id": "blackPossession",
@@ -456,7 +471,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["DeathToTheFalseEmperor", "TeleportStrike", "TerminatorArmour"]
+        "Traits": ["DeathToTheFalseEmperor", "TeleportStrike", "TerminatorArmour"],
+        "Active Ability": ["Power"]
     },
     {
         "id": "bloodDante",
@@ -477,7 +493,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["TeleportStrike", "FinalJustice", "Flying", "RapidAssault", "Terrifying"]
+        "Traits": ["TeleportStrike", "FinalJustice", "Flying", "RapidAssault", "Terrifying"],
+        "Active Ability": ["Melta"]
     },
     {
         "id": "bloodDeathCompany",
@@ -501,7 +518,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["RapidAssault", "Resilient", "Unstoppable"]
+        "Traits": ["RapidAssault", "Resilient", "Unstoppable"],
+        "Passive Ability": ["Bolter"]
     },
     {
         "id": "bloodIntercessor",
@@ -522,7 +540,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["TeleportStrike", "Flying", "RapidAssault"]
+        "Traits": ["TeleportStrike", "Flying", "RapidAssault"],
+        "Active Ability": ["Physical", "Power"]
     },
     {
         "id": "bloodMephiston",
@@ -546,7 +565,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Psyker", "RapidAssault", "Terrifying"]
+        "Traits": ["Psyker", "RapidAssault", "Terrifying"],
+        "Passive Ability": ["Psychic"]
     },
     {
         "id": "bloodSanguinary",
@@ -588,7 +608,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Parry", "Terrifying"]
+        "Traits": ["Parry", "Terrifying"],
+        "Active Ability": ["DirectDamage", "Power"]
     },
     {
         "id": "custoBladeChampion",
@@ -609,7 +630,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["MartialKatah", "BeastSnagga", "RapidAssault", "Parry", "Resilient"]
+        "Traits": ["MartialKatah", "BeastSnagga", "RapidAssault", "Parry", "Resilient"],
+        "Active Ability": ["Eviscerate"],
+        "Passive Ability": ["Piercing", "Power"]
     },
     {
         "id": "custoTrajann",
@@ -630,7 +653,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["MartialKatah", "CrushingStrike", "Resilient"]
+        "Traits": ["MartialKatah", "CrushingStrike", "Resilient"],
+        "Active Ability": ["Bolter"]
     },
     {
         "id": "custoVexilusPraetor",
@@ -651,7 +675,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["MartialKatah", "BigTarget", "Resilient"]
+        "Traits": ["MartialKatah", "BigTarget", "Resilient"],
+        "Active Ability": ["Physical"]
     },
     {
         "id": "darkaAsmodai",
@@ -696,7 +721,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["FinalJustice", "Overwatch"]
+        "Traits": ["FinalJustice", "Overwatch"],
+        "Active Ability": ["Bolter", "DirectDamage"]
     },
     {
         "id": "darkaCompanion",
@@ -717,7 +743,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Camouflage", "Parry"]
+        "Traits": ["Camouflage", "Parry"],
+        "Active Ability": ["Power"]
     },
     {
         "id": "darkaHellblaster",
@@ -741,7 +768,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["FinalJustice", "Overwatch", "HeavyWeapon"]
+        "Traits": ["FinalJustice", "Overwatch", "HeavyWeapon"],
+        "Active Ability": ["Plasma"],
+        "Passive Ability": ["Plasma"]
     },
     {
         "id": "darkaTerminator",
@@ -762,7 +791,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["TeleportStrike", "CrushingStrike", "HeavyWeapon", "TerminatorArmour"]
+        "Traits": ["TeleportStrike", "CrushingStrike", "HeavyWeapon", "TerminatorArmour"],
+        "Active Ability": ["Plasma"]
     },
     {
         "id": "deathBlightbringer",
@@ -804,7 +834,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["ContagionsOfNurgle", "Resilient", "TerminatorArmour"]
+        "Traits": ["ContagionsOfNurgle", "Resilient", "TerminatorArmour"],
+        "Active Ability": ["Power"],
+        "Passive Ability": ["Power"]
     },
     {
         "id": "deathPutrifier",
@@ -825,7 +857,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["ContagionsOfNurgle", "Resilient", "Explodes"]
+        "Traits": ["ContagionsOfNurgle", "Resilient", "Explodes"],
+        "Active Ability": ["Toxic"]
     },
     {
         "id": "deathRotbone",
@@ -870,7 +903,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["ContagionsOfNurgle", "Resilient", "Psyker", "TerminatorArmour"]
+        "Traits": ["ContagionsOfNurgle", "Resilient", "Psyker", "TerminatorArmour"],
+        "Active Ability": ["Psychic"],
+        "Passive Ability": ["DirectDamage"]
     },
     {
         "id": "eldarAutarch",
@@ -891,7 +926,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["Flying", "TeleportStrike"]
+        "Traits": ["Flying", "TeleportStrike"],
+        "Active Ability": ["Piercing"]
     },
     {
         "id": "eldarFarseer",
@@ -936,7 +972,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["Infiltrate"]
+        "Traits": ["Infiltrate"],
+        "Active Ability": ["Piercing"]
     },
     {
         "id": "eldarMauganRa",
@@ -984,7 +1021,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Crit",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["HeavyWeapon", "Overwatch"]
+        "Traits": ["HeavyWeapon", "Overwatch"],
+        "Passive Ability": ["Piercing"]
     },
     {
         "id": "emperLucius",
@@ -1005,7 +1043,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["ThrillSeekers", "Parry"]
+        "Traits": ["ThrillSeekers", "Parry"],
+        "Active Ability": ["Eviscerate"]
     },
     {
         "id": "emperNoiseMarine",
@@ -1029,7 +1068,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["ThrillSeekers", "HeavyWeapon", "SuppressiveFire"]
+        "Traits": ["ThrillSeekers", "HeavyWeapon", "SuppressiveFire"],
+        "Active Ability": ["Blast"]
     },
     {
         "id": "genesBiophagus",
@@ -1074,7 +1114,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Crit",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Ambush", "BeastSnagga"]
+        "Traits": ["Ambush", "BeastSnagga"],
+        "Active Ability": ["Projectile"],
+        "Passive Ability": ["Projectile"]
     },
     {
         "id": "genesMagus",
@@ -1119,7 +1161,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Infiltrate", "Synapse", "Terrifying", "Unstoppable"]
+        "Traits": ["Infiltrate", "Synapse", "Terrifying", "Unstoppable"],
+        "Active Ability": ["Psychic"]
     },
     {
         "id": "genesPrimus",
@@ -1143,7 +1186,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Ambush"]
+        "Traits": ["Ambush"],
+        "Passive Ability": ["Blast"]
     },
     {
         "id": "necroDestroyer",
@@ -1167,7 +1211,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Overwatch", "LivingMetal", "Mechanical"]
+        "Traits": ["Overwatch", "LivingMetal", "Mechanical"],
+        "Active Ability": ["Gauss"]
     },
     {
         "id": "necroOverlord",
@@ -1191,7 +1236,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["LivingMetal", "Mechanical"]
+        "Traits": ["LivingMetal", "Mechanical"],
+        "Passive Ability": ["Energy"]
     },
     {
         "id": "necroPlasmancer",
@@ -1215,7 +1261,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["LivingMetal", "Mechanical", "Flying"]
+        "Traits": ["LivingMetal", "Mechanical", "Flying"],
+        "Active Ability": ["DirectDamage"],
+        "Passive Ability": ["DirectDamage"]
     },
     {
         "id": "necroSpyder",
@@ -1305,7 +1353,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["GetStuckIn", "BigTarget", "Explodes", "Mechanical"]
+        "Traits": ["GetStuckIn", "BigTarget", "Explodes", "Mechanical"],
+        "Active Ability": ["Projectile"]
     },
     {
         "id": "orksNob",
@@ -1326,7 +1375,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["GetStuckIn", "BeastSnagga", "Unstoppable"]
+        "Traits": ["GetStuckIn", "BeastSnagga", "Unstoppable"],
+        "Active Ability": ["DirectDamage"]
     },
     {
         "id": "orksRuntherd",
@@ -1347,7 +1397,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["GetStuckIn", "BeastSnagga"]
+        "Traits": ["GetStuckIn", "BeastSnagga"],
+        "Passive Ability": ["Physical"]
     },
     {
         "id": "orksWarboss",
@@ -1371,7 +1422,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["GetStuckIn", "BigTarget", "CrushingStrike", "FinalJustice", "Mechanical"]
+        "Traits": ["GetStuckIn", "BigTarget", "CrushingStrike", "FinalJustice", "Mechanical"],
+        "Passive Ability": ["Projectile"]
     },
     {
         "id": "spaceBlackmane",
@@ -1413,7 +1465,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Infiltrate", "Terrifying"]
+        "Traits": ["Infiltrate", "Terrifying"],
+        "Active Ability": ["Physical"]
     },
     {
         "id": "spaceRockfist",
@@ -1434,7 +1487,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["Resilient", "TeleportStrike", "TerminatorArmour", "Unstoppable"]
+        "Traits": ["Resilient", "TeleportStrike", "TerminatorArmour", "Unstoppable"],
+        "Active Ability": ["Power"]
     },
     {
         "id": "spaceStormcaller",
@@ -1458,7 +1512,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["Psyker", "TerminatorArmour", "Unstoppable"]
+        "Traits": ["Psyker", "TerminatorArmour", "Unstoppable"],
+        "Active Ability": ["Psychic"]
     },
     {
         "id": "spaceWulfen",
@@ -1479,7 +1534,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["FinalJustice", "Unstoppable"]
+        "Traits": ["FinalJustice", "Unstoppable"],
+        "Active Ability": ["Piercing"],
+        "Passive Ability": ["Power"]
     },
     {
         "id": "tauAunShi",
@@ -1524,7 +1581,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["CloseCombatWeakness", "BigTarget", "Flying", "Mechanical"]
+        "Traits": ["CloseCombatWeakness", "BigTarget", "Flying", "Mechanical"],
+        "Passive Ability": ["Particle"]
     },
     {
         "id": "tauDarkstrider",
@@ -1572,7 +1630,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["CloseCombatWeakness", "Camouflage"]
+        "Traits": ["CloseCombatWeakness", "Camouflage"],
+        "Active Ability": ["HeavyRound"]
     },
     {
         "id": "tauShadowsun",
@@ -1596,7 +1655,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["CloseCombatWeakness", "Camouflage", "Flying", "Infiltrate"]
+        "Traits": ["CloseCombatWeakness", "Camouflage", "Flying", "Infiltrate"],
+        "Active Ability": ["Blast"]
     },
     {
         "id": "templAggressor",
@@ -1620,7 +1680,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["CrushingStrike", "MkXGravis", "SuppressiveFire"]
+        "Traits": ["CrushingStrike", "MkXGravis", "SuppressiveFire"],
+        "Active Ability": ["Blast"],
+        "Passive Ability": ["Bolter"]
     },
     {
         "id": "templAncient",
@@ -1662,7 +1724,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["FinalJustice", "Parry", "RapidAssault"]
+        "Traits": ["FinalJustice", "Parry", "RapidAssault"],
+        "Passive Ability": ["Power"]
     },
     {
         "id": "templHelbrecht",
@@ -1707,7 +1770,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Parry", "RapidAssault"]
+        "Traits": ["Parry", "RapidAssault"],
+        "Active Ability": ["Power"],
+        "Passive Ability": ["Power"]
     },
     {
         "id": "thousAhriman",
@@ -1731,7 +1796,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["WeaverOfFate", "Flying", "Psyker"]
+        "Traits": ["WeaverOfFate", "Flying", "Psyker"],
+        "Active Ability": ["Psychic"]
     },
     {
         "id": "thousInfernalMaster",
@@ -1803,7 +1869,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["WeaverOfFate", "SuppressiveFire", "TerminatorArmour"]
+        "Traits": ["WeaverOfFate", "SuppressiveFire", "TerminatorArmour"],
+        "Active Ability": ["HeavyRound"]
     },
     {
         "id": "thousTzaangor",
@@ -1827,7 +1894,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["WeaverOfFate", "Flying"]
+        "Traits": ["WeaverOfFate", "Flying"],
+        "Active Ability": ["Psychic"]
     },
     {
         "id": "tyranDeathleaper",
@@ -1848,7 +1916,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Camouflage", "TeleportStrike", "Infiltrate", "Terrifying"]
+        "Traits": ["Camouflage", "TeleportStrike", "Infiltrate", "Terrifying"],
+        "Active Ability": ["DirectDamage"]
     },
     {
         "id": "tyranNeurothrope",
@@ -1872,7 +1941,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["CloseCombatWeakness", "Flying", "Psyker", "ShadowInTheWarp", "Synapse"]
+        "Traits": ["CloseCombatWeakness", "Flying", "Psyker", "ShadowInTheWarp", "Synapse"],
+        "Active Ability": ["Psychic"]
     },
     {
         "id": "tyranParasite",
@@ -1914,7 +1984,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Defensive",
-        "Traits": ["BigTarget", "CrushingStrike"]
+        "Traits": ["BigTarget", "CrushingStrike"],
+        "Active Ability": ["Physical", "Piercing"]
     },
     {
         "id": "tyranWingedPrime",
@@ -1977,7 +2048,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["MkXGravis", "FinalJustice"]
+        "Traits": ["MkXGravis", "FinalJustice"],
+        "Active Ability": ["Bolter"]
     },
     {
         "id": "ultraEliminatorSgt",
@@ -2001,7 +2073,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Overwatch", "HeavyWeapon", "Infiltrate"]
+        "Traits": ["Overwatch", "HeavyWeapon", "Infiltrate"],
+        "Active Ability": ["HeavyRound"],
+        "Passive Ability": ["Bolter"]
     },
     {
         "id": "ultraInceptorSgt",
@@ -2046,7 +2120,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["Psyker"]
+        "Traits": ["Psyker"],
+        "Active Ability": ["Psychic"]
     },
     {
         "id": "ultraTitus",
@@ -2067,7 +2142,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["BeastSnagga", "FinalJustice"]
+        "Traits": ["BeastSnagga", "FinalJustice"],
+        "Active Ability": ["Bolter", "Chain"]
     },
     {
         "id": "worldEightbound",
@@ -2088,7 +2164,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["BlessingsOfKhorne", "Daemon", "Resilient", "Terrifying", "Unstoppable"]
+        "Traits": ["BlessingsOfKhorne", "Daemon", "Resilient", "Terrifying", "Unstoppable"],
+        "Active Ability": ["Eviscerate"]
     },
     {
         "id": "worldExecutions",
@@ -2109,7 +2186,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Crit",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["BlessingsOfKhorne", "RapidAssault"]
+        "Traits": ["BlessingsOfKhorne", "RapidAssault"],
+        "Active Ability": ["Piercing"]
     },
     {
         "id": "worldJakhal",
@@ -2130,7 +2208,8 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Defensive",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["BlessingsOfKhorne", "Resilient"]
+        "Traits": ["BlessingsOfKhorne", "Resilient"],
+        "Active Ability": ["Physical"]
     },
     {
         "id": "worldKharn",
@@ -2151,7 +2230,9 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Crit",
-        "Traits": ["BlessingsOfKhorne", "RapidAssault", "FinalJustice"]
+        "Traits": ["BlessingsOfKhorne", "RapidAssault", "FinalJustice"],
+        "Active Ability": ["Eviscerate", "Piercing", "Plasma"],
+        "Passive Ability": ["Eviscerate"]
     },
     {
         "id": "worldTerminator",
@@ -2172,6 +2253,7 @@
         "Equipment1": "I_Crit",
         "Equipment2": "I_Block",
         "Equipment3": "I_Booster_Block",
-        "Traits": ["BlessingsOfKhorne", "TeleportStrike", "RapidAssault", "TerminatorArmour", "Unstoppable"]
+        "Traits": ["BlessingsOfKhorne", "TeleportStrike", "RapidAssault", "TerminatorArmour", "Unstoppable"],
+        "Active Ability": ["Chain"]
     }
 ]

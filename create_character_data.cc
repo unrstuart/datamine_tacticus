@@ -7,6 +7,48 @@
 
 namespace dataminer {
 
+namespace {
+
+const Units::Ability* FindAbility(const GameConfig& game_config,
+                                  const absl::string_view name) {
+  for (const Units::Ability& ability :
+       game_config.client_game_config().units().abilities()) {
+    if (ability.id() == name) {
+      return &ability;
+    }
+  }
+  LOG(ERROR) << "Ability not found: " << name;
+  return nullptr;
+}
+
+void EmitAbility(std::ofstream& out, const GameConfig& game_config,
+                 const google::protobuf::RepeatedPtrField<std::string>& abilities,
+                 const absl::string_view label) {
+  std::set<absl::string_view> damage_types;
+  for (const absl::string_view name : abilities) {
+    const Units::Ability* ability = FindAbility(game_config, name);
+    if (ability == nullptr) continue;
+    for (const absl::string_view damage_type : ability->damage_types()) {
+      if (!damage_type.empty()) {
+        damage_types.insert(damage_type);
+      }
+    }
+  }
+  if (!damage_types.empty()) {
+    out << ",\n";
+    out << "        \"" << label << "\": [";
+    bool first = true;
+    for (const absl::string_view damage_type : damage_types) {
+      if (!first) out << ", ";
+      first = false;
+      out << "\"" << damage_type << "\"";
+    }
+    out << "]";
+  }
+}
+
+}  // namespace
+
 // Creates the character data in the provided JSON root.
 // Returns an error status if the creation fails.
 absl::Status CreateCharacterData(const absl::string_view path,
@@ -57,12 +99,10 @@ absl::Status CreateCharacterData(const absl::string_view path,
       first_trait = false;
       out << "\"" << trait << "\"";
     }
-    out << "]\n";
-    // Number
-    // ForcedSummons
-    // RequiredInCampaign
-    // Icon
-    out << "    }";
+    out << "]";
+    EmitAbility(out, game_config, unit.active_abilities(), "Active Ability");
+    EmitAbility(out, game_config, unit.passive_abilities(), "Passive Ability");
+    out << "\n    }";
   }
   out << "\n]\n";
 
