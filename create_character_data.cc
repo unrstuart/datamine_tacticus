@@ -1,7 +1,12 @@
+#include <sys/stat.h>
+
+#include <cstdio>
 #include <fstream>
 
 #include "absl/log/log.h"
 #include "absl/status/status.h"
+#include "absl/strings/ascii.h"
+#include "absl/strings/str_cat.h"
 #include "absl/strings/string_view.h"
 #include "miner.pb.h"
 
@@ -17,13 +22,13 @@ const Units::Ability* FindAbility(const GameConfig& game_config,
       return &ability;
     }
   }
-  LOG(ERROR) << "Ability not found: " << name;
   return nullptr;
 }
 
-void EmitAbility(std::ofstream& out, const GameConfig& game_config,
-                 const google::protobuf::RepeatedPtrField<std::string>& abilities,
-                 const absl::string_view label) {
+void EmitAbility(
+    std::ofstream& out, const GameConfig& game_config,
+    const google::protobuf::RepeatedPtrField<std::string>& abilities,
+    const absl::string_view label) {
   std::set<absl::string_view> damage_types;
   for (const absl::string_view name : abilities) {
     const Units::Ability* ability = FindAbility(game_config, name);
@@ -45,6 +50,74 @@ void EmitAbility(std::ofstream& out, const GameConfig& game_config,
     }
     out << "]";
   }
+}
+
+int GetCharacterNumber(const absl::string_view id,
+                       const GameConfig& game_config) {
+  int index = 0;
+  for (const Avatars::Avatar& avatar :
+       game_config.client_game_config().avatars().avatars()) {
+    if (avatar.unit_id() == id) return index;
+    ++index;
+  }
+  LOG(ERROR) << "Couldn't find avatar for {\"" << id << "\", \"\"}";
+  return -1;
+}
+
+std::string GetIconPath(const absl::string_view id,
+                        const GameConfig& game_config) {
+  constexpr absl::string_view img_prefix = "ui_image_portrait_";
+  constexpr absl::string_view img_suffix = ".png";
+  std::string img = "";
+  for (const Avatars::Avatar& avatar :
+       game_config.client_game_config().avatars().avatars()) {
+    if (avatar.unit_id() == id) {
+      img = avatar.id();
+      break;
+    }
+  }
+
+  img = absl::StrCat(img_prefix, img, img_suffix);
+  const std::string full_path = absl::StrCat("assets/characters/", img);
+  struct stat sbuf;
+  const int res = stat(full_path.c_str(), &sbuf);
+  if (res != 0) {
+    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \"\"}";
+  }
+
+  return absl::StrCat("snowprint_assets/characters/", img);
+}
+
+// TODO: refactor this with GetIconPath and GetCharacterNumber.
+std::string GetRoundIconPath(const absl::string_view id,
+                             const GameConfig& game_config) {
+  const std::map<std::string, std::string> kOverrides = {
+      {"spaceStormcaller",
+       R"(snowprint_assets/characters/ui_image_RoundPortrait_space_stormcaller_01.png)"},
+  };
+  if (const auto it = kOverrides.find(std::string(id)); it != kOverrides.end()) {
+    return it->second;
+  }
+  constexpr absl::string_view img_prefix = "ui_image_RoundPortrait_";
+  constexpr absl::string_view img_suffix = ".png";
+  std::string img = "";
+  for (const Avatars::Avatar& avatar :
+       game_config.client_game_config().avatars().avatars()) {
+    if (avatar.unit_id() == id) {
+      img = avatar.id();
+      break;
+    }
+  }
+
+  img = absl::StrCat(img_prefix, img, img_suffix);
+  const std::string full_path = absl::StrCat("assets/characters/", img);
+  struct stat sbuf;
+  const int res = stat(full_path.c_str(), &sbuf);
+  if (res != 0) {
+    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \"\"}";
+  }
+
+  return absl::StrCat("snowprint_assets/characters/", img);
 }
 
 }  // namespace
@@ -102,7 +175,14 @@ absl::Status CreateCharacterData(const absl::string_view path,
     out << "]";
     EmitAbility(out, game_config, unit.active_abilities(), "Active Ability");
     EmitAbility(out, game_config, unit.passive_abilities(), "Passive Ability");
-    out << "\n    }";
+    out << ",\n";
+    out << "        \"Number\": " << GetCharacterNumber(unit.id(), game_config)
+        << ",\n";
+    out << "        \"Icon\": \"" << GetIconPath(unit.id(), game_config)
+        << "\",\n";
+    out << "        \"RoundIcon\": \""
+        << GetRoundIconPath(unit.id(), game_config) << "\"\n";
+    out << "    }";
   }
   out << "\n]\n";
 

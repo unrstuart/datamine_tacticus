@@ -14,6 +14,7 @@
 #include "libjson/json/reader.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
+#include "parse_avatars.h"
 #include "parse_units.h"
 #include "parse_upgrades.h"
 
@@ -122,6 +123,12 @@ absl::StatusOr<ClientGameConfig> ParseClientGameConfig(
         absl::StrCat("Error parsing units: ", units.status().message()));
   }
   *client_config.mutable_units() = std::move(*units);
+  absl::StatusOr<Avatars> avatars = ParseAvatars(root.get("avatars", {}));
+  if (!avatars.ok()) {
+    return absl::InvalidArgumentError(
+        absl::StrCat("Error parsing avatars: ", avatars.status().message()));
+  }
+  *client_config.mutable_avatars() = std::move(*avatars);
   return client_config;
 }
 

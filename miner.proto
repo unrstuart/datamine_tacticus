@@ -269,10 +269,18 @@ message Upgrades {
   repeated Upgrade upgrades = 1; // [index]
 }
 
+message Avatars {
+  message Avatar {
+    optional string id = 1; // avatarId
+    optional string unit_id = 2; // value
+  }
+  repeated Avatar avatars = 1; // avatars
+}
+
 message ClientGameConfig {
   repeated Achievement achievements = 1;
   // skip aiUtilities
-  // skip avatars
+  optional Avatars avatars = 8; // avatars
   optional Battles battles = 2;
   // skip boardsToInclude
   // skip consumables
