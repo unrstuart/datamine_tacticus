@@ -145,9 +145,9 @@ absl::Status CreateCharacterData(const absl::string_view path,
         << "\",\n";
     out << "        \"Faction\": \"" << unit.faction_id() << "\",\n";
     out << "        \"Alliance\": \"" << unit.alliance() << "\",\n";
-    out << "        \"Health\": \"" << unit.stats().health() << "\",\n";
-    out << "        \"Damage\": \"" << unit.stats().damage() << "\",\n";
-    out << "        \"Armour\": \"" << unit.stats().armor() << "\",\n";
+    out << "        \"Health\": " << unit.stats().health() << ",\n";
+    out << "        \"Damage\": " << unit.stats().damage() << ",\n";
+    out << "        \"Armour\": " << unit.stats().armor() << ",\n";
     out << "        \"Initial rarity\": \"" << unit.base_rarity() << "\",\n";
     out << "        \"Melee Damage\": \"" << unit.melee_attack().damage_type()
         << "\",\n";
