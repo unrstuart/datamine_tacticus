@@ -37,9 +37,11 @@ absl::Status CreateRecipeData(const absl::string_view path,
     first = false;
     out << "    \"" << recipe.id() << "\": {\n";
     out << "        \"material\": \"" << recipe.name() << "\",\n";
+    out << "        \"snowprintId\": \"" << recipe.id() << "\",\n";
     out << "        \"rarity\": \"" << recipe.rarity() << "\",\n";
     out << "        \"stat\": \"" << ConvertStat(recipe.stat_type()) << "\",\n";
-    out << "        \"icon\": \"snowprint/" << recipe.id() << ".png\",\n";
+    out << "        \"icon\": \"snowprint_assets/upgrade_materials/"
+        << recipe.id() << ".png\",\n";
     out << "        \"craftable\": "
         << (recipe.has_recipe() ? "true" : "false");
     if (recipe.has_recipe()) {
