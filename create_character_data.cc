@@ -151,17 +151,17 @@ absl::Status CreateCharacterData(const absl::string_view path,
     out << "        \"Initial rarity\": \"" << unit.base_rarity() << "\",\n";
     out << "        \"Melee Damage\": \"" << unit.melee_attack().damage_type()
         << "\",\n";
-    out << "        \"Melee Hits\": \"" << unit.melee_attack().hits()
-        << "\",\n";
+    out << "        \"Melee Hits\": " << unit.melee_attack().hits()
+        << ",\n";
     if (unit.has_ranged_attack()) {
       out << "        \"Ranged Damage\": \""
           << unit.ranged_attack().damage_type() << "\",\n";
-      out << "        \"Ranged Hits\": \"" << unit.ranged_attack().hits()
-          << "\",\n";
-      out << "        \"Distance\": \"" << unit.ranged_attack().range()
-          << "\",\n";
+      out << "        \"Ranged Hits\": " << unit.ranged_attack().hits()
+          << ",\n";
+      out << "        \"Distance\": " << unit.ranged_attack().range()
+          << ",\n";
     }
-    out << "        \"Movement\": \"" << unit.movement() << "\",\n";
+    out << "        \"Movement\": " << unit.movement() << ",\n";
     out << "        \"Equipment1\": \"" << unit.equipment_slots(0) << "\",\n";
     out << "        \"Equipment2\": \"" << unit.equipment_slots(1) << "\",\n";
     out << "        \"Equipment3\": \"" << unit.equipment_slots(2) << "\",\n";
