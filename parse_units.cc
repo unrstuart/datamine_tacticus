@@ -8,6 +8,7 @@
 #include "absl/strings/str_replace.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
+#include "status_macros.h"
 
 namespace dataminer {
 
@@ -78,94 +79,67 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
   unit.set_alliance(root["GrandAllianceId"].asString());
   unit.set_movement(root["Movement"].asInt());
   for (const Json::Value& ability : root["activeAbilities"]) {
-    if (!ability.isString()) {
-      return absl::InvalidArgumentError(
-          absl::StrCat("Active ability is not a string for unit: ", id));
-    }
+    RET_CHECK(ability.isString()).SetCode(absl::StatusCode::kInvalidArgument)
+        << id;
     unit.add_active_abilities(ability.asString());
   }
   for (const Json::Value& trait : root["traits"]) {
-    if (!trait.isString()) {
-      return absl::InvalidArgumentError(
-          absl::StrCat("Trait is not a string for unit: ", id));
-    }
+    RET_CHECK(trait.isString()) << id;
     if (trait.asString() == "Hero") continue;
-    LOG(ERROR) << "trait for unit " << id << ": " << trait.asString();
     unit.add_traits(trait.asString());
   }
   for (const Json::Value& slot : root["itemSlots"]) {
-    if (!slot.isString()) {
-      return absl::InvalidArgumentError(
-          absl::StrCat("Item slot is not a string for unit: ", id));
-    }
+    RET_CHECK(slot.isString())
+        << "equipment slot for '" << id << "' is not a string.";
     unit.add_equipment_slots(slot.asString());
   }
-  if (!root["stats"].isObject()) {
-    return absl::InvalidArgumentError(
-        absl::StrCat("'stats' is not an object for unit: ", id));
-  }
+  RET_CHECK(root["stats"].isObject()) << id;
   for (const absl::string_view field : {"Health", "Damage", "FixedArmor"}) {
-    if (!root["stats"].isMember(field)) {
-      return absl::InvalidArgumentError(
-          absl::StrCat("'stats.'", field, "' is missing for unit: ", id));
-    }
-    if (!root["stats"][field].isInt()) {
-      return absl::InvalidArgumentError(absl::StrCat(
-          "'stats.'", field, "' is not an integer for unit: ", id));
-    }
+    RET_CHECK(root["stats"].isMember(field))
+        << id << " stats missing field: " << field;
+    RET_CHECK(root["stats"][field].isInt())
+        << id << " stats field '" << field << "' is not an integer.";
   }
   unit.mutable_stats()->set_health(root["stats"]["Health"].asInt());
   unit.mutable_stats()->set_damage(root["stats"]["Damage"].asInt());
   unit.mutable_stats()->set_armor(root["stats"]["FixedArmor"].asInt());
 
-  if (!root.isMember("weapons") || !root["weapons"].isArray() ||
-      root["weapons"].size() < 1) {
-    // If no weapons are defined, we assume the unit has no weapons.
-    return absl::InvalidArgumentError(
-        absl::StrCat("Missing or invalid 'weapons' for unit: ", id));
-  }
+  RET_CHECK(root.isMember("weapons") && root["weapons"].isArray() &&
+            root["weapons"].size() >= 1)
+      << "Unit '" << id << "' Missing or invalid weapons.";
   const Json::Value& melee = root["weapons"][0];
-  if (!melee.isMember("DamageProfile") || !melee.isMember("hits") ||
-      !melee["DamageProfile"].isString() || !melee["hits"].isInt()) {
-    return absl::InvalidArgumentError(
-        absl::StrCat("Melee weapon for unit '", id,
-                     "' is missing 'DamageProfile' or 'hits'."));
-  }
+  RET_CHECK(melee.isMember("DamageProfile") && melee.isMember("hits") &&
+            melee["DamageProfile"].isString() && melee["hits"].isInt())
+      << "Unit '" << id
+      << "' Melee weapon is missing 'DamageProfile' or 'hits'.";
   unit.mutable_melee_attack()->set_damage_type(
       melee["DamageProfile"].asString());
   unit.mutable_melee_attack()->set_hits(melee["hits"].asInt());
   if (root["weapons"].size() > 1) {
     const Json::Value& ranged = root["weapons"][1];
-    if (!ranged.isMember("DamageProfile") || !ranged.isMember("hits") ||
-        !ranged.isMember("Range") || !ranged["DamageProfile"].isString() ||
-        !ranged["hits"].isInt() || !ranged["Range"].isInt()) {
-      return absl::InvalidArgumentError(
-          absl::StrCat("Ranged weapon for unit '", id,
-                       "' is missing 'DamageProfile', 'hits' or 'Range'."));
-    }
+    RET_CHECK(ranged.isMember("DamageProfile") && ranged.isMember("hits") &&
+              ranged.isMember("Range") && ranged["DamageProfile"].isString() &&
+              ranged["hits"].isInt() && ranged["Range"].isInt())
+        << "Unit '" << id
+        << "' Ranged weapon is missing 'DamageProfile', 'hits' or 'Range'.";
     unit.mutable_ranged_attack()->set_damage_type(
         ranged["DamageProfile"].asString());
     unit.mutable_ranged_attack()->set_hits(ranged["hits"].asInt());
     unit.mutable_ranged_attack()->set_range(ranged["Range"].asInt());
   }
   for (const Json::Value& weapon : root["weapons"]) {
-    if (!weapon.isObject()) {
-      return absl::InvalidArgumentError(
-          absl::StrCat("Weapon is not an object for unit: ", id));
-    }
+    RET_CHECK(weapon.isObject())
+        << "Unit '" << id << "' weapon is not an object.";
   }
 
   unit.set_name(root["name"].asString());
   unit.set_id(id);
 
-  auto upgrades = ParseRankUpRequirements(id, root["upgrades"]);
-  if (!upgrades.ok()) {
-    return absl::InvalidArgumentError(
-        absl::StrCat("Failed to parse rank up requirements for unit '", id,
-                     "': ", upgrades.status().message()));
-  }
-  for (const auto& upgrade : *upgrades) {
-    *unit.add_rank_up_requirements() = upgrade;
+  std::vector<Unit::RankUpRequirements> rank_up_requirements;
+  ASSIGN_OR_RETURN(rank_up_requirements,
+                   ParseRankUpRequirements(id, root["upgrades"]));
+  for (const auto& requirement : rank_up_requirements) {
+    *unit.add_rank_up_requirements() = requirement;
   }
 
   return unit;
@@ -174,47 +148,26 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
 }  // namespace
 
 absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
-  if (!root.isObject()) {
-    return absl::InvalidArgumentError("Parsed JSON is not an object.");
-  }
-  if (!root.isMember("lineup")) {
-    return absl::InvalidArgumentError("Missing 'lineup' in JSON.");
-  }
-  if (!root.isMember("damageProfileModifiers")) {
-    return absl::InvalidArgumentError(
-        "Missing 'damageProfileModifiers' in JSON.");
-  }
-  if (!root.isMember("xpLevels")) {
-    return absl::InvalidArgumentError("Missing 'xpLevels' in JSON.");
-  }
+  RET_CHECK(root.isObject()) << "Parsed JSON is not an object.";
+  RET_CHECK(root.isMember("lineup")) << "Missing 'lineup' in JSON.";
+  RET_CHECK(root.isMember("damageProfileModifiers"))
+      << "Missing 'damageProfileModifiers' in JSON.";
+  RET_CHECK(root.isMember("xpLevels")) << "Missing 'xpLevels' in JSON.";
 
   Units units;
 
   Json::Value lineup = root.get("lineup", {});
-  if (!lineup.isObject()) {
-    return absl::InvalidArgumentError("'lineup' is not an object.");
-  }
+  RET_CHECK(lineup.isObject()) << "'lineup' is not an object.";
   for (const absl::string_view id : lineup.getMemberNames()) {
     Json::Value value = lineup.get(id, {});
-    if (!value.isObject()) {
-      return absl::InvalidArgumentError(
-          absl::StrCat("Lineup entry for '", id, "' is not an object."));
-    }
-    if (IsMachineOfWar(id)) {
-      continue;  // Skip Machine of War units.
-    }
+    RET_CHECK(value.isObject())
+        << "Lineup entry for '" << id << "' must be an object.";
+    if (IsMachineOfWar(id)) continue;  // Skip Machine of War units.
 
-    absl::StatusOr<Unit> unit = ParseUnit(id, value);
-    if (!unit.ok()) return unit.status();
-    *units.add_units() = std::move(*unit);
+    ASSIGN_OR_RETURN(*units.add_units(), ParseUnit(id, value));
   }
 
-  if (!root.isMember("xpLevels")) {
-    return absl::InvalidArgumentError("Missing 'xpLevels' in JSON.");
-  }
-  if (!root["xpLevels"].isArray()) {
-    return absl::InvalidArgumentError("'xpLevels' is not an array.");
-  }
+  RET_CHECK(root["xpLevels"].isArray()) << "'xpLevels' is not an array.";
   for (const Json::Value& xp_level : root["xpLevels"]) {
     units.add_xp_levels(xp_level.asInt());
   }
@@ -231,53 +184,28 @@ absl::Status AmendUnitsWithDisplayStrings(const Json::Value& root,
       {"_ExtraShortName", &shorter_names},
       {"_Title", &titles},
       {"_Description", &descs}};
-  if (!root.isObject()) {
-    return absl::InvalidArgumentError("Parsed JSON is not an object.");
-  }
-  if (!root.isMember("mSource")) {
-    return absl::InvalidArgumentError("Missing 'mSource' in JSON.");
-  }
+  RET_CHECK(root.isObject()) << "Parsed JSON is not an object.";
+  RET_CHECK(root.isMember("mSource")) << "Missing 'mSource' in JSON.";
   const Json::Value& source = root["mSource"];
-  if (!source.isObject()) {
-    return absl::InvalidArgumentError("'mSource' is not an object.");
-  }
-  if (!source.isObject()) {
-    return absl::InvalidArgumentError("'mSource' is not an object.");
-  }
-  if (!source.isMember("mTerms")) {
-    return absl::InvalidArgumentError("Missing 'mTerms' in 'mSource'.");
-  }
+  RET_CHECK(source.isObject()) << "'mSource' is not an object.";
+  RET_CHECK(source.isMember("mTerms")) << "Missing 'mTerms' in 'mSource'.";
   const Json::Value& terms = source["mTerms"];
-  if (!terms.isArray()) {
-    return absl::InvalidArgumentError("'mTerms' is not an array.");
-  }
+  RET_CHECK(terms.isArray()) << "'mTerms' is not an array.";
   for (const Json::Value& term_entry : terms) {
-    if (!term_entry.isObject()) {
-      return absl::InvalidArgumentError("'mTerms' entry is not an object.");
-    }
-    if (!term_entry.isMember("Term")) {
-      return absl::InvalidArgumentError(
-          "'mTerms' entry does not have 'Term' field.");
-    }
-    if (!term_entry.isMember("Languages")) {
-      return absl::InvalidArgumentError(
-          "'mTerms' entry does not have 'Languages' field.");
-    }
+    RET_CHECK(term_entry.isObject()) << "'mTerms' entry is not an object.";
+    RET_CHECK(term_entry.isMember("Term"))
+        << "'mTerms' entry does not have 'Term' field.";
+    RET_CHECK(term_entry.isMember("Languages"))
+        << "'mTerms' entry does not have 'Languages' field.";
     const Json::Value& term = term_entry["Term"];
-    if (!term.isString()) {
-      return absl::InvalidArgumentError(
-          "'mTerms' entry 'Term' field is not a string.");
-    }
+    RET_CHECK(term.isString())
+        << "'mTerms' entry 'Term' field is not a string.";
     const Json::Value& languages = term_entry["Languages"];
-    if (!languages.isArray() || languages.size() < 1) {
-      return absl::InvalidArgumentError(
-          "'mTerms' entry 'Languages' field is not an array or is empty.");
-    }
+    RET_CHECK(languages.isArray() && languages.size() > 0)
+        << "'mTerms' entry 'Languages' field is not an array or is empty.";
     const Json::Value& english = languages[0];
-    if (!english.isString()) {
-      return absl::InvalidArgumentError(
-          "'mTerms' entry 'Languages' field is not a string.");
-    }
+    RET_CHECK(english.isString())
+        << "'mTerms' entry 'Languages' field is not a string.";
     const std::string key = term.asString();
     const std::string value = english.asString();
     for (const auto& [suffix, map] : suffixes) {

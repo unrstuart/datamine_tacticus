@@ -200,6 +200,7 @@ message Unit {
   optional string alliance = 4; // GrandAllianceId
   optional int32 movement = 5; // Movement
   repeated string active_abilities = 6; // activeAbilities
+  repeated string passive_abilities = 20; // passiveAbilities
   // eligibilityRequirements
   repeated string equipment_slots = 7; // itemSlots
   repeated int32 item_slots_relic = 8; // itemSlotsRelic
@@ -215,8 +216,6 @@ message Unit {
   // upgradesStatIncrease
   optional Attack melee_attack = 13; // weapons[0]
   optional Attack ranged_attack = 14; // weapons[1]
-  repeated string activeAbilities = 20;
-  repeated string passiveAbilities = 21;
 }
 
 message Units {
@@ -225,6 +224,12 @@ message Units {
     optional int32 pierce_ratio = 2; // PiercingRatio
     repeated string traits = 3; // traits - this should be an enum
   }
+  message Ability {
+    optional string id = 1; // the id of the ability
+    repeated string damage_types = 2; // damageTypes
+    // we're skipping a lot here, but this gets us the basics.
+  }
+  repeated Ability abilities = 1; // abilities
   // abilityPowerCurve
   // abilityPowerModifiers
   // abilityUpgradeCosts (gold and badges)

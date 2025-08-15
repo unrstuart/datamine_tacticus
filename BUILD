@@ -80,6 +80,7 @@ cc_library(
   hdrs = ["parse_units.h"],
   deps = [
       ":miner_cc_proto",
+      ":status_macros",
       "//libjson:json",
       "@abseil-cpp//absl/flags:flag",
       "@abseil-cpp//absl/flags:parse",
@@ -102,6 +103,25 @@ cc_library(
       "@abseil-cpp//absl/status:status",
       "@abseil-cpp//absl/status:statusor",
       "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "status_builder",
+  hdrs = ["status_builder.h"],
+  deps = [
+    "@abseil-cpp//absl/status:status",
+    "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "status_macros",
+  hdrs = ["status_macros.h"],
+  deps = [
+    ":status_builder",
+    "@abseil-cpp//absl/status:status",
+    "@abseil-cpp//absl/status:statusor",
   ]
 )
 
