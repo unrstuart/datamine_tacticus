@@ -634,7 +634,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroWarden",
+                    "id": "shards_necroWarden",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -780,7 +780,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraTigurius",
+                    "id": "shards_ultraTigurius",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -939,7 +939,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraEliminatorSgt",
+                    "id": "shards_ultraEliminatorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -1115,7 +1115,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraInceptorSgt",
+                    "id": "shards_ultraInceptorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -1284,7 +1284,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraApothecary",
+                    "id": "shards_ultraApothecary",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -1383,7 +1383,7 @@
             ],
             "potential": [
                 {
-                    "id": "adeptRetributor",
+                    "id": "shards_adeptRetributor",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -1437,7 +1437,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroDestroyer",
+                    "id": "shards_necroDestroyer",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -2400,7 +2400,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroSpyder",
+                    "id": "shards_necroSpyder",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -3309,7 +3309,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroPlasmancer",
+                    "id": "shards_necroPlasmancer",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -4279,7 +4279,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroOverlord",
+                    "id": "shards_necroOverlord",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -5031,7 +5031,7 @@
             ],
             "potential": [
                 {
-                    "id": "astraBullgryn",
+                    "id": "shards_astraBullgryn",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -5761,7 +5761,7 @@
             ],
             "potential": [
                 {
-                    "id": "astraPrimarisPsy",
+                    "id": "shards_astraPrimarisPsy",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -6539,7 +6539,7 @@
             ],
             "potential": [
                 {
-                    "id": "astraOrdnance",
+                    "id": "shards_astraOrdnance",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -7300,7 +7300,7 @@
             ],
             "potential": [
                 {
-                    "id": "adeptCelestine",
+                    "id": "shards_adeptCelestine",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -8021,7 +8021,7 @@
             ],
             "potential": [
                 {
-                    "id": "astraCreed",
+                    "id": "shards_astraCreed",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -8679,7 +8679,7 @@
             ],
             "potential": [
                 {
-                    "id": "templAggressor",
+                    "id": "shards_templAggressor",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -9385,7 +9385,7 @@
             ],
             "potential": [
                 {
-                    "id": "templSwordBrother",
+                    "id": "shards_templSwordBrother",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -10187,7 +10187,7 @@
             ],
             "potential": [
                 {
-                    "id": "templAncient",
+                    "id": "shards_templAncient",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -10997,7 +10997,7 @@
             ],
             "potential": [
                 {
-                    "id": "templChampion",
+                    "id": "shards_templChampion",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -11887,7 +11887,7 @@
             ],
             "potential": [
                 {
-                    "id": "templHelbrecht",
+                    "id": "shards_templHelbrecht",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -12630,7 +12630,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousTerminator",
+                    "id": "shards_thousTerminator",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -13336,7 +13336,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousInfernalMaster",
+                    "id": "shards_thousInfernalMaster",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -14065,7 +14065,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousTzaangor",
+                    "id": "shards_thousTzaangor",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -14755,7 +14755,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousSorcerer",
+                    "id": "shards_thousSorcerer",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -15469,7 +15469,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousAhriman",
+                    "id": "shards_thousAhriman",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -16235,7 +16235,7 @@
             ],
             "potential": [
                 {
-                    "id": "adeptRetributor",
+                    "id": "shards_adeptRetributor",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -17076,7 +17076,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraInceptorSgt",
+                    "id": "shards_ultraInceptorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -17898,7 +17898,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraEliminatorSgt",
+                    "id": "shards_ultraEliminatorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -18690,7 +18690,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraTigurius",
+                    "id": "shards_ultraTigurius",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -19492,7 +19492,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraCalgar",
+                    "id": "shards_ultraCalgar",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -20246,7 +20246,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackTerminator",
+                    "id": "shards_blackTerminator",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -21007,7 +21007,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackPossession",
+                    "id": "shards_blackPossession",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -21761,7 +21761,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackObliterator",
+                    "id": "shards_blackObliterator",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -22610,7 +22610,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackHaarken",
+                    "id": "shards_blackHaarken",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -23435,7 +23435,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackAbaddon",
+                    "id": "shards_blackAbaddon",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -24133,7 +24133,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksKillaKan",
+                    "id": "shards_orksKillaKan",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -24887,7 +24887,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksBigMek",
+                    "id": "shards_orksBigMek",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -25625,7 +25625,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksRuntherd",
+                    "id": "shards_orksRuntherd",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -26491,7 +26491,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksNob",
+                    "id": "shards_orksNob",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -27341,7 +27341,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksWarboss",
+                    "id": "shards_orksWarboss",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -27983,7 +27983,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarRanger",
+                    "id": "shards_eldarRanger",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -28737,7 +28737,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarAutarch",
+                    "id": "shards_eldarAutarch",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -29459,7 +29459,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarFarseer",
+                    "id": "shards_eldarFarseer",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -30221,7 +30221,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarJainZar",
+                    "id": "shards_eldarJainZar",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -30943,7 +30943,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarMauganRa",
+                    "id": "shards_eldarMauganRa",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -31460,7 +31460,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroWarden",
+                    "id": "shards_necroWarden",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -31972,7 +31972,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroDestroyer",
+                    "id": "shards_necroDestroyer",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -32516,7 +32516,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroSpyder",
+                    "id": "shards_necroSpyder",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -33024,7 +33024,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroPlasmancer",
+                    "id": "shards_necroPlasmancer",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -33531,7 +33531,7 @@
             ],
             "potential": [
                 {
-                    "id": "necroOverlord",
+                    "id": "shards_necroOverlord",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -33982,7 +33982,7 @@
             ],
             "potential": [
                 {
-                    "id": "astraBullgryn",
+                    "id": "shards_astraBullgryn",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -34462,7 +34462,7 @@
             ],
             "potential": [
                 {
-                    "id": "astraPrimarisPsy",
+                    "id": "shards_astraPrimarisPsy",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -34934,7 +34934,7 @@
             ],
             "potential": [
                 {
-                    "id": "astraOrdnance",
+                    "id": "shards_astraOrdnance",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -35383,7 +35383,7 @@
             ],
             "potential": [
                 {
-                    "id": "adeptCelestine",
+                    "id": "shards_adeptCelestine",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -35834,7 +35834,7 @@
             ],
             "potential": [
                 {
-                    "id": "astraCreed",
+                    "id": "shards_astraCreed",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -36340,7 +36340,7 @@
             ],
             "potential": [
                 {
-                    "id": "templAggressor",
+                    "id": "shards_templAggressor",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -36836,7 +36836,7 @@
             ],
             "potential": [
                 {
-                    "id": "templSwordBrother",
+                    "id": "shards_templSwordBrother",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -37308,7 +37308,7 @@
             ],
             "potential": [
                 {
-                    "id": "templAncient",
+                    "id": "shards_templAncient",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -37739,7 +37739,7 @@
             ],
             "potential": [
                 {
-                    "id": "templChampion",
+                    "id": "shards_templChampion",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -38254,7 +38254,7 @@
             ],
             "potential": [
                 {
-                    "id": "templHelbrecht",
+                    "id": "shards_templHelbrecht",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -38697,7 +38697,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousTerminator",
+                    "id": "shards_thousTerminator",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -39137,7 +39137,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousInfernalMaster",
+                    "id": "shards_thousInfernalMaster",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -39569,7 +39569,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousTzaangor",
+                    "id": "shards_thousTzaangor",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -40005,7 +40005,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousSorcerer",
+                    "id": "shards_thousSorcerer",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -40432,7 +40432,7 @@
             ],
             "potential": [
                 {
-                    "id": "thousAhriman",
+                    "id": "shards_thousAhriman",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -40889,7 +40889,7 @@
             ],
             "potential": [
                 {
-                    "id": "adeptRetributor",
+                    "id": "shards_adeptRetributor",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -41398,7 +41398,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraInceptorSgt",
+                    "id": "shards_ultraInceptorSgt",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -41891,7 +41891,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraEliminatorSgt",
+                    "id": "shards_ultraEliminatorSgt",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -42395,7 +42395,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraTigurius",
+                    "id": "shards_ultraTigurius",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -42854,7 +42854,7 @@
             ],
             "potential": [
                 {
-                    "id": "ultraCalgar",
+                    "id": "shards_ultraCalgar",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -43287,7 +43287,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackTerminator",
+                    "id": "shards_blackTerminator",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -43733,7 +43733,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackPossession",
+                    "id": "shards_blackPossession",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -44181,7 +44181,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackObliterator",
+                    "id": "shards_blackObliterator",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -44609,7 +44609,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackHaarken",
+                    "id": "shards_blackHaarken",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -45034,7 +45034,7 @@
             ],
             "potential": [
                 {
-                    "id": "blackAbaddon",
+                    "id": "shards_blackAbaddon",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -45491,7 +45491,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksKillaKan",
+                    "id": "shards_orksKillaKan",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -45953,7 +45953,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksBigMek",
+                    "id": "shards_orksBigMek",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -46441,7 +46441,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksRuntherd",
+                    "id": "shards_orksRuntherd",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -46919,7 +46919,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksNob",
+                    "id": "shards_orksNob",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -47456,7 +47456,7 @@
             ],
             "potential": [
                 {
-                    "id": "orksWarboss",
+                    "id": "shards_orksWarboss",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -47889,7 +47889,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarRanger",
+                    "id": "shards_eldarRanger",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -48335,7 +48335,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarAutarch",
+                    "id": "shards_eldarAutarch",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -48767,7 +48767,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarFarseer",
+                    "id": "shards_eldarFarseer",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -49200,7 +49200,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarJainZar",
+                    "id": "shards_eldarJainZar",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -49649,7 +49649,7 @@
             ],
             "potential": [
                 {
-                    "id": "eldarMauganRa",
+                    "id": "shards_eldarMauganRa",
                     "chance_numerator": 1,
                     "chance_denominator": 24
                 }
@@ -50003,7 +50003,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecMarshall",
+                    "id": "shards_admecMarshall",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -50225,7 +50225,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecRuststalker",
+                    "id": "shards_admecRuststalker",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -50547,7 +50547,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecManipulus",
+                    "id": "shards_admecManipulus",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -50817,7 +50817,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecDominus",
+                    "id": "shards_admecDominus",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -51367,7 +51367,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecDestroyer",
+                    "id": "shards_admecDestroyer",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -51737,7 +51737,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecMarshall",
+                    "id": "shards_admecMarshall",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -51959,7 +51959,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecRuststalker",
+                    "id": "shards_admecRuststalker",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -52297,7 +52297,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecManipulus",
+                    "id": "shards_admecManipulus",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -52567,7 +52567,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecDominus",
+                    "id": "shards_admecDominus",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -52699,7 +52699,7 @@
             ],
             "potential": [
                 {
-                    "id": "admecDestroyer",
+                    "id": "shards_admecDestroyer",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -53495,7 +53495,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranDeathleaper",
+                    "id": "shards_tyranDeathleaper",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -53773,7 +53773,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranWingedPrime",
+                    "id": "shards_tyranWingedPrime",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -54126,7 +54126,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranNeurothrope",
+                    "id": "shards_tyranNeurothrope",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -54388,7 +54388,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranParasite",
+                    "id": "shards_tyranParasite",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -54881,7 +54881,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranTyrantGuard",
+                    "id": "shards_tyranTyrantGuard",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -55219,7 +55219,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranDeathleaper",
+                    "id": "shards_tyranDeathleaper",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -55489,7 +55489,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranWingedPrime",
+                    "id": "shards_tyranWingedPrime",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -55851,7 +55851,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranNeurothrope",
+                    "id": "shards_tyranNeurothrope",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -56113,7 +56113,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranParasite",
+                    "id": "shards_tyranParasite",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -56205,7 +56205,7 @@
             ],
             "potential": [
                 {
-                    "id": "tyranTyrantGuard",
+                    "id": "shards_tyranTyrantGuard",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -57001,7 +57001,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauCrisis",
+                    "id": "shards_tauCrisis",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -57231,7 +57231,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauMarksman",
+                    "id": "shards_tauMarksman",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -57585,7 +57585,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauDarkstrider",
+                    "id": "shards_tauDarkstrider",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -57855,7 +57855,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauShadowsun",
+                    "id": "shards_tauShadowsun",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -58445,7 +58445,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauAunShi",
+                    "id": "shards_tauAunShi",
                     "chance_numerator": 2,
                     "chance_denominator": 6
                 }
@@ -58823,7 +58823,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauCrisis",
+                    "id": "shards_tauCrisis",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -59053,7 +59053,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauMarksman",
+                    "id": "shards_tauMarksman",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -59407,7 +59407,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauDarkstrider",
+                    "id": "shards_tauDarkstrider",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -59653,7 +59653,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauShadowsun",
+                    "id": "shards_tauShadowsun",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }
@@ -59761,7 +59761,7 @@
             ],
             "potential": [
                 {
-                    "id": "tauAunShi",
+                    "id": "shards_tauAunShi",
                     "chance_numerator": 8,
                     "chance_denominator": 13
                 }

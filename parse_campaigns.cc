@@ -58,7 +58,6 @@ absl::StatusOr<Campaign::Battle::PotentialRewardItem> ParsePotentialRewardItem(
   RET_CHECK(mod_index != absl::string_view::npos)
       << "Potential reward item must end with '%A/B'.";
   absl::string_view reward = item.substr(0, mod_index);
-  if (absl::StartsWith(reward, "shards_")) reward = reward.substr(7);
   ret.set_id(reward);
   absl::string_view chance_str = item.substr(mod_index + 1);
   int chance_numerator = 0;
