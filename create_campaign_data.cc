@@ -94,18 +94,16 @@ void EmitBattleRewards(std::ostream& out,
       out << "                }";
     }
   }
-  out << "\n            ]";
-  if (!reward.has_chance_of()) {
-    out << "\n            },\n";
-    return;
-  }
-  out << ",\n            \"potential\": {\n";
-  out << "                \"id\": \"" << reward.chance_of().id() << "\",\n";
-  out << "                \"chance_numerator\": "
+  out << "\n            ],\n";
+  out << "            \"potential\": [\n";
+  out << "                {\n";
+  out << "                    \"id\": \"" << reward.chance_of().id() << "\",\n";
+  out << "                    \"chance_numerator\": "
       << reward.chance_of().chance_numerator() << ",\n";
-  out << "                \"chance_denominator\": "
+  out << "                    \"chance_denominator\": "
       << reward.chance_of().chance_denominator() << "\n";
-  out << "            }\n";
+  out << "                }\n";
+  out << "\n            ]\n";
   out << "        },\n";
 }
 
@@ -308,7 +306,7 @@ void EmitEnemies(std::ostream& out, const GameConfig& config,
     out << "                \"count\": " << count << ",\n";
     out << "                \"stars\": " << enemy_details.stars << ",\n";
     out << "                \"rank\": \"" << RankToString(enemy_details.rank)
-        << "\",\n";
+        << "\"\n";
     out << "            }";
   }
   out << "\n        ]\n";
@@ -320,12 +318,16 @@ void EmitCampaignBattle(std::ostream& out, const GameConfig& config,
   out << "    \"" << GetBattleId(campaign, battle) << "\": {\n";
   out << "        \"campaign\": \"" << GetCampaignName(campaign) << "\",\n";
   out << "        \"campaignType\": \"" << GetCampaignType(campaign) << "\",\n";
+  int node_number;
+  absl::string_view battle_id = battle.id();
   if (absl::EndsWith(battle.id(), "B")) {
-    out << "        \"nodeNumber\": "
-        << battle.id().substr(0, battle.id().size() - 1) << ",\n";
-  } else {
-    out << "        \"nodeNumber\": \"" << battle.id() << "\",\n";
+    battle_id = battle_id.substr(0, battle_id.size() - 1);
   }
+  if (!absl::SimpleAtoi(battle_id, &node_number)) {
+    LOG(ERROR) << "Invalid battle id: " << battle.id();
+    node_number = -1;
+  }
+  out << "        \"nodeNumber\": " << node_number << ",\n";
   out << "        \"slots\": " << battle.spawn_points() << ",\n";
   EmitBattleRewards(out, battle.reward());
   EmitEnemies(out, config, battle);
