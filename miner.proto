@@ -51,37 +51,21 @@ message LegendaryEvent {
 
 // battleSets.campaigns.(Elite|EliteMirror|Mirror|Standard|Event)[index]
 message Campaign {
-  enum CampaignId {
-    UNKNOWN_CAMPAIGN_ID = 0;
-    INDOMITUS = 1;
-    INDOMITUS_MIRROR = 2;
-    INDOMITUS_ELITE = 3;
-    INDOMITUS_MIRROR_ELITE = 4;
-    FALL_OF_CADIA = 5;
-    FALL_OF_CADIA_MIRROR = 6;
-    FALL_OF_CADIA_ELITE = 7;
-    FALL_OF_CADIA_MIRROR_ELITE = 8;
-    OCTARIUS = 9;
-    OCTARIUS_MIRROR = 10;
-    OCTARIUS_ELITE = 11;
-    OCTARIUS_MIRROR_ELITE = 12;
-    SAIM_HANN = 13;
-    SAIM_HANN_MIRROR = 14;
-    SAIM_HANN_ELITE = 15;
-    SAIM_HANN_MIRROR_ELITE = 16;
-    AD_MECH_STANDARD = 17;
-    AD_MECH_EXTREMIS = 18;
-    TYRANIDS_STANDARD = 19;
-    TYRANIDS_EXTREMIS = 20;
-    TAU_STANDARD = 21;
-    TAU_EXTREMIS = 22;
-  }
   // battes[index]
   message Battle {
-    // loot
+    message GuaranteedRewardItem {
+      optional string id = 1;
+      optional int32 min = 2;
+      optional int32 max = 3;
+    }
+    message PotentialRewardItem {
+      optional string id = 1;
+      optional int32 chance_numerator = 2;
+      optional int32 chance_denominator = 3;
+    }
     message Reward {
-      repeated string base = 1; // base
-      optional string chanceOf = 2; // chanceOf
+      repeated GuaranteedRewardItem base = 1; // base
+      optional PotentialRewardItem chance_of = 2; // chanceOf
       optional string star1 = 3; // star1
       optional string star2 = 4; // star2
       optional string star3 = 5; // star3
@@ -93,32 +77,32 @@ message Campaign {
       optional string silver_medal = 7; // type = "silver"
       optional string gold_medal = 8; // type = "gold"
     }
-    optional int32 id = 1; // battleId
-    optional CampaignId campaign_id = 2; // campaignId
-    optional int32 difficulty_multiplier = 3; // difficultyMultiplier
+    // units
+    optional string id = 1; // battleId
+    optional string boss = 12; // boss
     optional int32 lightning_victory = 4; // lightningVictory
     optional Reward reward = 5; // loot
     optional int32 max_attempts = 6; // maxAttempts
-    optional int32 power = 7; // power
-    optional string required_units = 8; // requiredUnits
-    optional int32 spawn_points = 9; // spawnPoints
+    optional int32 spawn_points = 9; // spawnpoints
     optional int32 energy_cost = 10; // staminaCost
-    repeated string enemies = 11; // enemies
+
+    // The format is 'id:level'. The level can be retrieved
+    // from the npcs object.
+    repeated string enemies = 11; // units
   }
   optional string id = 1; // id
-  optional int32 last_playable_level = 2; // lastPlayableLevel
+  repeated Battle battles = 2; // battles
   repeated string allowed_factions = 3; // unlockConditions.requiredUnits.allowedFactions
   repeated string required_units = 4; // unlockConditions.requiredUnits.unlockUnitIds
 }
 
-// battleSets.campaigns
+// battles.campaigns
 message Battles {
   repeated Campaign standard_campaigns = 1; // campaigns.Standard
   repeated Campaign elite_campaigns = 2; // campaigns.Elite
   repeated Campaign mirror_campaigns = 3; // campaigns.Mirror
   repeated Campaign mirror_elite_campaigns = 4; // campaigns.EliteMirror
-  repeated Campaign standard_campaign_events = 5; // campaigns.Event
-  repeated Campaign extremis_campaign_events = 6; // campaigns.Event
+  repeated Campaign campaign_events = 5; // campaigns.Event
 }
 
 // globalValues
@@ -218,6 +202,28 @@ message Unit {
   optional Attack ranged_attack = 14; // weapons[1]
 }
 
+message Npc {
+  message Stats {
+    optional int32 level = 1; // AbilityLevel
+    optional int32 damage = 2; // Damage
+    optional int32 armor = 3; // FixedArmor
+    optional int32 health = 4; // Health
+    optional int32 progression_index = 5; // ProgressionIndex
+    optional int32 rank = 6; // Rank
+    optional int32 stars = 7; // StarLevel    
+  }
+  optional string id = 1;  // the object id
+  optional string faction_id = 2; // FactionId
+  optional string alliance = 3; // GrandAllianceId
+  optional int32 movement = 4; // Movement
+  repeated string active_abilities = 5; // activeAbilities
+  optional string name = 6; // name
+  repeated string passive_abilities = 7; // passiveAbilities
+  repeated string traits = 8; // traits
+  optional string visual_id = 9; // visualId
+  repeated Stats stats = 10; // stats
+}
+
 message Units {
   message DamagePierceRatio {
     optional string id = 1; // the id of the array element
@@ -240,7 +246,7 @@ message Units {
   // heroProgressionStepsPerUnit
   repeated Unit units = 2; // lineup
 
-  // npc
+  repeated Npc npcs = 3; // npc
   // skip sortings
   // summons
   // skip traitPowerModifiers

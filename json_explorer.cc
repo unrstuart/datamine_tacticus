@@ -158,7 +158,8 @@ void Main() {
   }
 
   PrintDebugPath(root);
-  PrintPathsToSearchString(root, absl::GetFlag(FLAGS_search_string));
+  PrintPathsToSearchString(
+      root, absl::AsciiStrToLower(absl::GetFlag(FLAGS_search_string)));
 }
 
 }  // namespace

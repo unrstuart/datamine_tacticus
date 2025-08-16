@@ -8,6 +8,7 @@
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
+#include "create_campaign_data.h"
 #include "create_character_data.h"
 #include "create_rank_up_data.h"
 #include "create_recipe_data.h"
@@ -15,8 +16,10 @@
 #include "libjson/json/value.h"
 #include "miner.pb.h"
 #include "parse_avatars.h"
+#include "parse_campaigns.h"
 #include "parse_units.h"
 #include "parse_upgrades.h"
+#include "status_macros.h"
 
 ABSL_FLAG(std::string, game_config, "", "The GameConfig.json file to parse");
 ABSL_FLAG(std::string, i18n_strings_json, "",
@@ -31,6 +34,8 @@ ABSL_FLAG(std::string, rank_up_data, "",
           "If not empty, writes all rank-up recipes to the specified file.");
 ABSL_FLAG(std::string, character_data, "",
           "If not empty, writes all character data to the specified file.");
+ABSL_FLAG(std::string, campaign_data, "",
+          "If not empty, writes all campaign data to the specified file.");
 
 namespace dataminer {
 namespace {
@@ -107,28 +112,36 @@ absl::StatusOr<ClientGameConfig> ParseClientGameConfig(
     return absl::InvalidArgumentError(absl::StrCat(
         "Error parsing achievements: ", achievements.status().message()));
   }
+
   ClientGameConfig client_config;
   for (const Achievement& achievement : *achievements) {
     *client_config.add_achievements() = std::move(achievement);
   }
+
   absl::StatusOr<Upgrades> upgrades = ParseUpgrades(root.get("upgrades", {}));
   if (!upgrades.ok()) {
     return absl::InvalidArgumentError(
         absl::StrCat("Error parsing upgrades: ", upgrades.status().message()));
   }
   *client_config.mutable_upgrades() = std::move(*upgrades);
+
   absl::StatusOr<Units> units = ParseUnits(root.get("units", {}));
   if (!units.ok()) {
     return absl::InvalidArgumentError(
         absl::StrCat("Error parsing units: ", units.status().message()));
   }
   *client_config.mutable_units() = std::move(*units);
+
   absl::StatusOr<Avatars> avatars = ParseAvatars(root.get("avatars", {}));
   if (!avatars.ok()) {
     return absl::InvalidArgumentError(
         absl::StrCat("Error parsing avatars: ", avatars.status().message()));
   }
   *client_config.mutable_avatars() = std::move(*avatars);
+
+  ASSIGN_OR_RETURN(*client_config.mutable_battles(),
+                   ParseCampaigns(root.get("battles", {})));
+
   return client_config;
 }
 
@@ -340,6 +353,16 @@ void Main() {
             CreateCharacterData(character_data_file, config);
         !status.ok()) {
       LOG(ERROR) << "Error creating character data: " << status.message();
+    }
+  }
+
+  const std::string campaign_data_file = absl::GetFlag(FLAGS_campaign_data);
+  if (!campaign_data_file.empty()) {
+    LOG(INFO) << "Writing campaign data to: " << campaign_data_file;
+    if (const absl::Status status =
+            CreateCampaignData(campaign_data_file, config);
+        !status.ok()) {
+      LOG(ERROR) << "Error creating campaign data: " << status.message();
     }
   }
 }

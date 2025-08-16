@@ -22,7 +22,7 @@
   } while (0)
 
 #define RET_CHECK(condition)                                              \
-  while (!condition)                                                      \
+  while (!(condition))                                                    \
   return StatusBuilder(absl::StatusCode::kInternal,                       \
                        absl::StrCat("Check failed: ", #condition, " at ", \
                                     __FILE__, ":", __LINE__))

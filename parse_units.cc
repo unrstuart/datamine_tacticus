@@ -150,6 +150,71 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
   return unit;
 }
 
+absl::StatusOr<Npc> ParseNpc(const absl::string_view id,
+                             const Json::Value& root) {
+  Npc npc;
+  npc.set_id(id);
+  constexpr absl::string_view kRequiredFields[] = {
+      "activeAbilities", "name", "passiveAbilities", "traits", "weapons"};
+
+  for (const absl::string_view field : kRequiredFields) {
+    if (!root.isMember(field)) {
+      return absl::InvalidArgumentError(
+          absl::StrCat("Missing '", field, "' for NPC: ", id));
+    }
+  }
+  if (root.isMember("FactionId") && root["FactionId"].isString()) {
+    npc.set_faction_id(root["FactionId"].asString());
+  }
+  if (root.isMember("GrandAllianceId") && root["GrandAllianceId"].isString()) {
+    npc.set_alliance(root["GrandAllianceId"].asString());
+  }
+  if (root.isMember("Movement") && root["Movement"].isInt()) {
+    npc.set_movement(root["Movement"].asInt());
+  }
+  if (root.isMember("name") && root["name"].isString()) {
+    npc.set_name(root["name"].asString());
+  }
+  if (root.isMember("visualId") && root["visualId"].isString()) {
+    npc.set_visual_id(root["visualId"].asString());
+  }
+  if (root.isMember("activeAbilities") && root["activeAbilities"].isArray()) {
+    for (const Json::Value& ability : root["activeAbilities"]) {
+      RET_CHECK(ability.isString()).SetCode(absl::StatusCode::kInvalidArgument)
+          << id;
+      npc.add_active_abilities(ability.asString());
+    }
+  }
+  if (root.isMember("passiveAbilities") && root["passiveAbilities"].isArray()) {
+    for (const Json::Value& ability : root["passiveAbilities"]) {
+      RET_CHECK(ability.isString()).SetCode(absl::StatusCode::kInvalidArgument)
+          << id;
+      npc.add_passive_abilities(ability.asString());
+    }
+  }
+  if (root.isMember("traits") && root["traits"].isArray()) {
+    for (const Json::Value& trait : root["traits"]) {
+      RET_CHECK(trait.isString()) << id;
+      if (trait.asString() == "Hero") continue;
+      npc.add_traits(trait.asString());
+    }
+  }
+  if (root.isMember("stats") && root["stats"].isArray()) {
+    for (const Json::Value& json_stats : root["stats"]) {
+      Npc::Stats& stats = *npc.add_stats();
+      stats.set_level(json_stats["AbilityLevel"].asInt());
+      stats.set_damage(json_stats["Damage"].asInt());
+      stats.set_health(json_stats["Health"].asInt());
+      stats.set_armor(json_stats["FixedArmor"].asInt());
+      stats.set_progression_index(json_stats["ProgressionIndex"].asInt());
+      stats.set_rank(json_stats["Rank"].asInt());
+      stats.set_stars(json_stats["StarLevel"].asInt());
+    }
+  }
+
+  return npc;
+}
+
 }  // namespace
 
 absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
@@ -171,6 +236,15 @@ absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
     if (IsMachineOfWar(id)) continue;  // Skip Machine of War units.
 
     ASSIGN_OR_RETURN(*units.add_units(), ParseUnit(id, value));
+  }
+
+  Json::Value npcs = root.get("npc", {});
+  RET_CHECK(npcs.isObject()) << "'npc' is not an object.";
+  for (const absl::string_view id : npcs.getMemberNames()) {
+    Json::Value value = npcs.get(id, {});
+    RET_CHECK(value.isObject())
+        << "NPC entry for '" << id << "' must be an object.";
+    ASSIGN_OR_RETURN(*units.add_npcs(), ParseNpc(id, value));
   }
 
   RET_CHECK(root["xpLevels"].isArray()) << "'xpLevels' is not an array.";

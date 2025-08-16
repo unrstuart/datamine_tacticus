@@ -21,11 +21,13 @@ cc_binary(
     name = "miner",
     srcs = ["miner.cc"],
     deps = [
+      ":create_campaign_data",
       ":create_character_data",
       ":create_rank_up_data",
       ":create_recipe_data",
       ":miner_cc_proto",
       ":parse_avatars",
+      ":parse_campaigns",
       ":parse_upgrades",
       ":parse_units",
       "//libjson:json",
@@ -39,6 +41,18 @@ cc_binary(
       "gameconfig_1_31.json",
       "I2Languages_en.json",
     ] + glob(["assets/**"])
+)
+
+cc_library(
+  name = "create_campaign_data",
+  srcs = ["create_campaign_data.cc"],
+  hdrs = ["create_campaign_data.h"],
+  deps = [
+      ":miner_cc_proto",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/strings",
+  ]
 )
 
 cc_library(
@@ -79,6 +93,24 @@ cc_library(
   name = "parse_avatars",
   srcs = ["parse_avatars.cc"],
   hdrs = ["parse_avatars.h"],
+  deps = [
+      ":miner_cc_proto",
+      ":status_builder",
+      ":status_macros",
+      "//libjson:json",
+      "@abseil-cpp//absl/flags:flag",
+      "@abseil-cpp//absl/flags:parse",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/status:statusor",
+      "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "parse_campaigns",
+  srcs = ["parse_campaigns.cc"],
+  hdrs = ["parse_campaigns.h"],
   deps = [
       ":miner_cc_proto",
       ":status_builder",
