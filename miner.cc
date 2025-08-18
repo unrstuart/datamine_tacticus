@@ -10,6 +10,7 @@
 #include "absl/strings/str_split.h"
 #include "create_campaign_data.h"
 #include "create_character_data.h"
+#include "create_mow_data.h"
 #include "create_rank_up_data.h"
 #include "create_recipe_data.h"
 #include "libjson/json/reader.h"
@@ -36,6 +37,8 @@ ABSL_FLAG(std::string, character_data, "",
           "If not empty, writes all character data to the specified file.");
 ABSL_FLAG(std::string, campaign_data, "",
           "If not empty, writes all campaign data to the specified file.");
+ABSL_FLAG(std::string, mow_data, "",
+          "If not empty, writes all mow data to the specified file.");
 
 namespace dataminer {
 namespace {
@@ -363,6 +366,14 @@ void Main() {
             CreateCampaignData(campaign_data_file, config);
         !status.ok()) {
       LOG(ERROR) << "Error creating campaign data: " << status.message();
+    }
+  }
+  const std::string mow_data_file = absl::GetFlag(FLAGS_mow_data);
+  if (!mow_data_file.empty()) {
+    LOG(INFO) << "Writing MoW data to: " << mow_data_file;
+    if (const absl::Status status = CreateMowData(mow_data_file, config);
+        !status.ok()) {
+      LOG(ERROR) << "Error creating MoW data: " << status.message();
     }
   }
 }

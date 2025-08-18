@@ -224,6 +224,28 @@ message Npc {
   repeated Stats stats = 10; // stats
 }
 
+message MachineOfWar {
+  // abilities.<id>
+  message Ability {
+    optional string name = 1; // <id>
+    // [x]
+    message UpgradeRecipe {
+      optional string mat1 = 1; // [0]
+      optional string mat2 = 2; // [1]
+      optional string mat3 = 3; // [2]
+    }
+    repeated UpgradeRecipe upgrade_recipes = 2; // upgrades
+  }
+  optional string id = 1;
+  optional string faction_id = 2; // FactionId
+  optional string alliance = 3; // GrandAllianceId
+  optional Ability active_ability = 5; // activeAbilities[0]
+  optional Ability passive_ability = 6; // activeAbilities[1]
+  optional string name = 7;
+  optional string short_name = 8;
+  optional string title = 10;
+}
+
 message Units {
   message DamagePierceRatio {
     optional string id = 1; // the id of the array element
@@ -245,6 +267,7 @@ message Units {
   // heroProgressionStepsMoW
   // heroProgressionStepsPerUnit
   repeated Unit units = 2; // lineup
+  repeated MachineOfWar mows = 8; // machineOfWar
 
   repeated Npc npcs = 3; // npc
   // skip sortings

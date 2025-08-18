@@ -35,7 +35,8 @@ class StatusBuilder {
 
   operator absl::Status() const { return Build(); }
 
-  StatusBuilder& operator<<(const absl::string_view message) {
+  template <typename T>
+  StatusBuilder& operator<<(const T message) {
     message_ = absl::StrCat(message_, " ", message);
     return *this;
   }

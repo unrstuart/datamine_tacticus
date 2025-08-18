@@ -14,13 +14,6 @@ namespace dataminer {
 
 namespace {
 
-bool IsMachineOfWar(const absl::string_view id) {
-  return id == "adeptExorcist" || id == "astraOrdnanceBattery" ||
-         id == "blackForgefiend" || id == "deathCrawler" ||
-         id == "tauBroadside" || id == "tyranBiovore" ||
-         id == "ultraDreadnought";
-}
-
 absl::StatusOr<std::vector<Unit::RankUpRequirements>> ParseRankUpRequirements(
     absl::string_view id, const Json::Value& root) {
   std::vector<Unit::RankUpRequirements> requirements;
@@ -66,17 +59,28 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
   const auto fields = {
       "BaseRarity",      "FactionId",        "GrandAllianceId", "Movement",
       "activeAbilities", "passiveAbilities", "itemSlots",       "name",
-      "stats",           "traits",           "upgrades",        "weapons"};
-  for (const auto& field : fields) {
-    if (!root.isMember(field)) {
-      return absl::InvalidArgumentError(
-          absl::StrCat("Missing '", field, "' for unit: ", id));
+      "stats",           "traits",           "upgrades",        "weapons",
+  };
+  RET_CHECK(root.isObject() && root.isMember("traits"))
+      << "Missing 'traits' for unit: " << id;
+  for (const Json::Value& trait : root["traits"]) {
+    RET_CHECK(trait.isString()) << id;
+    if (trait.asString() == "Hero") continue;
+    if (trait.asString() == "MachineOfWar") {
+      return absl::CancelledError("MachineOfWar units are not supported.");
     }
+    unit.add_traits(trait.asString());
+  }
+  for (const auto& field : fields) {
+    RET_CHECK(root.isMember(field))
+        << absl::StrCat("Missing '", field, "' for unit: ", id);
   }
 
   unit.set_base_rarity(root["BaseRarity"].asString());
   unit.set_faction_id(root["FactionId"].asString());
   unit.set_alliance(root["GrandAllianceId"].asString());
+  RET_CHECK(root["Movement"].isInt())
+      << absl::StrCat("Missing movement for unit: ", id);
   unit.set_movement(root["Movement"].asInt());
   for (const Json::Value& ability : root["activeAbilities"]) {
     RET_CHECK(ability.isString()).SetCode(absl::StatusCode::kInvalidArgument)
@@ -87,11 +91,6 @@ absl::StatusOr<Unit> ParseUnit(const absl::string_view id,
     RET_CHECK(ability.isString()).SetCode(absl::StatusCode::kInvalidArgument)
         << id;
     unit.add_passive_abilities(ability.asString());
-  }
-  for (const Json::Value& trait : root["traits"]) {
-    RET_CHECK(trait.isString()) << id;
-    if (trait.asString() == "Hero") continue;
-    unit.add_traits(trait.asString());
   }
   for (const Json::Value& slot : root["itemSlots"]) {
     RET_CHECK(slot.isString())
@@ -227,15 +226,84 @@ absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
 
   Units units;
 
+  std::set<std::string> mows;
   Json::Value lineup = root.get("lineup", {});
   RET_CHECK(lineup.isObject()) << "'lineup' is not an object.";
   for (const absl::string_view id : lineup.getMemberNames()) {
     Json::Value value = lineup.get(id, {});
     RET_CHECK(value.isObject())
         << "Lineup entry for '" << id << "' must be an object.";
-    if (IsMachineOfWar(id)) continue;  // Skip Machine of War units.
 
-    ASSIGN_OR_RETURN(*units.add_units(), ParseUnit(id, value));
+    absl::StatusOr<Unit> unit = ParseUnit(id, value);
+    if (absl::IsCancelled(unit.status())) {
+      // Machine of War units are not supported.
+      mows.insert(std::string(id));
+      continue;
+    }
+    ASSIGN_OR_RETURN(*units.add_units(), unit);
+  }
+
+  if (!mows.empty()) {
+    for (const auto& mow_id : mows) {
+      Json::Value mow_value = lineup.get(mow_id, {});
+      RET_CHECK(mow_value.isObject())
+          << "Machine of War entry for '" << mow_id << "' must be an object.";
+      MachineOfWar& mow = *units.add_mows();
+      mow.set_id(mow_id);
+      RET_CHECK(mow_value.isMember("FactionId") &&
+                mow_value["FactionId"].isString())
+          << "FactionId for Machine of War entry '" << mow_id
+          << "' is missing or not a string.";
+      mow.set_faction_id(mow_value["FactionId"].asString());
+      RET_CHECK(mow_value.isMember("name") && mow_value["name"].isString())
+          << "Name for Machine of War entry '" << mow_id
+          << "' is missing or not a string.";
+      mow.set_name(mow_value["name"].asString());
+      RET_CHECK(mow_value.isMember("GrandAllianceId") &&
+                mow_value["GrandAllianceId"].isString())
+          << "GrandAllianceId for Machine of War entry '" << mow_id
+          << "' is missing or not a string.";
+      mow.set_alliance(mow_value["GrandAllianceId"].asString());
+      RET_CHECK(mow_value.isMember("activeAbilities") &&
+                mow_value["activeAbilities"].isArray() &&
+                mow_value["activeAbilities"].size() == 2)
+          << "activeAbilities for Machine of War entry '" << mow_id
+          << "' is missing or does not have exactly 2 abilities.";
+      std::vector<MachineOfWar::Ability*> abilities;
+      abilities.push_back(mow.mutable_active_ability());
+      abilities.push_back(mow.mutable_passive_ability());
+      for (int i = 0; i < 2; ++i) {
+        RET_CHECK(mow_value["activeAbilities"][i].isString())
+            << "activeAbilities[" << i << "] for Machine of War entry '"
+            << mow_id << "' is missing or not a string.";
+        abilities[i]->set_name(mow_value["activeAbilities"][i].asString());
+        Json::Value ability =
+            root.get("abilities", {})
+                .get(abilities[i]->name(), Json::Value(Json::objectValue));
+        RET_CHECK(ability.isObject()) << "Ability '" << abilities[i]->name()
+                                      << "' for Machine of War entry '"
+                                      << mow_id << "' is not an object.";
+        RET_CHECK(ability.isMember("upgrades") && ability["upgrades"].isArray())
+            << "Ability '" << abilities[i]->name()
+            << "' for Machine of War entry '" << mow_id
+            << "' is missing or not an array.";
+        const Json::Value upgrades = ability["upgrades"];
+        RET_CHECK(upgrades.size() >= 54)
+            << "Ability '" << abilities[i]->name()
+            << "' for Machine of War entry '" << mow_id
+            << "' does not have at least 54 upgrades. - " << upgrades.size();
+        for (int j = 0; j < upgrades.size(); ++j) {
+          RET_CHECK(upgrades[j].isArray() && upgrades[j].size() == 3)
+              << "Upgrade '" << j << "' for Ability '" << abilities[i]->name()
+              << "' is not an array.";
+          MachineOfWar::Ability::UpgradeRecipe& recipe =
+              *abilities[i]->add_upgrade_recipes();
+          recipe.set_mat1(upgrades[j][0].asString());
+          recipe.set_mat2(upgrades[j][1].asString());
+          recipe.set_mat3(upgrades[j][2].asString());
+        }
+      }
+    }
   }
 
   Json::Value npcs = root.get("npc", {});
@@ -318,6 +386,21 @@ absl::Status AmendUnitsWithDisplayStrings(const Json::Value& root,
       if (!absl::StartsWith(base_key, "Units/")) continue;  // not a character.
       base_key = base_key.substr(6);  // Remove "Units/" prefix.
       map->insert({base_key, value});
+    }
+  }
+  for (MachineOfWar& mow : *units->mutable_mows()) {
+    const std::string id = mow.id();
+    auto it = short_names.find(id);
+    if (it != short_names.end()) {
+      mow.set_short_name(it->second);
+    } else {
+      LOG(ERROR) << "No short name for mow: " << id;
+    }
+    it = titles.find(id);
+    if (it != titles.end()) {
+      mow.set_title(it->second);
+    } else {
+      LOG(ERROR) << "No title for mow: " << id;
     }
   }
   for (Unit& unit : *units->mutable_units()) {

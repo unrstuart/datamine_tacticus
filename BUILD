@@ -23,6 +23,7 @@ cc_binary(
     deps = [
       ":create_campaign_data",
       ":create_character_data",
+      ":create_mow_data",
       ":create_rank_up_data",
       ":create_recipe_data",
       ":miner_cc_proto",
@@ -59,6 +60,18 @@ cc_library(
   name = "create_character_data",
   srcs = ["create_character_data.cc"],
   hdrs = ["create_character_data.h"],
+  deps = [
+      ":miner_cc_proto",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "create_mow_data",
+  srcs = ["create_mow_data.cc"],
+  hdrs = ["create_mow_data.h"],
   deps = [
       ":miner_cc_proto",
       "@abseil-cpp//absl/log",
