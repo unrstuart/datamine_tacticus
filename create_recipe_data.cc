@@ -40,7 +40,8 @@ absl::Status CreateRecipeData(const absl::string_view path,
     out << "        \"snowprintId\": \"" << recipe.id() << "\",\n";
     out << "        \"rarity\": \"" << recipe.rarity() << "\",\n";
     out << "        \"stat\": \"" << ConvertStat(recipe.stat_type()) << "\",\n";
-    out << "        \"icon\": \"snowprint_assets/upgrade_materials/"
+    out << "        \"icon\": "
+           "\"snowprint_assets/upgrade_materials/ui_icon_upgrade_"
         << recipe.id() << ".png\",\n";
     out << "        \"craftable\": "
         << (recipe.has_recipe() ? "true" : "false");
