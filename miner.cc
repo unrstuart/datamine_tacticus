@@ -1,3 +1,29 @@
+// This is the main program that drives datamining. Before running this, you
+// need datamine the i18n JSON file and the gameconfig JSON file. The
+// gameconfig contains all the nerdy stuff we care about, and the i18n
+// contains the display data, internationalized obviously, but we only
+// extract english.
+//
+// Once you have the files extracted, you need to add them to the data array
+// in the cc_binary build rule in the BUILD file. Then, you can run the
+// following command to generate the new files for the planner.
+//
+// This assumes that you have an environment variable called MINING_OUTPUT
+// that lists the directory where you want to dump the mined json.
+//
+// bazel run -c opt :miner -- \
+//   --game_config=gameconfig_1_31.json \
+//   --recipe_data=$MINING_OUTPUT/newRecipeData.json \
+//   --rank_up_data=$MINING_OUTPUT/newRankUpData.json \
+//   --character_data=$MINING_OUTPUT/newCharacterData.json \
+//   --campaign_data=$MINING_OUTPUT/newCampaignData.json \
+//   --mow_data=$MINING_OUTPUT/newMowData.json \
+//   --i18n_strings_json=I2Languages_en.json
+//
+// When you're done, you just need to copy the new files into the planner
+// directory, overwriting the previous files (don't worry, we use version
+// control for a reason).
+
 #include <fstream>
 #include <iostream>
 
