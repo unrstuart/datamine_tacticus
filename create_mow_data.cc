@@ -123,12 +123,12 @@ absl::Status CreateMowData(const absl::string_view path,
     out << "        {\n";
     out << "            \"gold\": " << cost.gold() << ",\n";
     out << "            \"salvage\": " << cost.salvage() << ",\n";
-    out << "            \"badges\": { \"rarity\": " << cost.badges().rarity()
-        << ", \"amount\": " << cost.badges().amount() << " },\n";
+    out << "            \"badges\": { \"rarity\": \"" << cost.badges().rarity()
+        << "\", \"amount\": " << cost.badges().amount() << " },\n";
     out << "            \"components\": " << cost.components() << ",\n";
-    out << "            \"forgeBadges\": { \"rarity\": "
+    out << "            \"forgeBadges\": { \"rarity\": \" "
         << cost.forge_badges().rarity()
-        << ", \"amount\": " << cost.forge_badges().amount() << " },\n";
+        << "\", \"amount\": " << cost.forge_badges().amount() << " }\n";
     out << "        }";
   }
   out << "\n    ]\n";
