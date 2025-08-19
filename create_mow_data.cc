@@ -67,20 +67,20 @@ void EmitAbility(std::ostream& out, const MachineOfWar::Ability& ability,
                  const std::string& label) {
   if (ability.name().empty()) return;
 
-  out << "        \"" << label << "\": {\n";
-  out << "            \"name\": \"" << ability.name() << "\",\n";
-  out << "            \"recipes\": [";
+  out << "            \"" << label << "\": {\n";
+  out << "                \"name\": \"" << ability.name() << "\",\n";
+  out << "                \"recipes\": [";
   bool first = true;
   for (const MachineOfWar::Ability::UpgradeRecipe& recipe :
        ability.upgrade_recipes()) {
     if (!first) out << ",";
     first = false;
     out << "\n";
-    out << "                [\"" << recipe.mat1() << "\", \"" << recipe.mat2()
-        << "\", \"" << recipe.mat3() << "\"]";
+    out << "                    [\"" << recipe.mat1() << "\", \""
+        << recipe.mat2() << "\", \"" << recipe.mat3() << "\"]";
   }
-  out << "\n            ]\n";
-  out << "        }";
+  out << "\n                ]\n";
+  out << "            }";
 }
 
 }  // namespace
@@ -112,7 +112,7 @@ absl::Status CreateMowData(const absl::string_view path,
     EmitAbility(out, mow.passive_ability(), "secondaryAbility");
     out << "\n        }";
   }
-  out << "    ],\n";
+  out << "\n    ],\n";
   out << "    \"upgradeCosts\": [";
   first = true;
   for (const MachineOfWarUpgradeCosts& cost :
@@ -123,12 +123,17 @@ absl::Status CreateMowData(const absl::string_view path,
     out << "        {\n";
     out << "            \"gold\": " << cost.gold() << ",\n";
     out << "            \"salvage\": " << cost.salvage() << ",\n";
-    out << "            \"badges\": { \"rarity\": \"" << cost.badges().rarity()
-        << "\", \"amount\": " << cost.badges().amount() << " },\n";
-    out << "            \"components\": " << cost.components() << ",\n";
-    out << "            \"forgeBadges\": { \"rarity\": \" "
-        << cost.forge_badges().rarity()
-        << "\", \"amount\": " << cost.forge_badges().amount() << " }\n";
+    if (cost.has_badges()) {
+      out << "            \"badges\": { \"rarity\": \""
+          << cost.badges().rarity()
+          << "\", \"amount\": " << cost.badges().amount() << " },\n";
+    }
+    if (cost.has_forge_badges()) {
+      out << "            \"forgeBadges\": { \"rarity\": \" "
+          << cost.forge_badges().rarity()
+          << "\", \"amount\": " << cost.forge_badges().amount() << " },\n";
+    }
+    out << "            \"components\": " << cost.components() << "\n";
     out << "        }";
   }
   out << "\n    ]\n";
