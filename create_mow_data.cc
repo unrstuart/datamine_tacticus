@@ -68,8 +68,8 @@ void EmitAbility(std::ostream& out, const MachineOfWar::Ability& ability,
   if (ability.name().empty()) return;
 
   out << "        \"" << label << "\": {\n";
-  out << "            \"Name\": \"" << ability.name() << "\",\n";
-  out << "            \"Recipes\": [";
+  out << "            \"name\": \"" << ability.name() << "\",\n";
+  out << "            \"recipes\": [";
   bool first = true;
   for (const MachineOfWar::Ability::UpgradeRecipe& recipe :
        ability.upgrade_recipes()) {
@@ -80,7 +80,7 @@ void EmitAbility(std::ostream& out, const MachineOfWar::Ability& ability,
         << "\", \"" << recipe.mat3() << "\"]";
   }
   out << "\n            ]\n";
-  out << "        },\n";
+  out << "        }";
 }
 
 }  // namespace
@@ -89,7 +89,8 @@ absl::Status CreateMowData(const absl::string_view path,
                            const GameConfig& game_config) {
   std::ofstream out(std::string(path).c_str());
 
-  out << "[";
+  out << "{\n";
+  out << "    \"mows\": [\n";
   bool first = true;
 
   for (const MachineOfWar& mow :
@@ -97,20 +98,41 @@ absl::Status CreateMowData(const absl::string_view path,
     if (!first) out << ",";
     first = false;
     out << "\n";
-    out << "    {\n";
-    out << "        \"snowprintId\": \"" << mow.id() << "\",\n";
-    out << "        \"Name\": \"" << mow.name() << "\",\n";
-    out << "        \"Faction\": \"" << mow.faction_id() << "\",\n";
-    out << "        \"Alliance\": \"" << mow.alliance() << "\",\n";
-    EmitAbility(out, mow.active_ability(), "ActiveAbility");
-    EmitAbility(out, mow.passive_ability(), "PassiveAbility");
-    out << "        \"Icon\": \"" << GetIconPath(mow.id(), game_config)
+    out << "        {\n";
+    out << "            \"snowprintId\": \"" << mow.id() << "\",\n";
+    out << "            \"name\": \"" << mow.name() << "\",\n";
+    out << "            \"factionId\": \"" << mow.faction_id() << "\",\n";
+    out << "            \"alliance\": \"" << mow.alliance() << "\",\n";
+    out << "            \"icon\": \"" << GetIconPath(mow.id(), game_config)
         << "\",\n";
-    out << "        \"RoundIcon\": \""
-        << GetRoundIconPath(mow.id(), game_config) << "\"\n";
-    out << "    }";
+    out << "            \"roundIcon\": \""
+        << GetRoundIconPath(mow.id(), game_config) << "\",\n";
+    EmitAbility(out, mow.active_ability(), "primaryAbility");
+    out << ",\n";
+    EmitAbility(out, mow.passive_ability(), "secondaryAbility");
+    out << "\n        }";
   }
-  out << "\n]\n";
+  out << "    ],\n";
+  out << "    \"upgradeCosts\": [";
+  first = true;
+  for (const MachineOfWarUpgradeCosts& cost :
+       game_config.client_game_config().units().mow_upgrade_costs()) {
+    if (!first) out << ",";
+    first = false;
+    out << "\n";
+    out << "        {\n";
+    out << "            \"gold\": " << cost.gold() << ",\n";
+    out << "            \"salvage\": " << cost.salvage() << ",\n";
+    out << "            \"badges\": { \"rarity\": " << cost.badges().rarity()
+        << ", \"amount\": " << cost.badges().amount() << " },\n";
+    out << "            \"components\": " << cost.components() << ",\n";
+    out << "            \"forgeBadges\": { \"rarity\": "
+        << cost.forge_badges().rarity()
+        << ", \"amount\": " << cost.forge_badges().amount() << " },\n";
+    out << "        }";
+  }
+  out << "\n    ]\n";
+  out << "}\n";
 
   // out.close();
   return absl::OkStatus();

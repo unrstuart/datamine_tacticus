@@ -246,6 +246,18 @@ message MachineOfWar {
   optional string title = 10;
 }
 
+message MachineOfWarUpgradeCosts {
+  message Badges {
+    optional string rarity = 1;
+    optional int32 amount = 2;
+  }
+  optional int32 gold = 1; // gold
+  optional int32 salvage = 2; // salvage
+  optional Badges badges = 3; // badges
+  optional int32 components = 4; // components
+  optional Badges forge_badges = 5; // forgeBadges
+}
+
 message Units {
   message DamagePierceRatio {
     optional string id = 1; // the id of the array element
@@ -261,7 +273,7 @@ message Units {
   // abilityPowerCurve
   // abilityPowerModifiers
   // abilityUpgradeCosts (gold and badges)
-  // abilityUpgradeCostsMoW (gold, salvage, badges, components, forge badges)
+  repeated MachineOfWarUpgradeCosts mow_upgrade_costs = 9; // abilityUpgradeCostsMoW (gold, salvage, badges, components, forge badges)
   // repeated DamagePierceRatio damage_profile_modifiers = 1; // damageProfileModifiers
   // heroProgressionSteps
   // heroProgressionStepsMoW

@@ -1,12 +1,16 @@
-[
-    {
-        "snowprintId": "adeptExorcist",
-        "Name": "Exorcist",
-        "Faction": "Sisterhood",
-        "Alliance": "Imperial",
-        "ActiveAbility": {
-            "Name": "ThriceBlessedConflagration",
-            "Recipes": [
+{
+    "mows": [
+
+        {
+            "snowprintId": "adeptExorcist",
+            "name": "Exorcist",
+            "factionId": "Sisterhood",
+            "alliance": "Imperial",
+            "icon": "snowprint_assets/characters/ui_image_portrait_adept_exorcist_01.png",
+            "roundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_adept_exorcist_01.png",
+        "primaryAbility": {
+            "name": "ThriceBlessedConflagration",
+            "recipes": [
                 ["upgHpC015", "upgDmgC002", "upgArmC001"],
                 ["upgHpC003", "upgDmgC004", "upgArmC013"],
                 ["upgHpC004", "upgHpC015", "upgHpC003"],
@@ -65,9 +69,9 @@
                 ["upgHpM003", "upgArmL001", "upgDmgL022C"]
             ]
         },
-        "PassiveAbility": {
-            "Name": "DevastatingRefrain",
-            "Recipes": [
+        "secondaryAbility": {
+            "name": "DevastatingRefrain",
+            "recipes": [
                 ["upgHpC015", "upgDmgC002", "upgArmC001"],
                 ["upgHpC003", "upgDmgC004", "upgArmC013"],
                 ["upgHpC004", "upgHpC015", "upgHpC003"],
@@ -125,18 +129,18 @@
                 ["upgHpM001", "upgDmgL001", "upgHpL102"],
                 ["upgHpM003", "upgArmL001", "upgArmL022C"]
             ]
+        }
         },
-        "Icon": "snowprint_assets/characters/ui_image_portrait_adept_exorcist_01.png",
-        "RoundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_adept_exorcist_01.png"
-    },
-    {
-        "snowprintId": "astraOrdnanceBattery",
-        "Name": "Malleus Rocket Launcher",
-        "Faction": "AstraMilitarum",
-        "Alliance": "Imperial",
-        "ActiveAbility": {
-            "Name": "MalleusRocketLauncher",
-            "Recipes": [
+        {
+            "snowprintId": "astraOrdnanceBattery",
+            "name": "Malleus Rocket Launcher",
+            "factionId": "AstraMilitarum",
+            "alliance": "Imperial",
+            "icon": "snowprint_assets/characters/ui_image_portrait_astra_ordnancebattery_01.png",
+            "roundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_astra_ordnancebattery_01.png",
+        "primaryAbility": {
+            "name": "MalleusRocketLauncher",
+            "recipes": [
                 ["upgHpC015", "upgDmgC002", "upgArmC001"],
                 ["upgHpC001", "upgDmgC004", "upgArmC003"],
                 ["upgHpC004", "upgHpC015", "upgHpC001"],
@@ -195,9 +199,9 @@
                 ["upgHpM004", "upgArmL001", "upgDmgL025C"]
             ]
         },
-        "PassiveAbility": {
-            "Name": "ForwardSpotter",
-            "Recipes": [
+        "secondaryAbility": {
+            "name": "ForwardSpotter",
+            "recipes": [
                 ["upgHpC015", "upgDmgC002", "upgArmC001"],
                 ["upgHpC001", "upgDmgC004", "upgArmC003"],
                 ["upgHpC004", "upgHpC015", "upgHpC001"],
@@ -255,18 +259,18 @@
                 ["upgHpM001", "upgDmgL001", "upgHpL105"],
                 ["upgHpM004", "upgArmL001", "upgArmL025C"]
             ]
+        }
         },
-        "Icon": "snowprint_assets/characters/ui_image_portrait_astra_ordnancebattery_01.png",
-        "RoundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_astra_ordnancebattery_01.png"
-    },
-    {
-        "snowprintId": "blackForgefiend",
-        "Name": "Forgefiend",
-        "Faction": "BlackLegion",
-        "Alliance": "Chaos",
-        "ActiveAbility": {
-            "Name": "HadesAutocannons",
-            "Recipes": [
+        {
+            "snowprintId": "blackForgefiend",
+            "name": "Forgefiend",
+            "factionId": "BlackLegion",
+            "alliance": "Chaos",
+            "icon": "snowprint_assets/characters/ui_image_portrait_black_forgefiend_01.png",
+            "roundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_black_forgefiend_01.png",
+        "primaryAbility": {
+            "name": "HadesAutocannons",
+            "recipes": [
                 ["upgHpC002", "upgDmgC008", "upgArmC007"],
                 ["upgHpC014", "upgDmgC004", "upgArmC013"],
                 ["upgHpC010", "upgHpC002", "upgHpC014"],
@@ -325,9 +329,9 @@
                 ["upgHpM004", "upgArmL202", "upgDmgL023C"]
             ]
         },
-        "PassiveAbility": {
-            "Name": "DaemonicOrdnance",
-            "Recipes": [
+        "secondaryAbility": {
+            "name": "DaemonicOrdnance",
+            "recipes": [
                 ["upgHpC002", "upgDmgC008", "upgArmC007"],
                 ["upgHpC014", "upgDmgC004", "upgArmC013"],
                 ["upgHpC010", "upgHpC002", "upgHpC014"],
@@ -385,18 +389,18 @@
                 ["upgHpM002", "upgDmgL202", "upgHpL103"],
                 ["upgHpM004", "upgArmL202", "upgArmL023C"]
             ]
+        }
         },
-        "Icon": "snowprint_assets/characters/ui_image_portrait_black_forgefiend_01.png",
-        "RoundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_black_forgefiend_01.png"
-    },
-    {
-        "snowprintId": "deathCrawler",
-        "Name": "Plagueburst Crawler",
-        "Faction": "DeathGuard",
-        "Alliance": "Chaos",
-        "ActiveAbility": {
-            "Name": "EntropyCannons",
-            "Recipes": [
+        {
+            "snowprintId": "deathCrawler",
+            "name": "Plagueburst Crawler",
+            "factionId": "DeathGuard",
+            "alliance": "Chaos",
+            "icon": "snowprint_assets/characters/ui_image_portrait_death_crawler_01.png",
+            "roundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_death_crawler_01.png",
+        "primaryAbility": {
+            "name": "EntropyCannons",
+            "recipes": [
                 ["upgHpC015", "upgDmgC008", "upgArmC007"],
                 ["upgHpC014", "upgDmgC009", "upgArmC004"],
                 ["upgHpC010", "upgHpC015", "upgHpC014"],
@@ -455,9 +459,9 @@
                 ["upgHpM002", "upgArmL203", "upgDmgL024C"]
             ]
         },
-        "PassiveAbility": {
-            "Name": "PlagueburstMortar",
-            "Recipes": [
+        "secondaryAbility": {
+            "name": "PlagueburstMortar",
+            "recipes": [
                 ["upgHpC015", "upgDmgC008", "upgArmC007"],
                 ["upgHpC014", "upgDmgC009", "upgArmC004"],
                 ["upgHpC010", "upgHpC015", "upgHpC014"],
@@ -515,18 +519,18 @@
                 ["upgHpM004", "upgDmgL202", "upgHpL104"],
                 ["upgHpM002", "upgArmL203", "upgArmL007C"]
             ]
+        }
         },
-        "Icon": "snowprint_assets/characters/ui_image_portrait_death_crawler_01.png",
-        "RoundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_death_crawler_01.png"
-    },
-    {
-        "snowprintId": "tauBroadside",
-        "Name": "Tson'ji",
-        "Faction": "Tau",
-        "Alliance": "Xenos",
-        "ActiveAbility": {
-            "Name": "HeavyRailRifle",
-            "Recipes": [
+        {
+            "snowprintId": "tauBroadside",
+            "name": "Tson'ji",
+            "factionId": "Tau",
+            "alliance": "Xenos",
+            "icon": "snowprint_assets/characters/ui_image_portrait_tauta_broadside_01.png",
+            "roundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_tauta_broadside_01.png",
+        "primaryAbility": {
+            "name": "HeavyRailRifle",
+            "recipes": [
                 ["upgHpC002", "upgDmgC001", "upgArmC011"],
                 ["upgHpC014", "upgDmgC010", "upgArmC003"],
                 ["upgHpC008", "upgHpC002", "upgHpC014"],
@@ -585,9 +589,9 @@
                 ["upgHpM003", "upgArmL203", "upgDmgL027C"]
             ]
         },
-        "PassiveAbility": {
-            "Name": "TwinSmartMissileSystem",
-            "Recipes": [
+        "secondaryAbility": {
+            "name": "TwinSmartMissileSystem",
+            "recipes": [
                 ["upgHpC002", "upgDmgC001", "upgArmC011"],
                 ["upgHpC014", "upgDmgC010", "upgArmC003"],
                 ["upgHpC008", "upgHpC002", "upgHpC014"],
@@ -645,18 +649,18 @@
                 ["upgHpM004", "upgDmgL003", "upgHpL107"],
                 ["upgHpM003", "upgArmL203", "upgArmL027C"]
             ]
+        }
         },
-        "Icon": "snowprint_assets/characters/ui_image_portrait_tauta_broadside_01.png",
-        "RoundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_tauta_broadside_01.png"
-    },
-    {
-        "snowprintId": "tyranBiovore",
-        "Name": "Biovore",
-        "Faction": "Tyranids",
-        "Alliance": "Xenos",
-        "ActiveAbility": {
-            "Name": "BioMinefield",
-            "Recipes": [
+        {
+            "snowprintId": "tyranBiovore",
+            "name": "Biovore",
+            "factionId": "Tyranids",
+            "alliance": "Xenos",
+            "icon": "snowprint_assets/characters/ui_image_portrait_tyran_biovore_01.png",
+            "roundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_tyran_biovore_01.png",
+        "primaryAbility": {
+            "name": "BioMinefield",
+            "recipes": [
                 ["upgHpC009", "upgDmgC008", "upgArmC007"],
                 ["upgHpC001", "upgDmgC003", "upgArmC003"],
                 ["upgHpC008", "upgHpC009", "upgHpC001"],
@@ -715,9 +719,9 @@
                 ["upgHpM004", "upgArmL202", "upgDmgL033C"]
             ]
         },
-        "PassiveAbility": {
-            "Name": "SporeMineLauncher",
-            "Recipes": [
+        "secondaryAbility": {
+            "name": "SporeMineLauncher",
+            "recipes": [
                 ["upgHpC009", "upgDmgC008", "upgArmC007"],
                 ["upgHpC001", "upgDmgC003", "upgArmC003"],
                 ["upgHpC008", "upgHpC009", "upgHpC001"],
@@ -775,18 +779,18 @@
                 ["upgHpM002", "upgDmgL202", "upgHpL113"],
                 ["upgHpM004", "upgArmL202", "upgArmL033C"]
             ]
+        }
         },
-        "Icon": "snowprint_assets/characters/ui_image_portrait_tyran_biovore_01.png",
-        "RoundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_tyran_biovore_01.png"
-    },
-    {
-        "snowprintId": "ultraDreadnought",
-        "Name": "Galatian",
-        "Faction": "Ultramarines",
-        "Alliance": "Imperial",
-        "ActiveAbility": {
-            "Name": "DutyEternal",
-            "Recipes": [
+        {
+            "snowprintId": "ultraDreadnought",
+            "name": "Galatian",
+            "factionId": "Ultramarines",
+            "alliance": "Imperial",
+            "icon": "snowprint_assets/characters/ui_image_portrait_ultra_dreadnought_01.png",
+            "roundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_ultra_dreadnought_01.png",
+        "primaryAbility": {
+            "name": "DutyEternal",
+            "recipes": [
                 ["upgHpC002", "upgDmgC001", "upgArmC001"],
                 ["upgHpC014", "upgDmgC012", "upgArmC013"],
                 ["upgHpC004", "upgHpC002", "upgHpC014"],
@@ -845,9 +849,9 @@
                 ["upgHpM004", "upgArmL001", "upgDmgL004C"]
             ]
         },
-        "PassiveAbility": {
-            "Name": "MacroPlasmaIncinerator",
-            "Recipes": [
+        "secondaryAbility": {
+            "name": "MacroPlasmaIncinerator",
+            "recipes": [
                 ["upgHpC002", "upgDmgC013", "upgArmC001"],
                 ["upgHpC014", "upgDmgC012", "upgArmC013"],
                 ["upgHpC004", "upgHpC002", "upgHpC014"],
@@ -905,8 +909,386 @@
                 ["upgHpM001", "upgDmgL001", "upgHpL100"],
                 ["upgHpM004", "upgArmL001", "upgDmgL012C"]
             ]
+        }
+        }    ],
+    "upgradeCosts": [
+        {
+            "gold": 15,
+            "salvage": 5,
+            "badges": { "rarity": Common, "amount": 1 },
+            "components": 1,
+            "forgeBadges": { "rarity": , "amount": 0 },
         },
-        "Icon": "snowprint_assets/characters/ui_image_portrait_ultra_dreadnought_01.png",
-        "RoundIcon": "snowprint_assets/characters/ui_image_RoundPortrait_ultra_dreadnought_01.png"
-    }
-]
+        {
+            "gold": 30,
+            "salvage": 5,
+            "badges": { "rarity": Common, "amount": 1 },
+            "components": 1,
+            "forgeBadges": { "rarity": , "amount": 0 },
+        },
+        {
+            "gold": 60,
+            "salvage": 5,
+            "badges": { "rarity": Common, "amount": 1 },
+            "components": 1,
+            "forgeBadges": { "rarity": , "amount": 0 },
+        },
+        {
+            "gold": 90,
+            "salvage": 5,
+            "badges": { "rarity": Common, "amount": 1 },
+            "components": 1,
+            "forgeBadges": { "rarity": , "amount": 0 },
+        },
+        {
+            "gold": 120,
+            "salvage": 5,
+            "badges": { "rarity": Common, "amount": 1 },
+            "components": 2,
+            "forgeBadges": { "rarity": , "amount": 0 },
+        },
+        {
+            "gold": 180,
+            "salvage": 5,
+            "badges": { "rarity": Common, "amount": 1 },
+            "components": 2,
+            "forgeBadges": { "rarity": , "amount": 0 },
+        },
+        {
+            "gold": 240,
+            "salvage": 5,
+            "badges": { "rarity": Common, "amount": 1 },
+            "components": 3,
+            "forgeBadges": { "rarity": , "amount": 0 },
+        },
+        {
+            "gold": 300,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 3,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 360,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 3,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 420,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 3,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 480,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 4,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 540,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 4,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 600,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 5,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 750,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 5,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 900,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 5,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 1050,
+            "salvage": 0,
+            "badges": { "rarity": Uncommon, "amount": 1 },
+            "components": 5,
+            "forgeBadges": { "rarity": Uncommon, "amount": 1 },
+        },
+        {
+            "gold": 1200,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 6,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 1500,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 6,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 1800,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 6,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 2100,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 7,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 2400,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 7,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 2700,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 8,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 3000,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 8,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 3300,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 9,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 3600,
+            "salvage": 0,
+            "badges": { "rarity": Rare, "amount": 1 },
+            "components": 10,
+            "forgeBadges": { "rarity": Rare, "amount": 1 },
+        },
+        {
+            "gold": 3900,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 11,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 4200,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 12,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 4500,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 13,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 4800,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 14,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 5100,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 15,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 5400,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 16,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 5700,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 17,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 6000,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 18,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 6600,
+            "salvage": 0,
+            "badges": { "rarity": Epic, "amount": 1 },
+            "components": 19,
+            "forgeBadges": { "rarity": Epic, "amount": 1 },
+        },
+        {
+            "gold": 7200,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 1 },
+            "components": 20,
+            "forgeBadges": { "rarity": Legendary, "amount": 1 },
+        },
+        {
+            "gold": 7800,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 1 },
+            "components": 21,
+            "forgeBadges": { "rarity": Legendary, "amount": 1 },
+        },
+        {
+            "gold": 8400,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 1 },
+            "components": 22,
+            "forgeBadges": { "rarity": Legendary, "amount": 1 },
+        },
+        {
+            "gold": 9000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 1 },
+            "components": 23,
+            "forgeBadges": { "rarity": Legendary, "amount": 1 },
+        },
+        {
+            "gold": 9600,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 1 },
+            "components": 24,
+            "forgeBadges": { "rarity": Legendary, "amount": 1 },
+        },
+        {
+            "gold": 10800,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 1 },
+            "components": 26,
+            "forgeBadges": { "rarity": Legendary, "amount": 1 },
+        },
+        {
+            "gold": 12000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 2 },
+            "components": 28,
+            "forgeBadges": { "rarity": Legendary, "amount": 2 },
+        },
+        {
+            "gold": 13500,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 3 },
+            "components": 30,
+            "forgeBadges": { "rarity": Legendary, "amount": 3 },
+        },
+        {
+            "gold": 15000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 4 },
+            "components": 32,
+            "forgeBadges": { "rarity": Legendary, "amount": 4 },
+        },
+        {
+            "gold": 18000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 5 },
+            "components": 34,
+            "forgeBadges": { "rarity": Legendary, "amount": 5 },
+        },
+        {
+            "gold": 24000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 6 },
+            "components": 36,
+            "forgeBadges": { "rarity": Legendary, "amount": 6 },
+        },
+        {
+            "gold": 30000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 7 },
+            "components": 39,
+            "forgeBadges": { "rarity": Legendary, "amount": 7 },
+        },
+        {
+            "gold": 45000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 8 },
+            "components": 42,
+            "forgeBadges": { "rarity": Legendary, "amount": 8 },
+        },
+        {
+            "gold": 60000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 9 },
+            "components": 46,
+            "forgeBadges": { "rarity": Legendary, "amount": 9 },
+        },
+        {
+            "gold": 75000,
+            "salvage": 0,
+            "badges": { "rarity": Legendary, "amount": 10 },
+            "components": 50,
+            "forgeBadges": { "rarity": Legendary, "amount": 10 },
+        },
+        {
+            "gold": 80000,
+            "salvage": 0,
+            "badges": { "rarity": Mythic, "amount": 1 },
+            "components": 50,
+            "forgeBadges": { "rarity": Mythic, "amount": 1 },
+        },
+        {
+            "gold": 85000,
+            "salvage": 0,
+            "badges": { "rarity": Mythic, "amount": 1 },
+            "components": 50,
+            "forgeBadges": { "rarity": Mythic, "amount": 1 },
+        },
+        {
+            "gold": 90000,
+            "salvage": 0,
+            "badges": { "rarity": Mythic, "amount": 1 },
+            "components": 50,
+            "forgeBadges": { "rarity": Mythic, "amount": 1 },
+        },
+        {
+            "gold": 95000,
+            "salvage": 0,
+            "badges": { "rarity": Mythic, "amount": 1 },
+            "components": 50,
+            "forgeBadges": { "rarity": Mythic, "amount": 1 },
+        },
+        {
+            "gold": 100000,
+            "salvage": 0,
+            "badges": { "rarity": Mythic, "amount": 1 },
+            "components": 50,
+            "forgeBadges": { "rarity": Mythic, "amount": 1 },
+        }
+    ]
+}

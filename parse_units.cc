@@ -6,6 +6,7 @@
 #include "absl/strings/match.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_replace.h"
+#include "absl/strings/strip.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
 #include "status_macros.h"
@@ -214,12 +215,44 @@ absl::StatusOr<Npc> ParseNpc(const absl::string_view id,
   return npc;
 }
 
+absl::StatusOr<MachineOfWarUpgradeCosts> ParseUpgradeCost(
+    const Json::Value& root) {
+  MachineOfWarUpgradeCosts costs;
+  if (!root.isObject()) {
+    return absl::InvalidArgumentError("Upgrade cost is not an object.");
+  }
+  for (const absl::string_view member : root.getMemberNames()) {
+    RET_CHECK(root[member].isInt()) << "Invalid type for " << member;
+    if (member == "gold") {
+      costs.set_gold(root[member].asInt());
+    } else if (member == "dust") {
+      costs.set_salvage(root[member].asInt());
+    } else if (member == "machinesOfWarToken") {
+      costs.set_components(root[member].asInt());
+    } else if (absl::StartsWith(member, "itemAscensionResource_")) {
+      MachineOfWarUpgradeCosts::Badges& badges = *costs.mutable_forge_badges();
+      badges.set_rarity(absl::StripPrefix(member, "itemAscensionResource_"));
+      badges.set_amount(root[member].asInt());
+    } else if (absl::StartsWith(member, "abilityToken")) {
+      MachineOfWarUpgradeCosts::Badges& badges = *costs.mutable_badges();
+      badges.set_rarity(absl::StripPrefix(member, "abilityToken"));
+      badges.set_amount(root[member].asInt());
+    } else {
+      return absl::InvalidArgumentError(
+          absl::StrCat("Unknown upgrade cost type: ", member));
+    }
+  }
+  return costs;
+}
+
 }  // namespace
 
 absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
   RET_CHECK(root.isObject()) << "Parsed JSON is not an object.";
   RET_CHECK(root.isMember("lineup")) << "Missing 'lineup' in JSON.";
   RET_CHECK(root.isMember("abilities")) << "Missing 'abilities' in JSON.";
+  RET_CHECK(root.isMember("abilityUpgradeCostsMoW"))
+      << "Missing 'abilityUpgradeCostsMoW' in JSON.";
   RET_CHECK(root.isMember("damageProfileModifiers"))
       << "Missing 'damageProfileModifiers' in JSON.";
   RET_CHECK(root.isMember("xpLevels")) << "Missing 'xpLevels' in JSON.";
@@ -343,6 +376,16 @@ absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
       }
     }
   }
+
+  RET_CHECK(root["abilityUpgradeCostsMoW"].isArray())
+      << "'abilityUpgradeCostsMoW' is not an array.";
+  for (const Json::Value& cost : root["abilityUpgradeCostsMoW"]) {
+    RET_CHECK(cost.isObject())
+        << "'abilityUpgradeCostsMoW' entry is not an object.";
+    MachineOfWarUpgradeCosts& new_cost = *units.add_mow_upgrade_costs();
+    ASSIGN_OR_RETURN(new_cost, ParseUpgradeCost(cost));
+  }
+
   return units;
 }
 
