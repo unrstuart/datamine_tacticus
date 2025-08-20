@@ -318,6 +318,7 @@ void EmitCampaignBattle(std::ostream& out, const GameConfig& config,
   out << "    \"" << GetBattleId(campaign, battle) << "\": {\n";
   out << "        \"campaign\": \"" << GetCampaignName(campaign) << "\",\n";
   out << "        \"campaignType\": \"" << GetCampaignType(campaign) << "\",\n";
+  out << "        \"energyCost\": " << battle.energy_cost() << ",\n";
   int node_number;
   absl::string_view battle_id = battle.id();
   if (absl::EndsWith(battle.id(), "B")) {
