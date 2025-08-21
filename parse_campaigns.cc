@@ -1,5 +1,9 @@
 #include "parse_campaigns.h"
 
+#include <iostream>
+#include <random>
+
+#include "absl/flags/flag.h"
 #include "absl/log/log.h"
 #include "absl/status/statusor.h"
 #include "absl/strings/ascii.h"
@@ -9,9 +13,69 @@
 #include "miner.pb.h"
 #include "status_macros.h"
 
+ABSL_FLAG(int, effective_rate_simulation_runs, 1'000'000'000,
+          "Number of simulation runs for effective rate calculation");
+
 namespace dataminer {
 
 namespace {
+
+// Simulates SP's mercy system to determine the effective rate of a reward.
+// The mercy system reduces the denominator by 1 every time you fail to get a
+// reward, ensuring that you eventually get one. This also significantly
+// increases the chance of certain rewards. The lower the denominator, the much
+// higher the effective rate is compared to the calculated rate.
+float GetEffectiveRate(const int num, const int denom) {
+  // num -> (denom -> effective rate)
+  static std::map<int, std::map<int, float>> effective_rates;
+  auto outer_it = effective_rates.find(num);
+  if (outer_it != effective_rates.end()) {
+    auto inner_it = outer_it->second.find(denom);
+    if (inner_it != outer_it->second.end()) {
+      return inner_it->second;
+    }
+  }
+
+  int num_runs = absl::GetFlag(FLAGS_effective_rate_simulation_runs);
+  if (num_runs <= 0) {
+    LOG(ERROR) << "Invalid number of simulation runs: " << num_runs;
+    return 0.0f;
+  }
+
+  int success = 0;
+  // SP reduces the denominator by 1 every time you fail to get a reward,
+  // ensuring that you eventually get one.
+  int adjust = 0;
+  std::cerr << std::flush;
+  std::cerr << "Calculating effective rate of " << num << "/" << denom
+            << " -       ";
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  int64_t last_output = -1;
+  for (int i = 0; i < num_runs; ++i) {
+    std::uniform_int_distribution<> dis(0, denom - adjust - 1);
+    int chance = dis(gen);
+    const int64_t output = static_cast<int64_t>(i * 10000) / num_runs;
+    if (output > last_output) {
+      last_output = output;
+      std::cerr << "\b\b\b\b\b\b"
+                << absl::StrFormat("%5.2f%%",
+                                   static_cast<float>(output) / 100.0f);
+      if (output % 100 == 0) std::cerr << std::flush;
+    }
+    if (chance < num) {
+      ++success;
+      adjust = 0;
+    } else {
+      ++adjust;
+    }
+  }
+  const float result =
+      static_cast<float>(static_cast<double>(success) / num_runs);
+  effective_rates[num][denom] = result;
+  std::cerr << "\b\b\b\b\b\b" << "100% - effective rate: " << result << "\n";
+  return result;
+}
 
 absl::StatusOr<Campaign::Battle::GuaranteedRewardItem>
 ParseGuaranteedRewardItem(absl::string_view item) {
@@ -73,6 +137,8 @@ absl::StatusOr<Campaign::Battle::PotentialRewardItem> ParsePotentialRewardItem(
       << "Invalid denominator in potential reward item.";
   ret.set_chance_numerator(chance_numerator);
   ret.set_chance_denominator(chance_denominator);
+  ret.set_effective_rate(
+      GetEffectiveRate(ret.chance_numerator(), ret.chance_denominator()));
   return ret;
 }
 

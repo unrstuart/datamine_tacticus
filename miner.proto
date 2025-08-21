@@ -62,6 +62,13 @@ message Campaign {
       optional string id = 1;
       optional int32 chance_numerator = 2;
       optional int32 chance_denominator = 3;
+      // We use a raid simulation to gather the effective drop
+      // rate. Essentially, every time you fail to get a reward,
+      // the mercy system reduces the change denominator by 1.
+      // Thus, when the numerator and denominator are equal, you
+      // are guaranteed to get the reward. We run a simulation
+      // of 1B raids to determine the effective drop rate.
+      optional float effective_rate = 4;
     }
     message Reward {
       repeated GuaranteedRewardItem base = 1; // base

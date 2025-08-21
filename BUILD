@@ -50,6 +50,7 @@ cc_library(
   hdrs = ["create_campaign_data.h"],
   deps = [
       ":miner_cc_proto",
+      "@abseil-cpp//absl/flags:flag",
       "@abseil-cpp//absl/log",
       "@abseil-cpp//absl/status:status",
       "@abseil-cpp//absl/strings",

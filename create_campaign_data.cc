@@ -1,5 +1,6 @@
 #include "create_campaign_data.h"
 
+#include <cstdlib>
 #include <fstream>
 #include <tuple>
 
@@ -46,7 +47,21 @@ std::string GetCampaignName(const Campaign& campaign) {
   return it->second;
 }
 
-std::string GetCampaignType(const Campaign& campaign) {
+std::string GetCampaignType(const Campaign& campaign,
+                            const Campaign::Battle& battle) {
+  if (GetCampaignName(campaign) == "Indomitus") {
+    int battle_number;
+    if (!absl::SimpleAtoi(battle.id(), &battle_number)) {
+      LOG(ERROR) << "Invalid battle id: " << battle.id();
+      return "Normal";
+    }
+    if (battle_number < 15) {
+      return "SuperEarly";
+    }
+    if (battle_number < 30) {
+      return "Early";
+    }
+  }
   if (absl::StartsWith(campaign.id(), "campaign")) return "Normal";
   if (absl::StartsWith(campaign.id(), "mirror")) return "Mirror";
   if (absl::StartsWith(campaign.id(), "elite")) return "Elite";
@@ -101,7 +116,9 @@ void EmitBattleRewards(std::ostream& out,
   out << "                    \"chance_numerator\": "
       << reward.chance_of().chance_numerator() << ",\n";
   out << "                    \"chance_denominator\": "
-      << reward.chance_of().chance_denominator() << "\n";
+      << reward.chance_of().chance_denominator() << ",\n";
+  out << "                    \"effective_rate\": "
+      << reward.chance_of().effective_rate() << "\n";
   out << "                }\n";
   out << "\n            ]\n";
   out << "        },\n";
@@ -317,7 +334,8 @@ void EmitCampaignBattle(std::ostream& out, const GameConfig& config,
                         const Campaign::Battle& battle) {
   out << "    \"" << GetBattleId(campaign, battle) << "\": {\n";
   out << "        \"campaign\": \"" << GetCampaignName(campaign) << "\",\n";
-  out << "        \"campaignType\": \"" << GetCampaignType(campaign) << "\",\n";
+  out << "        \"campaignType\": \"" << GetCampaignType(campaign, battle)
+      << "\",\n";
   out << "        \"energyCost\": " << battle.energy_cost() << ",\n";
   int node_number;
   absl::string_view battle_id = battle.id();
