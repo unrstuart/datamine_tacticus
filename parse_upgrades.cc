@@ -47,6 +47,11 @@ absl::StatusOr<Upgrades> ParseUpgrades(const Json::Value& root) {
   }
   for (const absl::string_view id : root.getMemberNames()) {
     Json::Value value = root.get(id, {});
+    if (id == "upgArmL008") {
+      // Snowprint has two Transdimensional Sanctums, one is uncraftable with no
+      // locations, the other is craftable. We ignore the uncraftable one.
+      continue;
+    }
     Upgrades::Upgrade& upgrade = *upgrades.add_upgrades();
     upgrade.set_id(id);
     if (!value.isMember("gold")) {
