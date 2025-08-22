@@ -166,8 +166,7 @@ absl::StatusOr<Campaign::Battle::Reward> ParseBattleReward(
 }
 
 absl::StatusOr<Campaign::Battle> ParseCampaignBattle(const Json::Value& battle,
-                                                     Campaign& campaign,
-                                                     bool& has_required_units) {
+                                                     Campaign& campaign) {
   Campaign::Battle campaign_battle;
   RET_CHECK(battle.isObject()) << "Each battle must be an object.";
   RET_CHECK(battle.isMember("battleId") && battle["battleId"].isString())
@@ -189,12 +188,11 @@ absl::StatusOr<Campaign::Battle> ParseCampaignBattle(const Json::Value& battle,
   for (const Json::Value& team : battle["playerTeams"]) {
     player_teams.push_back(team.asInt());
   }
-  if (!has_required_units && battle.isMember("requiredUnits") &&
-      battle["requiredUnits"].isArray()) {
+  if (battle.isMember("requiredUnits") && battle["requiredUnits"].isArray()) {
     for (const Json::Value& unit : battle["requiredUnits"]) {
       RET_CHECK(unit.isString())
           << "Each unit in 'requiredUnits' must be a string.";
-      campaign.add_required_units(unit.asString());
+      campaign_battle.add_required_units(unit.asString());
     }
   }
   RET_CHECK(battle.isMember("spawnpoints") && battle["spawnpoints"].isInt())
@@ -243,23 +241,12 @@ absl::StatusOr<Campaign> ParseCampaign(const Json::Value& campaign) {
         << "Each faction in 'allowedFactions' must be a string.";
     ret.add_allowed_factions(faction.asString());
   }
-  Json::Value units = campaign.get("unlockConditions", {})
-                          .get("requiredUnits", {})
-                          .get("unlockedUnitIds", {});
-  bool has_required_units = false;
-  if (units.isArray()) {
-    has_required_units = true;
-    for (const Json::Value& unit : units) {
-      RET_CHECK(unit.isString())
-          << "Each unit in 'unlockedUnitIds' must be a string.";
-      ret.add_required_units(unit.asString());
-    }
-  }
   Json::Value battles = campaign["battles"];
   RET_CHECK(battles.isArray()) << "Campaign 'battles' must be an array.";
   for (const Json::Value& battle : battles) {
-    ASSIGN_OR_RETURN(*ret.add_battles(),
-                     ParseCampaignBattle(battle, ret, has_required_units));
+    ASSIGN_OR_RETURN(
+        *ret.add_battles(),
+        ParseCampaignBattle(battle, ret));
   }
 
   return ret;

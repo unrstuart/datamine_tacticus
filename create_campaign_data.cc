@@ -118,7 +118,7 @@ void EmitBattleRewards(std::ostream& out,
   out << "                    \"chance_denominator\": "
       << reward.chance_of().chance_denominator() << ",\n";
   out << "                    \"effective_rate\": "
-      << reward.chance_of().effective_rate() << "\n";
+      << absl::StrFormat("%.3f", reward.chance_of().effective_rate()) << "\n";
   out << "                }\n";
   out << "\n            ]\n";
   out << "        },\n";
@@ -348,6 +348,14 @@ void EmitCampaignBattle(std::ostream& out, const GameConfig& config,
   }
   out << "        \"nodeNumber\": " << node_number << ",\n";
   out << "        \"slots\": " << battle.spawn_points() << ",\n";
+  out << "        \"requiredCharacterSnowprintIds\": [";
+  bool first = true;
+  for (const absl::string_view unit : battle.required_units()) {
+    if (!first) out << ",";
+    first = false;
+    out << "\"" << unit << "\"";
+  }
+  out << "],\n";
   EmitBattleRewards(out, battle.reward());
   EmitEnemies(out, config, battle);
   out << "    }";

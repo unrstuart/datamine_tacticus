@@ -92,6 +92,7 @@ message Campaign {
     optional int32 max_attempts = 6; // maxAttempts
     optional int32 spawn_points = 9; // spawnpoints
     optional int32 energy_cost = 10; // staminaCost
+    repeated string required_units = 13; // requiredUnits
 
     // The format is 'id:level'. The level can be retrieved
     // from the npcs object.
@@ -100,7 +101,6 @@ message Campaign {
   optional string id = 1; // id
   repeated Battle battles = 2; // battles
   repeated string allowed_factions = 3; // unlockConditions.requiredUnits.allowedFactions
-  repeated string required_units = 4; // unlockConditions.requiredUnits.unlockUnitIds
 }
 
 // battles.campaigns
