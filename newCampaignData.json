@@ -681,7 +681,7 @@
                     "id": "shards_necroWarden",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -738,7 +738,7 @@
                     "id": "upgHpC004",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -787,7 +787,7 @@
                     "id": "upgDmgC002",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -836,7 +836,7 @@
                     "id": "shards_ultraTigurius",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -885,7 +885,7 @@
                     "id": "upgArmC001",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -1004,7 +1004,7 @@
                     "id": "shards_ultraEliminatorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -1068,7 +1068,7 @@
                     "id": "upgDmgC009",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -1189,7 +1189,7 @@
                     "id": "shards_ultraInceptorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -1367,7 +1367,7 @@
                     "id": "shards_ultraApothecary",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -1431,7 +1431,7 @@
                     "id": "upgArmC003",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -1472,7 +1472,7 @@
                     "id": "shards_adeptRetributor",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -1529,7 +1529,7 @@
                     "id": "shards_necroDestroyer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -1659,7 +1659,7 @@
                     "id": "upgArmC002",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -1731,7 +1731,7 @@
                     "id": "upgHpC003",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -1991,7 +1991,7 @@
                     "id": "upgHpC001",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2070,7 +2070,7 @@
                     "id": "upgDmgC001",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2135,7 +2135,7 @@
                     "id": "upgHpC006",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2473,7 +2473,7 @@
                     "id": "upgHpC014",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2537,7 +2537,7 @@
                     "id": "shards_necroSpyder",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -2602,7 +2602,7 @@
                     "id": "upgDmgC003",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2666,7 +2666,7 @@
                     "id": "upgDmgC005",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2731,7 +2731,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2810,7 +2810,7 @@
                     "id": "upgHpC002",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2875,7 +2875,7 @@
                     "id": "upgDmgC004",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -2947,7 +2947,7 @@
                     "id": "upgDmgC006",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -3004,7 +3004,7 @@
                     "id": "upgDmgC011",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -3068,7 +3068,7 @@
                     "id": "upgHpC007",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -3198,7 +3198,7 @@
                     "id": "upgDmgC007",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -3263,7 +3263,7 @@
                     "id": "upgDmgC008",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -3320,7 +3320,7 @@
                     "id": "upgArmC005",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -3434,7 +3434,7 @@
                     "id": "upgHpC008",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -3491,7 +3491,7 @@
                     "id": "shards_necroPlasmancer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -3773,7 +3773,7 @@
                     "id": "upgArmC007",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -3982,7 +3982,7 @@
                     "id": "upgHpC009",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4305,7 +4305,7 @@
                     "id": "upgDmgC015",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4370,7 +4370,7 @@
                     "id": "upgArmE013",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -4441,7 +4441,7 @@
                     "id": "upgHpL010",
                     "chance_numerator": 1,
                     "chance_denominator": 10,
-                    "effective_rate": 0.182
+                    "effective_rate": 0.181
                 }
 
             ]
@@ -4506,7 +4506,7 @@
                     "id": "shards_necroOverlord",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -4579,7 +4579,7 @@
                     "id": "upgHpC010",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4620,7 +4620,7 @@
                     "id": "upgDmgC014",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4669,7 +4669,7 @@
                     "id": "upgHpC014",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4782,7 +4782,7 @@
                     "id": "upgHpC015",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4823,7 +4823,7 @@
                     "id": "upgHpC013",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4872,7 +4872,7 @@
                     "id": "upgArmC013",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4928,7 +4928,7 @@
                     "id": "upgDmgC013",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -4985,7 +4985,7 @@
                     "id": "upgArmC007",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5034,7 +5034,7 @@
                     "id": "upgHpC002",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5140,7 +5140,7 @@
                     "id": "upgHpC006",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5197,7 +5197,7 @@
                     "id": "upgDmgC012",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5246,7 +5246,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5303,7 +5303,7 @@
                     "id": "shards_astraBullgryn",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -5368,7 +5368,7 @@
                     "id": "upgArmC003",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5466,7 +5466,7 @@
                     "id": "upgHpC007",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5515,7 +5515,7 @@
                     "id": "upgDmgC010",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5564,7 +5564,7 @@
                     "id": "upgDmgC001",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5605,7 +5605,7 @@
                     "id": "upgDmgC015",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5760,7 +5760,7 @@
                     "id": "upgDmgC003",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5809,7 +5809,7 @@
                     "id": "upgHpC016",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5866,7 +5866,7 @@
                     "id": "upgArmC012",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -5923,7 +5923,7 @@
                     "id": "upgHpC003",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -6021,7 +6021,7 @@
                     "id": "upgDmgC002",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -6078,7 +6078,7 @@
                     "id": "shards_astraPrimarisPsy",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -6192,7 +6192,7 @@
                     "id": "upgDmgC009",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -6852,7 +6852,7 @@
                     "id": "upgDmgC011",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -6901,7 +6901,7 @@
                     "id": "shards_astraOrdnance",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -6966,7 +6966,7 @@
                     "id": "upgArmC001",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -7023,7 +7023,7 @@
                     "id": "upgDmgC004",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -7080,7 +7080,7 @@
                     "id": "upgArmC011",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -7129,7 +7129,7 @@
                     "id": "upgHpC005",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -7193,7 +7193,7 @@
                     "id": "upgHpC001",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -7291,7 +7291,7 @@
                     "id": "upgHpC017",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -7454,7 +7454,7 @@
                     "id": "upgDmgC005",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -7707,7 +7707,7 @@
                     "id": "shards_adeptCelestine",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -7764,7 +7764,7 @@
                     "id": "upgHpE017",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -8318,7 +8318,7 @@
                     "id": "upgHpE012",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -8367,7 +8367,7 @@
                     "id": "upgDmgE003",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -8424,7 +8424,7 @@
                     "id": "upgArmE009",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -8473,7 +8473,7 @@
                     "id": "shards_astraCreed",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -8538,7 +8538,7 @@
                     "id": "upgHpC015",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -8579,7 +8579,7 @@
                     "id": "upgHpC014",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -8620,7 +8620,7 @@
                     "id": "upgHpC013",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -8661,7 +8661,7 @@
                     "id": "upgDmgC014",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -8702,7 +8702,7 @@
                     "id": "upgArmC011",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -8743,7 +8743,7 @@
                     "id": "upgArmC012",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -8784,7 +8784,7 @@
                     "id": "upgHpC008",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -8825,7 +8825,7 @@
                     "id": "upgDmgC012",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -8980,7 +8980,7 @@
                     "id": "upgArmC013",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -9094,7 +9094,7 @@
                     "id": "upgHpC017",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -9135,7 +9135,7 @@
                     "id": "upgDmgC013",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -9176,7 +9176,7 @@
                     "id": "shards_templAggressor",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -9225,7 +9225,7 @@
                     "id": "upgHpC016",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -9266,7 +9266,7 @@
                     "id": "upgArmC006",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -9927,7 +9927,7 @@
                     "id": "shards_templSwordBrother",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -10465,7 +10465,7 @@
                     "id": "upgDmgE001",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -10563,7 +10563,7 @@
                     "id": "upgHpE003",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -10620,7 +10620,7 @@
                     "id": "upgDmgE004",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -10774,7 +10774,7 @@
                     "id": "shards_templAncient",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -11450,7 +11450,7 @@
                     "id": "upgArmC003",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -11564,7 +11564,7 @@
                     "id": "upgHpC006",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -11629,7 +11629,7 @@
                     "id": "shards_templChampion",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -11751,7 +11751,7 @@
                     "id": "upgHpC002",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -11800,7 +11800,7 @@
                     "id": "upgHpC005",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -11873,7 +11873,7 @@
                     "id": "upgDmgC010",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -11930,7 +11930,7 @@
                     "id": "upgDmgC011",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -11987,7 +11987,7 @@
                     "id": "upgDmgC009",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12036,7 +12036,7 @@
                     "id": "upgHpE015",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -12093,7 +12093,7 @@
                     "id": "upgDmgC007",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12288,7 +12288,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12410,7 +12410,7 @@
                     "id": "upgArmE010",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -12564,7 +12564,7 @@
                     "id": "shards_templHelbrecht",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -12637,7 +12637,7 @@
                     "id": "upgHpC008",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12678,7 +12678,7 @@
                     "id": "upgHpC016",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12719,7 +12719,7 @@
                     "id": "upgDmgC015",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12760,7 +12760,7 @@
                     "id": "upgDmgC013",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12801,7 +12801,7 @@
                     "id": "upgArmC013",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12850,7 +12850,7 @@
                     "id": "upgArmC005",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12899,7 +12899,7 @@
                     "id": "upgHpC010",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12948,7 +12948,7 @@
                     "id": "upgHpC015",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -12997,7 +12997,7 @@
                     "id": "upgDmgC014",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -13046,7 +13046,7 @@
                     "id": "upgDmgC004",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -13102,7 +13102,7 @@
                     "id": "upgArmC007",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -13151,7 +13151,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -13192,7 +13192,7 @@
                     "id": "upgHpC017",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -13298,7 +13298,7 @@
                     "id": "shards_thousTerminator",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -13494,7 +13494,7 @@
                     "id": "upgHpC003",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -13592,7 +13592,7 @@
                     "id": "upgDmgC011",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -13772,7 +13772,7 @@
                     "id": "upgArmC002",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -14049,7 +14049,7 @@
                     "id": "shards_thousInfernalMaster",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -14799,7 +14799,7 @@
                     "id": "shards_thousTzaangor",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -14913,7 +14913,7 @@
                     "id": "upgHpC001",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -15011,7 +15011,7 @@
                     "id": "upgHpC007",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -15109,7 +15109,7 @@
                     "id": "upgDmgC008",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -15493,7 +15493,7 @@
                     "id": "upgArmE008",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -15534,7 +15534,7 @@
                     "id": "shards_thousSorcerer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -15599,7 +15599,7 @@
                     "id": "upgHpC009",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -15852,7 +15852,7 @@
                     "id": "upgArmC006",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -15893,7 +15893,7 @@
                     "id": "upgDmgE010",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -15983,7 +15983,7 @@
                     "id": "upgArmC001",
                     "chance_numerator": 6,
                     "chance_denominator": 7,
-                    "effective_rate": 0.875
+                    "effective_rate": 0.874
                 }
 
             ]
@@ -16195,7 +16195,7 @@
                     "id": "upgHpE012",
                     "chance_numerator": 1,
                     "chance_denominator": 6,
-                    "effective_rate": 0.286
+                    "effective_rate": 0.285
                 }
 
             ]
@@ -16293,7 +16293,7 @@
                     "id": "shards_thousAhriman",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -16350,7 +16350,7 @@
                     "id": "upgArmC006",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -16399,7 +16399,7 @@
                     "id": "upgDmgC012",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -16448,7 +16448,7 @@
                     "id": "upgHpC010",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -16505,7 +16505,7 @@
                     "id": "upgHpC014",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -17104,7 +17104,7 @@
                     "id": "shards_adeptRetributor",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -17460,7 +17460,7 @@
                     "id": "upgHpC009",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -17630,7 +17630,7 @@
                     "id": "upgHpC013",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -17701,7 +17701,7 @@
                     "id": "upgDmgE005",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -17758,7 +17758,7 @@
                     "id": "upgDmgE003",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -17822,7 +17822,7 @@
                     "id": "upgHpC006",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -17871,7 +17871,7 @@
                     "id": "upgDmgE001",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -17934,7 +17934,7 @@
                     "id": "upgHpC015",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -17990,7 +17990,7 @@
                     "id": "shards_ultraInceptorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -18047,7 +18047,7 @@
                     "id": "upgHpE003",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -18686,7 +18686,7 @@
                     "id": "upgArmC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -18857,7 +18857,7 @@
                     "id": "shards_ultraEliminatorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -18978,7 +18978,7 @@
                     "id": "upgHpC008",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19099,7 +19099,7 @@
                     "id": "upgArmC005",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19156,7 +19156,7 @@
                     "id": "upgDmgC008",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19213,7 +19213,7 @@
                     "id": "upgDmgC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19327,7 +19327,7 @@
                     "id": "upgHpC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19474,7 +19474,7 @@
                     "id": "upgDmgC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19523,7 +19523,7 @@
                     "id": "upgHpC002",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19580,7 +19580,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19637,7 +19637,7 @@
                     "id": "upgDmgC010",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -19694,7 +19694,7 @@
                     "id": "shards_ultraTigurius",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -20044,7 +20044,7 @@
                     "id": "upgHpC005",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -20492,7 +20492,7 @@
                     "id": "upgArmE008",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -20541,7 +20541,7 @@
                     "id": "shards_ultraCalgar",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -20630,7 +20630,7 @@
                     "id": "upgDmgC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -20671,7 +20671,7 @@
                     "id": "upgHpC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -20867,7 +20867,7 @@
                     "id": "upgHpC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -20908,7 +20908,7 @@
                     "id": "upgArmC002",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -20998,7 +20998,7 @@
                     "id": "upgArmC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21226,7 +21226,7 @@
                     "id": "upgHpC016",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21340,7 +21340,7 @@
                     "id": "shards_blackTerminator",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -21405,7 +21405,7 @@
                     "id": "upgArmC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21462,7 +21462,7 @@
                     "id": "upgDmgC002",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21519,7 +21519,7 @@
                     "id": "upgHpC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21568,7 +21568,7 @@
                     "id": "upgDmgC009",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21609,7 +21609,7 @@
                     "id": "upgDmgC015",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21665,7 +21665,7 @@
                     "id": "upgDmgC014",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21722,7 +21722,7 @@
                     "id": "upgArmC006",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21763,7 +21763,7 @@
                     "id": "upgDmgC012",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21820,7 +21820,7 @@
                     "id": "upgHpC010",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -21869,7 +21869,7 @@
                     "id": "upgDmgE010",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -21918,7 +21918,7 @@
                     "id": "upgArmE010",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -21975,7 +21975,7 @@
                     "id": "upgHpE012",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -22032,7 +22032,7 @@
                     "id": "upgDmgE011",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -22089,7 +22089,7 @@
                     "id": "upgDmgE004",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -22146,7 +22146,7 @@
                     "id": "shards_blackPossession",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -22211,7 +22211,7 @@
                     "id": "upgHpE003",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -22480,7 +22480,7 @@
                     "id": "upgDmgE001",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -22945,7 +22945,7 @@
                     "id": "shards_blackObliterator",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -23760,7 +23760,7 @@
                     "id": "shards_blackHaarken",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -24484,7 +24484,7 @@
                     "id": "upgHpE015",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -24533,7 +24533,7 @@
                     "id": "upgDmgE005",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -24574,7 +24574,7 @@
                     "id": "shards_blackAbaddon",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -24631,7 +24631,7 @@
                     "id": "upgArmC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -24680,7 +24680,7 @@
                     "id": "upgDmgC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -24729,7 +24729,7 @@
                     "id": "upgDmgC012",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -24778,7 +24778,7 @@
                     "id": "upgDmgC002",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -24827,7 +24827,7 @@
                     "id": "upgHpC006",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -24876,7 +24876,7 @@
                     "id": "upgHpC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -24925,7 +24925,7 @@
                     "id": "upgArmC006",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -24966,7 +24966,7 @@
                     "id": "upgHpC014",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25015,7 +25015,7 @@
                     "id": "upgDmgC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25056,7 +25056,7 @@
                     "id": "upgDmgC011",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25113,7 +25113,7 @@
                     "id": "upgHpC002",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25170,7 +25170,7 @@
                     "id": "upgHpC017",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25227,7 +25227,7 @@
                     "id": "upgHpC015",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25268,7 +25268,7 @@
                     "id": "upgDmgC009",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25317,7 +25317,7 @@
                     "id": "shards_orksKillaKan",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -25374,7 +25374,7 @@
                     "id": "upgHpC013",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25423,7 +25423,7 @@
                     "id": "upgHpC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25480,7 +25480,7 @@
                     "id": "upgArmC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25537,7 +25537,7 @@
                     "id": "upgDmgC010",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25594,7 +25594,7 @@
                     "id": "upgHpC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25651,7 +25651,7 @@
                     "id": "upgDmgC013",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25700,7 +25700,7 @@
                     "id": "upgArmC013",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25904,7 +25904,7 @@
                     "id": "upgDmgC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -25945,7 +25945,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -26116,7 +26116,7 @@
                     "id": "shards_orksBigMek",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -26173,7 +26173,7 @@
                     "id": "upgArmC002",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -26230,7 +26230,7 @@
                     "id": "upgDmgC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -26409,7 +26409,7 @@
                     "id": "upgArmC012",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -26899,7 +26899,7 @@
                     "id": "shards_orksRuntherd",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -26956,7 +26956,7 @@
                     "id": "upgDmgC005",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -27802,7 +27802,7 @@
                     "id": "shards_orksNob",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -28079,7 +28079,7 @@
                     "id": "upgDmgC015",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -28527,7 +28527,7 @@
                     "id": "upgArmE013",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -28649,7 +28649,7 @@
                     "id": "shards_orksWarboss",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -28714,7 +28714,7 @@
                     "id": "upgHpC010",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -28755,7 +28755,7 @@
                     "id": "upgDmgC014",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -28796,7 +28796,7 @@
                     "id": "upgArmC005",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -28837,7 +28837,7 @@
                     "id": "upgDmgC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -28878,7 +28878,7 @@
                     "id": "upgArmC013",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -28919,7 +28919,7 @@
                     "id": "upgHpC016",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -28968,7 +28968,7 @@
                     "id": "upgHpC017",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29009,7 +29009,7 @@
                     "id": "upgHpC008",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29058,7 +29058,7 @@
                     "id": "upgArmC011",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29107,7 +29107,7 @@
                     "id": "upgDmgC015",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29148,7 +29148,7 @@
                     "id": "upgDmgC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29197,7 +29197,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29336,7 +29336,7 @@
                     "id": "shards_eldarRanger",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -29393,7 +29393,7 @@
                     "id": "upgArmC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29442,7 +29442,7 @@
                     "id": "upgDmgC011",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29491,7 +29491,7 @@
                     "id": "upgHpC013",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29548,7 +29548,7 @@
                     "id": "upgHpC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29646,7 +29646,7 @@
                     "id": "upgArmC012",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29703,7 +29703,7 @@
                     "id": "upgDmgC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29760,7 +29760,7 @@
                     "id": "upgHpC009",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -29809,7 +29809,7 @@
                     "id": "upgDmgC002",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -30135,7 +30135,7 @@
                     "id": "shards_eldarAutarch",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -30298,7 +30298,7 @@
                     "id": "upgArmC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -30355,7 +30355,7 @@
                     "id": "upgHpC005",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -30396,7 +30396,7 @@
                     "id": "upgHpC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -30445,7 +30445,7 @@
                     "id": "upgDmgC005",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -30502,7 +30502,7 @@
                     "id": "upgDmgC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -30600,7 +30600,7 @@
                     "id": "upgArmC006",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -30902,7 +30902,7 @@
                     "id": "shards_eldarFarseer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -31097,7 +31097,7 @@
                     "id": "upgHpC006",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -31513,7 +31513,7 @@
                     "id": "upgArmC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -31668,7 +31668,7 @@
                     "id": "upgArmE009",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -31709,7 +31709,7 @@
                     "id": "shards_eldarJainZar",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -32166,7 +32166,7 @@
                     "id": "upgDmgE003",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -32370,7 +32370,7 @@
                     "id": "upgHpE017",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -32476,7 +32476,7 @@
                     "id": "shards_eldarMauganRa",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -32546,7 +32546,7 @@
                     "id": "upgDmgU010",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -32678,7 +32678,7 @@
                     "id": "upgDmgU005",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -32885,7 +32885,7 @@
                     "id": "upgHpL100",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -32947,7 +32947,7 @@
                     "id": "upgHpR002",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -33017,7 +33017,7 @@
                     "id": "shards_necroWarden",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -33095,7 +33095,7 @@
                     "id": "upgArmU001",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -33165,7 +33165,7 @@
                     "id": "upgHpR022",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -33235,7 +33235,7 @@
                     "id": "upgHpR027",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -33359,7 +33359,7 @@
                     "id": "upgHpR001",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -33429,7 +33429,7 @@
                     "id": "upgDmgU011",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -33483,7 +33483,7 @@
                     "id": "upgDmgR002",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -33553,7 +33553,7 @@
                     "id": "shards_necroDestroyer",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -33631,7 +33631,7 @@
                     "id": "upgDmgR022",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -33693,7 +33693,7 @@
                     "id": "upgDmgR027",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -33825,7 +33825,7 @@
                     "id": "upgDmgR034",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -33895,7 +33895,7 @@
                     "id": "upgHpU002",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -33973,7 +33973,7 @@
                     "id": "upgArmR022",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -34051,7 +34051,7 @@
                     "id": "upgArmR027",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -34121,7 +34121,7 @@
                     "id": "shards_necroSpyder",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -34261,7 +34261,7 @@
                     "id": "upgArmR034",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -34383,7 +34383,7 @@
                     "id": "upgHpL102",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -34448,7 +34448,7 @@
                     "id": "upgHpL107",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -34583,7 +34583,7 @@
                     "id": "upgHpL114",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -34653,7 +34653,7 @@
                     "id": "shards_necroPlasmancer",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -34723,7 +34723,7 @@
                     "id": "upgArmU005",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -34785,7 +34785,7 @@
                     "id": "upgHpR005",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -34847,7 +34847,7 @@
                     "id": "upgArmR015",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -34917,7 +34917,7 @@
                     "id": "upgHpR011",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -34987,7 +34987,7 @@
                     "id": "upgDmgR009",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -35114,7 +35114,7 @@
                     "id": "upgHpL010",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -35184,7 +35184,7 @@
                     "id": "shards_necroOverlord",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -35262,7 +35262,7 @@
                     "id": "upgDmgU003",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -35324,7 +35324,7 @@
                     "id": "upgHpR023",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -35386,7 +35386,7 @@
                     "id": "upgDmgR023",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -35440,7 +35440,7 @@
                     "id": "upgArmR023",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -35494,7 +35494,7 @@
                     "id": "upgHpU009",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -35535,7 +35535,7 @@
                     "id": "upgHpL103",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -35597,7 +35597,7 @@
                     "id": "upgHpR018",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -35659,7 +35659,7 @@
                     "id": "shards_astraBullgryn",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -35729,7 +35729,7 @@
                     "id": "upgArmU007",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -35791,7 +35791,7 @@
                     "id": "upgHpR024",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -35853,7 +35853,7 @@
                     "id": "upgHpR038",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -36031,7 +36031,7 @@
                     "id": "upgDmgU019",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -36093,7 +36093,7 @@
                     "id": "upgDmgR003",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -36163,7 +36163,7 @@
                     "id": "shards_astraPrimarisPsy",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -36233,7 +36233,7 @@
                     "id": "upgDmgR024",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -36295,7 +36295,7 @@
                     "id": "upgDmgR038",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -36411,7 +36411,7 @@
                     "id": "upgDmgR007",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -36473,7 +36473,7 @@
                     "id": "upgHpU017",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -36535,7 +36535,7 @@
                     "id": "upgArmR009",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -36597,7 +36597,7 @@
                     "id": "upgArmR038",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -36659,7 +36659,7 @@
                     "id": "shards_astraOrdnance",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -36897,7 +36897,7 @@
                     "id": "upgHpL104",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -36954,7 +36954,7 @@
                     "id": "upgHpL118",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -37070,7 +37070,7 @@
                     "id": "upgHpU016",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -37132,7 +37132,7 @@
                     "id": "shards_adeptCelestine",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -37202,7 +37202,7 @@
                     "id": "upgArmU009",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -37256,7 +37256,7 @@
                     "id": "upgHpR008",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -37318,7 +37318,7 @@
                     "id": "upgArmR005",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -37380,7 +37380,7 @@
                     "id": "upgHpR007",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -37442,7 +37442,7 @@
                     "id": "upgDmgR025",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -37504,7 +37504,7 @@
                     "id": "upgArmR025",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -37553,7 +37553,7 @@
                     "id": "upgHpL105",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -37607,7 +37607,7 @@
                     "id": "shards_astraCreed",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -37685,7 +37685,7 @@
                     "id": "upgDmgU014",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -37754,7 +37754,7 @@
                     "id": "upgHpR010",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -37824,7 +37824,7 @@
                     "id": "upgDmgR026",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -37878,7 +37878,7 @@
                     "id": "upgArmR026",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -37932,7 +37932,7 @@
                     "id": "upgHpU012",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -37989,7 +37989,7 @@
                     "id": "upgHpL106",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -38051,7 +38051,7 @@
                     "id": "upgHpR019",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38137,7 +38137,7 @@
                     "id": "shards_templAggressor",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -38215,7 +38215,7 @@
                     "id": "upgArmU002",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -38269,7 +38269,7 @@
                     "id": "upgHpR032",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38339,7 +38339,7 @@
                     "id": "upgHpR036",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38401,7 +38401,7 @@
                     "id": "upgHpR035",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38463,7 +38463,7 @@
                     "id": "upgHpR033",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38525,7 +38525,7 @@
                     "id": "upgDmgU012",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -38587,7 +38587,7 @@
                     "id": "upgDmgR006",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38657,7 +38657,7 @@
                     "id": "shards_templSwordBrother",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -38719,7 +38719,7 @@
                     "id": "upgDmgR032",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38773,7 +38773,7 @@
                     "id": "upgDmgR036",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38835,7 +38835,7 @@
                     "id": "upgDmgR035",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38905,7 +38905,7 @@
                     "id": "upgDmgR033",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -38967,7 +38967,7 @@
                     "id": "upgHpU014",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -39021,7 +39021,7 @@
                     "id": "upgArmR032",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -39091,7 +39091,7 @@
                     "id": "upgArmR036",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -39153,7 +39153,7 @@
                     "id": "shards_templAncient",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -39231,7 +39231,7 @@
                     "id": "upgArmR035",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -39285,7 +39285,7 @@
                     "id": "upgArmR033",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -39391,7 +39391,7 @@
                     "id": "upgHpL112",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -39440,7 +39440,7 @@
                     "id": "upgHpL116",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -39489,7 +39489,7 @@
                     "id": "upgHpL115",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -39546,7 +39546,7 @@
                     "id": "upgHpL113",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -39608,7 +39608,7 @@
                     "id": "shards_templChampion",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -39686,7 +39686,7 @@
                     "id": "upgArmU009",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -39756,7 +39756,7 @@
                     "id": "upgHpU001",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -39818,7 +39818,7 @@
                     "id": "upgArmR006",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -39880,7 +39880,7 @@
                     "id": "upgHpR021",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -39958,7 +39958,7 @@
                     "id": "upgDmgR021",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40020,7 +40020,7 @@
                     "id": "upgArmR021",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40085,7 +40085,7 @@
                     "id": "upgHpL101",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -40147,7 +40147,7 @@
                     "id": "shards_templHelbrecht",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -40225,7 +40225,7 @@
                     "id": "upgDmgU009",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -40279,7 +40279,7 @@
                     "id": "upgHpR028",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40325,7 +40325,7 @@
                     "id": "upgDmgR028",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40379,7 +40379,7 @@
                     "id": "upgArmR028",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40441,7 +40441,7 @@
                     "id": "upgHpU007",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -40490,7 +40490,7 @@
                     "id": "upgHpL108",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -40544,7 +40544,7 @@
                     "id": "upgHpR014",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40614,7 +40614,7 @@
                     "id": "shards_thousTerminator",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -40676,7 +40676,7 @@
                     "id": "upgArmU014",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -40784,7 +40784,7 @@
                     "id": "upgHpR037",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40846,7 +40846,7 @@
                     "id": "upgHpR031",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40900,7 +40900,7 @@
                     "id": "upgHpR039",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -40962,7 +40962,7 @@
                     "id": "upgDmgU004",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -41024,7 +41024,7 @@
                     "id": "upgDmgR005",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -41078,7 +41078,7 @@
                     "id": "shards_thousInfernalMaster",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -41194,7 +41194,7 @@
                     "id": "upgDmgR037",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -41248,7 +41248,7 @@
                     "id": "upgDmgR031",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -41310,7 +41310,7 @@
                     "id": "upgDmgR039",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -41364,7 +41364,7 @@
                     "id": "upgHpU016",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -41472,7 +41472,7 @@
                     "id": "upgArmR037",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -41534,7 +41534,7 @@
                     "id": "shards_thousTzaangor",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -41604,7 +41604,7 @@
                     "id": "upgArmR031",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -41666,7 +41666,7 @@
                     "id": "upgArmR039",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -41826,7 +41826,7 @@
                     "id": "upgHpL117",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -41875,7 +41875,7 @@
                     "id": "upgHpL111",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -41940,7 +41940,7 @@
                     "id": "upgHpL119",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -41994,7 +41994,7 @@
                     "id": "shards_thousSorcerer",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -42064,7 +42064,7 @@
                     "id": "upgArmU013",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -42126,7 +42126,7 @@
                     "id": "upgArmU006",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -42180,7 +42180,7 @@
                     "id": "upgArmR010",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -42226,7 +42226,7 @@
                     "id": "upgHpR029",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -42280,7 +42280,7 @@
                     "id": "upgDmgR029",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -42334,7 +42334,7 @@
                     "id": "upgArmR029",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -42391,7 +42391,7 @@
                     "id": "upgHpL109",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -42445,7 +42445,7 @@
                     "id": "shards_thousAhriman",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -42577,7 +42577,7 @@
                     "id": "upgHpR011",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -42639,7 +42639,7 @@
                     "id": "upgDmgR009",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -42701,7 +42701,7 @@
                     "id": "upgHpU012",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -42815,7 +42815,7 @@
                     "id": "upgHpL010",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -42872,7 +42872,7 @@
                     "id": "upgArmL203",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -42926,7 +42926,7 @@
                     "id": "shards_adeptRetributor",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -43066,7 +43066,7 @@
                     "id": "upgHpR001",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43136,7 +43136,7 @@
                     "id": "upgHpR035",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43206,7 +43206,7 @@
                     "id": "upgHpR037",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43268,7 +43268,7 @@
                     "id": "upgHpR027",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43397,7 +43397,7 @@
                     "id": "upgDmgL001",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -43459,7 +43459,7 @@
                     "id": "shards_ultraInceptorSgt",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -43521,7 +43521,7 @@
                     "id": "upgDmgR034",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43583,7 +43583,7 @@
                     "id": "upgDmgR035",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43652,7 +43652,7 @@
                     "id": "upgDmgR037",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43721,7 +43721,7 @@
                     "id": "upgDmgR027",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43837,7 +43837,7 @@
                     "id": "upgArmR034",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43906,7 +43906,7 @@
                     "id": "upgArmR035",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -43976,7 +43976,7 @@
                     "id": "shards_ultraEliminatorSgt",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -44054,7 +44054,7 @@
                     "id": "upgArmR037",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -44124,7 +44124,7 @@
                     "id": "upgArmR027",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -44243,7 +44243,7 @@
                     "id": "upgHpL114",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -44307,7 +44307,7 @@
                     "id": "upgHpL115",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -44370,7 +44370,7 @@
                     "id": "upgHpL117",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -44434,7 +44434,7 @@
                     "id": "upgHpL107",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -44504,7 +44504,7 @@
                     "id": "shards_ultraTigurius",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -44574,7 +44574,7 @@
                     "id": "upgArmR006",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -44698,7 +44698,7 @@
                     "id": "upgDmgU010",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -44812,7 +44812,7 @@
                     "id": "upgHpL100",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -44869,7 +44869,7 @@
                     "id": "upgArmL203",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -44918,7 +44918,7 @@
                     "id": "upgDmgL001",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -44987,7 +44987,7 @@
                     "id": "shards_ultraCalgar",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -45103,7 +45103,7 @@
                     "id": "upgHpR007",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -45165,7 +45165,7 @@
                     "id": "upgDmgR025",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -45227,7 +45227,7 @@
                     "id": "upgArmR025",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -45333,7 +45333,7 @@
                     "id": "upgHpL105",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -45390,7 +45390,7 @@
                     "id": "upgArmL202",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -45444,7 +45444,7 @@
                     "id": "shards_blackTerminator",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -45576,7 +45576,7 @@
                     "id": "upgHpR022",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -45638,7 +45638,7 @@
                     "id": "upgHpR032",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -45692,7 +45692,7 @@
                     "id": "upgHpR036",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -45746,7 +45746,7 @@
                     "id": "upgHpR024",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -45852,7 +45852,7 @@
                     "id": "upgDmgL204",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -45914,7 +45914,7 @@
                     "id": "shards_blackPossession",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -45984,7 +45984,7 @@
                     "id": "upgDmgR022",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46038,7 +46038,7 @@
                     "id": "upgDmgR032",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46100,7 +46100,7 @@
                     "id": "upgDmgR036",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46162,7 +46162,7 @@
                     "id": "upgDmgR024",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46262,7 +46262,7 @@
                     "id": "upgArmR022",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46324,7 +46324,7 @@
                     "id": "upgArmR032",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46378,7 +46378,7 @@
                     "id": "shards_blackObliterator",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -46448,7 +46448,7 @@
                     "id": "upgArmR036",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46502,7 +46502,7 @@
                     "id": "upgArmR009",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46613,7 +46613,7 @@
                     "id": "upgHpL102",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -46662,7 +46662,7 @@
                     "id": "upgHpL112",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -46711,7 +46711,7 @@
                     "id": "upgHpL116",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -46768,7 +46768,7 @@
                     "id": "upgHpL104",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -46830,7 +46830,7 @@
                     "id": "shards_blackHaarken",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -46900,7 +46900,7 @@
                     "id": "upgDmgR005",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -46946,7 +46946,7 @@
                     "id": "upgHpR023",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -47008,7 +47008,7 @@
                     "id": "upgDmgR023",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -47070,7 +47070,7 @@
                     "id": "upgArmR023",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -47119,7 +47119,7 @@
                     "id": "upgHpL103",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -47176,7 +47176,7 @@
                     "id": "upgArmL202",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -47233,7 +47233,7 @@
                     "id": "upgDmgL204",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -47279,7 +47279,7 @@
                     "id": "shards_blackAbaddon",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -47411,7 +47411,7 @@
                     "id": "upgHpR021",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -47473,7 +47473,7 @@
                     "id": "upgDmgR021",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -47535,7 +47535,7 @@
                     "id": "upgArmR021",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -47649,7 +47649,7 @@
                     "id": "upgHpL101",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -47698,7 +47698,7 @@
                     "id": "upgArmL001",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -47760,7 +47760,7 @@
                     "id": "shards_orksKillaKan",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -47892,7 +47892,7 @@
                     "id": "upgHpR033",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -47954,7 +47954,7 @@
                     "id": "upgHpR031",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -48184,7 +48184,7 @@
                     "id": "upgDmgL003",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -48246,7 +48246,7 @@
                     "id": "shards_orksBigMek",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -48316,7 +48316,7 @@
                     "id": "upgDmgR033",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -48378,7 +48378,7 @@
                     "id": "upgDmgR031",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -48642,7 +48642,7 @@
                     "id": "upgArmR033",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -48696,7 +48696,7 @@
                     "id": "upgArmR031",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -48758,7 +48758,7 @@
                     "id": "shards_orksRuntherd",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -49001,7 +49001,7 @@
                     "id": "upgHpL113",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -49058,7 +49058,7 @@
                     "id": "upgHpL111",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -49128,7 +49128,7 @@
                     "id": "upgArmU008",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -49260,7 +49260,7 @@
                     "id": "shards_orksNob",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -49330,7 +49330,7 @@
                     "id": "upgHpR002",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -49408,7 +49408,7 @@
                     "id": "upgHpR010",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -49478,7 +49478,7 @@
                     "id": "upgDmgR026",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -49548,7 +49548,7 @@
                     "id": "upgArmR026",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -49613,7 +49613,7 @@
                     "id": "upgHpL106",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -49678,7 +49678,7 @@
                     "id": "upgArmL001",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -49743,7 +49743,7 @@
                     "id": "upgDmgL003",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -49821,7 +49821,7 @@
                     "id": "shards_orksWarboss",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -49945,7 +49945,7 @@
                     "id": "upgHpR029",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -49999,7 +49999,7 @@
                     "id": "upgDmgR029",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -50053,7 +50053,7 @@
                     "id": "upgArmR029",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -50167,7 +50167,7 @@
                     "id": "upgHpL109",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -50216,7 +50216,7 @@
                     "id": "upgArmL204",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -50278,7 +50278,7 @@
                     "id": "shards_eldarRanger",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -50464,7 +50464,7 @@
                     "id": "upgHpR039",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -50580,7 +50580,7 @@
                     "id": "upgHpR038",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -50694,7 +50694,7 @@
                     "id": "upgDmgL202",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -50748,7 +50748,7 @@
                     "id": "shards_eldarAutarch",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -50818,7 +50818,7 @@
                     "id": "upgDmgR007",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -50872,7 +50872,7 @@
                     "id": "upgDmgR039",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -50988,7 +50988,7 @@
                     "id": "upgDmgR038",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -51158,7 +51158,7 @@
                     "id": "upgArmR039",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -51204,7 +51204,7 @@
                     "id": "shards_eldarFarseer",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -51328,7 +51328,7 @@
                     "id": "upgArmR038",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -51444,7 +51444,7 @@
                     "id": "upgArmU001",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.334
+                    "effective_rate": 0.333
                 }
 
             ]
@@ -51501,7 +51501,7 @@
                     "id": "upgHpL119",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -51607,7 +51607,7 @@
                     "id": "upgHpL118",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -51661,7 +51661,7 @@
                     "id": "shards_eldarJainZar",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -51739,7 +51739,7 @@
                     "id": "upgDmgR003",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -51793,7 +51793,7 @@
                     "id": "upgHpR028",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -51847,7 +51847,7 @@
                     "id": "upgDmgR028",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -51909,7 +51909,7 @@
                     "id": "upgArmR028",
                     "chance_numerator": 1,
                     "chance_denominator": 12,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -51958,7 +51958,7 @@
                     "id": "upgHpL108",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -52015,7 +52015,7 @@
                     "id": "upgArmL204",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -52072,7 +52072,7 @@
                     "id": "upgDmgL202",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -52134,7 +52134,7 @@
                     "id": "shards_eldarMauganRa",
                     "chance_numerator": 1,
                     "chance_denominator": 24,
-                    "effective_rate": 0.080
+                    "effective_rate": 0.079
                 }
 
             ]
@@ -52207,7 +52207,7 @@
                     "id": "upgHpC015",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52248,7 +52248,7 @@
                     "id": "upgDmgC009",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52297,7 +52297,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52411,7 +52411,7 @@
                     "id": "upgHpC014",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52460,7 +52460,7 @@
                     "id": "upgDmgC010",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52501,7 +52501,7 @@
                     "id": "shards_admecMarshall",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -52550,7 +52550,7 @@
                     "id": "upgArmC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52591,7 +52591,7 @@
                     "id": "upgHpC002",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52640,7 +52640,7 @@
                     "id": "upgDmgC013",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52738,7 +52738,7 @@
                     "id": "shards_admecRuststalker",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -52795,7 +52795,7 @@
                     "id": "upgArmC006",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -52877,7 +52877,7 @@
                     "id": "upgHpE012",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -53081,7 +53081,7 @@
                     "id": "shards_admecManipulus",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -53350,7 +53350,7 @@
                     "id": "shards_admecDominus",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -53618,7 +53618,7 @@
                     "id": "upgDmgE004",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -53927,7 +53927,7 @@
                     "id": "shards_admecDestroyer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -54147,7 +54147,7 @@
                     "id": "upgArmE010",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -54310,7 +54310,7 @@
                     "id": "shards_admecMarshall",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -54547,7 +54547,7 @@
                     "id": "shards_admecRuststalker",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -54686,7 +54686,7 @@
                     "id": "upgArmL203",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -54906,7 +54906,7 @@
                     "id": "shards_admecManipulus",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -55183,7 +55183,7 @@
                     "id": "shards_admecDominus",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -55256,7 +55256,7 @@
                     "id": "upgHpL114",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -55321,7 +55321,7 @@
                     "id": "shards_admecDestroyer",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -55386,7 +55386,7 @@
                     "id": "mythicShards_admecMarshall",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -55451,7 +55451,7 @@
                     "id": "upgDmgL003",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -55532,7 +55532,7 @@
                     "id": "mythicShards_admecRuststalker",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -55605,7 +55605,7 @@
                     "id": "mythicShards_admecManipulus",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -55662,7 +55662,7 @@
                     "id": "mythicShards_admecDominus",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -55719,7 +55719,7 @@
                     "id": "mythicShards_admecDestroyer",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -55792,7 +55792,7 @@
                     "id": "upgHpM001",
                     "chance_numerator": 3,
                     "chance_denominator": 25,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -55849,7 +55849,7 @@
                     "id": "upgHpC009",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -55890,7 +55890,7 @@
                     "id": "upgDmgC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -55931,7 +55931,7 @@
                     "id": "upgArmC005",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -56037,7 +56037,7 @@
                     "id": "upgHpC010",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -56086,7 +56086,7 @@
                     "id": "upgDmgC008",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -56143,7 +56143,7 @@
                     "id": "shards_tyranDeathleaper",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -56200,7 +56200,7 @@
                     "id": "upgArmC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -56249,7 +56249,7 @@
                     "id": "upgHpC001",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -56306,7 +56306,7 @@
                     "id": "upgDmgC014",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -56412,7 +56412,7 @@
                     "id": "shards_tyranWingedPrime",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -56461,7 +56461,7 @@
                     "id": "upgArmC003",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -56559,7 +56559,7 @@
                     "id": "upgHpE015",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -56786,7 +56786,7 @@
                     "id": "shards_tyranNeurothrope",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -57063,7 +57063,7 @@
                     "id": "shards_tyranParasite",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -57290,7 +57290,7 @@
                     "id": "upgDmgE010",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -57583,7 +57583,7 @@
                     "id": "shards_tyranTyrantGuard",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -57771,7 +57771,7 @@
                     "id": "upgArmE013",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -57942,7 +57942,7 @@
                     "id": "shards_tyranDeathleaper",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -58211,7 +58211,7 @@
                     "id": "shards_tyranWingedPrime",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -58366,7 +58366,7 @@
                     "id": "upgArmL202",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -58594,7 +58594,7 @@
                     "id": "shards_tyranNeurothrope",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -58871,7 +58871,7 @@
                     "id": "shards_tyranParasite",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -58928,7 +58928,7 @@
                     "id": "upgHpL113",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -58969,7 +58969,7 @@
                     "id": "shards_tyranTyrantGuard",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -59026,7 +59026,7 @@
                     "id": "mythicShards_tyranDeathleaper",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -59091,7 +59091,7 @@
                     "id": "upgDmgL202",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -59164,7 +59164,7 @@
                     "id": "mythicShards_tyranWingedPrime",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -59221,7 +59221,7 @@
                     "id": "mythicShards_tyranNeurothrope",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -59278,7 +59278,7 @@
                     "id": "mythicShards_tyranParasite",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -59359,7 +59359,7 @@
                     "id": "mythicShards_tyranTyrantGuard",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -59416,7 +59416,7 @@
                     "id": "upgHpM002",
                     "chance_numerator": 3,
                     "chance_denominator": 25,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]
@@ -59473,7 +59473,7 @@
                     "id": "upgHpC017",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -59514,7 +59514,7 @@
                     "id": "upgDmgC015",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -59563,7 +59563,7 @@
                     "id": "upgArmC012",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -59677,7 +59677,7 @@
                     "id": "upgHpC014",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -59734,7 +59734,7 @@
                     "id": "upgDmgC009",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -59775,7 +59775,7 @@
                     "id": "shards_tauCrisis",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -59824,7 +59824,7 @@
                     "id": "upgArmC005",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -59865,7 +59865,7 @@
                     "id": "upgHpC008",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -59914,7 +59914,7 @@
                     "id": "upgDmgC007",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -60012,7 +60012,7 @@
                     "id": "shards_tauMarksman",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -60069,7 +60069,7 @@
                     "id": "upgArmC004",
                     "chance_numerator": 12,
                     "chance_denominator": 13,
-                    "effective_rate": 0.929
+                    "effective_rate": 0.928
                 }
 
             ]
@@ -60151,7 +60151,7 @@
                     "id": "upgHpE017",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -60387,7 +60387,7 @@
                     "id": "shards_tauDarkstrider",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -60672,7 +60672,7 @@
                     "id": "shards_tauShadowsun",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -60908,7 +60908,7 @@
                     "id": "upgDmgE004",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.400
+                    "effective_rate": 0.399
                 }
 
             ]
@@ -61289,7 +61289,7 @@
                     "id": "shards_tauAunShi",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -61493,7 +61493,7 @@
                     "id": "upgArmE009",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.429
+                    "effective_rate": 0.428
                 }
 
             ]
@@ -61656,7 +61656,7 @@
                     "id": "shards_tauCrisis",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -61893,7 +61893,7 @@
                     "id": "shards_tauMarksman",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -62040,7 +62040,7 @@
                     "id": "upgArmL203",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -62268,7 +62268,7 @@
                     "id": "shards_tauDarkstrider",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -62529,7 +62529,7 @@
                     "id": "shards_tauShadowsun",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -62594,7 +62594,7 @@
                     "id": "upgHpL107",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -62643,7 +62643,7 @@
                     "id": "shards_tauAunShi",
                     "chance_numerator": 8,
                     "chance_denominator": 13,
-                    "effective_rate": 0.643
+                    "effective_rate": 0.642
                 }
 
             ]
@@ -62700,7 +62700,7 @@
                     "id": "mythicShards_tauCrisis",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -62765,7 +62765,7 @@
                     "id": "upgDmgL001",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.250
+                    "effective_rate": 0.249
                 }
 
             ]
@@ -62854,7 +62854,7 @@
                     "id": "mythicShards_tauMarksman",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -62927,7 +62927,7 @@
                     "id": "mythicShards_tauDarkstrider",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -63000,7 +63000,7 @@
                     "id": "mythicShards_tauShadowsun",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -63041,7 +63041,7 @@
                     "id": "mythicShards_tauAunShi",
                     "chance_numerator": 3,
                     "chance_denominator": 14,
-                    "effective_rate": 0.267
+                    "effective_rate": 0.266
                 }
 
             ]
@@ -63106,7 +63106,7 @@
                     "id": "upgHpM003",
                     "chance_numerator": 3,
                     "chance_denominator": 25,
-                    "effective_rate": 0.154
+                    "effective_rate": 0.153
                 }
 
             ]

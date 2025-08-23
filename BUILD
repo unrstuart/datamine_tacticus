@@ -45,6 +45,18 @@ cc_binary(
 )
 
 cc_library(
+  name = "calculate_effective_drop_rate",
+  srcs = ["calculate_effective_drop_rate.cc"],
+  hdrs = ["calculate_effective_drop_rate.h"],
+  deps = [
+      ":miner_cc_proto",
+      "@abseil-cpp//absl/flags:flag",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/log:check",
+  ]
+)
+
+cc_library(
   name = "create_campaign_data",
   srcs = ["create_campaign_data.cc"],
   hdrs = ["create_campaign_data.h"],
@@ -126,6 +138,7 @@ cc_library(
   srcs = ["parse_campaigns.cc"],
   hdrs = ["parse_campaigns.h"],
   deps = [
+      ":calculate_effective_drop_rate",
       ":miner_cc_proto",
       ":status_builder",
       ":status_macros",

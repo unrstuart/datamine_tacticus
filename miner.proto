@@ -366,3 +366,23 @@ message GameConfig {
   optional bool full_config = 3;
   optional string full_config_hash = 4;
 }
+
+// Stores information about campaing drop rates as calculated by the miner.
+message DropRateConfig {
+  message Rate {
+    optional int32 num = 1;
+    optional int32 denom = 2;
+    // Stores the drop rate as an integer. For example, a drop rate of
+    // 14.27% would be recorded as 143. A drop rate of 99.9% would be
+    // recorded as 999.
+    optional int32 rate_times_1000 = 3;
+  }
+  message Config {
+    // The number of simulations we run for each drop-rate calculation.
+    optional int32 num_sims_per_calc = 1;
+
+    // The various drop rates calculated.
+    repeated Rate rates = 2;
+  }
+  repeated Config config = 1;
+}
