@@ -681,7 +681,7 @@
                     "id": "shards_necroWarden",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -836,7 +836,7 @@
                     "id": "shards_ultraTigurius",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -1004,7 +1004,7 @@
                     "id": "shards_ultraEliminatorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -1189,7 +1189,7 @@
                     "id": "shards_ultraInceptorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -1367,7 +1367,7 @@
                     "id": "shards_ultraApothecary",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -1472,7 +1472,7 @@
                     "id": "shards_adeptRetributor",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -1529,7 +1529,7 @@
                     "id": "shards_necroDestroyer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -2537,7 +2537,7 @@
                     "id": "shards_necroSpyder",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -3491,7 +3491,7 @@
                     "id": "shards_necroPlasmancer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -4506,7 +4506,7 @@
                     "id": "shards_necroOverlord",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -5303,7 +5303,7 @@
                     "id": "shards_astraBullgryn",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -6078,7 +6078,7 @@
                     "id": "shards_astraPrimarisPsy",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -6901,7 +6901,7 @@
                     "id": "shards_astraOrdnance",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -7707,7 +7707,7 @@
                     "id": "shards_adeptCelestine",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -8473,7 +8473,7 @@
                     "id": "shards_astraCreed",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -9176,7 +9176,7 @@
                     "id": "shards_templAggressor",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -9927,7 +9927,7 @@
                     "id": "shards_templSwordBrother",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -10774,7 +10774,7 @@
                     "id": "shards_templAncient",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -11629,7 +11629,7 @@
                     "id": "shards_templChampion",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -12564,7 +12564,7 @@
                     "id": "shards_templHelbrecht",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -12724,21 +12724,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Xenos"],
-        "enemiesFactions": ["Aeldari", "ThousandSons"],
-        "enemiesTotal": 6,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["ThousandSons"],
+        "enemiesTotal": 4,
         "enemiesTypes": [
-            "Guardian",
             "Rubric Marine"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "eldarNpc1Guardian",
-                "name": "Guardian",
-                "count": 2,
-                "stars": 0,
-                "rank": "Stone 2"
-            },
             {
                 "id": "thousNpc3RubricMarine",
                 "name": "Rubric Marine",
@@ -12773,21 +12765,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Xenos"],
-        "enemiesFactions": ["Aeldari", "ThousandSons"],
-        "enemiesTotal": 9,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["ThousandSons"],
+        "enemiesTotal": 5,
         "enemiesTypes": [
-            "Guardian",
             "Rubric Marine"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "eldarNpc1Guardian",
-                "name": "Guardian",
-                "count": 4,
-                "stars": 1,
-                "rank": "Stone 2"
-            },
             {
                 "id": "thousNpc3RubricMarine",
                 "name": "Rubric Marine",
@@ -13018,22 +13002,14 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion", "ThousandSons"],
-        "enemiesTotal": 11,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion", "ThousandSons"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
-            "Cadian Guardsman",
             "Rubric Marine",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 1,
-                "rank": "Stone 2"
-            },
             {
                 "id": "blackNpc3TraitorGuardsman",
                 "name": "Traitor Guardsman",
@@ -13075,22 +13051,14 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion", "ThousandSons"],
-        "enemiesTotal": 16,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion", "ThousandSons"],
+        "enemiesTotal": 11,
         "enemiesTypes": [
-            "Cadian Guardsman",
             "Rubric Marine",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 5,
-                "stars": 1,
-                "rank": "Stone 2"
-            },
             {
                 "id": "blackNpc3TraitorGuardsman",
                 "name": "Traitor Guardsman",
@@ -13139,36 +13107,14 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion", "ThousandSons"],
-        "enemiesTotal": 12,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion", "ThousandSons"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
-            "Cadian Guardsman",
             "Rubric Marine",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 1,
-                "stars": 0,
-                "rank": "Stone 2"
-            },
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 1,
-                "stars": 1,
-                "rank": "Stone 2"
-            },
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 1,
-                "stars": 1,
-                "rank": "Stone 3"
-            },
             {
                 "id": "blackNpc3TraitorGuardsman",
                 "name": "Traitor Guardsman",
@@ -13352,7 +13298,7 @@
                     "id": "shards_thousTerminator",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -14103,7 +14049,7 @@
                     "id": "shards_thousInfernalMaster",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -14214,21 +14160,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Xenos"],
-        "enemiesFactions": ["Aeldari", "ThousandSons"],
-        "enemiesTotal": 10,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["ThousandSons"],
+        "enemiesTotal": 7,
         "enemiesTypes": [
-            "Guardian",
             "Screamer"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "eldarNpc1Guardian",
-                "name": "Guardian",
-                "count": 3,
-                "stars": 1,
-                "rank": "Iron 1"
-            },
             {
                 "id": "thousNpc2Screamer",
                 "name": "Screamer",
@@ -14263,21 +14201,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Xenos"],
-        "enemiesFactions": ["Aeldari", "ThousandSons"],
-        "enemiesTotal": 11,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["ThousandSons"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
-            "Guardian",
             "Screamer"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "eldarNpc1Guardian",
-                "name": "Guardian",
-                "count": 2,
-                "stars": 1,
-                "rank": "Iron 1"
-            },
             {
                 "id": "thousNpc2Screamer",
                 "name": "Screamer",
@@ -14753,23 +14683,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Xenos"],
-        "enemiesFactions": ["Aeldari", "ThousandSons"],
-        "enemiesTotal": 12,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["ThousandSons"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
-            "Guardian",
             "Pink Horror",
             "Rubric Marine",
             "Screamer"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "eldarNpc1Guardian",
-                "name": "Guardian",
-                "count": 3,
-                "stars": 2,
-                "rank": "Iron 1"
-            },
             {
                 "id": "thousNpc1PinkHorror",
                 "name": "Pink Horror",
@@ -14877,7 +14799,7 @@
                     "id": "shards_thousTzaangor",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -15612,7 +15534,7 @@
                     "id": "shards_thousSorcerer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -16371,7 +16293,7 @@
                     "id": "shards_thousAhriman",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -17182,7 +17104,7 @@
                     "id": "shards_adeptRetributor",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -18068,7 +17990,7 @@
                     "id": "shards_ultraInceptorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -18935,7 +18857,7 @@
                     "id": "shards_ultraEliminatorSgt",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -19772,7 +19694,7 @@
                     "id": "shards_ultraTigurius",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -20619,7 +20541,7 @@
                     "id": "shards_ultraCalgar",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -21418,7 +21340,7 @@
                     "id": "shards_blackTerminator",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -22224,7 +22146,7 @@
                     "id": "shards_blackPossession",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -23023,7 +22945,7 @@
                     "id": "shards_blackObliterator",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -23289,23 +23211,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 14,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
             "Chaos Terminator",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 5,
-                "stars": 7,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -23354,23 +23268,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 13,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
             "Chaos Terminator",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 4,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -23419,22 +23325,14 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 16,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 12,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 4,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -23476,38 +23374,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 13,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
-            "Cadian Lascannon Team",
             "Chaos Terminator",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 2,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
-            {
-                "id": "astraNpc2Lascannon",
-                "name": "Cadian Lascannon Team",
-                "count": 1,
-                "stars": 5,
-                "rank": "Bronze 3"
-            },
-            {
-                "id": "astraNpc2Lascannon",
-                "name": "Cadian Lascannon Team",
-                "count": 1,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -23556,31 +23431,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 13,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
-            "Cadian Lascannon Team",
             "Chaos Terminator",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
-            {
-                "id": "astraNpc2Lascannon",
-                "name": "Cadian Lascannon Team",
-                "count": 2,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -23849,31 +23708,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 15,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
-            "Cadian Lascannon Team",
             "Chaos Terminator",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 5,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
-            {
-                "id": "astraNpc2Lascannon",
-                "name": "Cadian Lascannon Team",
-                "count": 2,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -23917,7 +23760,7 @@
                     "id": "shards_blackHaarken",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -24362,23 +24205,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 15,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
             "Chaos Terminator",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 5,
-                "stars": 7,
-                "rank": "Silver 1"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -24434,23 +24269,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 13,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
             "Chaos Terminator",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 5,
-                "stars": 7,
-                "rank": "Silver 1"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -24499,31 +24326,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 14,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
-            "Cadian Lascannon Team",
             "Chaos Terminator",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 1,
-                "stars": 9,
-                "rank": "Silver 1"
-            },
-            {
-                "id": "astraNpc2Lascannon",
-                "name": "Cadian Lascannon Team",
-                "count": 3,
-                "stars": 7,
-                "rank": "Silver 1"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -24572,12 +24383,11 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["BlackLegion", "Ultramarines"],
-        "enemiesTotal": 15,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 11,
         "enemiesTypes": [
             "Bloodletter",
-            "Inceptor",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
@@ -24594,13 +24404,6 @@
                 "count": 5,
                 "stars": 9,
                 "rank": "Silver 1"
-            },
-            {
-                "id": "ultraNpc1Inceptor",
-                "name": "Inceptor",
-                "count": 4,
-                "stars": 9,
-                "rank": "Bronze 3"
             }
         ]
     },
@@ -24629,24 +24432,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion", "Ultramarines"],
-        "enemiesTotal": 15,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
             "Chaos Terminator",
-            "Inceptor",
             "Traitor Guardsman"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 9,
-                "rank": "Silver 1"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -24664,13 +24458,6 @@
             {
                 "id": "blackNpc3TraitorGuardsman",
                 "name": "Traitor Guardsman",
-                "count": 2,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
-            {
-                "id": "ultraNpc1Inceptor",
-                "name": "Inceptor",
                 "count": 2,
                 "stars": 9,
                 "rank": "Bronze 3"
@@ -24787,7 +24574,7 @@
                     "id": "shards_blackAbaddon",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -25530,7 +25317,7 @@
                     "id": "shards_orksKillaKan",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -26329,7 +26116,7 @@
                     "id": "shards_orksBigMek",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -27112,7 +26899,7 @@
                     "id": "shards_orksRuntherd",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -27353,23 +27140,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["BlackTemplars", "Tyranids"],
-        "enemiesTotal": 11,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Tyranids"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
             "Hormagaunt",
-            "Initiate with Pyreblaster",
             "Ripper Swarm",
             "Termagant"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "templNpc3InitiatePyreblaster",
-                "name": "Initiate with Pyreblaster",
-                "count": 2,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "tyranNpc1Hormagaunt",
                 "name": "Hormagaunt",
@@ -28023,7 +27802,7 @@
                     "id": "shards_orksNob",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -28484,22 +28263,14 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Orks"],
-        "enemiesTotal": 10,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Orks"],
+        "enemiesTotal": 7,
         "enemiesTypes": [
-            "Cadian Guardsman",
             "Grot Tank",
             "Ork Boy"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 7,
-                "rank": "Silver 1"
-            },
             {
                 "id": "orksNpc2OrkBoy",
                 "name": "Ork Boy",
@@ -28606,23 +28377,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Tyranids"],
-        "enemiesTotal": 11,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Tyranids"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
-            "Cadian Guardsman",
             "Hormagaunt",
             "Ripper Swarm",
             "Termagant"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 7,
-                "rank": "Silver 1"
-            },
             {
                 "id": "tyranNpc1Hormagaunt",
                 "name": "Hormagaunt",
@@ -28769,32 +28532,16 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "BlackTemplars", "Tyranids"],
-        "enemiesTotal": 11,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Tyranids"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
-            "Cadian Lascannon Team",
             "Hormagaunt",
-            "Neophyte",
             "Ripper Swarm",
             "Termagant",
             "Tyranid Warrior"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc2Lascannon",
-                "name": "Cadian Lascannon Team",
-                "count": 1,
-                "stars": 7,
-                "rank": "Silver 1"
-            },
-            {
-                "id": "templNpc2Neophyte",
-                "name": "Neophyte",
-                "count": 2,
-                "stars": 7,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "tyranNpc1Hormagaunt",
                 "name": "Hormagaunt",
@@ -28850,24 +28597,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "BlackTemplars", "Orks"],
-        "enemiesTotal": 12,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Orks"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
-            "Cadian Lascannon Team",
             "Grot",
             "Grot Tank",
-            "Initiate",
             "Ork Boy"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc2Lascannon",
-                "name": "Cadian Lascannon Team",
-                "count": 1,
-                "stars": 7,
-                "rank": "Silver 1"
-            },
             {
                 "id": "orksNpc1Grot",
                 "name": "Grot",
@@ -28888,13 +28626,6 @@
                 "count": 2,
                 "stars": 7,
                 "rank": "Silver 1"
-            },
-            {
-                "id": "templNpc1Initiate",
-                "name": "Initiate",
-                "count": 2,
-                "stars": 7,
-                "rank": "Bronze 3"
             }
         ]
     },
@@ -28918,7 +28649,7 @@
                     "id": "shards_orksWarboss",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -29605,7 +29336,7 @@
                     "id": "shards_eldarRanger",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -30404,7 +30135,7 @@
                     "id": "shards_eldarAutarch",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -31171,7 +30902,7 @@
                     "id": "shards_eldarFarseer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -31978,7 +31709,7 @@
                     "id": "shards_eldarJainZar",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -32745,7 +32476,7 @@
                     "id": "shards_eldarMauganRa",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -32815,7 +32546,7 @@
                     "id": "upgDmgU010",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -32947,7 +32678,7 @@
                     "id": "upgDmgU005",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -33154,7 +32885,7 @@
                     "id": "upgHpL100",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -33364,7 +33095,7 @@
                     "id": "upgArmU001",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -33698,7 +33429,7 @@
                     "id": "upgDmgU011",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -34164,7 +33895,7 @@
                     "id": "upgHpU002",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -34652,7 +34383,7 @@
                     "id": "upgHpL102",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -34717,7 +34448,7 @@
                     "id": "upgHpL107",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -34852,7 +34583,7 @@
                     "id": "upgHpL114",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -34992,7 +34723,7 @@
                     "id": "upgArmU005",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -35383,7 +35114,7 @@
                     "id": "upgHpL010",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -35531,7 +35262,7 @@
                     "id": "upgDmgU003",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -35763,7 +35494,7 @@
                     "id": "upgHpU009",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -35804,7 +35535,7 @@
                     "id": "upgHpL103",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -35998,7 +35729,7 @@
                     "id": "upgArmU007",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -36300,7 +36031,7 @@
                     "id": "upgDmgU019",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -36742,7 +36473,7 @@
                     "id": "upgHpU017",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -37166,7 +36897,7 @@
                     "id": "upgHpL104",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -37223,7 +36954,7 @@
                     "id": "upgHpL118",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -37339,7 +37070,7 @@
                     "id": "upgHpU016",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -37471,7 +37202,7 @@
                     "id": "upgArmU009",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -37822,7 +37553,7 @@
                     "id": "upgHpL105",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -37954,7 +37685,7 @@
                     "id": "upgDmgU014",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -38201,7 +37932,7 @@
                     "id": "upgHpU012",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -38258,7 +37989,7 @@
                     "id": "upgHpL106",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -38484,7 +38215,7 @@
                     "id": "upgArmU002",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -38794,7 +38525,7 @@
                     "id": "upgDmgU012",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -39236,7 +38967,7 @@
                     "id": "upgHpU014",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -39660,7 +39391,7 @@
                     "id": "upgHpL112",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -39709,7 +39440,7 @@
                     "id": "upgHpL116",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -39758,7 +39489,7 @@
                     "id": "upgHpL115",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -39815,7 +39546,7 @@
                     "id": "upgHpL113",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -39955,7 +39686,7 @@
                     "id": "upgArmU009",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -40025,7 +39756,7 @@
                     "id": "upgHpU001",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -40354,7 +40085,7 @@
                     "id": "upgHpL101",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -40494,7 +40225,7 @@
                     "id": "upgDmgU009",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -40710,7 +40441,7 @@
                     "id": "upgHpU007",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -40759,7 +40490,7 @@
                     "id": "upgHpL108",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -40945,7 +40676,7 @@
                     "id": "upgArmU014",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -41231,7 +40962,7 @@
                     "id": "upgDmgU004",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -41633,7 +41364,7 @@
                     "id": "upgHpU016",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -42095,7 +41826,7 @@
                     "id": "upgHpL117",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -42144,7 +41875,7 @@
                     "id": "upgHpL111",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -42209,7 +41940,7 @@
                     "id": "upgHpL119",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -42333,7 +42064,7 @@
                     "id": "upgArmU013",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -42395,7 +42126,7 @@
                     "id": "upgArmU006",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -42660,7 +42391,7 @@
                     "id": "upgHpL109",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -42970,7 +42701,7 @@
                     "id": "upgHpU012",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -43084,7 +42815,7 @@
                     "id": "upgHpL010",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -43141,7 +42872,7 @@
                     "id": "upgArmL203",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -43666,7 +43397,7 @@
                     "id": "upgDmgL001",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -44512,7 +44243,7 @@
                     "id": "upgHpL114",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -44576,7 +44307,7 @@
                     "id": "upgHpL115",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -44639,7 +44370,7 @@
                     "id": "upgHpL117",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -44703,7 +44434,7 @@
                     "id": "upgHpL107",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -44967,7 +44698,7 @@
                     "id": "upgDmgU010",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -45081,7 +44812,7 @@
                     "id": "upgHpL100",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -45138,7 +44869,7 @@
                     "id": "upgArmL203",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -45187,7 +44918,7 @@
                     "id": "upgDmgL001",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -45602,7 +45333,7 @@
                     "id": "upgHpL105",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -45659,7 +45390,7 @@
                     "id": "upgArmL202",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -46121,7 +45852,7 @@
                     "id": "upgDmgL204",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -46258,22 +45989,14 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AstraMilitarum", "BlackLegion"],
-        "enemiesTotal": 11,
+        "enemiesAlliances": ["Chaos"],
+        "enemiesFactions": ["BlackLegion"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Bloodletter",
-            "Cadian Guardsman",
             "Chaos Terminator"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 8,
-                "rank": "Silver 2"
-            },
             {
                 "id": "blackNpc1Bloodletter",
                 "name": "Bloodletter",
@@ -46890,7 +46613,7 @@
                     "id": "upgHpL102",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -46939,7 +46662,7 @@
                     "id": "upgHpL112",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -46988,7 +46711,7 @@
                     "id": "upgHpL116",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -47045,7 +46768,7 @@
                     "id": "upgHpL104",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -47396,7 +47119,7 @@
                     "id": "upgHpL103",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -47453,7 +47176,7 @@
                     "id": "upgArmL202",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -47510,7 +47233,7 @@
                     "id": "upgDmgL204",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -47926,7 +47649,7 @@
                     "id": "upgHpL101",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -47975,7 +47698,7 @@
                     "id": "upgArmL001",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -48461,7 +48184,7 @@
                     "id": "upgDmgL003",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -49278,7 +49001,7 @@
                     "id": "upgHpL113",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -49335,7 +49058,7 @@
                     "id": "upgHpL111",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -49405,7 +49128,7 @@
                     "id": "upgArmU008",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -49890,7 +49613,7 @@
                     "id": "upgHpL106",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -49955,7 +49678,7 @@
                     "id": "upgArmL001",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -50020,7 +49743,7 @@
                     "id": "upgDmgL003",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -50444,7 +50167,7 @@
                     "id": "upgHpL109",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -50493,7 +50216,7 @@
                     "id": "upgArmL204",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -50971,7 +50694,7 @@
                     "id": "upgDmgL202",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -51721,7 +51444,7 @@
                     "id": "upgArmU001",
                     "chance_numerator": 2,
                     "chance_denominator": 8,
-                    "effective_rate": 0.333
+                    "effective_rate": 0.334
                 }
 
             ]
@@ -51778,7 +51501,7 @@
                     "id": "upgHpL119",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -51884,7 +51607,7 @@
                     "id": "upgHpL118",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -52235,7 +51958,7 @@
                     "id": "upgHpL108",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -52292,7 +52015,7 @@
                     "id": "upgArmL204",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -52349,7 +52072,7 @@
                     "id": "upgDmgL202",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -52742,12 +52465,11 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AdeptusMechanicus", "BlackLegion"],
-        "enemiesTotal": 11,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AdeptusMechanicus"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
-            "Skitarii Vanguard",
-            "Traitor Guardsman"
+            "Skitarii Vanguard"
         ],
         "detailedEnemyTypes": [
             {
@@ -52756,13 +52478,6 @@
                 "count": 9,
                 "stars": 2,
                 "rank": "Iron 2"
-            },
-            {
-                "id": "blackNpc3TraitorGuardsman",
-                "name": "Traitor Guardsman",
-                "count": 2,
-                "stars": 3,
-                "rank": "Iron 3"
             }
         ]
     },
@@ -52786,7 +52501,7 @@
                     "id": "shards_admecMarshall",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -53023,7 +52738,7 @@
                     "id": "shards_admecRuststalker",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -53366,7 +53081,7 @@
                     "id": "shards_admecManipulus",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -53477,14 +53192,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AdeptusMechanicus", "BlackLegion"],
-        "enemiesTotal": 10,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AdeptusMechanicus"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Electro-priest",
             "Skitarii Vanguard",
-            "Tech-Priest Enginseer",
-            "Traitor Guardsman"
+            "Tech-Priest Enginseer"
         ],
         "detailedEnemyTypes": [
             {
@@ -53507,13 +53221,6 @@
                 "count": 3,
                 "stars": 5,
                 "rank": "Bronze 3"
-            },
-            {
-                "id": "blackNpc3TraitorGuardsman",
-                "name": "Traitor Guardsman",
-                "count": 2,
-                "stars": 7,
-                "rank": "Silver 1"
             }
         ]
     },
@@ -53591,14 +53298,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AdeptusMechanicus", "BlackLegion"],
-        "enemiesTotal": 12,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AdeptusMechanicus"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
             "Electro-priest",
             "Skitarii Vanguard",
-            "Tech-Priest Enginseer",
-            "Traitor Guardsman"
+            "Tech-Priest Enginseer"
         ],
         "detailedEnemyTypes": [
             {
@@ -53620,13 +53326,6 @@
                 "name": "Electro-priest",
                 "count": 5,
                 "stars": 5,
-                "rank": "Bronze 3"
-            },
-            {
-                "id": "blackNpc3TraitorGuardsman",
-                "name": "Traitor Guardsman",
-                "count": 2,
-                "stars": 9,
                 "rank": "Bronze 3"
             }
         ]
@@ -53651,7 +53350,7 @@
                     "id": "shards_admecDominus",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -54228,7 +53927,7 @@
                     "id": "shards_admecDestroyer",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -54448,7 +54147,7 @@
                     "id": "upgArmE010",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -54575,12 +54274,11 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AdeptusMechanicus", "BlackLegion"],
-        "enemiesTotal": 13,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AdeptusMechanicus"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
-            "Skitarii Vanguard",
-            "Traitor Guardsman"
+            "Skitarii Vanguard"
         ],
         "detailedEnemyTypes": [
             {
@@ -54589,13 +54287,6 @@
                 "count": 10,
                 "stars": 10,
                 "rank": "Silver 3"
-            },
-            {
-                "id": "blackNpc3TraitorGuardsman",
-                "name": "Traitor Guardsman",
-                "count": 3,
-                "stars": 9,
-                "rank": "Silver 2"
             }
         ]
     },
@@ -55440,14 +55131,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Chaos", "Imperial"],
-        "enemiesFactions": ["AdeptusMechanicus", "BlackLegion"],
-        "enemiesTotal": 12,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AdeptusMechanicus"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
             "Electro-priest",
             "Skitarii Vanguard",
-            "Tech-Priest Enginseer",
-            "Traitor Guardsman"
+            "Tech-Priest Enginseer"
         ],
         "detailedEnemyTypes": [
             {
@@ -55470,13 +55160,6 @@
                 "count": 3,
                 "stars": 10,
                 "rank": "Diamond 3"
-            },
-            {
-                "id": "blackNpc3TraitorGuardsman",
-                "name": "Traitor Guardsman",
-                "count": 3,
-                "stars": 11,
-                "rank": "Diamond 1"
             }
         ]
     },
@@ -56253,30 +55936,14 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Tyranids"],
-        "enemiesTotal": 14,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Tyranids"],
+        "enemiesTotal": 9,
         "enemiesTypes": [
-            "Cadian Guardsman",
-            "Cadian Vox-caster",
             "Hormagaunt",
             "Termagant"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 2,
-                "rank": "Iron 3"
-            },
-            {
-                "id": "astraNpc3Voxcaster",
-                "name": "Cadian Vox-caster",
-                "count": 2,
-                "stars": 2,
-                "rank": "Iron 3"
-            },
             {
                 "id": "tyranNpc1Hormagaunt",
                 "name": "Hormagaunt",
@@ -56476,36 +56143,20 @@
                     "id": "shards_tyranDeathleaper",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Tyranids"],
-        "enemiesTotal": 16,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Tyranids"],
+        "enemiesTotal": 12,
         "enemiesTypes": [
-            "Cadian Guardsman",
-            "Cadian Vox-caster",
             "Deathleaper",
             "Hormagaunt",
             "Termagant"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 2,
-                "rank": "Iron 3"
-            },
-            {
-                "id": "astraNpc3Voxcaster",
-                "name": "Cadian Vox-caster",
-                "count": 1,
-                "stars": 2,
-                "rank": "Iron 3"
-            },
             {
                 "id": "tyranBossDeathleaperCE",
                 "name": "Deathleaper",
@@ -56709,23 +56360,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Tyranids"],
-        "enemiesTotal": 18,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Tyranids"],
+        "enemiesTotal": 12,
         "enemiesTypes": [
-            "Cadian Guardsman",
             "Hormagaunt",
             "Termagant",
             "Tyranid Warrior"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 6,
-                "stars": 2,
-                "rank": "Iron 1"
-            },
             {
                 "id": "tyranNpc1Hormagaunt",
                 "name": "Hormagaunt",
@@ -56769,7 +56412,7 @@
                     "id": "shards_tyranWingedPrime",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -57143,7 +56786,7 @@
                     "id": "shards_tyranNeurothrope",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -57420,7 +57063,7 @@
                     "id": "shards_tyranParasite",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -57940,7 +57583,7 @@
                     "id": "shards_tyranTyrantGuard",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -58128,7 +57771,7 @@
                     "id": "upgArmE013",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -58304,23 +57947,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Tyranids"],
-        "enemiesTotal": 14,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Tyranids"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
-            "Cadian Guardsman",
             "Deathleaper",
             "Hormagaunt",
             "Termagant"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 4,
-                "stars": 9,
-                "rank": "Silver 2"
-            },
             {
                 "id": "tyranBossDeathleaperCE",
                 "name": "Deathleaper",
@@ -58524,23 +58159,15 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Tyranids"],
-        "enemiesTotal": 11,
+        "enemiesAlliances": ["Xenos"],
+        "enemiesFactions": ["Tyranids"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
-            "Cadian Guardsman",
             "Hormagaunt",
             "Termagant",
             "Tyranid Warrior"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "astraNpc1Guardsman",
-                "name": "Cadian Guardsman",
-                "count": 3,
-                "stars": 9,
-                "rank": "Silver 1"
-            },
             {
                 "id": "tyranNpc1Hormagaunt",
                 "name": "Hormagaunt",
@@ -59892,13 +59519,12 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Genestealers"],
-        "enemiesTotal": 14,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AstraMilitarum"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Cadian Guardsman",
-            "Cadian Lascannon Team",
-            "Neophyte Hybrid"
+            "Cadian Lascannon Team"
         ],
         "detailedEnemyTypes": [
             {
@@ -59914,13 +59540,6 @@
                 "count": 2,
                 "stars": 2,
                 "rank": "Iron 3"
-            },
-            {
-                "id": "genesNpc3Neophyte",
-                "name": "Neophyte Hybrid",
-                "count": 6,
-                "stars": 1,
-                "rank": "Stone 3"
             }
         ]
     },
@@ -59949,13 +59568,12 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Genestealers"],
-        "enemiesTotal": 14,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AstraMilitarum"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Cadian Guardsman",
-            "Cadian Vox-caster",
-            "Neophyte Hybrid"
+            "Cadian Vox-caster"
         ],
         "detailedEnemyTypes": [
             {
@@ -59971,13 +59589,6 @@
                 "count": 4,
                 "stars": 3,
                 "rank": "Iron 3"
-            },
-            {
-                "id": "genesNpc3Neophyte",
-                "name": "Neophyte Hybrid",
-                "count": 6,
-                "stars": 1,
-                "rank": "Stone 3"
             }
         ]
     },
@@ -60071,14 +59682,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Genestealers"],
-        "enemiesTotal": 15,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AstraMilitarum"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
             "Cadian Guardsman",
             "Cadian Lascannon Team",
-            "Cadian Vox-caster",
-            "Neophyte Hybrid"
+            "Cadian Vox-caster"
         ],
         "detailedEnemyTypes": [
             {
@@ -60101,13 +59711,6 @@
                 "count": 4,
                 "stars": 3,
                 "rank": "Iron 3"
-            },
-            {
-                "id": "genesNpc3Neophyte",
-                "name": "Neophyte Hybrid",
-                "count": 5,
-                "stars": 1,
-                "rank": "Stone 3"
             }
         ]
     },
@@ -60137,20 +59740,12 @@
             ]
         },
         "enemiesAlliances": ["Xenos"],
-        "enemiesFactions": ["Genestealers", "Tau"],
-        "enemiesTotal": 9,
+        "enemiesFactions": ["Tau"],
+        "enemiesTotal": 6,
         "enemiesTypes": [
-            "Fire Warrior",
-            "Purestrain Genestealer"
+            "Fire Warrior"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "genesNpc2Genestealer",
-                "name": "Purestrain Genestealer",
-                "count": 3,
-                "stars": 1,
-                "rank": "Iron 1"
-            },
             {
                 "id": "tauNpc1FireWarrior",
                 "name": "Fire Warrior",
@@ -60180,27 +59775,19 @@
                     "id": "shards_tauCrisis",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
         },
         "enemiesAlliances": ["Xenos"],
-        "enemiesFactions": ["Genestealers", "Tau"],
-        "enemiesTotal": 13,
+        "enemiesFactions": ["Tau"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Fire Warrior",
-            "Neophyte Hybrid",
             "Re'vas"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "genesNpc3Neophyte",
-                "name": "Neophyte Hybrid",
-                "count": 5,
-                "stars": 1,
-                "rank": "Stone 2"
-            },
             {
                 "id": "tauNpc1FireWarrior",
                 "name": "Fire Warrior",
@@ -60425,7 +60012,7 @@
                     "id": "shards_tauMarksman",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -60800,7 +60387,7 @@
                     "id": "shards_tauDarkstrider",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -61085,7 +60672,7 @@
                     "id": "shards_tauShadowsun",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -61702,7 +61289,7 @@
                     "id": "shards_tauAunShi",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -61813,13 +61400,12 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Genestealers"],
-        "enemiesTotal": 16,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AstraMilitarum"],
+        "enemiesTotal": 12,
         "enemiesTypes": [
             "Cadian Guardsman",
-            "Cadian Lascannon Team",
-            "Neophyte Hybrid"
+            "Cadian Lascannon Team"
         ],
         "detailedEnemyTypes": [
             {
@@ -61835,13 +61421,6 @@
                 "count": 4,
                 "stars": 10,
                 "rank": "Gold 1"
-            },
-            {
-                "id": "genesNpc3Neophyte",
-                "name": "Neophyte Hybrid",
-                "count": 4,
-                "stars": 5,
-                "rank": "Bronze 3"
             }
         ]
     },
@@ -61870,13 +61449,12 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Genestealers"],
-        "enemiesTotal": 14,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AstraMilitarum"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
             "Cadian Guardsman",
-            "Cadian Vox-caster",
-            "Neophyte Hybrid"
+            "Cadian Vox-caster"
         ],
         "detailedEnemyTypes": [
             {
@@ -61892,13 +61470,6 @@
                 "count": 3,
                 "stars": 11,
                 "rank": "Gold 2"
-            },
-            {
-                "id": "genesNpc3Neophyte",
-                "name": "Neophyte Hybrid",
-                "count": 4,
-                "stars": 7,
-                "rank": "Bronze 3"
             }
         ]
     },
@@ -61922,7 +61493,7 @@
                     "id": "upgArmE009",
                     "chance_numerator": 2,
                     "chance_denominator": 6,
-                    "effective_rate": 0.428
+                    "effective_rate": 0.429
                 }
 
             ]
@@ -61992,14 +61563,13 @@
 
             ]
         },
-        "enemiesAlliances": ["Imperial", "Xenos"],
-        "enemiesFactions": ["AstraMilitarum", "Genestealers"],
-        "enemiesTotal": 15,
+        "enemiesAlliances": ["Imperial"],
+        "enemiesFactions": ["AstraMilitarum"],
+        "enemiesTotal": 10,
         "enemiesTypes": [
             "Cadian Guardsman",
             "Cadian Lascannon Team",
-            "Cadian Vox-caster",
-            "Neophyte Hybrid"
+            "Cadian Vox-caster"
         ],
         "detailedEnemyTypes": [
             {
@@ -62022,13 +61592,6 @@
                 "count": 3,
                 "stars": 10,
                 "rank": "Gold 2"
-            },
-            {
-                "id": "genesNpc3Neophyte",
-                "name": "Neophyte Hybrid",
-                "count": 5,
-                "stars": 7,
-                "rank": "Bronze 3"
             }
         ]
     },
@@ -62058,20 +61621,12 @@
             ]
         },
         "enemiesAlliances": ["Xenos"],
-        "enemiesFactions": ["Genestealers", "Tau"],
-        "enemiesTotal": 11,
+        "enemiesFactions": ["Tau"],
+        "enemiesTotal": 7,
         "enemiesTypes": [
-            "Fire Warrior",
-            "Purestrain Genestealer"
+            "Fire Warrior"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "genesNpc2Genestealer",
-                "name": "Purestrain Genestealer",
-                "count": 4,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "tauNpc1FireWarrior",
                 "name": "Fire Warrior",
@@ -62107,21 +61662,13 @@
             ]
         },
         "enemiesAlliances": ["Xenos"],
-        "enemiesFactions": ["Genestealers", "Tau"],
-        "enemiesTotal": 12,
+        "enemiesFactions": ["Tau"],
+        "enemiesTotal": 8,
         "enemiesTypes": [
             "Fire Warrior",
-            "Neophyte Hybrid",
             "Re'vas"
         ],
         "detailedEnemyTypes": [
-            {
-                "id": "genesNpc3Neophyte",
-                "name": "Neophyte Hybrid",
-                "count": 4,
-                "stars": 9,
-                "rank": "Bronze 3"
-            },
             {
                 "id": "tauNpc1FireWarrior",
                 "name": "Fire Warrior",

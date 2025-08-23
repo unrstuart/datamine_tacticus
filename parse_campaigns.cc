@@ -202,8 +202,9 @@ absl::StatusOr<Campaign::Battle> ParseCampaignBattle(const Json::Value& battle,
     campaign_battle.set_energy_cost(battle["staminaCost"].asInt());
   }
   if (battle.isMember("units") && battle["units"].isArray()) {
-    int index = 0;
+    int index = -1;
     for (const Json::Value& unit_array : battle["units"]) {
+      ++index;
       if (player_teams[index] == 1) continue;  // Don't record friendlies.
       RET_CHECK(unit_array.isArray())
           << "Each unit in 'units' must be an array.";
