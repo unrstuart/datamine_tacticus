@@ -11,7 +11,6 @@ UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.40f1"
 log_level = os.environ.get("LOGLEVEL", "WARN").upper()
 logging.basicConfig(level=log_level, format="%(levelname)s: %(message)s")
 
-
 def unpack_sprite_atlas(atlas_data, out_filepath):
     for sprite_name, sprite_data in zip(atlas_data.m_PackedSpriteNamesToIndex, atlas_data.m_PackedSprites):
         save_image(sprite_data.read().image, out_filepath, sprite_name)
@@ -47,16 +46,15 @@ def unpack_all_assets(in_dir: str, out_dir: str):
                     if objType == "SpriteAtlas":
                         logging.debug(f"Unpacking SpriteAtlas {file_path}")
                         unpack_sprite_atlas(obj.read(), out_dir)
-                    elif objType == "Texture2DArray":
-                        logging.debug("Skipping Texture2DArray {path}, edit this script to include these assets")
-                        # Uncomment if we want Texture2DArray assets - they don't look useful
-                        # logging.debug(f"Unpacking Texture2DArray {file_path}")
-                        # unpack_texture_array(obj.read(), out_dir)
                     elif objType in ["Sprite", "Texture2D"]:
                         data = obj.read()
+                        logging.debug(f"Unpacking obj with attrs {dir(data)}")
                         out_name = os.path.basename(path) if data.m_Name is None else data.m_Name
                         logging.debug(f"Saving {objType} {out_name} to {out_dir}")
-                        save_image(data.image, out_dir, out_name)
+                        # save_image(data.image, out_dir, out_name)
+                    elif objType == "MonoBehaviour":
+                        logging.warning(f"Unpacking MonoBehaviour {file_path}")
+                        # unpack_monobehaviour(obj.read(), out_dir)
                 except:
                     logging.warning(f"Failed to unpack {path}, skipping...")
 

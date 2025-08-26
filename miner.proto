@@ -132,9 +132,16 @@ message ItemStatCapMultipliers {
 message Item {
   message Stats {
     optional int32 block_chance = 1; // blockChance
-    optional int32 block_damage = 2; // blockDamage
+    optional int32 block_damage = 2; // blockDmg
     optional int32 fixed_armor = 3; // fixedArmor
     optional int32 hp = 4; // hp
+    optional int32 crit_chance = 5; // critChance
+    optional int32 crit_damage = 6; // critDmg
+    optional int32 block_chance_bonus = 7; // blockChanceBonus
+    optional int32 block_damage_bonus = 8; // blockDmgBonus
+    optional int32 crit_chance_bonus = 9; // critChanceBonus
+    optional int32 crit_damage_bonus = 10; // critDmgBonus
+
   }
   message Level {
     optional int32 salvage_cost = 1; // dustCost
@@ -143,15 +150,20 @@ message Item {
     optional int32 mythic_salvage_cost = 4; // mythicDustCost
   }
   optional string id = 1; // the id of the object
+  optional string name = 11; // name
   optional string rarity = 2; // rarity
-  repeated string allowed_factions = 3; // allowedFactions
   optional string equipment_type = 4; // itemType
-  repeated Level levels = 5; // levels
-  optional string next_in_series = 6; // nextInSeries
   optional string ability_id = 7; // abilityId
   optional bool is_relic = 8; // isRelic
   optional bool is_unique_relic = 9; // isUniqueRelic
+  repeated string allowed_factions = 3; // allowedFactions
   repeated string allowed_units = 10; // allowedUnits
+  repeated Level levels = 5; // levels
+  // optional string next_in_series = 6; // nextInSeries
+}
+
+message Items {
+  repeated Item items = 1;  
 }
 
 message Achievement {
@@ -220,15 +232,17 @@ message Npc {
     optional int32 stars = 7; // StarLevel    
   }
   optional string id = 1;  // the object id
+  optional string name = 6; // name
   optional string faction_id = 2; // FactionId
   optional string alliance = 3; // GrandAllianceId
   optional int32 movement = 4; // Movement
   repeated string active_abilities = 5; // activeAbilities
-  optional string name = 6; // name
   repeated string passive_abilities = 7; // passiveAbilities
   repeated string traits = 8; // traits
   optional string visual_id = 9; // visualId
   repeated Stats stats = 10; // stats
+  optional Unit.Attack melee_attack = 11; // weapons[0]
+  optional Unit.Attack ranged_attack = 12; // weapons[1]
 }
 
 message MachineOfWar {
@@ -339,7 +353,7 @@ message ClientGameConfig {
   optional GlobalValues global_values = 3;
   // skip guilds
   optional ItemStatCapMultipliers item_stat_cap_multipliers = 4;
-  repeated Item items = 5;  
+  optional Items items = 5;  
   // skip liveEvents
   // skip loot for now, but come back to it, all the chests are there.
   // skip loyalty

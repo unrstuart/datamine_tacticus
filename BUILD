@@ -23,12 +23,14 @@ cc_binary(
     deps = [
       ":create_campaign_data",
       ":create_character_data",
+      ":create_equipment_data",
       ":create_mow_data",
       ":create_rank_up_data",
       ":create_recipe_data",
       ":miner_cc_proto",
       ":parse_avatars",
       ":parse_campaigns",
+      ":parse_items",
       ":parse_upgrades",
       ":parse_units",
       "//libjson:json",
@@ -73,6 +75,18 @@ cc_library(
   name = "create_character_data",
   srcs = ["create_character_data.cc"],
   hdrs = ["create_character_data.h"],
+  deps = [
+      ":miner_cc_proto",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "create_equipment_data",
+  srcs = ["create_equipment_data.cc"],
+  hdrs = ["create_equipment_data.h"],
   deps = [
       ":miner_cc_proto",
       "@abseil-cpp//absl/log",
@@ -141,6 +155,23 @@ cc_library(
       ":calculate_effective_drop_rate",
       ":miner_cc_proto",
       ":status_builder",
+      ":status_macros",
+      "//libjson:json",
+      "@abseil-cpp//absl/flags:flag",
+      "@abseil-cpp//absl/flags:parse",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/status:statusor",
+      "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "parse_items",
+  srcs = ["parse_items.cc"],
+  hdrs = ["parse_items.h"],
+  deps = [
+      ":miner_cc_proto",
       ":status_macros",
       "//libjson:json",
       "@abseil-cpp//absl/flags:flag",

@@ -53,17 +53,17 @@ class UnityAssetExtractor:
                     type_stats[obj_type] = type_stats.get(obj_type, 0) + 1
 
                     # Check if it's one of our target resource types
-                    if obj_type in ["Texture2D", "Sprite", "TextAsset", "MonoBehaviour"]:
+                    # if obj_type in ["Texture2D", "Sprite", "TextAsset", "MonoBehaviour"]:
+                    if obj_type in ["MonoBehaviour"]:
                         # Increment counter for this type
                         file_counters[obj_type] = file_counters.get(obj_type, 0) + 1
 
-                        print(
-                            f"Found target resource: {obj_type} (ID: {obj.path_id}, Sequence: {file_counters[obj_type]})")
-                        self._extract_single_asset(obj, file_counters[obj_type])
+                        # print(f"Found target resource: {obj_type} (ID: {obj.path_id}, Sequence: {file_counters[obj_type]})")
+                        self._extract_single_asset(env, obj, file_counters[obj_type])
                         processed_count += 1
 
-                    if asset_count % 100 == 0:
-                        print(f"Checked {asset_count} objects, processed {processed_count} target resources...")
+                    # if asset_count % 100 == 0:
+                    #     print(f"Checked {asset_count} objects, processed {processed_count} target resources...")
 
                 except Exception as e:
                     print(f"Error processing object (ID: {getattr(obj, 'path_id', 'unknown')}): {e}")
@@ -84,7 +84,7 @@ class UnityAssetExtractor:
 
         return True
 
-    def _extract_single_asset(self, obj, sequence_num):
+    def _extract_single_asset(self, env, obj, sequence_num):
         """Extract a single asset"""
         try:
             # Get the original object type
@@ -96,8 +96,8 @@ class UnityAssetExtractor:
             except Exception as read_e:
                 # MonoBehaviour read failures are common, try direct processing
                 if obj_type == "MonoBehaviour":
-                    print(f"MonoBehaviour read failed, trying fallback (ID: {obj.path_id}): {read_e}")
-                    self._extract_monobehaviour_fallback(obj, sequence_num)
+                    # print(f"MonoBehaviour read failed, trying fallback (ID: {obj.path_id}): {read_e}")
+                    # self._extract_monobehaviour_fallback(obj, sequence_num)
                     return
                 else:
                     print(f"Cannot read resource (ID: {obj.path_id}): {read_e}")
@@ -111,7 +111,7 @@ class UnityAssetExtractor:
                 # Use original object type
                 data_type = obj_type
 
-            print(f"Processing {data_type} resource: {getattr(data, 'name', f'unnamed_{obj.path_id}')}")
+            # print(f"Processing {data_type} resource: {getattr(data, 'name', f'unnamed_{obj.path_id}')}")
 
             # Process based on resource type, pass sequence number
             if data_type == "Texture2D":
@@ -121,7 +121,7 @@ class UnityAssetExtractor:
             elif data_type == "TextAsset":
                 self._extract_text_asset(data, obj, sequence_num)
             elif data_type == "MonoBehaviour":
-                self._extract_monobehaviour(data, obj, sequence_num)
+                self._extract_monobehaviour(env, data, obj, sequence_num)
 
         except Exception as e:
             obj_info = f"ID: {getattr(obj, 'path_id', 'unknown')}"
@@ -204,11 +204,11 @@ class UnityAssetExtractor:
     def _extract_texture2d(self, data, obj, sequence_num):
         """Extract Texture2D images"""
         try:
-            print(f"\n🖼️ Processing Texture2D (Sequence: {sequence_num}, ID: {obj.path_id})")
 
             # Get image data
             img = data.image
             if img:
+                print(f"\n🖼️ Processing Texture2D (Sequence: {sequence_num}, ID: {obj.path_id}, GUID: {obj.guid})")
                 # Get real filename
                 name = self._get_asset_name(data, obj, "Texture2D", sequence_num)
                 filename = self._sanitize_filename(f"{name}.png")
@@ -224,11 +224,11 @@ class UnityAssetExtractor:
     def _extract_sprite(self, data, obj, sequence_num):
         """Extract Sprite images"""
         try:
-            print(f"\n🎨 Processing Sprite (Sequence: {sequence_num}, ID: {obj.path_id})")
 
             # Get Sprite image
             img = data.image
             if img:
+                print(f"\n🎨 Processing Sprite (Sequence: {sequence_num}, ID: {obj.path_id}, GUID: {obj.guid})")
                 name = self._get_asset_name(data, obj, "Sprite", sequence_num)
                 filename = self._sanitize_filename(f"{name}.png")
                 filepath = self.sprite_path / filename
@@ -328,22 +328,43 @@ class UnityAssetExtractor:
         except Exception as e:
             print(f"❌ Failed to extract TextAsset: {e}")
 
-    def _extract_monobehaviour(self, data, obj, sequence_num):
+    def _extract_monobehaviour(self, env, data, obj, sequence_num):
         """Extract MonoBehaviour script data"""
         try:
-            print(f"\n⚙️ Processing MonoBehaviour (Sequence: {sequence_num}, ID: {obj.path_id})")
+            # print(f"\n⚙️ Processing MonoBehaviour (Sequence: {sequence_num}, ID: {obj.path_id})")
 
+            m_name_value = ''
             # Only process MonoBehaviour with m_Name = "I2Languages_en"
             if hasattr(data, 'm_Name'):
                 m_name_value = getattr(data, 'm_Name')
-                if m_name_value != "I2Languages_en":
-                    print(f"  Skipping MonoBehaviour: m_Name = '{m_name_value}' (not I2Languages_en)")
+                if m_name_value != "I2Languages_en" and not m_name_value.endswith("_visual") and not m_name_value.lower().startswith("gameconfig"):
+                    # if len(m_name_value) > 0:
+                    #     print(f"  Skipping MonoBehaviour: m_Name = '{m_name_value}' (not I2Languages_en)")
                     return
                 print(f"  Found target MonoBehaviour: m_Name = {m_name_value}")
             else:
                 print(f"  Skipping MonoBehaviour: no m_Name attribute")
                 return
 
+            if False and m_name_value.endswith("_visual"):
+                print(f"  {m_name_value} attrs: ", dir(data))
+                print(f"  {m_name_value} Sprite: ", getattr(data, 'Sprite', []))
+                print(f"  {m_name_value} RoundPortrait: ", getattr(data, 'RoundPortrait', []))
+                print(f"  {m_name_value} TinyRoundPortrait: ", getattr(data, 'TinyRoundPortrait', []))
+
+                sprite_ref = getattr(data, 'Sprite', None)
+
+                if sprite_ref:
+                    # find_and_process_asset_by_guid(env, sprite_ref.guid, m_name_value)
+                    sprite = env.get_asset_by_guid(sprite_ref.guid)
+                    print(f"  Found Sprite: {sprite.name}")
+                    for attr in dir(sprite):
+                        print(f"  attr[{attr}]: {getattr(sprite, attr)}")
+                    print("done processing, quitting")
+                    sys.exit(0)
+                else:
+                    sys.exit(1)
+            
             # Check if mSource content exists
             if hasattr(data, 'mSource'):
                 mSource_value = getattr(data, 'mSource')
@@ -431,13 +452,6 @@ class UnityAssetExtractor:
 
     def _extract_monobehaviour_fallback(self, obj, sequence_num):
         """Fallback method when MonoBehaviour read fails"""
-        try:
-            print(f"\n🔧 MonoBehaviour fallback processing (Sequence: {sequence_num}, ID: {obj.path_id})")
-            print(f"  Skipping: cannot check content from failed read MonoBehaviour")
-            # Cannot check m_Name and mSource from failed read, skip directly
-
-        except Exception as e:
-            print(f"❌ MonoBehaviour fallback extraction failed: {e}")
 
     def _sanitize_filename(self, filename):
         """Clean filename, remove invalid characters"""

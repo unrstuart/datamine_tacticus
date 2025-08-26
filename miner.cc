@@ -18,7 +18,24 @@
 //   --character_data=$MINING_OUTPUT/newCharacterData.json \
 //   --campaign_data=$MINING_OUTPUT/newCampaignData.json \
 //   --mow_data=$MINING_OUTPUT/newMowData.json \
+//   --equipment_data=$MINING_OUTPUT/newEquipmentData.json \
+//   --drop_rate_config_path=$MINING_OUTPUT/drop_rate_config.binarypb \
 //   --i18n_strings_json=I2Languages_en.json
+//
+// The drop-rate config above is used to cache the results of calculating
+// effective drop rates. Instead of implementing a bunch of matrix math, we
+// simulate many, many raids of a node with a specific chanceOf and memoize
+// the results. Persisting the data ensures file stability across multiple
+// runs.
+//
+// If you don't have a drop-rate config, you can specify
+// --allow_empty_drop_rate_config, which allows the miner to bootstrap the
+// config.
+//
+// The config can hold different effective rates based on the number of
+// simulations you want to run, with the default being 1B per chanceOf. If you
+// want to calculate effective rates for a different amount, you can change the
+// numver of sims per chanceOf with --effective_rate_simulation_runs.
 //
 // When you're done, you just need to copy the new files into the planner
 // directory, overwriting the previous files (don't worry, we use version
@@ -36,6 +53,7 @@
 #include "absl/strings/str_split.h"
 #include "create_campaign_data.h"
 #include "create_character_data.h"
+#include "create_equipment_data.h"
 #include "create_mow_data.h"
 #include "create_rank_up_data.h"
 #include "create_recipe_data.h"
@@ -44,6 +62,7 @@
 #include "miner.pb.h"
 #include "parse_avatars.h"
 #include "parse_campaigns.h"
+#include "parse_items.h"
 #include "parse_units.h"
 #include "parse_upgrades.h"
 #include "status_macros.h"
@@ -52,9 +71,8 @@ ABSL_FLAG(std::string, game_config, "", "The GameConfig.json file to parse");
 ABSL_FLAG(std::string, i18n_strings_json, "",
           "The json file with the i18n'd display strings for things like the "
           "characters' names and titles.");
-ABSL_FLAG(std::string, rank_up_unit, "", "The unit to rank up");
 ABSL_FLAG(std::string, rank_up_file, "",
-          "The file to write rank up information to.");
+          "The CSV file to write rank up information to.");
 ABSL_FLAG(std::string, recipe_data, "",
           "If not empty, writes all upgrade recipes to the specified file.");
 ABSL_FLAG(std::string, rank_up_data, "",
@@ -65,6 +83,8 @@ ABSL_FLAG(std::string, campaign_data, "",
           "If not empty, writes all campaign data to the specified file.");
 ABSL_FLAG(std::string, mow_data, "",
           "If not empty, writes all mow data to the specified file.");
+ABSL_FLAG(std::string, equipment_data, "",
+          "If not empty, writes all equipment data to the specified file.");
 
 namespace dataminer {
 namespace {
@@ -171,6 +191,9 @@ absl::StatusOr<ClientGameConfig> ParseClientGameConfig(
   ASSIGN_OR_RETURN(*client_config.mutable_battles(),
                    ParseCampaigns(root.get("battles", {})));
 
+  ASSIGN_OR_RETURN(*client_config.mutable_items(),
+                   ParseItems(root.get("items", {})));
+
   return client_config;
 }
 
@@ -204,9 +227,20 @@ absl::StatusOr<GameConfig> ParseGameConfig(Json::Value& root) {
   return config;
 }
 
+struct UpgradePtrLess {
+  bool operator()(const Upgrades::Upgrade* lhs,
+                  const Upgrades::Upgrade* rhs) const {
+    if (lhs->rarity() != rhs->rarity()) return lhs->rarity() < rhs->rarity();
+    return lhs->id() < rhs->id();
+  }
+};
+
+// Expands the materials required for upgrading a unit, recursively expanded
+// recipes if necessary. `upgrade_material` is the snowprint ID of the material
+// to expand.
 void ExpandMats(
     const std::map<std::string, const Upgrades::Upgrade*>& upgrades_map,
-    std::map<std::string, int>& total_mats,
+    std::map<const Upgrades::Upgrade*, int, UpgradePtrLess>& total_mats,
     const absl::string_view upgrade_material) {
   const auto it = upgrades_map.find(std::string(upgrade_material));
   if (it == upgrades_map.end()) {
@@ -216,17 +250,19 @@ void ExpandMats(
   }
   const Upgrades::Upgrade* mat = it->second;
   if (!mat->has_recipe()) {
-    total_mats[mat->name()]++;
-    total_mats["gold"] += mat->gold();
-  } else {
-    for (const auto& mat_item : mat->recipe().ingredients()) {
-      for (int i = 0; i < mat_item.amount(); ++i) {
-        ExpandMats(upgrades_map, total_mats, mat_item.id());
-      }
+    total_mats[mat]++;
+    return;
+  }
+  for (const Upgrades::Upgrade::Recipe::Ingredient& mat_item :
+       mat->recipe().ingredients()) {
+    for (int i = 0; i < mat_item.amount(); ++i) {
+      ExpandMats(upgrades_map, total_mats, mat_item.id());
     }
   }
 }
 
+// Returns a map from the snowprint ID of the upgrade material to the Upgrade
+// object.
 std::map<std::string, const Upgrades::Upgrade*> BuildUpgradesMap(
     const GameConfig& config) {
   std::map<std::string, const Upgrades::Upgrade*> upgrades_map;
@@ -237,47 +273,7 @@ std::map<std::string, const Upgrades::Upgrade*> BuildUpgradesMap(
   return upgrades_map;
 }
 
-void EmitRankUp(const GameConfig& config, const absl::string_view name,
-                const absl::string_view output_path) {
-  const Unit* unit = nullptr;
-  for (const auto& u : config.client_game_config().units().units()) {
-    if (u.name() == name) {
-      unit = &u;
-      break;
-    }
-  }
-  if (!unit) {
-    LOG(ERROR) << "Unit '" << unit << "' not found in GameConfig.\n";
-    return;
-  }
-  const std::map<std::string, const Upgrades::Upgrade*> upgrades_map =
-      BuildUpgradesMap(config);
-  std::map<std::string, int> total_mats;
-  std::map<int, std::map<std::string, int>> per_rank_mats;
-  for (int rank = Rank::STONE_1; rank < Rank::ADAMANTINE_1; ++rank) {
-    int i = rank - 1;
-    if (i >= unit->rank_up_requirements_size()) {
-      LOG(ERROR) << "No rank up requirements for rank " << rank << ".\n";
-      continue;
-    }
-    ExpandMats(upgrades_map, per_rank_mats[i],
-               unit->rank_up_requirements(i).top_row_health());
-    ExpandMats(upgrades_map, per_rank_mats[i],
-               unit->rank_up_requirements(i).bottom_row_health());
-    ExpandMats(upgrades_map, per_rank_mats[i],
-               unit->rank_up_requirements(i).top_row_armor());
-    ExpandMats(upgrades_map, per_rank_mats[i],
-               unit->rank_up_requirements(i).bottom_row_armor());
-    ExpandMats(upgrades_map, per_rank_mats[i],
-               unit->rank_up_requirements(i).top_row_damage());
-    ExpandMats(upgrades_map, per_rank_mats[i],
-               unit->rank_up_requirements(i).bottom_row_damage());
-  }
-  for (const auto& rank_mats : per_rank_mats) {
-    for (const auto& [mat, amount] : rank_mats.second) {
-      total_mats[mat] += amount;
-    }
-  }
+void EmitRankUp(const GameConfig& config, const absl::string_view output_path) {
   std::ostream* out;
   std::unique_ptr<std::ofstream> file_out;
   if (output_path.empty()) {
@@ -287,22 +283,39 @@ void EmitRankUp(const GameConfig& config, const absl::string_view name,
         std::make_unique<std::ofstream>(std::string(output_path).c_str());
     out = file_out.get();
   }
-  *out << "material";
-  for (int i = Rank::STONE_1; i < Rank::ADAMANTINE_1; ++i) {
-    *out << "," << Rank::Enum_Name(i) << "->" << Rank::Enum_Name(i + 1);
-  }
-  *out << "\n";
-  for (auto it = total_mats.begin(); it != total_mats.end(); ++it) {
-    *out << it->first;
+  *out << "unit,target_rank,quantity,upgrade_material,rarity\n";
+  for (const Unit& unit : config.client_game_config().units().units()) {
+    const std::map<std::string, const Upgrades::Upgrade*> upgrades_map =
+        BuildUpgradesMap(config);
+    std::map<const Upgrades::Upgrade*, int, UpgradePtrLess> total_mats;
+    std::map<int, std::map<const Upgrades::Upgrade*, int, UpgradePtrLess>>
+        per_rank_mats;
+    for (int rank = Rank::STONE_1; rank < Rank::ADAMANTINE_1; ++rank) {
+      int i = rank - 1;
+      if (i >= unit.rank_up_requirements_size()) {
+        LOG(ERROR) << "No rank up requirements for " << unit.id() << ":"
+                   << Rank::Enum_Name(rank) << ".\n";
+        continue;
+      }
+      ExpandMats(upgrades_map, per_rank_mats[i],
+                 unit.rank_up_requirements(i).top_row_health());
+      ExpandMats(upgrades_map, per_rank_mats[i],
+                 unit.rank_up_requirements(i).bottom_row_health());
+      ExpandMats(upgrades_map, per_rank_mats[i],
+                 unit.rank_up_requirements(i).top_row_armor());
+      ExpandMats(upgrades_map, per_rank_mats[i],
+                 unit.rank_up_requirements(i).bottom_row_armor());
+      ExpandMats(upgrades_map, per_rank_mats[i],
+                 unit.rank_up_requirements(i).top_row_damage());
+      ExpandMats(upgrades_map, per_rank_mats[i],
+                 unit.rank_up_requirements(i).bottom_row_damage());
+    }
     for (int i = Rank::STONE_1; i < Rank::ADAMANTINE_1; ++i) {
-      auto mat_it = per_rank_mats[i - 1].find(it->first);
-      if (mat_it != per_rank_mats[i - 1].end()) {
-        *out << "," << mat_it->second;
-      } else {
-        *out << ",";
+      for (const auto& mat : per_rank_mats[i - 1]) {
+        *out << unit.id() << "," << Rank::Enum_Name(i + 1) << "," << mat.second
+             << "," << mat.first->id() << "," << mat.first->rarity() << "\n";
       }
     }
-    *out << "\n";
   }
   if (file_out != nullptr) file_out->close();
 }
@@ -352,9 +365,10 @@ void Main() {
     }
   }
 
-  const std::string rank_up_unit = absl::GetFlag(FLAGS_rank_up_unit);
-  if (!rank_up_unit.empty()) {
-    EmitRankUp(config, rank_up_unit, absl::GetFlag(FLAGS_rank_up_file));
+  const std::string rank_up_file = absl::GetFlag(FLAGS_rank_up_file);
+  if (!rank_up_file.empty()) {
+    LOG(INFO) << "Writing rank up CSV: " << rank_up_file;
+    EmitRankUp(config, rank_up_file);
   }
 
   const std::string recipe_data_file = absl::GetFlag(FLAGS_recipe_data);
@@ -394,6 +408,17 @@ void Main() {
       LOG(ERROR) << "Error creating campaign data: " << status.message();
     }
   }
+
+  const std::string equipment_data_file = absl::GetFlag(FLAGS_equipment_data);
+  if (!equipment_data_file.empty()) {
+    LOG(INFO) << "Writing equipment data to: " << equipment_data_file;
+    if (const absl::Status status =
+            CreateEquipmentData(equipment_data_file, config);
+        !status.ok()) {
+      LOG(ERROR) << "Error creating equipment data: " << status.message();
+    }
+  }
+
   const std::string mow_data_file = absl::GetFlag(FLAGS_mow_data);
   if (!mow_data_file.empty()) {
     LOG(INFO) << "Writing MoW data to: " << mow_data_file;
