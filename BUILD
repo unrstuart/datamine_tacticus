@@ -41,6 +41,7 @@ cc_binary(
       "@abseil-cpp//absl/strings",
     ],
     data = [
+      "gameconfig_1_30.json",
       "gameconfig_1_31.json",
       "I2Languages_en.json",
     ] + glob(["assets/**"])

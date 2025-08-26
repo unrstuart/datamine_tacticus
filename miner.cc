@@ -330,6 +330,12 @@ void Main() {
     std::ifstream in(input_file);
     if (!reader.parse(in, root)) {
       LOG(ERROR) << "Couldn't parse json file: '" << input_file << "'.";
+      LOG(ERROR) << reader.getFormattedErrorMessages();
+      LOG(ERROR)
+          << "It's quite likely that you added a new gameconfig.json file. If "
+             "so, you need to go to the cc_binary rule in the BUILD file and "
+             "add the json file to the data array. Sorry, it's a bazel thing.";
+      return;
     }
     if (!root.isObject()) {
       LOG(ERROR) << "Parsed JSON is not an object.";

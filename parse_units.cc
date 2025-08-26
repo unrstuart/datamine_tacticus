@@ -321,10 +321,13 @@ absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
             << "' for Machine of War entry '" << mow_id
             << "' is missing or not an array.";
         const Json::Value upgrades = ability["upgrades"];
-        RET_CHECK(upgrades.size() >= 54)
-            << "Ability '" << abilities[i]->name()
-            << "' for Machine of War entry '" << mow_id
-            << "' does not have at least 54 upgrades. - " << upgrades.size();
+        if (upgrades.size() < 54) {
+          LOG(ERROR) << "Ability '" << abilities[i]->name()
+                     << "' for Machine of War entry '" << mow_id
+                     << "' does not have at least 54 upgrades. Some features "
+                    << "will not work or may break. - "
+                     << upgrades.size();
+        }
         for (int j = 0; j < upgrades.size(); ++j) {
           RET_CHECK(upgrades[j].isArray() && upgrades[j].size() == 3)
               << "Upgrade '" << j << "' for Ability '" << abilities[i]->name()
