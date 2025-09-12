@@ -22,4 +22,9 @@ cc_library(
       "json/version.h",
       "json/writer.h",
     ],
+    deps = [
+      "@abseil-cpp//absl/strings",
+      "@abseil-cpp//absl/debugging:stacktrace",
+      "@abseil-cpp//absl/debugging:symbolize",
+    ],
 )

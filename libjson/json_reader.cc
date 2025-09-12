@@ -5,14 +5,18 @@
 // See file LICENSE for detail or copy at http://jsoncpp.sourceforge.net/LICENSE
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include "libjson/json_tool.h"
+#include "absl/debugging/stacktrace.h"
+#include "absl/debugging/symbolize.h"
+#include "absl/strings/str_cat.h"
 #include "libjson/json/assertions.h"
 #include "libjson/json/reader.h"
 #include "libjson/json/value.h"
-#endif // if !defined(JSON_IS_AMALGAMATION)
+#include "libjson/json_tool.h"
+#endif  // if !defined(JSON_IS_AMALGAMATION)
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <cstdio>
 #include <cstring>
 #include <iostream>
 #include <istream>
@@ -22,13 +26,11 @@
 #include <sstream>
 #include <utility>
 
-#include <cstdio>
-
 #if defined(_MSC_VER)
 #if !defined(_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES)
 #define _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES 1
-#endif //_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES
-#endif //_MSC_VER
+#endif  //_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES
+#endif  //_MSC_VER
 
 #if defined(_MSC_VER)
 // Disable warning about strdup being deprecated.
@@ -42,7 +44,7 @@
 #endif
 
 static size_t const stackLimit_g =
-    JSONCPP_DEPRECATED_STACK_LIMIT; // see readValue()
+    JSONCPP_DEPRECATED_STACK_LIMIT;  // see readValue()
 
 namespace Json {
 
@@ -112,8 +114,7 @@ bool Reader::parse(const char* beginDoc, const char* endDoc, Value& root,
   lastValue_ = nullptr;
   commentsBefore_.clear();
   errors_.clear();
-  while (!nodes_.empty())
-    nodes_.pop();
+  while (!nodes_.empty()) nodes_.pop();
   nodes_.push(&root);
 
   bool successful = readValue();
@@ -137,6 +138,36 @@ bool Reader::parse(const char* beginDoc, const char* endDoc, Value& root,
   return successful;
 }
 
+namespace {
+
+std::string GetStackTrace() {
+  constexpr int kMaxFrames = 32;  // Maximum number of frames to capture
+  std::vector<void*> stack(kMaxFrames);
+
+  // Get the stack frames. The return value is the number of frames captured.
+  // The last argument '1' means skip the current function frame
+  // (PrintCurrentStackTrace itself).
+  int depth = absl::GetStackTrace(stack.data(), kMaxFrames, 1);
+
+  std::string ret = "--- Stack Trace ---\n";
+  for (int i = 0; i < depth; ++i) {
+    char symbol_buffer[1024];
+    const char* symbol_name = "(unknown)";
+
+    // Attempt to symbolize the address
+    if (absl::Symbolize(stack[i], symbol_buffer, sizeof(symbol_buffer))) {
+      symbol_name = symbol_buffer;
+    }
+
+    absl::StrAppend(&ret, "[", std::to_string(i), "] ",
+                    std::to_string(reinterpret_cast<uintptr_t>(stack[i])), "  ",
+                    symbol_name, "\n");
+  }
+  return ret;
+}
+
+}  // namespace
+
 bool Reader::readValue() {
   // readValue() may call itself only if it calls readObject() or ReadArray().
   // These methods execute nodes_.push() just before and nodes_.pop)() just
@@ -155,55 +186,60 @@ bool Reader::readValue() {
   }
 
   switch (token.type_) {
-  case tokenObjectBegin:
-    successful = readObject(token);
-    currentValue().setOffsetLimit(current_ - begin_);
-    break;
-  case tokenArrayBegin:
-    successful = readArray(token);
-    currentValue().setOffsetLimit(current_ - begin_);
-    break;
-  case tokenNumber:
-    successful = decodeNumber(token);
-    break;
-  case tokenString:
-    successful = decodeString(token);
-    break;
-  case tokenTrue: {
-    Value v(true);
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenFalse: {
-    Value v(false);
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenNull: {
-    Value v;
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenArraySeparator:
-  case tokenObjectEnd:
-  case tokenArrayEnd:
-    if (features_.allowDroppedNullPlaceholders_) {
-      // "Un-read" the current token and mark the current value as a null
-      // token.
-      current_--;
-      Value v;
-      currentValue().swapPayload(v);
-      currentValue().setOffsetStart(current_ - begin_ - 1);
+    case tokenObjectBegin:
+      successful = readObject(token);
       currentValue().setOffsetLimit(current_ - begin_);
       break;
-    } // Else, fall through...
-  default:
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-    return addError("Syntax error: value, object or array expected.", token);
+    case tokenArrayBegin:
+      successful = readArray(token);
+      currentValue().setOffsetLimit(current_ - begin_);
+      break;
+    case tokenNumber:
+      successful = decodeNumber(token);
+      break;
+    case tokenString:
+      successful = decodeString(token);
+      break;
+    case tokenTrue: {
+      Value v(true);
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenFalse: {
+      Value v(false);
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenNull: {
+      Value v;
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenArraySeparator:
+    case tokenObjectEnd:
+    case tokenArrayEnd:
+      if (features_.allowDroppedNullPlaceholders_) {
+        // "Un-read" the current token and mark the current value as a null
+        // token.
+        current_--;
+        Value v;
+        currentValue().swapPayload(v);
+        currentValue().setOffsetStart(current_ - begin_ - 1);
+        currentValue().setOffsetLimit(current_ - begin_);
+        break;
+      }  // Else, fall through...
+    default:
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+
+      return addError(
+          absl::StrCat("Syntax error: value, object or array expected. token {",
+                       "type=", token.type_, ", start=", token.start_,
+                       ", end=", token.end_, "}\n", GetStackTrace()),
+          token);
   }
 
   if (collectComments_) {
@@ -230,67 +266,66 @@ bool Reader::readToken(Token& token) {
   Char c = getNextChar();
   bool ok = true;
   switch (c) {
-  case '{':
-    token.type_ = tokenObjectBegin;
-    break;
-  case '}':
-    token.type_ = tokenObjectEnd;
-    break;
-  case '[':
-    token.type_ = tokenArrayBegin;
-    break;
-  case ']':
-    token.type_ = tokenArrayEnd;
-    break;
-  case '"':
-    token.type_ = tokenString;
-    ok = readString();
-    break;
-  case '/':
-    token.type_ = tokenComment;
-    ok = readComment();
-    break;
-  case '0':
-  case '1':
-  case '2':
-  case '3':
-  case '4':
-  case '5':
-  case '6':
-  case '7':
-  case '8':
-  case '9':
-  case '-':
-    token.type_ = tokenNumber;
-    readNumber();
-    break;
-  case 't':
-    token.type_ = tokenTrue;
-    ok = match("rue", 3);
-    break;
-  case 'f':
-    token.type_ = tokenFalse;
-    ok = match("alse", 4);
-    break;
-  case 'n':
-    token.type_ = tokenNull;
-    ok = match("ull", 3);
-    break;
-  case ',':
-    token.type_ = tokenArraySeparator;
-    break;
-  case ':':
-    token.type_ = tokenMemberSeparator;
-    break;
-  case 0:
-    token.type_ = tokenEndOfStream;
-    break;
-  default:
-    ok = false;
-    break;
+    case '{':
+      token.type_ = tokenObjectBegin;
+      break;
+    case '}':
+      token.type_ = tokenObjectEnd;
+      break;
+    case '[':
+      token.type_ = tokenArrayBegin;
+      break;
+    case ']':
+      token.type_ = tokenArrayEnd;
+      break;
+    case '"':
+      token.type_ = tokenString;
+      ok = readString();
+      break;
+    case '/':
+      token.type_ = tokenComment;
+      ok = readComment();
+      break;
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case '-':
+      token.type_ = tokenNumber;
+      readNumber();
+      break;
+    case 't':
+      token.type_ = tokenTrue;
+      ok = match("rue", 3);
+      break;
+    case 'f':
+      token.type_ = tokenFalse;
+      ok = match("alse", 4);
+      break;
+    case 'n':
+      token.type_ = tokenNull;
+      ok = match("ull", 3);
+      break;
+    case ',':
+      token.type_ = tokenArraySeparator;
+      break;
+    case ':':
+      token.type_ = tokenMemberSeparator;
+      break;
+    case 0:
+      token.type_ = tokenEndOfStream;
+      break;
+    default:
+      ok = false;
+      break;
   }
-  if (!ok)
-    token.type_ = tokenError;
+  if (!ok) token.type_ = tokenError;
   token.end_ = current_;
   return ok;
 }
@@ -306,12 +341,10 @@ void Reader::skipSpaces() {
 }
 
 bool Reader::match(const Char* pattern, int patternLength) {
-  if (end_ - current_ < patternLength)
-    return false;
+  if (end_ - current_ < patternLength) return false;
   int index = patternLength;
   while (index--)
-    if (current_[index] != pattern[index])
-      return false;
+    if (current_[index] != pattern[index]) return false;
   current_ += patternLength;
   return true;
 }
@@ -324,8 +357,7 @@ bool Reader::readComment() {
     successful = readCStyleComment();
   else if (c == '/')
     successful = readCppStyleComment();
-  if (!successful)
-    return false;
+  if (!successful) return false;
 
   if (collectComments_) {
     CommentPlacement placement = commentBefore;
@@ -373,8 +405,7 @@ void Reader::addComment(Location begin, Location end,
 bool Reader::readCStyleComment() {
   while ((current_ + 1) < end_) {
     Char c = getNextChar();
-    if (c == '*' && *current_ == '/')
-      break;
+    if (c == '*' && *current_ == '/') break;
   }
   return getNextChar() == '/';
 }
@@ -382,12 +413,10 @@ bool Reader::readCStyleComment() {
 bool Reader::readCppStyleComment() {
   while (current_ != end_) {
     Char c = getNextChar();
-    if (c == '\n')
-      break;
+    if (c == '\n') break;
     if (c == '\r') {
       // Consume DOS EOL. It will be normalized in addComment.
-      if (current_ != end_ && *current_ == '\n')
-        getNextChar();
+      if (current_ != end_ && *current_ == '\n') getNextChar();
       // Break on Moc OS 9 EOL.
       break;
     }
@@ -397,23 +426,19 @@ bool Reader::readCppStyleComment() {
 
 void Reader::readNumber() {
   Location p = current_;
-  char c = '0'; // stopgap for already consumed character
+  char c = '0';  // stopgap for already consumed character
   // integral part
-  while (c >= '0' && c <= '9')
-    c = (current_ = p) < end_ ? *p++ : '\0';
+  while (c >= '0' && c <= '9') c = (current_ = p) < end_ ? *p++ : '\0';
   // fractional part
   if (c == '.') {
     c = (current_ = p) < end_ ? *p++ : '\0';
-    while (c >= '0' && c <= '9')
-      c = (current_ = p) < end_ ? *p++ : '\0';
+    while (c >= '0' && c <= '9') c = (current_ = p) < end_ ? *p++ : '\0';
   }
   // exponential part
   if (c == 'e' || c == 'E') {
     c = (current_ = p) < end_ ? *p++ : '\0';
-    if (c == '+' || c == '-')
-      c = (current_ = p) < end_ ? *p++ : '\0';
-    while (c >= '0' && c <= '9')
-      c = (current_ = p) < end_ ? *p++ : '\0';
+    if (c == '+' || c == '-') c = (current_ = p) < end_ ? *p++ : '\0';
+    while (c >= '0' && c <= '9') c = (current_ = p) < end_ ? *p++ : '\0';
   }
 }
 
@@ -436,7 +461,7 @@ bool Reader::readObject(Token& token) {
   currentValue().swapPayload(init);
   currentValue().setOffsetStart(token.start_ - begin_);
   while (readTokenSkippingComments(tokenName)) {
-    if (tokenName.type_ == tokenObjectEnd && name.empty()) // empty object
+    if (tokenName.type_ == tokenObjectEnd && name.empty())  // empty object
       return true;
     name.clear();
     if (tokenName.type_ == tokenString) {
@@ -460,7 +485,7 @@ bool Reader::readObject(Token& token) {
     nodes_.push(&value);
     bool ok = readValue();
     nodes_.pop();
-    if (!ok) // error already set
+    if (!ok)  // error already set
       return recoverFromError(tokenObjectEnd);
 
     Token comma;
@@ -469,8 +494,7 @@ bool Reader::readObject(Token& token) {
       return addErrorAndRecover("Missing ',' or '}' in object declaration",
                                 comma, tokenObjectEnd);
     }
-    if (comma.type_ == tokenObjectEnd)
-      return true;
+    if (comma.type_ == tokenObjectEnd) return true;
   }
   return addErrorAndRecover("Missing '}' or object member name", tokenName,
                             tokenObjectEnd);
@@ -481,7 +505,7 @@ bool Reader::readArray(Token& token) {
   currentValue().swapPayload(init);
   currentValue().setOffsetStart(token.start_ - begin_);
   skipSpaces();
-  if (current_ != end_ && *current_ == ']') // empty array
+  if (current_ != end_ && *current_ == ']')  // empty array
   {
     Token endArray;
     readToken(endArray);
@@ -493,7 +517,7 @@ bool Reader::readArray(Token& token) {
     nodes_.push(&value);
     bool ok = readValue();
     nodes_.pop();
-    if (!ok) // error already set
+    if (!ok)  // error already set
       return recoverFromError(tokenArrayEnd);
 
     Token currentToken;
@@ -505,16 +529,14 @@ bool Reader::readArray(Token& token) {
       return addErrorAndRecover("Missing ',' or ']' in array declaration",
                                 currentToken, tokenArrayEnd);
     }
-    if (currentToken.type_ == tokenArrayEnd)
-      break;
+    if (currentToken.type_ == tokenArrayEnd) break;
   }
   return true;
 }
 
 bool Reader::decodeNumber(Token& token) {
   Value decoded;
-  if (!decodeNumber(token, decoded))
-    return false;
+  if (!decodeNumber(token, decoded)) return false;
   currentValue().swapPayload(decoded);
   currentValue().setOffsetStart(token.start_ - begin_);
   currentValue().setOffsetLimit(token.end_ - begin_);
@@ -527,8 +549,7 @@ bool Reader::decodeNumber(Token& token, Value& decoded) {
   // we decode the number as a double.
   Location current = token.start_;
   bool isNegative = *current == '-';
-  if (isNegative)
-    ++current;
+  if (isNegative) ++current;
   // TODO: Help the compiler do the div and mod at compile time or get rid of
   // them.
   Value::LargestUInt maxIntegerValue =
@@ -538,8 +559,7 @@ bool Reader::decodeNumber(Token& token, Value& decoded) {
   Value::LargestUInt value = 0;
   while (current < token.end_) {
     Char c = *current++;
-    if (c < '0' || c > '9')
-      return decodeDouble(token, decoded);
+    if (c < '0' || c > '9') return decodeDouble(token, decoded);
     auto digit(static_cast<Value::UInt>(c - '0'));
     if (value >= threshold) {
       // We've hit or exceeded the max value divided by 10 (rounded down). If
@@ -566,8 +586,7 @@ bool Reader::decodeNumber(Token& token, Value& decoded) {
 
 bool Reader::decodeDouble(Token& token) {
   Value decoded;
-  if (!decodeDouble(token, decoded))
-    return false;
+  if (!decodeDouble(token, decoded)) return false;
   currentValue().swapPayload(decoded);
   currentValue().setOffsetStart(token.start_ - begin_);
   currentValue().setOffsetLimit(token.end_ - begin_);
@@ -592,8 +611,7 @@ bool Reader::decodeDouble(Token& token, Value& decoded) {
 
 bool Reader::decodeString(Token& token) {
   String decoded_string;
-  if (!decodeString(token, decoded_string))
-    return false;
+  if (!decodeString(token, decoded_string)) return false;
   Value decoded(decoded_string);
   currentValue().swapPayload(decoded);
   currentValue().setOffsetStart(token.start_ - begin_);
@@ -603,49 +621,48 @@ bool Reader::decodeString(Token& token) {
 
 bool Reader::decodeString(Token& token, String& decoded) {
   decoded.reserve(static_cast<size_t>(token.end_ - token.start_ - 2));
-  Location current = token.start_ + 1; // skip '"'
-  Location end = token.end_ - 1;       // do not include '"'
+  Location current = token.start_ + 1;  // skip '"'
+  Location end = token.end_ - 1;        // do not include '"'
   while (current != end) {
     Char c = *current++;
-    if (c == '"')
-      break;
+    if (c == '"') break;
     if (c == '\\') {
       if (current == end)
         return addError("Empty escape sequence in string", token, current);
       Char escape = *current++;
       switch (escape) {
-      case '"':
-        decoded += '"';
-        break;
-      case '/':
-        decoded += '/';
-        break;
-      case '\\':
-        decoded += '\\';
-        break;
-      case 'b':
-        decoded += '\b';
-        break;
-      case 'f':
-        decoded += '\f';
-        break;
-      case 'n':
-        decoded += '\n';
-        break;
-      case 'r':
-        decoded += '\r';
-        break;
-      case 't':
-        decoded += '\t';
-        break;
-      case 'u': {
-        unsigned int unicode;
-        if (!decodeUnicodeCodePoint(token, current, end, unicode))
-          return false;
-        decoded += codePointToUTF8(unicode);
-      } break;
-      default:
-        return addError("Bad escape sequence in string", token, current);
+        case '"':
+          decoded += '"';
+          break;
+        case '/':
+          decoded += '/';
+          break;
+        case '\\':
+          decoded += '\\';
+          break;
+        case 'b':
+          decoded += '\b';
+          break;
+        case 'f':
+          decoded += '\f';
+          break;
+        case 'n':
+          decoded += '\n';
+          break;
+        case 'r':
+          decoded += '\r';
+          break;
+        case 't':
+          decoded += '\t';
+          break;
+        case 'u': {
+          unsigned int unicode;
+          if (!decodeUnicodeCodePoint(token, current, end, unicode))
+            return false;
+          decoded += codePointToUTF8(unicode);
+        } break;
+        default:
+          return addError("Bad escape sequence in string", token, current);
       }
     } else {
       decoded += c;
@@ -656,9 +673,7 @@ bool Reader::decodeString(Token& token, String& decoded) {
 
 bool Reader::decodeUnicodeCodePoint(Token& token, Location& current,
                                     Location end, unsigned int& unicode) {
-
-  if (!decodeUnicodeEscapeSequence(token, current, end, unicode))
-    return false;
+  if (!decodeUnicodeEscapeSequence(token, current, end, unicode)) return false;
   if (unicode >= 0xD800 && unicode <= 0xDBFF) {
     // surrogate pairs
     if (end - current < 6)
@@ -672,9 +687,10 @@ bool Reader::decodeUnicodeCodePoint(Token& token, Location& current,
       } else
         return false;
     } else
-      return addError("expecting another \\u token to begin the second half of "
-                      "a unicode surrogate pair",
-                      token, current);
+      return addError(
+          "expecting another \\u token to begin the second half of "
+          "a unicode surrogate pair",
+          token, current);
   }
   return true;
 }
@@ -719,9 +735,8 @@ bool Reader::recoverFromError(TokenType skipUntilToken) {
   Token skip;
   for (;;) {
     if (!readToken(skip))
-      errors_.resize(errorCount); // discard errors caused by recovery
-    if (skip.type_ == skipUntilToken || skip.type_ == tokenEndOfStream)
-      break;
+      errors_.resize(errorCount);  // discard errors caused by recovery
+    if (skip.type_ == skipUntilToken || skip.type_ == tokenEndOfStream) break;
   }
   errors_.resize(errorCount);
   return false;
@@ -736,8 +751,7 @@ bool Reader::addErrorAndRecover(const String& message, Token& token,
 Value& Reader::currentValue() { return *(nodes_.top()); }
 
 Reader::Char Reader::getNextChar() {
-  if (current_ == end_)
-    return 0;
+  if (current_ == end_) return 0;
   return *current_++;
 }
 
@@ -749,8 +763,7 @@ void Reader::getLocationLineAndColumn(Location location, int& line,
   while (current < location && current != end_) {
     Char c = *current++;
     if (c == '\r') {
-      if (current != end_ && *current == '\n')
-        ++current;
+      if (current != end_ && *current == '\n') ++current;
       lastLineStart = current;
       ++line;
     } else if (c == '\n') {
@@ -840,7 +853,7 @@ bool Reader::good() const { return errors_.empty(); }
 // Originally copied from the Features class (now deprecated), used internally
 // for features implementation.
 class OurFeatures {
-public:
+ public:
   static OurFeatures all();
   bool allowComments_;
   bool allowTrailingCommas_;
@@ -853,7 +866,7 @@ public:
   bool allowSpecialFloats_;
   bool skipBom_;
   size_t stackLimit_;
-}; // OurFeatures
+};  // OurFeatures
 
 OurFeatures OurFeatures::all() { return {}; }
 
@@ -863,7 +876,7 @@ OurFeatures OurFeatures::all() { return {}; }
 // Originally copied from the Reader class (now deprecated), used internally
 // for implementing JSON reading.
 class OurReader {
-public:
+ public:
   using Char = char;
   using Location = const Char*;
 
@@ -873,9 +886,9 @@ public:
   String getFormattedErrorMessages() const;
   std::vector<CharReader::StructuredError> getStructuredErrors() const;
 
-private:
-  OurReader(OurReader const&);      // no impl
-  void operator=(OurReader const&); // no impl
+ private:
+  OurReader(OurReader const&);       // no impl
+  void operator=(OurReader const&);  // no impl
 
   enum TokenType {
     tokenEndOfStream = 0,
@@ -898,14 +911,14 @@ private:
   };
 
   class Token {
-  public:
+   public:
     TokenType type_;
     Location start_;
     Location end_;
   };
 
   class ErrorInfo {
-  public:
+   public:
     Token token_;
     String message_;
     Location extra_;
@@ -967,7 +980,7 @@ private:
 
   OurFeatures const features_;
   bool collectComments_ = false;
-}; // OurReader
+};  // OurReader
 
 // complete copy of Read impl, for OurReader
 
@@ -992,8 +1005,7 @@ bool OurReader::parse(const char* beginDoc, const char* endDoc, Value& root,
   lastValue_ = nullptr;
   commentsBefore_.clear();
   errors_.clear();
-  while (!nodes_.empty())
-    nodes_.pop();
+  while (!nodes_.empty()) nodes_.pop();
   nodes_.push(&root);
 
   // skip byte order mark if it exists at the beginning of the UTF-8 text.
@@ -1038,73 +1050,73 @@ bool OurReader::readValue() {
   }
 
   switch (token.type_) {
-  case tokenObjectBegin:
-    successful = readObject(token);
-    currentValue().setOffsetLimit(current_ - begin_);
-    break;
-  case tokenArrayBegin:
-    successful = readArray(token);
-    currentValue().setOffsetLimit(current_ - begin_);
-    break;
-  case tokenNumber:
-    successful = decodeNumber(token);
-    break;
-  case tokenString:
-    successful = decodeString(token);
-    break;
-  case tokenTrue: {
-    Value v(true);
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenFalse: {
-    Value v(false);
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenNull: {
-    Value v;
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenNaN: {
-    Value v(std::numeric_limits<double>::quiet_NaN());
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenPosInf: {
-    Value v(std::numeric_limits<double>::infinity());
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenNegInf: {
-    Value v(-std::numeric_limits<double>::infinity());
-    currentValue().swapPayload(v);
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-  } break;
-  case tokenArraySeparator:
-  case tokenObjectEnd:
-  case tokenArrayEnd:
-    if (features_.allowDroppedNullPlaceholders_) {
-      // "Un-read" the current token and mark the current value as a null
-      // token.
-      current_--;
-      Value v;
-      currentValue().swapPayload(v);
-      currentValue().setOffsetStart(current_ - begin_ - 1);
+    case tokenObjectBegin:
+      successful = readObject(token);
       currentValue().setOffsetLimit(current_ - begin_);
       break;
-    } // else, fall through ...
-  default:
-    currentValue().setOffsetStart(token.start_ - begin_);
-    currentValue().setOffsetLimit(token.end_ - begin_);
-    return addError("Syntax error: value, object or array expected.", token);
+    case tokenArrayBegin:
+      successful = readArray(token);
+      currentValue().setOffsetLimit(current_ - begin_);
+      break;
+    case tokenNumber:
+      successful = decodeNumber(token);
+      break;
+    case tokenString:
+      successful = decodeString(token);
+      break;
+    case tokenTrue: {
+      Value v(true);
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenFalse: {
+      Value v(false);
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenNull: {
+      Value v;
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenNaN: {
+      Value v(std::numeric_limits<double>::quiet_NaN());
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenPosInf: {
+      Value v(std::numeric_limits<double>::infinity());
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenNegInf: {
+      Value v(-std::numeric_limits<double>::infinity());
+      currentValue().swapPayload(v);
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+    } break;
+    case tokenArraySeparator:
+    case tokenObjectEnd:
+    case tokenArrayEnd:
+      if (features_.allowDroppedNullPlaceholders_) {
+        // "Un-read" the current token and mark the current value as a null
+        // token.
+        current_--;
+        Value v;
+        currentValue().swapPayload(v);
+        currentValue().setOffsetStart(current_ - begin_ - 1);
+        currentValue().setOffsetLimit(current_ - begin_);
+        break;
+      }  // else, fall through ...
+    default:
+      currentValue().setOffsetStart(token.start_ - begin_);
+      currentValue().setOffsetLimit(token.end_ - begin_);
+      return addError("Syntax error: value, object or array expected.", token);
   }
 
   if (collectComments_) {
@@ -1132,107 +1144,106 @@ bool OurReader::readToken(Token& token) {
   Char c = getNextChar();
   bool ok = true;
   switch (c) {
-  case '{':
-    token.type_ = tokenObjectBegin;
-    break;
-  case '}':
-    token.type_ = tokenObjectEnd;
-    break;
-  case '[':
-    token.type_ = tokenArrayBegin;
-    break;
-  case ']':
-    token.type_ = tokenArrayEnd;
-    break;
-  case '"':
-    token.type_ = tokenString;
-    ok = readString();
-    break;
-  case '\'':
-    if (features_.allowSingleQuotes_) {
+    case '{':
+      token.type_ = tokenObjectBegin;
+      break;
+    case '}':
+      token.type_ = tokenObjectEnd;
+      break;
+    case '[':
+      token.type_ = tokenArrayBegin;
+      break;
+    case ']':
+      token.type_ = tokenArrayEnd;
+      break;
+    case '"':
       token.type_ = tokenString;
-      ok = readStringSingleQuote();
-    } else {
-      // If we don't allow single quotes, this is a failure case.
-      ok = false;
-    }
-    break;
-  case '/':
-    token.type_ = tokenComment;
-    ok = readComment();
-    break;
-  case '0':
-  case '1':
-  case '2':
-  case '3':
-  case '4':
-  case '5':
-  case '6':
-  case '7':
-  case '8':
-  case '9':
-    token.type_ = tokenNumber;
-    readNumber(false);
-    break;
-  case '-':
-    if (readNumber(true)) {
+      ok = readString();
+      break;
+    case '\'':
+      if (features_.allowSingleQuotes_) {
+        token.type_ = tokenString;
+        ok = readStringSingleQuote();
+      } else {
+        // If we don't allow single quotes, this is a failure case.
+        ok = false;
+      }
+      break;
+    case '/':
+      token.type_ = tokenComment;
+      ok = readComment();
+      break;
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
       token.type_ = tokenNumber;
-    } else {
-      token.type_ = tokenNegInf;
-      ok = features_.allowSpecialFloats_ && match("nfinity", 7);
-    }
-    break;
-  case '+':
-    if (readNumber(true)) {
-      token.type_ = tokenNumber;
-    } else {
-      token.type_ = tokenPosInf;
-      ok = features_.allowSpecialFloats_ && match("nfinity", 7);
-    }
-    break;
-  case 't':
-    token.type_ = tokenTrue;
-    ok = match("rue", 3);
-    break;
-  case 'f':
-    token.type_ = tokenFalse;
-    ok = match("alse", 4);
-    break;
-  case 'n':
-    token.type_ = tokenNull;
-    ok = match("ull", 3);
-    break;
-  case 'N':
-    if (features_.allowSpecialFloats_) {
-      token.type_ = tokenNaN;
-      ok = match("aN", 2);
-    } else {
+      readNumber(false);
+      break;
+    case '-':
+      if (readNumber(true)) {
+        token.type_ = tokenNumber;
+      } else {
+        token.type_ = tokenNegInf;
+        ok = features_.allowSpecialFloats_ && match("nfinity", 7);
+      }
+      break;
+    case '+':
+      if (readNumber(true)) {
+        token.type_ = tokenNumber;
+      } else {
+        token.type_ = tokenPosInf;
+        ok = features_.allowSpecialFloats_ && match("nfinity", 7);
+      }
+      break;
+    case 't':
+      token.type_ = tokenTrue;
+      ok = match("rue", 3);
+      break;
+    case 'f':
+      token.type_ = tokenFalse;
+      ok = match("alse", 4);
+      break;
+    case 'n':
+      token.type_ = tokenNull;
+      ok = match("ull", 3);
+      break;
+    case 'N':
+      if (features_.allowSpecialFloats_) {
+        token.type_ = tokenNaN;
+        ok = match("aN", 2);
+      } else {
+        ok = false;
+      }
+      break;
+    case 'I':
+      if (features_.allowSpecialFloats_) {
+        token.type_ = tokenPosInf;
+        ok = match("nfinity", 7);
+      } else {
+        ok = false;
+      }
+      break;
+    case ',':
+      token.type_ = tokenArraySeparator;
+      break;
+    case ':':
+      token.type_ = tokenMemberSeparator;
+      break;
+    case 0:
+      token.type_ = tokenEndOfStream;
+      break;
+    default:
       ok = false;
-    }
-    break;
-  case 'I':
-    if (features_.allowSpecialFloats_) {
-      token.type_ = tokenPosInf;
-      ok = match("nfinity", 7);
-    } else {
-      ok = false;
-    }
-    break;
-  case ',':
-    token.type_ = tokenArraySeparator;
-    break;
-  case ':':
-    token.type_ = tokenMemberSeparator;
-    break;
-  case 0:
-    token.type_ = tokenEndOfStream;
-    break;
-  default:
-    ok = false;
-    break;
+      break;
   }
-  if (!ok)
-    token.type_ = tokenError;
+  if (!ok) token.type_ = tokenError;
   token.end_ = current_;
   return ok;
 }
@@ -1258,12 +1269,10 @@ void OurReader::skipBom(bool skipBom) {
 }
 
 bool OurReader::match(const Char* pattern, int patternLength) {
-  if (end_ - current_ < patternLength)
-    return false;
+  if (end_ - current_ < patternLength) return false;
   int index = patternLength;
   while (index--)
-    if (current_[index] != pattern[index])
-      return false;
+    if (current_[index] != pattern[index]) return false;
   current_ += patternLength;
   return true;
 }
@@ -1282,8 +1291,7 @@ bool OurReader::readComment() {
     successful = readCppStyleComment();
   }
 
-  if (!successful)
-    return false;
+  if (!successful) return false;
 
   if (collectComments_) {
     CommentPlacement placement = commentBefore;
@@ -1339,10 +1347,8 @@ bool OurReader::readCStyleComment(bool* containsNewLineResult) {
 
   while ((current_ + 1) < end_) {
     Char c = getNextChar();
-    if (c == '*' && *current_ == '/')
-      break;
-    if (c == '\n')
-      *containsNewLineResult = true;
+    if (c == '*' && *current_ == '/') break;
+    if (c == '\n') *containsNewLineResult = true;
   }
 
   return getNextChar() == '/';
@@ -1351,12 +1357,10 @@ bool OurReader::readCStyleComment(bool* containsNewLineResult) {
 bool OurReader::readCppStyleComment() {
   while (current_ != end_) {
     Char c = getNextChar();
-    if (c == '\n')
-      break;
+    if (c == '\n') break;
     if (c == '\r') {
       // Consume DOS EOL. It will be normalized in addComment.
-      if (current_ != end_ && *current_ == '\n')
-        getNextChar();
+      if (current_ != end_ && *current_ == '\n') getNextChar();
       // Break on Moc OS 9 EOL.
       break;
     }
@@ -1370,23 +1374,19 @@ bool OurReader::readNumber(bool checkInf) {
     current_ = ++p;
     return false;
   }
-  char c = '0'; // stopgap for already consumed character
+  char c = '0';  // stopgap for already consumed character
   // integral part
-  while (c >= '0' && c <= '9')
-    c = (current_ = p) < end_ ? *p++ : '\0';
+  while (c >= '0' && c <= '9') c = (current_ = p) < end_ ? *p++ : '\0';
   // fractional part
   if (c == '.') {
     c = (current_ = p) < end_ ? *p++ : '\0';
-    while (c >= '0' && c <= '9')
-      c = (current_ = p) < end_ ? *p++ : '\0';
+    while (c >= '0' && c <= '9') c = (current_ = p) < end_ ? *p++ : '\0';
   }
   // exponential part
   if (c == 'e' || c == 'E') {
     c = (current_ = p) < end_ ? *p++ : '\0';
-    if (c == '+' || c == '-')
-      c = (current_ = p) < end_ ? *p++ : '\0';
-    while (c >= '0' && c <= '9')
-      c = (current_ = p) < end_ ? *p++ : '\0';
+    if (c == '+' || c == '-') c = (current_ = p) < end_ ? *p++ : '\0';
+    while (c >= '0' && c <= '9') c = (current_ = p) < end_ ? *p++ : '\0';
   }
   return true;
 }
@@ -1423,7 +1423,7 @@ bool OurReader::readObject(Token& token) {
   while (readTokenSkippingComments(tokenName)) {
     if (tokenName.type_ == tokenObjectEnd &&
         (name.empty() ||
-         features_.allowTrailingCommas_)) // empty object or trailing comma
+         features_.allowTrailingCommas_))  // empty object or trailing comma
       return true;
     name.clear();
     if (tokenName.type_ == tokenString) {
@@ -1437,8 +1437,7 @@ bool OurReader::readObject(Token& token) {
     } else {
       break;
     }
-    if (name.length() >= (1U << 30))
-      throwRuntimeError("keylength >= 2^30");
+    if (name.length() >= (1U << 30)) throwRuntimeError("keylength >= 2^30");
     if (features_.rejectDupKeys_ && currentValue().isMember(name)) {
       String msg = "Duplicate key: '" + name + "'";
       return addErrorAndRecover(msg, tokenName, tokenObjectEnd);
@@ -1453,7 +1452,7 @@ bool OurReader::readObject(Token& token) {
     nodes_.push(&value);
     bool ok = readValue();
     nodes_.pop();
-    if (!ok) // error already set
+    if (!ok)  // error already set
       return recoverFromError(tokenObjectEnd);
 
     Token comma;
@@ -1462,8 +1461,7 @@ bool OurReader::readObject(Token& token) {
       return addErrorAndRecover("Missing ',' or '}' in object declaration",
                                 comma, tokenObjectEnd);
     }
-    if (comma.type_ == tokenObjectEnd)
-      return true;
+    if (comma.type_ == tokenObjectEnd) return true;
   }
   return addErrorAndRecover("Missing '}' or object member name", tokenName,
                             tokenObjectEnd);
@@ -1479,8 +1477,8 @@ bool OurReader::readArray(Token& token) {
     if (current_ != end_ && *current_ == ']' &&
         (index == 0 ||
          (features_.allowTrailingCommas_ &&
-          !features_.allowDroppedNullPlaceholders_))) // empty array or trailing
-                                                      // comma
+          !features_.allowDroppedNullPlaceholders_)))  // empty array or
+                                                       // trailing comma
     {
       Token endArray;
       readToken(endArray);
@@ -1490,7 +1488,7 @@ bool OurReader::readArray(Token& token) {
     nodes_.push(&value);
     bool ok = readValue();
     nodes_.pop();
-    if (!ok) // error already set
+    if (!ok)  // error already set
       return recoverFromError(tokenArrayEnd);
 
     Token currentToken;
@@ -1502,16 +1500,14 @@ bool OurReader::readArray(Token& token) {
       return addErrorAndRecover("Missing ',' or ']' in array declaration",
                                 currentToken, tokenArrayEnd);
     }
-    if (currentToken.type_ == tokenArrayEnd)
-      break;
+    if (currentToken.type_ == tokenArrayEnd) break;
   }
   return true;
 }
 
 bool OurReader::decodeNumber(Token& token) {
   Value decoded;
-  if (!decodeNumber(token, decoded))
-    return false;
+  if (!decodeNumber(token, decoded)) return false;
   currentValue().swapPayload(decoded);
   currentValue().setOffsetStart(token.start_ - begin_);
   currentValue().setOffsetLimit(token.end_ - begin_);
@@ -1567,8 +1563,7 @@ bool OurReader::decodeNumber(Token& token, Value& decoded) {
   Value::LargestUInt value = 0;
   while (current < token.end_) {
     Char c = *current++;
-    if (c < '0' || c > '9')
-      return decodeDouble(token, decoded);
+    if (c < '0' || c > '9') return decodeDouble(token, decoded);
 
     const auto digit(static_cast<Value::UInt>(c - '0'));
     if (value >= threshold) {
@@ -1600,8 +1595,7 @@ bool OurReader::decodeNumber(Token& token, Value& decoded) {
 
 bool OurReader::decodeDouble(Token& token) {
   Value decoded;
-  if (!decodeDouble(token, decoded))
-    return false;
+  if (!decodeDouble(token, decoded)) return false;
   currentValue().swapPayload(decoded);
   currentValue().setOffsetStart(token.start_ - begin_);
   currentValue().setOffsetLimit(token.end_ - begin_);
@@ -1626,8 +1620,7 @@ bool OurReader::decodeDouble(Token& token, Value& decoded) {
 
 bool OurReader::decodeString(Token& token) {
   String decoded_string;
-  if (!decodeString(token, decoded_string))
-    return false;
+  if (!decodeString(token, decoded_string)) return false;
   Value decoded(decoded_string);
   currentValue().swapPayload(decoded);
   currentValue().setOffsetStart(token.start_ - begin_);
@@ -1637,49 +1630,48 @@ bool OurReader::decodeString(Token& token) {
 
 bool OurReader::decodeString(Token& token, String& decoded) {
   decoded.reserve(static_cast<size_t>(token.end_ - token.start_ - 2));
-  Location current = token.start_ + 1; // skip '"'
-  Location end = token.end_ - 1;       // do not include '"'
+  Location current = token.start_ + 1;  // skip '"'
+  Location end = token.end_ - 1;        // do not include '"'
   while (current != end) {
     Char c = *current++;
-    if (c == '"')
-      break;
+    if (c == '"') break;
     if (c == '\\') {
       if (current == end)
         return addError("Empty escape sequence in string", token, current);
       Char escape = *current++;
       switch (escape) {
-      case '"':
-        decoded += '"';
-        break;
-      case '/':
-        decoded += '/';
-        break;
-      case '\\':
-        decoded += '\\';
-        break;
-      case 'b':
-        decoded += '\b';
-        break;
-      case 'f':
-        decoded += '\f';
-        break;
-      case 'n':
-        decoded += '\n';
-        break;
-      case 'r':
-        decoded += '\r';
-        break;
-      case 't':
-        decoded += '\t';
-        break;
-      case 'u': {
-        unsigned int unicode;
-        if (!decodeUnicodeCodePoint(token, current, end, unicode))
-          return false;
-        decoded += codePointToUTF8(unicode);
-      } break;
-      default:
-        return addError("Bad escape sequence in string", token, current);
+        case '"':
+          decoded += '"';
+          break;
+        case '/':
+          decoded += '/';
+          break;
+        case '\\':
+          decoded += '\\';
+          break;
+        case 'b':
+          decoded += '\b';
+          break;
+        case 'f':
+          decoded += '\f';
+          break;
+        case 'n':
+          decoded += '\n';
+          break;
+        case 'r':
+          decoded += '\r';
+          break;
+        case 't':
+          decoded += '\t';
+          break;
+        case 'u': {
+          unsigned int unicode;
+          if (!decodeUnicodeCodePoint(token, current, end, unicode))
+            return false;
+          decoded += codePointToUTF8(unicode);
+        } break;
+        default:
+          return addError("Bad escape sequence in string", token, current);
       }
     } else {
       decoded += c;
@@ -1690,9 +1682,7 @@ bool OurReader::decodeString(Token& token, String& decoded) {
 
 bool OurReader::decodeUnicodeCodePoint(Token& token, Location& current,
                                        Location end, unsigned int& unicode) {
-
-  if (!decodeUnicodeEscapeSequence(token, current, end, unicode))
-    return false;
+  if (!decodeUnicodeEscapeSequence(token, current, end, unicode)) return false;
   if (unicode >= 0xD800 && unicode <= 0xDBFF) {
     // surrogate pairs
     if (end - current < 6)
@@ -1706,9 +1696,10 @@ bool OurReader::decodeUnicodeCodePoint(Token& token, Location& current,
       } else
         return false;
     } else
-      return addError("expecting another \\u token to begin the second half of "
-                      "a unicode surrogate pair",
-                      token, current);
+      return addError(
+          "expecting another \\u token to begin the second half of "
+          "a unicode surrogate pair",
+          token, current);
   }
   return true;
 }
@@ -1753,9 +1744,8 @@ bool OurReader::recoverFromError(TokenType skipUntilToken) {
   Token skip;
   for (;;) {
     if (!readToken(skip))
-      errors_.resize(errorCount); // discard errors caused by recovery
-    if (skip.type_ == skipUntilToken || skip.type_ == tokenEndOfStream)
-      break;
+      errors_.resize(errorCount);  // discard errors caused by recovery
+    if (skip.type_ == skipUntilToken || skip.type_ == tokenEndOfStream) break;
   }
   errors_.resize(errorCount);
   return false;
@@ -1770,8 +1760,7 @@ bool OurReader::addErrorAndRecover(const String& message, Token& token,
 Value& OurReader::currentValue() { return *(nodes_.top()); }
 
 OurReader::Char OurReader::getNextChar() {
-  if (current_ == end_)
-    return 0;
+  if (current_ == end_) return 0;
   return *current_++;
 }
 
@@ -1783,8 +1772,7 @@ void OurReader::getLocationLineAndColumn(Location location, int& line,
   while (current < location && current != end_) {
     Char c = *current++;
     if (c == '\r') {
-      if (current != end_ && *current == '\n')
-        ++current;
+      if (current != end_ && *current == '\n') ++current;
       lastLineStart = current;
       ++line;
     } else if (c == '\n') {
@@ -1818,8 +1806,8 @@ String OurReader::getFormattedErrorMessages() const {
   return formattedMessage;
 }
 
-std::vector<CharReader::StructuredError>
-OurReader::getStructuredErrors() const {
+std::vector<CharReader::StructuredError> OurReader::getStructuredErrors()
+    const {
   std::vector<CharReader::StructuredError> allErrors;
   for (const auto& error : errors_) {
     CharReader::StructuredError structured;
@@ -1832,15 +1820,14 @@ OurReader::getStructuredErrors() const {
 }
 
 class OurCharReader : public CharReader {
-
-public:
+ public:
   OurCharReader(bool collectComments, OurFeatures const& features)
       : CharReader(
             std::unique_ptr<OurImpl>(new OurImpl(collectComments, features))) {}
 
-protected:
+ protected:
   class OurImpl : public Impl {
-  public:
+   public:
     OurImpl(bool collectComments, OurFeatures const& features)
         : collectComments_(collectComments), reader_(features) {}
 
@@ -1853,12 +1840,12 @@ protected:
       return ok;
     }
 
-    std::vector<CharReader::StructuredError>
-    getStructuredErrors() const override {
+    std::vector<CharReader::StructuredError> getStructuredErrors()
+        const override {
       return reader_.getStructuredErrors();
     }
 
-  private:
+   private:
     bool const collectComments_;
     OurReader reader_;
   };
@@ -1904,8 +1891,7 @@ bool CharReaderBuilder::validate(Json::Value* invalid) const {
   };
   for (auto si = settings_.begin(); si != settings_.end(); ++si) {
     auto key = si.name();
-    if (valid_keys.count(key))
-      continue;
+    if (valid_keys.count(key)) continue;
     if (invalid)
       (*invalid)[key] = *si;
     else
@@ -1967,8 +1953,8 @@ void CharReaderBuilder::ecma404Mode(Json::Value* settings) {
   //! [CharReaderBuilderECMA404Mode]
 }
 
-std::vector<CharReader::StructuredError>
-CharReader::getStructuredErrors() const {
+std::vector<CharReader::StructuredError> CharReader::getStructuredErrors()
+    const {
   return _impl->getStructuredErrors();
 }
 
@@ -2002,4 +1988,4 @@ IStream& operator>>(IStream& sin, Value& root) {
   return sin;
 }
 
-} // namespace Json
+}  // namespace Json

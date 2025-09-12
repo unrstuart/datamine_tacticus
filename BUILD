@@ -4,6 +4,8 @@ cc_binary(
     deps = [
       ":miner_cc_proto",
       "//libjson:json",
+      "@abseil-cpp//absl/debugging:stacktrace",
+      "@abseil-cpp//absl/debugging:symbolize",
       "@abseil-cpp//absl/log:initialize",
       "@abseil-cpp//absl/log:log",
       "@abseil-cpp//absl/flags:flag",
@@ -14,7 +16,10 @@ cc_binary(
     ],
     data = [
       "gameconfig_1_31.json",
+      "gameconfig_1_32.json",
       "I2Languages_en.json",
+      "out/text_assets/GlobalGameConfig",
+      "out/text_assets/GameConfig",
     ]
 )
 cc_binary(
@@ -41,8 +46,10 @@ cc_binary(
       "@abseil-cpp//absl/strings",
     ],
     data = [
+      "drop_rate_config.binaryproto",
       "gameconfig_1_30.json",
       "gameconfig_1_31.json",
+      "gameconfig_1_32.json",
       "I2Languages_en.json",
     ] + glob(["assets/**"])
 )

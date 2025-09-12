@@ -16553,7 +16553,7 @@
                     "id": "upgHpU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -16602,7 +16602,7 @@
                     "id": "upgDmgU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -16659,7 +16659,7 @@
                     "id": "upgHpU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -16716,7 +16716,7 @@
                     "id": "upgArmU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -16765,7 +16765,7 @@
                     "id": "upgArmU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -16829,7 +16829,7 @@
                     "id": "upgArmU009",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -16885,7 +16885,7 @@
                     "id": "upgHpU013",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -17701,7 +17701,7 @@
                     "id": "upgDmgE005",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -17758,7 +17758,7 @@
                     "id": "upgDmgE003",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -17871,7 +17871,7 @@
                     "id": "upgDmgE001",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -18047,7 +18047,7 @@
                     "id": "upgHpE003",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -18394,7 +18394,7 @@
                     "id": "upgDmgU019",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -18565,7 +18565,7 @@
                     "id": "upgArmU007",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -18629,7 +18629,7 @@
                     "id": "upgHpU002",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -18921,7 +18921,7 @@
                     "id": "upgHpU007",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -19270,7 +19270,7 @@
                     "id": "upgDmgU003",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -19824,7 +19824,7 @@
                     "id": "upgArmU001",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -19881,7 +19881,7 @@
                     "id": "upgDmgU011",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -19930,7 +19930,7 @@
                     "id": "upgDmgU010",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -19987,7 +19987,7 @@
                     "id": "upgDmgU009",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -20101,7 +20101,7 @@
                     "id": "upgDmgU005",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -20150,7 +20150,7 @@
                     "id": "upgHpL115",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -20207,7 +20207,7 @@
                     "id": "upgHpL114",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -20264,7 +20264,7 @@
                     "id": "upgHpL100",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -20321,7 +20321,7 @@
                     "id": "upgHpL117",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -20378,7 +20378,7 @@
                     "id": "upgHpL112",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -20435,7 +20435,7 @@
                     "id": "upgHpL010",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -20492,7 +20492,7 @@
                     "id": "upgArmE008",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -20720,7 +20720,7 @@
                     "id": "upgDmgU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -20769,7 +20769,7 @@
                     "id": "upgDmgU019",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -20818,7 +20818,7 @@
                     "id": "upgArmU007",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -20949,7 +20949,7 @@
                     "id": "upgArmU002",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -21055,7 +21055,7 @@
                     "id": "upgArmU005",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -21112,7 +21112,7 @@
                     "id": "upgDmgU004",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -21169,7 +21169,7 @@
                     "id": "upgHpU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -21283,7 +21283,7 @@
                     "id": "upgHpU001",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -21869,7 +21869,7 @@
                     "id": "upgDmgE010",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -21918,7 +21918,7 @@
                     "id": "upgArmE010",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -21975,7 +21975,7 @@
                     "id": "upgHpE012",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -22032,7 +22032,7 @@
                     "id": "upgDmgE011",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -22089,7 +22089,7 @@
                     "id": "upgDmgE004",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -22211,7 +22211,7 @@
                     "id": "upgHpE003",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -22374,7 +22374,7 @@
                     "id": "upgHpU017",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -22423,7 +22423,7 @@
                     "id": "upgArmU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -22480,7 +22480,7 @@
                     "id": "upgDmgE001",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -22627,7 +22627,7 @@
                     "id": "upgHpU015",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -23426,7 +23426,7 @@
                     "id": "upgHpU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -23540,7 +23540,7 @@
                     "id": "upgDmgU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -23589,7 +23589,7 @@
                     "id": "upgHpU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -23646,7 +23646,7 @@
                     "id": "upgArmU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -23825,7 +23825,7 @@
                     "id": "upgArmU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -23882,7 +23882,7 @@
                     "id": "upgHpL107",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -23939,7 +23939,7 @@
                     "id": "upgHpU013",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -24102,7 +24102,7 @@
                     "id": "upgHpL105",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -24200,7 +24200,7 @@
                     "id": "upgHpL116",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -24264,7 +24264,7 @@
                     "id": "upgHpL102",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -24378,7 +24378,7 @@
                     "id": "upgHpL103",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -24427,7 +24427,7 @@
                     "id": "upgHpL104",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -24484,7 +24484,7 @@
                     "id": "upgHpE015",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -24533,7 +24533,7 @@
                     "id": "upgDmgE005",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -25749,7 +25749,7 @@
                     "id": "upgArmU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -25806,7 +25806,7 @@
                     "id": "upgArmU009",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -25847,7 +25847,7 @@
                     "id": "upgArmU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26002,7 +26002,7 @@
                     "id": "upgDmgU003",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26059,7 +26059,7 @@
                     "id": "upgDmgU010",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26287,7 +26287,7 @@
                     "id": "upgHpU016",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26344,7 +26344,7 @@
                     "id": "upgArmU013",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26450,7 +26450,7 @@
                     "id": "upgDmgU009",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26597,7 +26597,7 @@
                     "id": "upgArmU005",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26638,7 +26638,7 @@
                     "id": "upgArmU001",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26744,7 +26744,7 @@
                     "id": "upgHpU015",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26809,7 +26809,7 @@
                     "id": "upgDmgU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -26858,7 +26858,7 @@
                     "id": "upgHpU002",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -27013,7 +27013,7 @@
                     "id": "upgHpU017",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -27249,7 +27249,7 @@
                     "id": "upgHpU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -27664,7 +27664,7 @@
                     "id": "upgHpU007",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -27924,7 +27924,7 @@
                     "id": "upgHpU001",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -28258,7 +28258,7 @@
                     "id": "upgHpL113",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -28372,7 +28372,7 @@
                     "id": "upgHpL101",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -28429,7 +28429,7 @@
                     "id": "upgHpL111",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -28470,7 +28470,7 @@
                     "id": "upgHpL106",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -28527,7 +28527,7 @@
                     "id": "upgArmE013",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -28592,7 +28592,7 @@
                     "id": "upgHpL108",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -29238,7 +29238,7 @@
                     "id": "upgHpU009",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -29597,7 +29597,7 @@
                     "id": "upgDmgU003",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -29858,7 +29858,7 @@
                     "id": "upgArmU005",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -29915,7 +29915,7 @@
                     "id": "upgHpU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -29964,7 +29964,7 @@
                     "id": "upgArmU009",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -30021,7 +30021,7 @@
                     "id": "upgDmgU019",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -30682,7 +30682,7 @@
                     "id": "upgHpU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -31024,7 +31024,7 @@
                     "id": "upgArmU002",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -31170,7 +31170,7 @@
                     "id": "upgHpU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -31268,7 +31268,7 @@
                     "id": "upgDmgU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -31358,7 +31358,7 @@
                     "id": "upgArmU001",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -31456,7 +31456,7 @@
                     "id": "upgDmgU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -31668,7 +31668,7 @@
                     "id": "upgArmE009",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -31774,7 +31774,7 @@
                     "id": "upgHpU015",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -31929,7 +31929,7 @@
                     "id": "upgHpL118",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -31986,7 +31986,7 @@
                     "id": "upgDmgU011",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -32076,7 +32076,7 @@
                     "id": "upgHpU002",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -32125,7 +32125,7 @@
                     "id": "upgHpU008",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -32166,7 +32166,7 @@
                     "id": "upgDmgE003",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -32215,7 +32215,7 @@
                     "id": "upgHpU003",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -32256,7 +32256,7 @@
                     "id": "upgHpL119",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -32313,7 +32313,7 @@
                     "id": "upgHpL108",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -32370,7 +32370,7 @@
                     "id": "upgHpE017",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -32419,7 +32419,7 @@
                     "id": "upgHpL109",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -52335,7 +52335,7 @@
         ]
     },
     "AMSC03B": {
-        "campaign": "Adeptus Mechanicus Standard",
+        "campaign": "Adeptus Mechanicus Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 3,
@@ -52836,7 +52836,7 @@
                     "id": "upgHpU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -52858,7 +52858,7 @@
         ]
     },
     "AMSC13B": {
-        "campaign": "Adeptus Mechanicus Standard",
+        "campaign": "Adeptus Mechanicus Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 13,
@@ -52877,7 +52877,7 @@
                     "id": "upgHpE012",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -52934,7 +52934,7 @@
                     "id": "upgDmgU009",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -52983,7 +52983,7 @@
                     "id": "upgArmU001",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -53138,7 +53138,7 @@
                     "id": "upgDmgU010",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -53187,7 +53187,7 @@
                     "id": "upgHpU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -53244,7 +53244,7 @@
                     "id": "upgArmU013",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -53423,7 +53423,7 @@
                     "id": "upgHpU016",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -53488,7 +53488,7 @@
                     "id": "upgDmgU011",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -53553,7 +53553,7 @@
                     "id": "upgArmU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -53599,7 +53599,7 @@
         ]
     },
     "AMSC25B": {
-        "campaign": "Adeptus Mechanicus Standard",
+        "campaign": "Adeptus Mechanicus Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 25,
@@ -53618,7 +53618,7 @@
                     "id": "upgDmgE004",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -53846,7 +53846,7 @@
                     "id": "upgHpL114",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -54128,7 +54128,7 @@
         ]
     },
     "AMEC03B": {
-        "campaign": "Adeptus Mechanicus Extremis",
+        "campaign": "Adeptus Mechanicus Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 3,
@@ -54667,7 +54667,7 @@
         ]
     },
     "AMEC13B": {
-        "campaign": "Adeptus Mechanicus Extremis",
+        "campaign": "Adeptus Mechanicus Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 13,
@@ -54686,7 +54686,7 @@
                     "id": "upgArmL203",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]
@@ -55256,7 +55256,7 @@
                     "id": "upgHpL114",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]
@@ -55432,7 +55432,7 @@
         ]
     },
     "AMEC25B": {
-        "campaign": "Adeptus Mechanicus Extremis",
+        "campaign": "Adeptus Mechanicus Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 25,
@@ -55451,7 +55451,7 @@
                     "id": "upgDmgL003",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]
@@ -55961,7 +55961,7 @@
         ]
     },
     "TSC03B": {
-        "campaign": "Tyranids Standard",
+        "campaign": "Tyranids Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 3,
@@ -56510,7 +56510,7 @@
                     "id": "upgHpU001",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -56540,7 +56540,7 @@
         ]
     },
     "TSC13B": {
-        "campaign": "Tyranids Standard",
+        "campaign": "Tyranids Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 13,
@@ -56559,7 +56559,7 @@
                     "id": "upgHpE015",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -56623,7 +56623,7 @@
                     "id": "upgDmgU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -56672,7 +56672,7 @@
                     "id": "upgArmU007",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -56851,7 +56851,7 @@
                     "id": "upgDmgU019",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -56900,7 +56900,7 @@
                     "id": "upgHpU017",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -56949,7 +56949,7 @@
                     "id": "upgArmU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -57120,7 +57120,7 @@
                     "id": "upgHpU009",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -57161,7 +57161,7 @@
                     "id": "upgDmgU003",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -57218,7 +57218,7 @@
                     "id": "upgArmU002",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -57271,7 +57271,7 @@
         ]
     },
     "TSC25B": {
-        "campaign": "Tyranids Standard",
+        "campaign": "Tyranids Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 25,
@@ -57290,7 +57290,7 @@
                     "id": "upgDmgE010",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -57526,7 +57526,7 @@
                     "id": "upgHpL113",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -57752,7 +57752,7 @@
         ]
     },
     "TEC03B": {
-        "campaign": "Tyranids Extremis",
+        "campaign": "Tyranids Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 3,
@@ -58347,7 +58347,7 @@
         ]
     },
     "TEC13B": {
-        "campaign": "Tyranids Extremis",
+        "campaign": "Tyranids Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 13,
@@ -58366,7 +58366,7 @@
                     "id": "upgArmL202",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]
@@ -58928,7 +58928,7 @@
                     "id": "upgHpL113",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]
@@ -59072,7 +59072,7 @@
         ]
     },
     "TEC25B": {
-        "campaign": "Tyranids Extremis",
+        "campaign": "Tyranids Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 25,
@@ -59091,7 +59091,7 @@
                     "id": "upgDmgL202",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]
@@ -59593,7 +59593,7 @@
         ]
     },
     "TASC03B": {
-        "campaign": "T'au Empire Standard",
+        "campaign": "T'au Empire Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 3,
@@ -60110,7 +60110,7 @@
                     "id": "upgHpU017",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60132,7 +60132,7 @@
         ]
     },
     "TASC13B": {
-        "campaign": "T'au Empire Standard",
+        "campaign": "T'au Empire Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 13,
@@ -60151,7 +60151,7 @@
                     "id": "upgHpE017",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -60232,7 +60232,7 @@
                     "id": "upgDmgU004",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60281,7 +60281,7 @@
                     "id": "upgArmU002",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60452,7 +60452,7 @@
                     "id": "upgDmgU012",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60493,7 +60493,7 @@
                     "id": "upgHpU013",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60550,7 +60550,7 @@
                     "id": "upgArmU014",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60745,7 +60745,7 @@
                     "id": "upgHpU007",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60794,7 +60794,7 @@
                     "id": "upgDmgU003",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60851,7 +60851,7 @@
                     "id": "upgArmU006",
                     "chance_numerator": 3,
                     "chance_denominator": 4,
-                    "effective_rate": 0.800
+                    "effective_rate": 0.799
                 }
 
             ]
@@ -60889,7 +60889,7 @@
         ]
     },
     "TASC25B": {
-        "campaign": "T'au Empire Standard",
+        "campaign": "T'au Empire Standard Challenge",
         "campaignType": "Normal",
         "energyCost": 6,
         "nodeNumber": 25,
@@ -60908,7 +60908,7 @@
                     "id": "upgDmgE004",
                     "chance_numerator": 1,
                     "chance_denominator": 4,
-                    "effective_rate": 0.399
+                    "effective_rate": 0.400
                 }
 
             ]
@@ -61224,7 +61224,7 @@
                     "id": "upgHpL107",
                     "chance_numerator": 1,
                     "chance_denominator": 9,
-                    "effective_rate": 0.200
+                    "effective_rate": 0.199
                 }
 
             ]
@@ -61474,7 +61474,7 @@
         ]
     },
     "TAEC03B": {
-        "campaign": "T'au Empire Extremis",
+        "campaign": "T'au Empire Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 3,
@@ -62021,7 +62021,7 @@
         ]
     },
     "TAEC13B": {
-        "campaign": "T'au Empire Extremis",
+        "campaign": "T'au Empire Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 13,
@@ -62040,7 +62040,7 @@
                     "id": "upgArmL203",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]
@@ -62594,7 +62594,7 @@
                     "id": "upgHpL107",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]
@@ -62746,7 +62746,7 @@
         ]
     },
     "TAEC25B": {
-        "campaign": "T'au Empire Extremis",
+        "campaign": "T'au Empire Extremis Challenge",
         "campaignType": "Extremis",
         "energyCost": 6,
         "nodeNumber": 25,
@@ -62765,7 +62765,7 @@
                     "id": "upgDmgL001",
                     "chance_numerator": 1,
                     "chance_denominator": 7,
-                    "effective_rate": 0.249
+                    "effective_rate": 0.250
                 }
 
             ]

@@ -15,7 +15,8 @@ namespace dataminer {
 
 namespace {
 
-std::string GetCampaignName(const Campaign& campaign) {
+std::string GetCampaignName(const Campaign& campaign,
+                            const Campaign::Battle& battle) {
   const std::map<std::string, std::string> kCampaignNames = {
       {"campaign1", "Indomitus"},
       {"campaign2", "Fall of Cadia"},
@@ -45,12 +46,13 @@ std::string GetCampaignName(const Campaign& campaign) {
     LOG(ERROR) << "Unknown campaign id: " << campaign.id();
     return "Unknown Campaign";
   }
-  return it->second;
+  return absl::StrCat(it->second,
+                      absl::EndsWith(battle.id(), "B") ? " Challenge" : "");
 }
 
 std::string GetCampaignType(const Campaign& campaign,
                             const Campaign::Battle& battle) {
-  if (GetCampaignName(campaign) == "Indomitus") {
+  if (GetCampaignName(campaign, battle) == "Indomitus") {
     int battle_number;
     if (!absl::SimpleAtoi(battle.id(), &battle_number)) {
       LOG(ERROR) << "Invalid battle id: " << battle.id();
@@ -66,8 +68,12 @@ std::string GetCampaignType(const Campaign& campaign,
   if (absl::StartsWith(campaign.id(), "campaign")) return "Normal";
   if (absl::StartsWith(campaign.id(), "mirror")) return "Mirror";
   if (absl::StartsWith(campaign.id(), "elite")) return "Elite";
-  if (absl::StartsWith(campaign.id(), "eventStandard")) return "Normal";
-  if (absl::StartsWith(campaign.id(), "eventExtremis")) return "Extremis";
+  if (absl::StartsWith(campaign.id(), "eventStandard")) {
+    return "Normal";
+  }
+  if (absl::StartsWith(campaign.id(), "eventExtremis")) {
+    return "Extremis";
+  }
   LOG(ERROR) << "Unknown campaign type for id: " << campaign.id();
   return "Unknown";
 }
@@ -334,7 +340,8 @@ void EmitCampaignBattle(std::ostream& out, const GameConfig& config,
                         const Campaign& campaign,
                         const Campaign::Battle& battle) {
   out << "    \"" << GetBattleId(campaign, battle) << "\": {\n";
-  out << "        \"campaign\": \"" << GetCampaignName(campaign) << "\",\n";
+  out << "        \"campaign\": \"" << GetCampaignName(campaign, battle)
+      << "\",\n";
   out << "        \"campaignType\": \"" << GetCampaignType(campaign, battle)
       << "\",\n";
   out << "        \"energyCost\": " << battle.energy_cost() << ",\n";

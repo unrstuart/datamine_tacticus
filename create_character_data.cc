@@ -82,7 +82,8 @@ std::string GetIconPath(const absl::string_view id,
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
-    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \"\"}";
+    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id
+               << "\", \"\"} - expected it to be '" << img << "'.";
   }
 
   return absl::StrCat("snowprint_assets/characters/", img);
@@ -95,7 +96,8 @@ std::string GetRoundIconPath(const absl::string_view id,
       {"spaceStormcaller",
        R"(snowprint_assets/characters/ui_image_RoundPortrait_space_stormcaller_01.png)"},
   };
-  if (const auto it = kOverrides.find(std::string(id)); it != kOverrides.end()) {
+  if (const auto it = kOverrides.find(std::string(id));
+      it != kOverrides.end()) {
     return it->second;
   }
   constexpr absl::string_view img_prefix = "ui_image_RoundPortrait_";
@@ -114,7 +116,8 @@ std::string GetRoundIconPath(const absl::string_view id,
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
-    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \"\"}";
+    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \"\"} - expected it to be at '"
+               << full_path << "'.";
   }
 
   return absl::StrCat("snowprint_assets/characters/", img);
@@ -151,15 +154,13 @@ absl::Status CreateCharacterData(const absl::string_view path,
     out << "        \"Initial rarity\": \"" << unit.base_rarity() << "\",\n";
     out << "        \"Melee Damage\": \"" << unit.melee_attack().damage_type()
         << "\",\n";
-    out << "        \"Melee Hits\": " << unit.melee_attack().hits()
-        << ",\n";
+    out << "        \"Melee Hits\": " << unit.melee_attack().hits() << ",\n";
     if (unit.has_ranged_attack()) {
       out << "        \"Ranged Damage\": \""
           << unit.ranged_attack().damage_type() << "\",\n";
       out << "        \"Ranged Hits\": " << unit.ranged_attack().hits()
           << ",\n";
-      out << "        \"Distance\": " << unit.ranged_attack().range()
-          << ",\n";
+      out << "        \"Distance\": " << unit.ranged_attack().range() << ",\n";
     }
     out << "        \"Movement\": " << unit.movement() << ",\n";
     out << "        \"Equipment1\": \"" << unit.equipment_slots(0) << "\",\n";

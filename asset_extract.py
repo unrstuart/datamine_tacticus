@@ -54,7 +54,7 @@ class UnityAssetExtractor:
 
                     # Check if it's one of our target resource types
                     # if obj_type in ["Texture2D", "Sprite", "TextAsset", "MonoBehaviour"]:
-                    if obj_type in ["MonoBehaviour"]:
+                    if obj_type in ["MonoBehaviour", "Sprite", "TextAsset"]:
                         # Increment counter for this type
                         file_counters[obj_type] = file_counters.get(obj_type, 0) + 1
 

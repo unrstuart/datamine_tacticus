@@ -1,6 +1,9 @@
 #include <fstream>
 #include <iostream>
+#include <optional>
 
+#include "absl/debugging/stacktrace.h"
+#include "absl/debugging/symbolize.h"
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
 #include "absl/log/initialize.h"
@@ -91,9 +94,14 @@ void Print(const Json::Value& value, int max_depth, int max_members,
 }
 
 void PrintDebugPath(Json::Value value) {
-  if (absl::GetFlag(FLAGS_debug_print_path) == "(none)") return;
-  for (const absl::string_view path :
-       absl::StrSplit(absl::GetFlag(FLAGS_debug_print_path), ".")) {
+  std::string path = absl::GetFlag(FLAGS_debug_print_path);
+  if (path == "(none)") return;
+  if (path.empty()) {
+    Print(value, absl::GetFlag(FLAGS_max_depth),
+          absl::GetFlag(FLAGS_max_members));
+    return;
+  }
+  for (const absl::string_view path : absl::StrSplit(path, ".")) {
     std::string path_comp;
     std::optional<int> index;
     ParsePath(path, path_comp, index);
@@ -149,7 +157,8 @@ void Main() {
   const std::string input_file = absl::GetFlag(FLAGS_json_file);
   std::ifstream in(input_file);
   if (!reader.parse(in, root)) {
-    LOG(ERROR) << "Couldn't parse json file: '" << input_file << "'.";
+    LOG(ERROR) << "Couldn't parse json file: '" << input_file << "'. "
+               << reader.getFormattedErrorMessages();
     return;
   }
   if (!root.isObject()) {
@@ -167,6 +176,7 @@ void Main() {
 
 int main(int argc, char** argv) {
   absl::ParseCommandLine(argc, argv);
+  absl::InitializeSymbolizer(argv[0]);
   absl::InitializeLog();
   dataminer::Main();
 
