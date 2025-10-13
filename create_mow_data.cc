@@ -16,6 +16,8 @@ namespace {
 
 std::string GetIconPath(const absl::string_view id,
                         const GameConfig& game_config) {
+  const std::map<std::string, std::string> kOverrides = {
+      {"orksRukkatrukk", "orkss_rukkatruk_01"}};
   constexpr absl::string_view img_prefix = "ui_image_portrait_";
   constexpr absl::string_view img_suffix = ".png";
   std::string img = "";
@@ -26,13 +28,18 @@ std::string GetIconPath(const absl::string_view id,
       break;
     }
   }
+  if (const auto it = kOverrides.find(std::string(id));
+      it != kOverrides.end()) {
+    img = it->second;
+  }
 
   img = absl::StrCat(img_prefix, img, img_suffix);
-  const std::string full_path = absl::StrCat("assets/characters/", img);
+  const std::string full_path = absl::StrCat("out/sprites/", img);
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
-    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \"\"}";
+    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \""
+               << full_path << "\"}";
   }
 
   return absl::StrCat("snowprint_assets/characters/", img);
@@ -53,11 +60,12 @@ std::string GetRoundIconPath(const absl::string_view id,
   }
 
   img = absl::StrCat(img_prefix, img, img_suffix);
-  const std::string full_path = absl::StrCat("assets/characters/", img);
+  const std::string full_path = absl::StrCat("out/sprites/", img);
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
-    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \"\"}";
+    LOG(ERROR) << "Couldn't find avatar icon for {\"" << id << "\", \""
+               << full_path << "\"}";
   }
 
   return absl::StrCat("snowprint_assets/characters/", img);

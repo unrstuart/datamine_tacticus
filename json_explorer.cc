@@ -22,8 +22,9 @@ ABSL_FLAG(int, max_depth, 0,
           "Use 0 for no limit, or a negative number for unlimited depth.");
 ABSL_FLAG(int, max_members, 0,
           "The maximum number of members to print for each object/array. ");
-ABSL_FLAG(std::string, debug_print_path, "(none)",
-          "The dot-separated path to the JSON fields to debug print. ");
+ABSL_FLAG(std::vector<std::string>, debug_print_path, {},
+          "A comma-separated list of dot-separated paths to JSON fields to "
+          "debug print.");
 ABSL_FLAG(std::string, search_string, "",
           "If non-empty, searches the JSON for any value containing this "
           "string, and prints the path to every node.");
@@ -94,25 +95,27 @@ void Print(const Json::Value& value, int max_depth, int max_members,
 }
 
 void PrintDebugPath(Json::Value value) {
-  std::string path = absl::GetFlag(FLAGS_debug_print_path);
-  if (path == "(none)") return;
-  if (path.empty()) {
+  std::vector<std::string> paths = absl::GetFlag(FLAGS_debug_print_path);
+  if (paths.empty()) return;
+  for (const auto& path : paths) {
+    if (path.empty()) {
+      Print(value, absl::GetFlag(FLAGS_max_depth),
+            absl::GetFlag(FLAGS_max_members));
+      return;
+    }
+    for (const absl::string_view path : absl::StrSplit(path, ".")) {
+      std::string path_comp;
+      std::optional<int> index;
+      ParsePath(path, path_comp, index);
+      value = value[path_comp];
+      if (index.has_value()) {
+        value = value[*index];
+      }
+    }
+
     Print(value, absl::GetFlag(FLAGS_max_depth),
           absl::GetFlag(FLAGS_max_members));
-    return;
   }
-  for (const absl::string_view path : absl::StrSplit(path, ".")) {
-    std::string path_comp;
-    std::optional<int> index;
-    ParsePath(path, path_comp, index);
-    value = value[path_comp];
-    if (index.has_value()) {
-      value = value[*index];
-    }
-  }
-
-  Print(value, absl::GetFlag(FLAGS_max_depth),
-        absl::GetFlag(FLAGS_max_members));
 
   std::cout << "\n";
 }

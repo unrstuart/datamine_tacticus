@@ -9,6 +9,9 @@ namespace dataminer {
 
 absl::StatusOr<Upgrades> ParseUpgrades(const Json::Value& root);
 
+absl::Status AmendUpgradeMaterialsWithDisplayStrings(const Json::Value& root,
+                                                     Upgrades* upgrades);
+
 }  // namespace dataminer
 
 #endif  // __PARSE_UPGRADES_H__

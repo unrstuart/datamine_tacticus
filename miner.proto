@@ -178,10 +178,14 @@ message Achievement {
 
 message Unit {
   message Stats {
+    optional int32 level = 4; // AbilityLevel
     optional int32 damage = 1; // Damage
     optional int32 armor = 2; // FixedArmor
     optional int32 health = 3; // Health
     optional int32 progression_index = 5; // ProgressionIndex
+    optional int32 rank = 6; // Rank
+    optional int32 rarity = 7; // BaseRarity
+    optional int32 stars = 8; // StarLevel
   }
   message Attack {
     optional string damage_type = 1; // DamageProfile
@@ -223,13 +227,13 @@ message Unit {
 
 message Npc {
   message Stats {
-    optional int32 level = 1; // AbilityLevel
+    optional int32 ability_level = 1; // AbilityLevel
     optional int32 damage = 2; // Damage
     optional int32 armor = 3; // FixedArmor
     optional int32 health = 4; // Health
     optional int32 progression_index = 5; // ProgressionIndex
     optional int32 rank = 6; // Rank
-    optional int32 stars = 7; // StarLevel    
+    optional int32 stars = 8; // StarLevel
   }
   optional string id = 1;  // the object id
   optional string name = 6; // name

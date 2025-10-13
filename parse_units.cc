@@ -200,10 +200,38 @@ absl::StatusOr<Npc> ParseNpc(const absl::string_view id,
       npc.add_traits(trait.asString());
     }
   }
+  if (root.isMember("weapons") && root["weapons"].isArray() &&
+      root["weapons"].size() >= 1) {
+    const Json::Value& melee = root["weapons"][0];
+    RET_CHECK(melee.isMember("DamageProfile") && melee.isMember("hits") &&
+              melee["DamageProfile"].isString() && melee["hits"].isInt())
+        << "NPC '" << id
+        << "' Melee weapon is missing 'DamageProfile' or 'hits'.";
+    npc.mutable_melee_attack()->set_damage_type(
+        melee["DamageProfile"].asString());
+    npc.mutable_melee_attack()->set_hits(melee["hits"].asInt());
+    if (root["weapons"].size() > 1) {
+      const Json::Value& ranged = root["weapons"][1];
+      RET_CHECK(ranged.isMember("DamageProfile") && ranged.isMember("hits") &&
+                ranged.isMember("Range") &&
+                ranged["DamageProfile"].isString() && ranged["hits"].isInt() &&
+                ranged["Range"].isInt())
+          << "NPC '" << id
+          << "' Ranged weapon is missing 'DamageProfile', 'hits' or 'Range'.";
+      npc.mutable_ranged_attack()->set_damage_type(
+          ranged["DamageProfile"].asString());
+      npc.mutable_ranged_attack()->set_hits(ranged["hits"].asInt());
+      npc.mutable_ranged_attack()->set_range(ranged["Range"].asInt());
+    }
+    for (const Json::Value& weapon : root["weapons"]) {
+      RET_CHECK(weapon.isObject())
+          << "NPC '" << id << "' weapon is not an object.";
+    }
+  }
   if (root.isMember("stats") && root["stats"].isArray()) {
     for (const Json::Value& json_stats : root["stats"]) {
       Npc::Stats& stats = *npc.add_stats();
-      stats.set_level(json_stats["AbilityLevel"].asInt());
+      stats.set_ability_level(json_stats["AbilityLevel"].asInt());
       stats.set_damage(json_stats["Damage"].asInt());
       stats.set_health(json_stats["Health"].asInt());
       stats.set_armor(json_stats["FixedArmor"].asInt());
@@ -326,8 +354,7 @@ absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
           LOG(ERROR) << "Ability '" << abilities[i]->name()
                      << "' for Machine of War entry '" << mow_id
                      << "' does not have at least 54 upgrades. Some features "
-                    << "will not work or may break. - "
-                     << upgrades.size();
+                     << "will not work or may break. - " << upgrades.size();
         }
         for (int j = 0; j < upgrades.size(); ++j) {
           RET_CHECK(upgrades[j].isArray() && upgrades[j].size() == 3)
@@ -360,23 +387,26 @@ absl::StatusOr<Units> ParseUnits(const Json::Value& root) {
   RET_CHECK(root["abilities"].isObject()) << "'abilities' is not an object.";
   for (const absl::string_view id : root["abilities"].getMemberNames()) {
     Json::Value ability = root["abilities"].get(id, {});
-    if (!ability.isObject() || !ability.isMember("constants")) {
+    if (!ability.isObject()) {
+      LOG(ERROR) << "Ability '" << id << "' is not an object.";
       // skip for now.
       continue;
     }
     Units::Ability& new_ability = *units.add_abilities();
     new_ability.set_id(id);
 
-    Json::Value constants = ability["constants"];
-    RET_CHECK(constants.isObject())
-        << "Ability constants for '" << id << "' must be an object.";
-    for (const absl::string_view field : constants.getMemberNames()) {
-      if (absl::StartsWith(field, "damageProfile")) {
-        Json::Value damage_profile = constants[field];
-        RET_CHECK(damage_profile.isString())
-            << "Damage profile for ability '" << id << "' field '" << field
-            << "' is not a string.";
-        new_ability.add_damage_types(damage_profile.asString());
+    if (ability.isMember("constants")) {
+      Json::Value constants = ability["constants"];
+      RET_CHECK(constants.isObject())
+          << "Ability constants for '" << id << "' must be an object.";
+      for (const absl::string_view field : constants.getMemberNames()) {
+        if (absl::StartsWith(field, "damageProfile")) {
+          Json::Value damage_profile = constants[field];
+          RET_CHECK(damage_profile.isString())
+              << "Damage profile for ability '" << id << "' field '" << field
+              << "' is not a string.";
+          new_ability.add_damage_types(damage_profile.asString());
+        }
       }
     }
   }

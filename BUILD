@@ -1,4 +1,28 @@
 cc_binary(
+    name = "parse_onslaught",
+    srcs = ["parse_onslaught.cc"],
+    deps = [
+      ":miner_cc_proto",
+      "//libjson:json",
+      "@abseil-cpp//absl/debugging:stacktrace",
+      "@abseil-cpp//absl/debugging:symbolize",
+      "@abseil-cpp//absl/log:initialize",
+      "@abseil-cpp//absl/log:log",
+      "@abseil-cpp//absl/flags:flag",
+      "@abseil-cpp//absl/flags:parse",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/status:statusor",
+      "@abseil-cpp//absl/strings",
+    ],
+    data = [
+      "gameconfig_1_31.json",
+      "gameconfig_1_32.json",
+      "I2Languages_en.json",
+      "out/text_assets/GameConfig",
+    ]
+)
+
+cc_binary(
     name = "json_explorer",
     srcs = ["json_explorer.cc"],
     deps = [
@@ -30,6 +54,7 @@ cc_binary(
       ":create_character_data",
       ":create_equipment_data",
       ":create_mow_data",
+      ":create_npc_data",
       ":create_rank_up_data",
       ":create_recipe_data",
       ":miner_cc_proto",
@@ -113,6 +138,19 @@ cc_library(
       "@abseil-cpp//absl/status:status",
       "@abseil-cpp//absl/strings",
   ]
+)
+
+cc_library(
+  name = "create_npc_data",
+  srcs = ["create_npc_data.cc"],
+  hdrs = ["create_npc_data.h"],
+  deps = [
+      ":miner_cc_proto",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/strings",
+  ],
+  data = glob(["out/sprites/**"])
 )
 
 cc_library(
@@ -214,9 +252,11 @@ cc_library(
   hdrs = ["parse_upgrades.h"],
   deps = [
       ":miner_cc_proto",
+      ":status_macros",
       "//libjson:json",
       "@abseil-cpp//absl/flags:flag",
       "@abseil-cpp//absl/flags:parse",
+      "@abseil-cpp//absl/log",
       "@abseil-cpp//absl/status:status",
       "@abseil-cpp//absl/status:statusor",
       "@abseil-cpp//absl/strings",

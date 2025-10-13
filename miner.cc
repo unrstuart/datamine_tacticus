@@ -18,6 +18,7 @@
 //   --character_data=$MINING_OUTPUT/newCharacterData.json \
 //   --campaign_data=$MINING_OUTPUT/newCampaignData.json \
 //   --mow_data=$MINING_OUTPUT/newMowData.json \
+//   --npc_data=$MINING_OUTPUT/newNpcData.json \
 //   --equipment_data=$MINING_OUTPUT/newEquipmentData.json \
 //   --drop_rate_config_path=$MINING_OUTPUT/drop_rate_config.binarypb \
 //   --i18n_strings_json=I2Languages_en.json
@@ -55,6 +56,7 @@
 #include "create_character_data.h"
 #include "create_equipment_data.h"
 #include "create_mow_data.h"
+#include "create_npc_data.h"
 #include "create_rank_up_data.h"
 #include "create_recipe_data.h"
 #include "libjson/json/reader.h"
@@ -85,6 +87,8 @@ ABSL_FLAG(std::string, mow_data, "",
           "If not empty, writes all mow data to the specified file.");
 ABSL_FLAG(std::string, equipment_data, "",
           "If not empty, writes all equipment data to the specified file.");
+ABSL_FLAG(std::string, npc_data, "",
+          "If not empty, writes all NPC data to the specified file.");
 
 namespace dataminer {
 namespace {
@@ -369,6 +373,13 @@ void Main() {
       LOG(ERROR) << "Error parsing i18n strings: " << status.message() << "\n";
       return;
     }
+
+    status = AmendUpgradeMaterialsWithDisplayStrings(
+        root, config.mutable_client_game_config()->mutable_upgrades());
+    if (!status.ok()) {
+      LOG(ERROR) << "Error parsing i18n strings: " << status.message() << "\n";
+      return;
+    }
   }
 
   const std::string rank_up_file = absl::GetFlag(FLAGS_rank_up_file);
@@ -431,6 +442,15 @@ void Main() {
     if (const absl::Status status = CreateMowData(mow_data_file, config);
         !status.ok()) {
       LOG(ERROR) << "Error creating MoW data: " << status.message();
+    }
+  }
+
+  const std::string npc_data_file = absl::GetFlag(FLAGS_npc_data);
+  if (!npc_data_file.empty()) {
+    LOG(INFO) << "Writing NPC data to: " << npc_data_file;
+    if (const absl::Status status = CreateNpcData(npc_data_file, config);
+        !status.ok()) {
+      LOG(ERROR) << "Error creating NPC data: " << status.message();
     }
   }
 }

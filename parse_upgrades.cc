@@ -1,10 +1,12 @@
 
 #include "parse_upgrades.h"
 
+#include "absl/log/log.h"
 #include "absl/status/statusor.h"
 #include "absl/strings/string_view.h"
 #include "libjson/json/value.h"
 #include "miner.pb.h"
+#include "status_macros.h"
 
 namespace dataminer {
 
@@ -39,6 +41,44 @@ absl::StatusOr<Upgrades::Upgrade::Recipe> ParseUpgradeRecipe(
 }
 
 }  // namespace
+
+absl::Status AmendUpgradeMaterialsWithDisplayStrings(const Json::Value& root,
+                                                     Upgrades* upgrades) {
+  std::map<std::string, std::string> names;
+  RET_CHECK(root.isObject()) << "Parsed JSON is not an object.";
+  RET_CHECK(root.isMember("mTerms")) << "Missing 'mTerms' in 'mSource'.";
+  const Json::Value& terms = root["mTerms"];
+  RET_CHECK(terms.isArray()) << "'mTerms' is not an array.";
+  for (const Json::Value& term_entry : terms) {
+    RET_CHECK(term_entry.isObject()) << "'mTerms' entry is not an object.";
+    RET_CHECK(term_entry.isMember("Term"))
+        << "'mTerms' entry does not have 'Term' field.";
+    RET_CHECK(term_entry.isMember("Languages"))
+        << "'mTerms' entry does not have 'Languages' field.";
+    const Json::Value& term = term_entry["Term"];
+    RET_CHECK(term.isString())
+        << "'mTerms' entry 'Term' field is not a string.";
+    const Json::Value& languages = term_entry["Languages"];
+    RET_CHECK(languages.isArray() && languages.size() > 0)
+        << "'mTerms' entry 'Languages' field is not an array or is empty.";
+    const Json::Value& english = languages[0];
+    RET_CHECK(english.isString())
+        << "'mTerms' entry 'Languages' field is not a string.";
+    const std::string key = term.asString();
+    const std::string value = english.asString();
+    names[key] = value;
+  }
+  for (Upgrades::Upgrade& upgrade : *upgrades->mutable_upgrades()) {
+    const std::string id = upgrade.id();
+    auto it = names.find(absl::StrCat("Upgrades/", id, "_name"));
+    if (it != names.end()) {
+      upgrade.set_name(it->second);
+    } else {
+      LOG(ERROR) << "No name for upgrade: " << id;
+    }
+  }
+  return absl::OkStatus();
+}
 
 absl::StatusOr<Upgrades> ParseUpgrades(const Json::Value& root) {
   Upgrades upgrades;
