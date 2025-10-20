@@ -118,6 +118,7 @@ const std::map<std::string, std::string> kIdToSprite = {
     {"tyranBiovore", "tyran_biovore_01"},
     {"tyranDeathleaper", "tyran_deathleaper_01"},
     {"tyranNeurothrope", "tyran_neurothrope_01"},
+    {"tyranNeurothrope_LHE", "tyran_neurothrope_01"},
     {"tyranParasite", "tyran_parasite_01"},
     {"tyranTyrantGuard", "tyran_tyrantguard_01"},
     {"tyranWingedPrime", "tyran_wingedprime_01"},
@@ -202,10 +203,14 @@ const std::map<std::string, std::string> kIdToSprite = {
     {"blackBossTerminatorLHE", "black_terminator_01"},
     {"blackHaarken_LHE", "black_haarken_01"},
     {"custoBladeChampion_LHE", "custo_bladechampion_01"},
+    {"custoKyrus_LHE", "custo_kyrus_01"},
     {"deathBossBlightbringer", "death_blightbringer_01"},
     {"deathBossBlightbringerLHE", "death_blightbringer_01"},
     {"deathBossBlightlord", "death_blightlord_01"},
     {"deathBossBlightlordLHE", "death_blightlord_01"},
+    {"deathBossMortarion", "guild_mortarion_01"},
+    {"deathNpc3Nurglings", "death_nurgling_01"},
+    {"deathNpc4BlightlordTerminator", "death_blightlord_01"},
     {"deathBossPutrifier", "death_putrifier_01"},
     {"deathBossPutrifierLHE", "death_putrifier_01"},
     {"deathBossRotbone", "death_rotbone_01"},
@@ -632,7 +637,7 @@ std::string GetIconPath(const absl::string_view id,
   }
 
   const std::string img = absl::StrCat(img_prefix, it->second, img_suffix);
-  const std::string full_path = absl::StrCat("out/sprites/", img);
+  const std::string full_path = absl::StrCat("assets/characters/", img);
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {

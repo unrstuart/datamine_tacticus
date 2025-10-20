@@ -66,7 +66,7 @@ class UnityAssetExtractor:
                     #     print(f"Checked {asset_count} objects, processed {processed_count} target resources...")
 
                 except Exception as e:
-                    # print(f"Error processing object (ID: {getattr(obj, 'path_id', 'unknown')}): {e}")
+                    print(f"Error processing object (ID: {getattr(obj, 'path_id', 'unknown')}): {e}")
                     continue
 
             # Display type statistics
@@ -83,8 +83,6 @@ class UnityAssetExtractor:
             return False
 
         return True
-
-    processed_types = []
 
     def _extract_single_asset(self, env, obj, sequence_num):
         """Extract a single asset"""
@@ -114,10 +112,7 @@ class UnityAssetExtractor:
                 data_type = obj_type
 
             # print(f"Processing {data_type} resource: {getattr(data, 'name', f'unnamed_{obj.path_id}')}")
-    
-            if not data_type in self.processed_types:
-                print(f'found new data type {data_type}')
-                self.processed_types.append(data_type)
+
             # Process based on resource type, pass sequence number
             if data_type == "Texture2D":
                 self._extract_texture2d(data, obj, sequence_num)
@@ -213,7 +208,7 @@ class UnityAssetExtractor:
             # Get image data
             img = data.image
             if img:
-                # print(f"\n🖼️ Processing Texture2D (Sequence: {sequence_num}, ID: {obj.path_id}, GUID: {obj.guid})")
+                print(f"\n🖼️ Processing Texture2D (Sequence: {sequence_num}, ID: {obj.path_id}, GUID: {obj.guid})")
                 # Get real filename
                 name = self._get_asset_name(data, obj, "Texture2D", sequence_num)
                 filename = self._sanitize_filename(f"{name}.png")
@@ -221,7 +216,7 @@ class UnityAssetExtractor:
 
                 # Save image
                 img.save(filepath)
-                # print(f"✅ Extracted Texture2D: {filename}")
+                print(f"✅ Extracted Texture2D: {filename}")
 
         except Exception as e:
             print(f"❌ Failed to extract Texture2D: {e}")
@@ -233,13 +228,13 @@ class UnityAssetExtractor:
             # Get Sprite image
             img = data.image
             if img:
-                # print(f"\n🎨 Processing Sprite (Sequence: {sequence_num}, ID: {obj.path_id}, GUID: {obj.guid})")
+                print(f"\n🎨 Processing Sprite (Sequence: {sequence_num}, ID: {obj.path_id}, GUID: {obj.guid})")
                 name = self._get_asset_name(data, obj, "Sprite", sequence_num)
                 filename = self._sanitize_filename(f"{name}.png")
                 filepath = self.sprite_path / filename
 
                 img.save(filepath)
-                # print(f"✅ Extracted Sprite: {filename}")
+                print(f"✅ Extracted Sprite: {filename}")
 
         except Exception as e:
             print(f"❌ Failed to extract Sprite: {e}")
@@ -307,7 +302,7 @@ class UnityAssetExtractor:
                 with open(filepath, 'w', encoding='utf-8') as f:
                     f.write(text_content)
 
-                # print(f"✅ Successfully extracted TextAsset: {filename} ({len(text_content)} characters)")
+                print(f"✅ Successfully extracted TextAsset: {filename} ({len(text_content)} characters)")
             else:
                 # If no text content found, save debug info
                 debug_filename = self._sanitize_filename(f"{name}_debug")
@@ -351,90 +346,65 @@ class UnityAssetExtractor:
                 print(f"  Skipping MonoBehaviour: no m_Name attribute")
                 return
 
-            has_msource = False
-            mscript_value = None
-            mSource_value = None
-            # Check if mSource content exists
-            if hasattr(data, 'mSource'):
-                has_msource = True
-                mSource_value = getattr(data, 'mSource')
-                if not mSource_value:
-                    print(f"  Found mSource: {type(mSource_value)}")
-            else:
-                has_msource = False
-                if hasattr(data, 'm_Script'):
-                    for asset in env.assets:
-                        if 'universe' in asset.name.lower():
-                            print(f"found universe asset {dir(asset)}")
-                            obj_type = asset.type.name if hasattr(asset, 'type') and hasattr(asset.type, 'name') else str(asset.type)
-                        if hasattr(asset, 'path_id') and asset.path_id == obj.path_id:
-                            mscript_value = asset
-                            print(f"  Found m_Script for {m_name_value}: {asset}")
-                            break
+            if False and m_name_value.endswith("_visual"):
+                print(f"  {m_name_value} attrs: ", dir(data))
+                print(f"  {m_name_value} Sprite: ", getattr(data, 'Sprite', []))
+                print(f"  {m_name_value} RoundPortrait: ", getattr(data, 'RoundPortrait', []))
+                print(f"  {m_name_value} TinyRoundPortrait: ", getattr(data, 'TinyRoundPortrait', []))
+
+                sprite_ref = getattr(data, 'Sprite', None)
+
+                if sprite_ref:
+                    # find_and_process_asset_by_guid(env, sprite_ref.guid, m_name_value)
+                    sprite = env.get_asset_by_guid(sprite_ref.guid)
+                    print(f"  Found Sprite: {sprite.name}")
+                    for attr in dir(sprite):
+                        print(f"  attr[{attr}]: {getattr(sprite, attr)}")
+                    print("done processing, quitting")
                     sys.exit(0)
                 else:
-                    print(f"  Skipping: mSource and m_Script are empty {data}")
+                    sys.exit(1)
+            
+            # Check if mSource content exists
+            if hasattr(data, 'mSource'):
+                mSource_value = getattr(data, 'mSource')
+                if not mSource_value:
+                    print(f"  Skipping: mSource is empty")
                     return
+                print(f"  Found mSource: {type(mSource_value)}")
+            else:
+                print(f"  Skipping: no mSource attribute")
+                return
 
             # Get filename
             name = self._get_asset_name(data, obj, "MonoBehaviour", sequence_num)
 
-            if mscript_value is not None:
-                print(f"  Found m_Script: {type(mscript_value)}")
-                text_content = mscript_value
-                if text_content is not None:
+            # Try to extract detailed mSource content
+            try:
+                # If mSource is a complex object, try to serialize to JSON
+                content = self._extract_mSource_content(mSource_value)
 
-                    # TextAsset without .txt extension
-                    filename = self._sanitize_filename(name)
-                    filepath = self.text_path / filename
+                # Save as JSON file to maintain structure
+                filename = self._sanitize_filename(f"{name}.json")
+                filepath = self.monobehaviour_path / filename
 
-                    # Handle encoding
-                    if isinstance(text_content, bytes):
-                        try:
-                            text_content = text_content.decode('utf-8')
-                        except UnicodeDecodeError:
-                            try:
-                                text_content = text_content.decode('utf-8', errors='ignore')
-                            except:
-                                text_content = str(text_content)
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    json.dump(content, f, indent=2, ensure_ascii=False, default=str)
 
-                    # Ensure it's a string
-                    if not isinstance(text_content, str):
-                        text_content = str(text_content)
+                print(f"✅ Extracted MonoBehaviour: {filename}")
 
-                    with open(filepath, 'w', encoding='utf-8') as f:
-                        f.write(text_content)
-                        
-                    print(f"✅ Extracted MonoBehaviour (raw format): {m_name_value} -> {filepath}")
-            else:
-                if not has_msource:
-                    print(f'skipping {name} due to lack of msource')
-                # Try to extract detailed mSource content
-                try:
-                    # If mSource is a complex object, try to serialize to JSON
-                    content = self._extract_mSource_content(mSource_value)
+            except Exception as extract_e:
+                print(f"Failed to extract mSource content: {extract_e}")
 
-                    # Save as JSON file to maintain structure
-                    filename = self._sanitize_filename(f"{name}.json")
-                    filepath = self.monobehaviour_path / filename
+                # Fallback: save raw string representation
+                filename = self._sanitize_filename(f"{name}_raw.txt")
+                filepath = self.monobehaviour_path / filename
 
-                    with open(filepath, 'w', encoding='utf-8') as f:
-                        json.dump(content, f, indent=2, ensure_ascii=False, default=str)
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    f.write(f"mSource content (raw representation):\n")
+                    f.write(str(mSource_value))
 
-                    # print(f"✅ Extracted MonoBehaviour: {filename}")
-
-                except Exception as extract_e:
-                    print(f"Failed to extract mSource content: {extract_e}")
-
-                    # Fallback: save raw string representation
-                    filename = self._sanitize_filename(f"{name}_raw.txt")
-                    filepath = self.monobehaviour_path / filename
-
-                    with open(filepath, 'w', encoding='utf-8') as f:
-                        f.write(f"mSource content (raw representation):\n")
-                        f.write(str(mSource_value))
-
-                    # print(f"✅ Extracted MonoBehaviour (raw format): {filename}")
+                print(f"✅ Extracted MonoBehaviour (raw format): {filename}")
 
         except Exception as e:
             print(f"❌ Failed to extract MonoBehaviour: {e}")

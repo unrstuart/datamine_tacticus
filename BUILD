@@ -75,7 +75,9 @@ cc_binary(
       "gameconfig_1_30.json",
       "gameconfig_1_31.json",
       "gameconfig_1_32.json",
+      "gameconfig_1_33.json",
       "I2Languages_en.json",
+      "I2Languages_en.1.33.json",
     ] + glob(["assets/**"])
 )
 

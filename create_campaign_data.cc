@@ -37,9 +37,11 @@ std::string GetCampaignName(const Campaign& campaign,
       {"eventStandard1", "Adeptus Mechanicus Standard"},
       {"eventStandard2", "Tyranids Standard"},
       {"eventStandard3", "T'au Empire Standard"},
+      {"eventStandard4", "Death Guard Standard"},
       {"eventExtremis1", "Adeptus Mechanicus Extremis"},
       {"eventExtremis2", "Tyranids Extremis"},
       {"eventExtremis3", "T'au Empire Extremis"},
+      {"eventExtremis4", "Death Guard Extremis"},
   };
   auto it = kCampaignNames.find(campaign.id());
   if (it == kCampaignNames.end()) {
@@ -90,9 +92,14 @@ std::string GetBattleId(const Campaign& campaign,
       {"eliteMirror1", "IME"},   {"eliteMirror2", "FoCME"},
       {"eliteMirror3", "OME"},   {"eliteMirror4", "SHME"},
       {"eventStandard1", "AMS"}, {"eventStandard2", "TS"},
-      {"eventStandard3", "TAS"}, {"eventExtremis1", "AME"},
-      {"eventExtremis2", "TE"},  {"eventExtremis3", "TAE"},
+      {"eventStandard3", "TAS"}, {"eventStandard4", "DGS"},
+      {"eventExtremis1", "AME"}, {"eventExtremis2", "TE"},
+      {"eventExtremis3", "TAE"}, {"eventExtremis4", "DGE"},
   };
+  if (kCampaignPrefixes.find(campaign.id()) ==
+      kCampaignPrefixes.end()) {
+    LOG(FATAL) << "Unknown campaign id: " << campaign.id();
+  }
   if (absl::EndsWith(battle.id(), "B")) {
     return absl::StrCat(kCampaignPrefixes.at(campaign.id()), "C", battle.id());
   }
