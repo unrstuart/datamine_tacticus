@@ -1,0 +1,66 @@
+{
+  "name": "mode_guild_raid_mock_riptide",
+  "description": "Guild raids with random units vs Riptide and its minibosses",
+  "battle": {
+    "gameMode": {
+      "type": "GuildBoss",
+      "UseMachineProbability": 43,
+      "teamUnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": true,
+        "exludeObjects": true,
+        "exludeSteppables": true,
+        "exludePowerUps": true,
+        "factionId": "",
+        "excludedUnitIds": [],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      },
+      "machineUnitSource": {
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludedIds": [],
+        "factionId": ""
+      },
+      "Battles": [
+        {
+          "BossUnitId": "GuildBoss11Boss1TauRiptide",
+          "BoardId": "GB_Riptide_01",
+          "ExtraUnit": "GuildBoss11Npc3TauDroneShield",
+          "ExtraUnit2": "GuildBoss11Npc1TauFireWarrior"
+        },
+        {
+          "BossUnitId": "GuildBoss11MiniBoss1TauMarksman",
+          "BoardId": "GB_Riptide_support_01",
+          "ExtraUnit": "GuildBoss11Npc3TauDroneShield",
+          "ExtraUnit2": "GuildBoss11Npc1TauFireWarrior"
+        },
+        {
+          "BossUnitId": "GuildBoss11MiniBoss2TauCrisis",
+          "BoardId": "GB_Riptide_support_02",
+          "ExtraUnit": "GuildBoss11Npc1TauFireWarrior",
+          "ExtraUnit2": "GuildBoss11Npc4TauStealthSuit"
+        }
+      ]
+    },
+    "StartAtRandomConfigPointer": true
+  },
+  "active": false,
+  "weight": 1.0,
+  "chanceToUseLowFPS": 20
+}

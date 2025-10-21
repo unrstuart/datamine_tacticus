@@ -1,0 +1,13 @@
+{
+  "name": "mode_salvage_run_real",
+  "description": "Salvage Run battles based on client config",
+  "battle": {
+    "gameMode": {
+      "type": "TreasureBeach"
+    },
+    "StartAtRandomConfigPointer": true
+  },
+  "active": true,
+  "weight": 1.0,
+  "chanceToUseLowFPS": 20
+}

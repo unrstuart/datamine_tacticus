@@ -1,0 +1,34 @@
+{
+  "name": "mode_survival_mock",
+  "description": "Basic Survival features wth random units and hard-coded battles.",
+  "battle": {
+    "gameMode": {
+      "type": "Survival",
+      "UseLiveEventConfigs": false,
+      "Team1UnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": true,
+        "exludeObjects": true,
+        "exludeSteppables": true,
+        "exludePowerUps": true,
+        "factionId": "",
+        "excludedUnitIds": [],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      }
+    },
+    "StartAtRandomConfigPointer": true
+  },
+  "active": true,
+  "weight": 1.0,
+  "chanceToUseLowFPS": 0
+}

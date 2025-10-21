@@ -1,0 +1,82 @@
+{
+  "name": "mode_guild_war_mock",
+  "description": "Guild War battles with random boards units and environment abilities",
+  "battle": {
+    "gameMode": {
+      "type": "GuildWars",
+      "BoardSource": {
+        "type": "AllPvp"
+      },
+      "Team1UnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": true,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": true,
+        "exludeObjects": true,
+        "exludeSteppables": true,
+        "exludePowerUps": true,
+        "factionId": "",
+        "excludedUnitIds": [],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      },
+      "Team2UnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": true,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": false,
+        "exludeObjects": true,
+        "exludeSteppables": true,
+        "exludePowerUps": true,
+        "factionId": "",
+        "excludedUnitIds": [
+          "GuildBoss4Npc2OrkBoy"
+        ],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      },
+      "Team1MachineSource": {
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludedIds": [],
+        "factionId": ""
+      },
+      "Team2MachineSource": {
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludedIds": [],
+        "factionId": ""
+      }
+    },
+    "StartAtRandomConfigPointer": true
+  },
+  "active": true,
+  "weight": 1.0,
+  "chanceToUseLowFPS": 20
+}

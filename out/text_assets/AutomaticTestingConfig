@@ -1,0 +1,10 @@
+{
+  "Battle": {
+    "GameMode": {
+      "type": "Campaign",
+      "testAllCampaigns": true,
+      "campaigns": [],
+      "useDefaultCampaignPlayerUnits": true
+    }
+  }
+}

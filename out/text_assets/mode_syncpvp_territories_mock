@@ -1,0 +1,91 @@
+{
+  "name": "mode_syncpvp_territories_mock",
+  "description": "Simple mocked territories",
+  "battle": {
+    "gameMode": {
+      "type": "SyncPVP",
+      "rules": 3,
+      "BoardSource": {
+        "type": "Random",
+        "Boards": [
+          {
+            "BoardId": "Infested_SyncPvp_Desert_05",
+            "SpawnpointSet": 0
+          },
+          {
+            "BoardId": "Infested_SyncPvp_Desert_01",
+            "SpawnpointSet": 0
+          }
+        ]
+      },
+      "Team1UnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": true,
+        "exludeObjects": true,
+        "exludeSteppables": true,
+        "exludePowerUps": true,
+        "factionId": "",
+        "excludedUnitIds": [],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      },
+      "Team2UnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": true,
+        "exludeObjects": true,
+        "exludeSteppables": true,
+        "exludePowerUps": true,
+        "factionId": "",
+        "excludedUnitIds": [],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      },
+      "Team1MachineSource": {
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludedIds": [],
+        "factionId": ""
+      },
+      "Team2MachineSource": {
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludedIds": [],
+        "factionId": ""
+      }
+    },
+    "StartAtRandomConfigPointer": true
+  },
+  "active": false,
+  "weight": 1.0,
+  "chanceToUseLowFPS": 20
+}

@@ -1,0 +1,36 @@
+{
+  "name": "mode_campaign_real",
+  "description": "Campaign battles based on real campaigns from client config",
+  "battle": {
+    "gameMode": {
+      "type": "Campaign",
+      "testAllCampaigns": true,
+      "campaigns": [],
+      "useDefaultCampaignPlayerUnits": true,
+      "teamUnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": true,
+        "exludeObjects": true,
+        "exludeSteppables": true,
+        "exludePowerUps": true,
+        "factionId": "",
+        "excludedUnitIds": [],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      }
+    },
+    "StartAtRandomConfigPointer": true
+  },
+  "active": true,
+  "weight": 1.0,
+  "chanceToUseLowFPS": 20
+}

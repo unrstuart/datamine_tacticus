@@ -1,0 +1,91 @@
+{
+  "name": "custom_all_units",
+  "description": "Simple Arena battles with all (releasable) units to test ability interactions",
+  "battle": {
+    "gameMode": {
+      "type": "PvP",
+      "BoardSource": {
+        "type": "AllPvp"
+      },
+      "Team1UnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": false,
+        "exludeObjects": false,
+        "exludeSteppables": false,
+        "exludePowerUps": false,
+        "factionId": "",
+        "excludedUnitIds": [
+          "ultraNpc3Intercessor",
+          "orksNpc5LootGrotTeam",
+          "powupHeroSpawn_BladeChampion",
+          "powupHeroSpawn_VexilusPraeto"
+        ],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      },
+      "Team2UnitSource": {
+        "type": "Custom",
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": false,
+        "exludeObjects": false,
+        "exludeSteppables": false,
+        "exludePowerUps": false,
+        "factionId": "",
+        "excludedUnitIds": [
+          "ultraNpc3Intercessor",
+          "orksNpc5LootGrotTeam",
+          "powupHeroSpawn_VexilusPraeto",
+          "powupHeroSpawn_BladeChampion"
+        ],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      },
+      "Team1MachineSource": {
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludedIds": [],
+        "factionId": ""
+      },
+      "Team2MachineSource": {
+        "rarity": [
+          "Mythic",
+          "Legendary"
+        ],
+        "hardcodeUnits": false,
+        "hardcodedIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludedIds": [],
+        "factionId": ""
+      },
+      "AddEnvironmentAbilities": true
+    },
+    "StartAtRandomConfigPointer": true
+  },
+  "active": true,
+  "weight": 1.0,
+  "chanceToUseLowFPS": 20
+}
