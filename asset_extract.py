@@ -19,6 +19,7 @@ class UnityAssetExtractor:
         self.input_path = input_path
         self.output_path = Path(output_path)
         self.output_path.mkdir(exist_ok=True)
+        self.visuals = dict()
 
         # Create output folders for required resource types
         self.texture2d_path = self.output_path / "texture2d"
@@ -74,6 +75,18 @@ class UnityAssetExtractor:
             for obj_type, count in sorted(type_stats.items()):
                 marker = " ✓" if obj_type in ["Texture2D", "Sprite", "TextAsset", "MonoBehaviour"] else ""
                 print(f"{obj_type}: {count}{marker}")
+
+            # Save visuals mapping to CSV (sorted by key) in monobehaviour directory
+            if self.visuals:
+                try:
+                    filepath = self.monobehaviour_path / "visuals.csv"
+                    with open(filepath, 'w', encoding='utf-8', newline='') as csvfile:
+                        writer = csv.writer(csvfile)
+                        for key in sorted(self.visuals.keys()):
+                            writer.writerow([key, self.visuals[key]])
+                    print(f"\nSaved visuals mapping to: {filepath}")
+                except Exception as e:
+                    print(f"Failed to save visuals.csv: {e}")
 
             print(
                 f"\nExtraction complete! Total checked: {asset_count} objects, processed: {processed_count} target resources")
@@ -345,26 +358,12 @@ class UnityAssetExtractor:
             else:
                 print(f"  Skipping MonoBehaviour: no m_Name attribute")
                 return
-
-            if False and m_name_value.endswith("_visual"):
-                print(f"  {m_name_value} attrs: ", dir(data))
-                print(f"  {m_name_value} Sprite: ", getattr(data, 'Sprite', []))
-                print(f"  {m_name_value} RoundPortrait: ", getattr(data, 'RoundPortrait', []))
-                print(f"  {m_name_value} TinyRoundPortrait: ", getattr(data, 'TinyRoundPortrait', []))
-
-                sprite_ref = getattr(data, 'Sprite', None)
-
-                if sprite_ref:
-                    # find_and_process_asset_by_guid(env, sprite_ref.guid, m_name_value)
-                    sprite = env.get_asset_by_guid(sprite_ref.guid)
-                    print(f"  Found Sprite: {sprite.name}")
-                    for attr in dir(sprite):
-                        print(f"  attr[{attr}]: {getattr(sprite, attr)}")
-                    print("done processing, quitting")
-                    sys.exit(0)
-                else:
-                    sys.exit(1)
             
+            if m_name_value.endswith("_visual"):
+                print(f"DEBUG: Found target MonoBehaviour: m_Name = {m_name_value}")
+                if hasattr(data, 'assetNaming'):
+                    self.visuals[m_name_value] = getattr(data, 'assetNaming')
+
             # Check if mSource content exists
             if hasattr(data, 'mSource'):
                 mSource_value = getattr(data, 'mSource')
@@ -372,8 +371,9 @@ class UnityAssetExtractor:
                     print(f"  Skipping: mSource is empty")
                     return
                 print(f"  Found mSource: {type(mSource_value)}")
+                    
             else:
-                print(f"  Skipping: no mSource attribute")
+                print(f"  Skipping: no mSource nor m_Settings attribute")
                 return
 
             # Get filename
@@ -451,7 +451,44 @@ class UnityAssetExtractor:
         return content
 
     def _extract_monobehaviour_fallback(self, obj, sequence_num):
-        """Fallback method when MonoBehaviour read fails"""
+        """Fallback method when MonoBehaviour read fails"""# 1. Attempt to get the structure (MonoScript) reference
+        script_ref = getattr(obj, 'm_Script', None)
+        script_data = None
+        if script_ref:
+            # Resolve the MonoScript asset
+            script_asset = obj.assets_file.get_asset(script_ref)
+            if script_asset:
+                try:
+                    # Read the MonoScript to get the class name and namespace
+                    script_data = script_asset.read()
+                    print(f"Fallback: Found MonoScript. Class: {script_data.m_ClassName}")
+
+                    # Optional: You could try to read the object again with the retrieved type
+                    # by loading the Assembly-CSharp.dll that contains the type info, but this
+                    # is complex and usually requires external libraries/manual definitions.
+                except Exception as e:
+                    print(f"Fallback: Failed to read MonoScript data: {e}")
+                    
+        # 2. Extract basic info and perhaps raw data (if exposed by the underlying unitypy object)
+        name = self._get_asset_name(None, obj, "MonoBehaviour_Fallback", sequence_num)
+        
+        # Check if the underlying unitypy object exposes raw data or components
+        # NOTE: The exact access method depends on the internal structure of the unitypy object.
+        # A simple fallback is to save the string representation of the object itself.
+        filename = self._sanitize_filename(f"{name}_fallback_raw.txt")
+        filepath = self.monobehaviour_path / filename
+
+        try:
+            raw_info = str(obj) # Get string representation of the asset reference
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(f"Raw Object Info for MonoBehaviour (ID: {obj.path_id}):\n")
+                if script_data:
+                    f.write(f"MonoScript Class Name: {getattr(script_data, 'm_ClassName', 'N/A')}\n")
+                f.write("--------------------------------\n")
+                f.write(raw_info)
+            print(f"✅ Extracted MonoBehaviour (fallback raw): {filename}")
+        except Exception as e:
+            print(f"Failed to save fallback raw data: {e}")
 
     def _sanitize_filename(self, filename):
         """Clean filename, remove invalid characters"""
@@ -501,6 +538,7 @@ if __name__ == "__main__":
     try:
         import UnityPy
         from PIL import Image
+        import csv
     except ImportError as e:
         print("Please install required packages:")
         print("pip install UnityPy Pillow")

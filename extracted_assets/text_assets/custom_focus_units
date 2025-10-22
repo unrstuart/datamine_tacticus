@@ -51,7 +51,9 @@
           "blackPossession",
           "blackObliterator",
           "blackTerminator",
-          "bloodDeathCompany"
+          "bloodDeathCompany",
+          "orksNob",
+          "custoKyrus"
         ],
         "onlyConfigReleased": false,
         "onlyVisualsReady": true,
