@@ -12,7 +12,9 @@
 // that lists the directory where you want to dump the mined json.
 //
 // bazel run -c opt :miner -- \
-//   --game_config=gameconfig_1_31.json \
+//   --game_config=gameconfig_1_33.json \
+//   --i18n_strings_json=I2Languages_en.1.33.json \
+//   --visuals_file=visuals.csv \
 //   --recipe_data=$MINING_OUTPUT/newRecipeData.json \
 //   --rank_up_data=$MINING_OUTPUT/newRankUpData.json \
 //   --character_data=$MINING_OUTPUT/newCharacterData.json \
@@ -20,8 +22,8 @@
 //   --mow_data=$MINING_OUTPUT/newMowData.json \
 //   --npc_data=$MINING_OUTPUT/newNpcData.json \
 //   --equipment_data=$MINING_OUTPUT/newEquipmentData.json \
-//   --drop_rate_config_path=$MINING_OUTPUT/drop_rate_config.binarypb \
-//   --i18n_strings_json=I2Languages_en.json
+//   --drop_rate_config_path=$MINING_OUTPUT/drop_rate_config.binaryproto \
+//   --effective_rate_simulation_runs=10000000
 //
 // The drop-rate config above is used to cache the results of calculating
 // effective drop rates. Instead of implementing a bunch of matrix math, we
@@ -73,6 +75,8 @@ ABSL_FLAG(std::string, game_config, "", "The GameConfig.json file to parse");
 ABSL_FLAG(std::string, i18n_strings_json, "",
           "The json file with the i18n'd display strings for things like the "
           "characters' names and titles.");
+ABSL_FLAG(std::string, visuals_file, "",
+          "CSV file mapping visual IDs to image filenames.");
 ABSL_FLAG(std::string, rank_up_file, "",
           "The CSV file to write rank up information to.");
 ABSL_FLAG(std::string, recipe_data, "",
@@ -324,8 +328,47 @@ void EmitRankUp(const GameConfig& config, const absl::string_view output_path) {
   if (file_out != nullptr) file_out->close();
 }
 
+absl::StatusOr<std::map<std::string, std::string>> LoadVisuals() {
+  const std::string visuals_file = absl::GetFlag(FLAGS_visuals_file);
+  std::ifstream in(visuals_file);
+  if (!in.is_open()) {
+    return absl::InvalidArgumentError(
+        absl::StrCat("Couldn't open visuals file: '", visuals_file, "'."));
+  }
+  std::map<std::string, std::string> visuals_map;
+  std::string line;
+  while (std::getline(in, line)) {
+    std::vector<std::string> parts = absl::StrSplit(line, ',');
+    if (parts.size() != 2) {
+      return absl::InvalidArgumentError(
+          absl::StrCat("Invalid line in visuals file: '", line, "'."));
+    }
+    for (std::string& part : parts) part = absl::StripAsciiWhitespace(part);
+    if (!absl::EndsWith(parts[0], "_visual")) {
+      return absl::InvalidArgumentError(
+          absl::StrCat("Invalid visual ID in visuals file: '", parts[0], "'."));
+    }
+    parts[0] =
+        parts[0].substr(0, parts[0].size() - 7);  // Remove _visual suffix
+    visuals_map[parts[0]] = parts[1];
+  }
+
+  std::cout << "visuals: \n";
+  for (const auto& pair : visuals_map) {
+    std::cout << "  " << pair.first << " => " << pair.second << "\n";
+  }
+  std::cout << std::endl;
+
+  return visuals_map;
+}
+
 void Main() {
   GameConfig config;
+  absl::StatusOr<std::map<std::string, std::string>> visuals = LoadVisuals();
+  if (!visuals.ok()) {
+    LOG(ERROR) << "Error loading visuals: " << visuals.status().message();
+    return;
+  }
   {
     Json::Value root;
     Json::Reader reader;
@@ -410,7 +453,7 @@ void Main() {
   if (!character_data_file.empty()) {
     LOG(INFO) << "Writing character data to: " << character_data_file;
     if (const absl::Status status =
-            CreateCharacterData(character_data_file, config);
+            CreateCharacterData(character_data_file, config, *visuals);
         !status.ok()) {
       LOG(ERROR) << "Error creating character data: " << status.message();
     }
@@ -448,7 +491,7 @@ void Main() {
   const std::string npc_data_file = absl::GetFlag(FLAGS_npc_data);
   if (!npc_data_file.empty()) {
     LOG(INFO) << "Writing NPC data to: " << npc_data_file;
-    if (const absl::Status status = CreateNpcData(npc_data_file, config);
+    if (const absl::Status status = CreateNpcData(npc_data_file, config, *visuals);
         !status.ok()) {
       LOG(ERROR) << "Error creating NPC data: " << status.message();
     }

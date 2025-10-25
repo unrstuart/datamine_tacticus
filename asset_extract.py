@@ -81,9 +81,8 @@ class UnityAssetExtractor:
                 try:
                     filepath = self.monobehaviour_path / "visuals.csv"
                     with open(filepath, 'w', encoding='utf-8', newline='') as csvfile:
-                        writer = csv.writer(csvfile)
                         for key in sorted(self.visuals.keys()):
-                            writer.writerow([key, self.visuals[key]])
+                            csvfile.write(f"{key},{self.visuals[key]}\n")
                     print(f"\nSaved visuals mapping to: {filepath}")
                 except Exception as e:
                     print(f"Failed to save visuals.csv: {e}")
@@ -354,15 +353,18 @@ class UnityAssetExtractor:
                     # if len(m_name_value) > 0:
                     #     print(f"  Skipping MonoBehaviour: m_Name = '{m_name_value}' (not I2Languages_en)")
                     return
-                print(f"  Found target MonoBehaviour: m_Name = {m_name_value}")
+                print(f"  Found target MonoBehaviour: m_Name = {m_name_value}\n")
             else:
-                print(f"  Skipping MonoBehaviour: no m_Name attribute")
+                print(f"  Skipping MonoBehaviour: no m_Name attribute\n")
                 return
             
             if m_name_value.endswith("_visual"):
                 print(f"DEBUG: Found target MonoBehaviour: m_Name = {m_name_value}")
                 if hasattr(data, 'assetNaming'):
+                    print(f"DEBUG: Storing visual mapping for: {m_name_value}")
                     self.visuals[m_name_value] = getattr(data, 'assetNaming')
+                    self.visuals[str(getattr(data, 'unitId')) + "_visual"] = getattr(data, 'assetNaming')
+                return
 
             # Check if mSource content exists
             if hasattr(data, 'mSource'):

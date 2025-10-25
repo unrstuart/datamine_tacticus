@@ -78,7 +78,8 @@ cc_binary(
       "gameconfig_1_33.json",
       "I2Languages_en.json",
       "I2Languages_en.1.33.json",
-    ] + glob(["assets/**"])
+      "visuals.csv",
+    ] + glob(["assets/**"]) + glob(["extracted_assets/**"])
 )
 
 cc_library(
