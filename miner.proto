@@ -29,24 +29,36 @@ message Rank {
 
 // battleSets.legendary_event_<int>_lane_<1-3>
 message LegendaryEvent {
+  message Track {
+    repeated Battle battles = 1; // battles
+  }
+  message Objective {
+    optional string type = 1; // objectiveType
+    optional string target = 2; // objectiveTarget
+    optional int32 points = 3; // score
+  }
+  message Wave {
+    repeated string enemies = 1; // army
+    optional int32 power = 2; // power
+    optional int32 round = 3; // round
+  }
   message Battle {
-    message Objective {
-      optional string type = 1; // objectiveType
-      optional string target = 2; // objectiveTarget
-      optional int32 points = 3; // score
-    }
-    message Wave {
-      repeated string enemies = 1; // army
-      optional int32 power = 2; // power
-      optional int32 round = 3; // round
-    }
     optional int32 number = 1; // battleNr
     optional string map_id = 2; // boardId
-    optional string disallowed_factions = 3; // disallowedFactions
+    repeated string disallowed_factions = 3; // disallowedFactions
     optional int32 power = 4; // power
     optional int32 tier = 5;  // tier
     repeated Wave waves = 6; // waves
+    repeated Objective objectives = 7; // objectives
   }
+  optional int32 id = 1; // event id
+  optional Track alpha = 2; // lane1
+  optional Track beta = 3; // lane2
+  optional Track gamma = 4; // lane3
+}
+
+message LegendaryEvents {
+  repeated LegendaryEvent events = 1;
 }
 
 // battleSets.campaigns.(Elite|EliteMirror|Mirror|Standard|Event)[index]
@@ -376,6 +388,7 @@ message ClientGameConfig {
 
   optional Units units = 6; // units
   optional Upgrades upgrades = 7; // upgrades
+  optional LegendaryEvents legendary_events = 9; // battleSets.legendary_event_...
 }
 
 message GameConfig {

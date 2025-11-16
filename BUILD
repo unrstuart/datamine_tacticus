@@ -53,6 +53,7 @@ cc_binary(
       ":create_campaign_data",
       ":create_character_data",
       ":create_equipment_data",
+      ":create_le_data",
       ":create_mow_data",
       ":create_npc_data",
       ":create_rank_up_data",
@@ -61,6 +62,7 @@ cc_binary(
       ":parse_avatars",
       ":parse_campaigns",
       ":parse_items",
+      ":parse_le_battles",
       ":parse_upgrades",
       ":parse_units",
       "//libjson:json",
@@ -72,6 +74,7 @@ cc_binary(
     ],
     data = [
       "drop_rate_config.binaryproto",
+      "gameconfig_1_29.json",
       "gameconfig_1_30.json",
       "gameconfig_1_31.json",
       "gameconfig_1_32.json",
@@ -123,6 +126,18 @@ cc_library(
   name = "create_equipment_data",
   srcs = ["create_equipment_data.cc"],
   hdrs = ["create_equipment_data.h"],
+  deps = [
+      ":miner_cc_proto",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "create_le_data",
+  srcs = ["create_le_data.cc"],
+  hdrs = ["create_le_data.h"],
   deps = [
       ":miner_cc_proto",
       "@abseil-cpp//absl/log",
@@ -229,6 +244,24 @@ cc_library(
       "@abseil-cpp//absl/status:status",
       "@abseil-cpp//absl/status:statusor",
       "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "parse_le_battles",
+  srcs = ["parse_le_battles.cc"],
+  hdrs = ["parse_le_battles.h"],
+  deps = [
+      ":miner_cc_proto",
+      ":status_macros",
+      "//libjson:json",
+      "@abseil-cpp//absl/flags:flag",
+      "@abseil-cpp//absl/flags:parse",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/status:statusor",
+      "@abseil-cpp//absl/strings",
+      "@re2//:re2",
   ]
 )
 

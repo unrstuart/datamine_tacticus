@@ -19,8 +19,10 @@
 //   --rank_up_data=$MINING_OUTPUT/newRankUpData.json \
 //   --character_data=$MINING_OUTPUT/newCharacterData.json \
 //   --campaign_data=$MINING_OUTPUT/newCampaignData.json \
+//   --le_data=$MINING_OUTPUT/newLeData.json \
 //   --mow_data=$MINING_OUTPUT/newMowData.json \
 //   --npc_data=$MINING_OUTPUT/newNpcData.json \
+//   --le_data=$MINING_OUTPUT/newLeBattlesData.json \
 //   --equipment_data=$MINING_OUTPUT/newEquipmentData.json \
 //   --drop_rate_config_path=$MINING_OUTPUT/drop_rate_config.binaryproto \
 //   --effective_rate_simulation_runs=10000000
@@ -57,6 +59,7 @@
 #include "create_campaign_data.h"
 #include "create_character_data.h"
 #include "create_equipment_data.h"
+#include "create_le_data.h"
 #include "create_mow_data.h"
 #include "create_npc_data.h"
 #include "create_rank_up_data.h"
@@ -67,6 +70,7 @@
 #include "parse_avatars.h"
 #include "parse_campaigns.h"
 #include "parse_items.h"
+#include "parse_le_battles.h"
 #include "parse_units.h"
 #include "parse_upgrades.h"
 #include "status_macros.h"
@@ -93,6 +97,9 @@ ABSL_FLAG(std::string, equipment_data, "",
           "If not empty, writes all equipment data to the specified file.");
 ABSL_FLAG(std::string, npc_data, "",
           "If not empty, writes all NPC data to the specified file.");
+ABSL_FLAG(std::string, le_data, "",
+          "If not empty, writes all legendary event battle data to the "
+          "specified file.");
 
 namespace dataminer {
 namespace {
@@ -201,6 +208,13 @@ absl::StatusOr<ClientGameConfig> ParseClientGameConfig(
 
   ASSIGN_OR_RETURN(*client_config.mutable_items(),
                    ParseItems(root.get("items", {})));
+
+  ASSIGN_OR_RETURN(*client_config.mutable_items(),
+                   ParseItems(root.get("items", {})));
+
+  ASSIGN_OR_RETURN(
+      *client_config.mutable_legendary_events(),
+      ParseLeBattles(root.get("battles", {}).get("battleSets", {})));
 
   return client_config;
 }
@@ -491,9 +505,20 @@ void Main() {
   const std::string npc_data_file = absl::GetFlag(FLAGS_npc_data);
   if (!npc_data_file.empty()) {
     LOG(INFO) << "Writing NPC data to: " << npc_data_file;
-    if (const absl::Status status = CreateNpcData(npc_data_file, config, *visuals);
+    if (const absl::Status status =
+            CreateNpcData(npc_data_file, config, *visuals);
         !status.ok()) {
       LOG(ERROR) << "Error creating NPC data: " << status.message();
+    }
+  }
+
+  const std::string le_data_file = absl::GetFlag(FLAGS_le_data);
+  if (!le_data_file.empty()) {
+    LOG(INFO) << "Writing legendary event battle data to: " << le_data_file;
+    if (const absl::Status status = CreateLeData(le_data_file, config);
+        !status.ok()) {
+      LOG(ERROR) << "Error creating legendary event battle data: "
+                 << status.message();
     }
   }
 }

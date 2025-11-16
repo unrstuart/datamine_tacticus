@@ -179,7 +179,7 @@ absl::StatusOr<Npc> ParseNpc(const absl::string_view id,
   if (root.isMember("visualId") && root["visualId"].isString()) {
     npc.set_visual_id(root["visualId"].asString());
   } else {
-    LOG(ERROR) << "NPC missing visual ID '" << id << "'.";
+    LOG(ERROR) << "NPC missing visual ID '" << id << "', falling back to assumed visual ID of " << id;
     npc.set_visual_id(id);
   }
   if (root.isMember("activeAbilities") && root["activeAbilities"].isArray()) {
