@@ -35,7 +35,7 @@ absl::StatusOr<LegendaryEvent::Battle> ParseBattle(const Json::Value& root) {
   LegendaryEvent::Battle battle;
 
   battle.set_map_id(root["mapId"].asString());
-  battle.set_number(root["number"].asInt());
+  battle.set_number(root["battleNr"].asInt());
   battle.set_power(root["power"].asInt());
   battle.set_tier(root["tier"].asInt());
   for (const Json::Value& faction : root["disallowedFactions"]) {
