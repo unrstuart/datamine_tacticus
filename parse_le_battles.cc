@@ -34,7 +34,7 @@ absl::StatusOr<LegendaryEvent::Objective> ParseObjective(
 absl::StatusOr<LegendaryEvent::Battle> ParseBattle(const Json::Value& root) {
   LegendaryEvent::Battle battle;
 
-  battle.set_map_id(root["mapId"].asString());
+  battle.set_map_id(root["boardId"].asString());
   battle.set_number(root["battleNr"].asInt());
   battle.set_power(root["power"].asInt());
   battle.set_tier(root["tier"].asInt());
@@ -66,8 +66,7 @@ absl::StatusOr<LegendaryEvent::Track> ParseLane(const Json::Value& root) {
 
 }  // namespace
 
-absl::StatusOr<LegendaryEvents> ParseLeBattles(
-    const Json::Value& root) {
+absl::StatusOr<LegendaryEvents> ParseLeBattles(const Json::Value& root) {
   std::map<std::string, LegendaryEvent::Track> lanes;
   RET_CHECK(root.isObject())
       << "Parsed JSON for 'battles.battleSets' must be an object.";
