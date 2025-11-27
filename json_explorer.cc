@@ -22,10 +22,10 @@ ABSL_FLAG(int, max_depth, 0,
           "Use 0 for no limit, or a negative number for unlimited depth.");
 ABSL_FLAG(int, max_members, 0,
           "The maximum number of members to print for each object/array. ");
-ABSL_FLAG(std::vector<std::string>, debug_print_path, {},
+ABSL_FLAG(std::vector<std::string>, path, {},
           "A comma-separated list of dot-separated paths to JSON fields to "
           "debug print.");
-ABSL_FLAG(std::string, search_string, "",
+ABSL_FLAG(std::string, search, "",
           "If non-empty, searches the JSON for any value containing this "
           "string, and prints the path to every node.");
 
@@ -95,7 +95,7 @@ void Print(const Json::Value& value, int max_depth, int max_members,
 }
 
 void PrintDebugPath(Json::Value value) {
-  std::vector<std::string> paths = absl::GetFlag(FLAGS_debug_print_path);
+  std::vector<std::string> paths = absl::GetFlag(FLAGS_path);
   if (paths.empty()) return;
   for (const auto& path : paths) {
     if (path.empty()) {
@@ -171,7 +171,7 @@ void Main() {
 
   PrintDebugPath(root);
   PrintPathsToSearchString(
-      root, absl::AsciiStrToLower(absl::GetFlag(FLAGS_search_string)));
+      root, absl::AsciiStrToLower(absl::GetFlag(FLAGS_search)));
 }
 
 }  // namespace

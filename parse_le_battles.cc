@@ -101,6 +101,45 @@ absl::StatusOr<LegendaryEvents> ParseLeBattles(const Json::Value& root) {
   for (auto& [id, event] : events) {
     event.set_id(id);
     *ret.add_events() = event;
+
+    const auto count_enemies = [](const LegendaryEvent::Battle& battle) {
+      int total = 0;
+      for (const auto& wave : battle.waves()) {
+        total += wave.enemies_size();
+      }
+      return total;
+    };
+
+    const auto defeat_all_score = [](const LegendaryEvent::Battle& battle) {
+      int total = 0;
+      for (const auto& objective : battle.objectives()) {
+        if (objective.type() == "Acing") {
+          total += objective.points();
+        }
+      }
+      return total;
+    };
+
+    const auto print_track = [&](const LegendaryEvent::Track& track) {
+      std::cout << "\"battlesPoints\": [";
+      for (const auto& battle : track.battles()) {
+        std::cout << count_enemies(battle) << ", ";
+      }
+      std::cout << "],\n";
+      std::cout << "\"defeatAll\": [";
+      for (const auto& battle : track.battles()) {
+        std::cout << defeat_all_score(battle) << ", ";
+      }
+      std::cout << "],\n" << std::endl;
+    };
+
+    std::cout << "Legendary Event " << id << ":\n";
+    std::cout << "  Alpha Track:\n";
+    print_track(event.alpha());
+    std::cout << "  Beta Track:\n";
+    print_track(event.beta());
+    std::cout << "  Gamma Track:\n";
+    print_track(event.gamma());
   }
   return ret;
 }
