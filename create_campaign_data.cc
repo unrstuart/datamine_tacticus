@@ -71,7 +71,7 @@ std::string GetCampaignType(const Campaign& campaign,
   if (absl::StartsWith(campaign.id(), "mirror")) return "Mirror";
   if (absl::StartsWith(campaign.id(), "elite")) return "Elite";
   if (absl::StartsWith(campaign.id(), "eventStandard")) {
-    return "Normal";
+    return "Standard";
   }
   if (absl::StartsWith(campaign.id(), "eventExtremis")) {
     return "Extremis";
