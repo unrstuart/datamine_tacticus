@@ -109,7 +109,7 @@ absl::Status CreateMowData(const absl::string_view path,
     out << "        {\n";
     out << "            \"snowprintId\": \"" << mow.id() << "\",\n";
     out << "            \"name\": \"" << mow.name() << "\",\n";
-    out << "            \"factionId\": \"" << mow.faction_id() << "\",\n";
+    out << "            \"faction\": \"" << mow.faction_id() << "\",\n";
     out << "            \"alliance\": \"" << mow.alliance() << "\",\n";
     out << "            \"icon\": \"" << GetIconPath(mow.id(), game_config)
         << "\",\n";
