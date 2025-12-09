@@ -105,6 +105,7 @@ message Campaign {
     optional int32 spawn_points = 9; // spawnpoints
     optional int32 energy_cost = 10; // staminaCost
     repeated string required_units = 13; // requiredUnits
+    optional int32 enemy_power = 2; // power
 
     // The format is 'id:level'. The level can be retrieved
     // from the npcs object.

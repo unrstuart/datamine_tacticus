@@ -372,6 +372,7 @@ void EmitCampaignBattle(std::ostream& out, const GameConfig& config,
   }
   out << "],\n";
   EmitBattleRewards(out, battle.reward());
+  out << "        \"enemyPower\": " << battle.enemy_power() << ",\n";
   EmitEnemies(out, config, battle);
   out << "    }";
 }

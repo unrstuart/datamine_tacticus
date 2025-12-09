@@ -114,6 +114,9 @@ absl::StatusOr<Campaign::Battle> ParseCampaignBattle(const Json::Value& battle,
   if (battle.isMember("boss") && battle["boss"].isString()) {
     campaign_battle.set_boss(battle["boss"].asString());
   }
+  if (battle.isMember("power") && battle["power"].isInt()) {
+    campaign_battle.set_enemy_power(battle["power"].asInt());
+  }
   if (battle.isMember("lightningVictory") &&
       battle["lightningVictory"].isInt()) {
     campaign_battle.set_lightning_victory(battle["lightningVictory"].asInt());
