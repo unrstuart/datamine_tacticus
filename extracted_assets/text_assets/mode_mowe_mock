@@ -25,6 +25,23 @@
         "guaranteedEveryBattleUnitIds": [],
         "unitPickerStyle": 0
       },
+      "Team2UnitSource": {
+        "type": "Custom",
+        "rarity": [],
+        "hardcodeUnits": false,
+        "hardcodedUnitIds": [],
+        "onlyConfigReleased": false,
+        "onlyVisualsReady": true,
+        "excludeHeroes": false,
+        "excludeNpcs": false,
+        "exludeObjects": true,
+        "exludeSteppables": true,
+        "exludePowerUps": true,
+        "factionId": "",
+        "excludedUnitIds": [],
+        "guaranteedEveryBattleUnitIds": [],
+        "unitPickerStyle": 0
+      },
       "Team2MachineSource": {
         "rarity": [
           "Mythic",
@@ -41,6 +58,6 @@
     "StartAtRandomConfigPointer": true
   },
   "active": true,
-  "weight": 0.5,
+  "weight": 1.0,
   "chanceToUseLowFPS": 0
 }

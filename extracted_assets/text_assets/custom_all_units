@@ -21,7 +21,7 @@
         "excludeNpcs": false,
         "exludeObjects": false,
         "exludeSteppables": false,
-        "exludePowerUps": false,
+        "exludePowerUps": true,
         "factionId": "",
         "excludedUnitIds": [
           "ultraNpc3Intercessor",
@@ -46,7 +46,7 @@
         "excludeNpcs": false,
         "exludeObjects": false,
         "exludeSteppables": false,
-        "exludePowerUps": false,
+        "exludePowerUps": true,
         "factionId": "",
         "excludedUnitIds": [
           "ultraNpc3Intercessor",

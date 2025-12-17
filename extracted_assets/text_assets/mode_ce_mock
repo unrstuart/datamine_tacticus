@@ -29,6 +29,6 @@
     "StartAtRandomConfigPointer": true
   },
   "active": true,
-  "weight": 0.5,
+  "weight": 1,
   "chanceToUseLowFPS": 0
 }
