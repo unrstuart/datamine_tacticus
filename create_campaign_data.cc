@@ -96,8 +96,7 @@ std::string GetBattleId(const Campaign& campaign,
       {"eventExtremis1", "AME"}, {"eventExtremis2", "TE"},
       {"eventExtremis3", "TAE"}, {"eventExtremis4", "DGE"},
   };
-  if (kCampaignPrefixes.find(campaign.id()) ==
-      kCampaignPrefixes.end()) {
+  if (kCampaignPrefixes.find(campaign.id()) == kCampaignPrefixes.end()) {
     LOG(FATAL) << "Unknown campaign id: " << campaign.id();
   }
   if (absl::EndsWith(battle.id(), "B")) {
@@ -151,6 +150,7 @@ const std::map<std::string, const Npc*>& GetNpcMap(const GameConfig& config) {
 struct EnemyDetails {
   std::string id;
   std::string name;
+  std::string full_name;
   int rank;
   int stars;
   bool operator<(const EnemyDetails& other) const {
@@ -209,6 +209,7 @@ void CollectEnemyInfo(const std::map<std::string, int>& enemies,
     EnemyDetails details = {
         .id = npc->id(),
         .name = npc->name(),
+        .full_name = enemy,
         .rank = npc->stats(level).rank(),
         .stars = npc->stats(level).stars(),
     };
@@ -325,8 +326,16 @@ void EmitEnemies(std::ostream& out, const GameConfig& config,
   EmitArray(out, GetEnemyTypes(enemy_details), /*one_line=*/false,
             "            ");
   out << "\n        ],\n";
-  out << "        \"detailedEnemyTypes\": [";
+  out << "        \"rawEnemyTypes\": [\n";
   bool first = true;
+  for (const auto& [enemy_details, count] : enemy_details) {
+    if (!first) out << ",\n";
+    first = false;
+    out << "            { id: \"" << enemy_details.full_name << "\", count: " << count << "}";
+  }
+  out << "\n        ],\n";
+  out << "        \"detailedEnemyTypes\": [";
+  first = true;
   for (const auto& [enemy_details, count] : enemy_details) {
     if (!first) out << ",";
     first = false;

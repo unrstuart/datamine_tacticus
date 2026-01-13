@@ -17,6 +17,7 @@ cc_binary(
     data = [
       "gameconfig_1_31.json",
       "gameconfig_1_32.json",
+      "gameconfig_1_35.1.json",
       "I2Languages_en.json",
       "out/text_assets/GameConfig",
     ]
@@ -41,6 +42,7 @@ cc_binary(
     data = [
       "gameconfig_1_31.json",
       "gameconfig_1_32.json",
+      "gameconfig_1_35.1.json",
       "I2Languages_en.json",
       "out/text_assets/GlobalGameConfig",
       "out/text_assets/GameConfig",
@@ -81,13 +83,16 @@ cc_binary(
       "gameconfig_1_33.json",
       "gameconfig_1_34.json",
       "gameconfig_1_35.json",
+      "gameconfig_1_35.1.json",
       "I2Languages_en.json",
       "I2Languages_en.1.33.json",
       "I2Languages_en.1.34.json",
       "I2Languages_en.1.35.json",
+      "I2Languages_en.1.35.1.json",
       "visuals.csv",
       "visuals_1.34.csv",
       "visuals_1.35.csv",
+      "visuals_1.35.1.csv",
     ] + glob(["assets/**"]) + glob(["extracted_assets/**"])
 )
 
