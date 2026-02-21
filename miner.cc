@@ -11,21 +11,26 @@
 // This assumes that you have an environment variable called MINING_OUTPUT
 // that lists the directory where you want to dump the mined json.
 //
-// bazel run -c opt :miner -- \
-//   --game_config=gameconfig_1_33.json \
-//   --i18n_strings_json=I2Languages_en.1.33.json \
-//   --visuals_file=visuals.csv \
-//   --recipe_data=$MINING_OUTPUT/newRecipeData.json \
-//   --rank_up_data=$MINING_OUTPUT/newRankUpData.json \
-//   --character_data=$MINING_OUTPUT/newCharacterData.json \
-//   --campaign_data=$MINING_OUTPUT/newCampaignData.json \
-//   --le_data=$MINING_OUTPUT/newLeData.json \
-//   --mow_data=$MINING_OUTPUT/newMowData.json \
-//   --npc_data=$MINING_OUTPUT/newNpcData.json \
-//   --le_data=$MINING_OUTPUT/newLeBattlesData.json \
-//   --equipment_data=$MINING_OUTPUT/newEquipmentData.json \
-//   --drop_rate_config_path=$MINING_OUTPUT/drop_rate_config.binaryproto \
-//   --effective_rate_simulation_runs=10000000
+
+/*
+bazel run -c opt :miner -- \
+  --game_config=gameconfig.1.36.json \
+  --i18n_strings_json=I2Languages_en.1.36.json \
+  --visuals_file=visuals_1.36.csv \
+  --recipe_data=$MINING_OUTPUT/newRecipeData.json \
+  --rank_up_data=$MINING_OUTPUT/newRankUpData.json \
+  --character_data=$MINING_OUTPUT/newCharacterData.json \
+  --campaign_data=$MINING_OUTPUT/newCampaignData.json \
+  --le_data=$MINING_OUTPUT/newLeData.json \
+  --mow_data=$MINING_OUTPUT/newMowData.json \
+  --npc_data=$MINING_OUTPUT/newNpcData.json \
+  --le_data=$MINING_OUTPUT/newLeBattlesData.json \
+  --equipment_data=$MINING_OUTPUT/newEquipmentData.json \
+  --ability_icon_file=$MINING_OUTPUT/ability-icons.ts \
+  --drop_rate_config_path=drop_rate_config.binaryproto \
+  --effective_rate_simulation_runs=10000000
+*/
+
 //
 // The drop-rate config above is used to cache the results of calculating
 // effective drop rates. Instead of implementing a bunch of matrix math, we
@@ -56,6 +61,7 @@
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
+#include "create_ability_data.h"
 #include "create_campaign_data.h"
 #include "create_character_data.h"
 #include "create_equipment_data.h"
@@ -100,6 +106,8 @@ ABSL_FLAG(std::string, npc_data, "",
 ABSL_FLAG(std::string, le_data, "",
           "If not empty, writes all legendary event battle data to the "
           "specified file.");
+ABSL_FLAG(std::string, ability_icon_file, "",
+          "If not empty, writes all ability icon data to the specified file.");
 
 namespace dataminer {
 namespace {
@@ -376,6 +384,27 @@ absl::StatusOr<std::map<std::string, std::string>> LoadVisuals() {
   return visuals_map;
 }
 
+std::map<std::string, std::string> ExtractAbilityNames(
+    const Json::Value& root) {
+  std::map<std::string, std::string> ability_names;
+  for (const Json::Value& value : root["mTerms"]) {
+    if (!value.isObject()) continue;
+    if (!value.isMember("Term") || !value["Term"].isString()) continue;
+    if (!value.isMember("Languages") || !value["Languages"].isArray()) continue;
+    const std::string term = value["Term"].asString();
+    if (!absl::StartsWith(term, "Abilities/") || !absl::EndsWith(term, "_Name"))
+      continue;
+    const Json::Value& languages = value["Languages"];
+    if (languages.empty()) continue;
+    if (!languages[0].isString()) continue;
+    const std::string name = languages[0].asString();
+    const std::string ability_id = term.substr(
+        10, term.size() - 15);  // Remove "Abilities/" prefix and "_Name" suffix
+    ability_names[ability_id] = name;
+  }
+  return ability_names;
+}
+
 void Main() {
   GameConfig config;
   absl::StatusOr<std::map<std::string, std::string>> visuals = LoadVisuals();
@@ -411,6 +440,7 @@ void Main() {
     config = std::move(*parsed_config);
   }
 
+  std::map<std::string, std::string> ability_names;
   {
     Json::Value root;
     Json::Reader reader;
@@ -437,6 +467,8 @@ void Main() {
       LOG(ERROR) << "Error parsing i18n strings: " << status.message() << "\n";
       return;
     }
+
+    ability_names = ExtractAbilityNames(root);
   }
 
   const std::string rank_up_file = absl::GetFlag(FLAGS_rank_up_file);
@@ -519,6 +551,16 @@ void Main() {
         !status.ok()) {
       LOG(ERROR) << "Error creating legendary event battle data: "
                  << status.message();
+    }
+  }
+
+  const std::string ability_icon_file = absl::GetFlag(FLAGS_ability_icon_file);
+  if (!ability_icon_file.empty()) {
+    LOG(INFO) << "Writing ability icon data to: " << ability_icon_file;
+    if (const absl::Status status =
+            CreateAbilityData(ability_icon_file, ability_names, config);
+        !status.ok()) {
+      LOG(ERROR) << "Error creating ability icon data: " << status.message();
     }
   }
 }

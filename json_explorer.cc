@@ -17,10 +17,10 @@
 #include "miner.pb.h"
 
 ABSL_FLAG(std::string, json_file, "", "The JSON file to explore.");
-ABSL_FLAG(int, max_depth, 0,
+ABSL_FLAG(int, max_depth, 1,
           "Maximum depth to print the JSON structure. "
           "Use 0 for no limit, or a negative number for unlimited depth.");
-ABSL_FLAG(int, max_members, 0,
+ABSL_FLAG(int, max_members, 3,
           "The maximum number of members to print for each object/array. ");
 ABSL_FLAG(std::vector<std::string>, path, {},
           "A comma-separated list of dot-separated paths to JSON fields to "
@@ -97,6 +97,7 @@ void Print(const Json::Value& value, int max_depth, int max_members,
 void PrintDebugPath(Json::Value value) {
   std::vector<std::string> paths = absl::GetFlag(FLAGS_path);
   if (paths.empty()) return;
+  LOG(ERROR) << absl::StrJoin(paths, ",");
   for (const auto& path : paths) {
     if (path.empty()) {
       Print(value, absl::GetFlag(FLAGS_max_depth),

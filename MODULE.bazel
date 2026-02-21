@@ -5,15 +5,18 @@ module(
 
 bazel_dep(
     name = "abseil-cpp",
-    version = "20240116.0",
+    version = "20250814.1",
 )
 
 bazel_dep(
     name = "protobuf",
-    version = "32.0-rc1",
+    version = "33.4",
 )
 
 bazel_dep(
     name = "re2",
     version = "2025-11-05",
 )
+
+bazel_dep(name = "rules_proto", version = "7.1.0")
+bazel_dep(name = "rules_cc", version = "0.2.14")

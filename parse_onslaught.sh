@@ -69,7 +69,7 @@ for alliance in {0..2}; do
             
             # Echo the processed location with all variable formats
             echo "Processing location: Alliance $alliance_name ($alliance), Sector $sector_name ($sector), Zone $zone_name ($zone)"
-            bazel-bin/json_explorer --json_file out/text_assets/GameConfig --max_depth=7 --max_members=10000 --debug_print_path clientGameConfig.battles.waves.tracks[${alliance}].tiers[${sector}].battles[${zone}] > /tmp/${alliance}_${sector}_${zone}.count
+            bazel-bin/json_explorer --json_file out/text_assets/GameConfig --max_depth=7 --max_members=10000 --path clientGameConfig.battles.waves.tracks[${alliance}].tiers[${sector}].battles[${zone}] > /tmp/${alliance}_${sector}_${zone}.count
             
         done # End Zone loop
     done # End Sector loop

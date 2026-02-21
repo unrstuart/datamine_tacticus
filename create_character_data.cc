@@ -50,6 +50,17 @@ void EmitAbility(
     }
     out << "]";
   }
+  out << ",\n";
+  out << "        \"" << label << " Names\": [";
+  {
+    bool first = true;
+    for (const absl::string_view name : abilities) {
+      if (!first) out << ", ";
+      first = false;
+      out << "\"" << name << "\"";
+    }
+  }
+  out << "]";
 }
 
 int GetCharacterNumber(const absl::string_view id,

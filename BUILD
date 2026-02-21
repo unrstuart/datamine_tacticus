@@ -1,3 +1,7 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@protobuf//bazel:cc_proto_library.bzl", "cc_proto_library")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
 cc_binary(
     name = "parse_onslaught",
     srcs = ["parse_onslaught.cc"],
@@ -18,6 +22,7 @@ cc_binary(
       "gameconfig_1_31.json",
       "gameconfig_1_32.json",
       "gameconfig_1_35.1.json",
+      "gameconfig.1.36.json",
       "I2Languages_en.json",
       "out/text_assets/GameConfig",
     ]
@@ -43,6 +48,7 @@ cc_binary(
       "gameconfig_1_31.json",
       "gameconfig_1_32.json",
       "gameconfig_1_35.1.json",
+      "gameconfig.1.36.json",
       "I2Languages_en.json",
       "out/text_assets/GlobalGameConfig",
       "out/text_assets/GameConfig",
@@ -52,6 +58,7 @@ cc_binary(
     name = "miner",
     srcs = ["miner.cc"],
     deps = [
+      ":create_ability_data",
       ":create_campaign_data",
       ":create_character_data",
       ":create_equipment_data",
@@ -84,15 +91,18 @@ cc_binary(
       "gameconfig_1_34.json",
       "gameconfig_1_35.json",
       "gameconfig_1_35.1.json",
+      "gameconfig.1.36.json",
       "I2Languages_en.json",
       "I2Languages_en.1.33.json",
       "I2Languages_en.1.34.json",
       "I2Languages_en.1.35.json",
       "I2Languages_en.1.35.1.json",
+      "I2Languages_en.1.36.json",
       "visuals.csv",
       "visuals_1.34.csv",
       "visuals_1.35.csv",
       "visuals_1.35.1.csv",
+      "visuals_1.36.csv",
     ] + glob(["assets/**"]) + glob(["extracted_assets/**"])
 )
 
@@ -125,6 +135,18 @@ cc_library(
   name = "create_character_data",
   srcs = ["create_character_data.cc"],
   hdrs = ["create_character_data.h"],
+  deps = [
+      ":miner_cc_proto",
+      "@abseil-cpp//absl/log",
+      "@abseil-cpp//absl/status:status",
+      "@abseil-cpp//absl/strings",
+  ]
+)
+
+cc_library(
+  name = "create_ability_data",
+  srcs = ["create_ability_data.cc"],
+  hdrs = ["create_ability_data.h"],
   deps = [
       ":miner_cc_proto",
       "@abseil-cpp//absl/log",
