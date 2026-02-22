@@ -54,6 +54,24 @@ void PrintData(const absl::string_view label, const Json::Value& track) {
   }
 }
 
+void PrintHonorYourHeroes(const Json::Value& rewards_by_tier) {
+  std::cout << "\nhonorYourHeroes rewardsByTier" << std::endl;
+  std::cout << "maxTierIndex,maxProgressionIndex,rewards" << std::endl;
+  for (const Json::Value& tier : rewards_by_tier) {
+    const int max_tier_index = tier["maxTierIndex"].asInt();
+    for (const Json::Value& progression :
+         tier["rewardsByProgressionIndex"]) {
+      const int max_prog_index =
+          progression["maxProgressionIndex"].asInt();
+      std::cout << max_tier_index << ',' << max_prog_index;
+      for (const Json::Value& reward : progression["rewards"]) {
+        std::cout << ',' << reward.asString();
+      }
+      std::cout << std::endl;
+    }
+  }
+}
+
 void Main() {
   Json::Value root;
   Json::Reader reader;
@@ -76,6 +94,9 @@ void Main() {
             root["clientGameConfig"]["battles"]["waves"]["tracks"][1]["tiers"]);
   PrintData("chaos",
             root["clientGameConfig"]["battles"]["waves"]["tracks"][2]["tiers"]);
+
+  PrintHonorYourHeroes(root["clientGameConfig"]["battles"]["waves"]
+                           ["honorYourHeroes"]["rewardsByTier"]);
 }
 
 }  // namespace
