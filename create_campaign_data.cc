@@ -38,10 +38,12 @@ std::string GetCampaignName(const Campaign& campaign,
       {"eventStandard2", "Tyranids Standard"},
       {"eventStandard3", "T'au Empire Standard"},
       {"eventStandard4", "Death Guard Standard"},
+      {"eventStandard5", "Adepta Sororitas Standard"},
       {"eventExtremis1", "Adeptus Mechanicus Extremis"},
       {"eventExtremis2", "Tyranids Extremis"},
       {"eventExtremis3", "T'au Empire Extremis"},
       {"eventExtremis4", "Death Guard Extremis"},
+      {"eventExtremis5", "Adepta Sororitas Extremis"},
   };
   auto it = kCampaignNames.find(campaign.id());
   if (it == kCampaignNames.end()) {
@@ -93,8 +95,9 @@ std::string GetBattleId(const Campaign& campaign,
       {"eliteMirror3", "OME"},   {"eliteMirror4", "SHME"},
       {"eventStandard1", "AMS"}, {"eventStandard2", "TS"},
       {"eventStandard3", "TAS"}, {"eventStandard4", "DGS"},
-      {"eventExtremis1", "AME"}, {"eventExtremis2", "TE"},
-      {"eventExtremis3", "TAE"}, {"eventExtremis4", "DGE"},
+      {"eventStandard5", "ASS"},  {"eventExtremis1", "AME"},
+      {"eventExtremis2", "TE"},  {"eventExtremis3", "TAE"},
+      {"eventExtremis4", "DGE"}, {"eventExtremis5", "ASE"},
   };
   if (kCampaignPrefixes.find(campaign.id()) == kCampaignPrefixes.end()) {
     LOG(FATAL) << "Unknown campaign id: " << campaign.id();
@@ -331,7 +334,8 @@ void EmitEnemies(std::ostream& out, const GameConfig& config,
   for (const auto& [enemy_details, count] : enemy_details) {
     if (!first) out << ",\n";
     first = false;
-    out << "            { id: \"" << enemy_details.full_name << "\", count: " << count << "}";
+    out << "            { id: \"" << enemy_details.full_name
+        << "\", count: " << count << "}";
   }
   out << "\n        ],\n";
   out << "        \"detailedEnemyTypes\": [";

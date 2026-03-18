@@ -356,6 +356,34 @@ message Avatars {
   repeated Avatar avatars = 1; // avatars
 }
 
+message HeroQuestBattle {
+  optional int32 tier = 1; // tier (0=common, ..., 5=mythic)
+  optional int32 battle_index_in_teir = 9;
+  message Objective {
+    optional string target = 1;
+    optional string type = 2;
+    optional int32 points = 3;
+  }
+  repeated Objective objectives = 2;
+  optional string repeatable_reward = 3; // loot.chanceOf
+  optional string one_star_reward = 4; // loot.star1
+  optional string two_star_reward = 5; // loot.star2
+  optional string three_star_reward = 6; // loot.star3
+  optional int32 rounds_for_lightning_victory = 7; // lightningVictory
+  repeated string enemies = 8; // enemies - "enemy:progressionIndex"
+}
+
+message HeroQuest {
+  optional string hero_id = 1; // unitId
+  repeated string allowed_factions = 2; // allowedFactions
+  repeated string enemy_factions = 3; // trackingAdditionalData["enemyFaction"] (singular)
+  repeated HeroQuestBattle battles = 4; // battles
+}
+
+message LiveEvents {
+  repeated HeroQuest hero_quests = 1;
+}
+
 message ClientGameConfig {
   repeated Achievement achievements = 1;
   // skip aiUtilities
@@ -371,7 +399,7 @@ message ClientGameConfig {
   // skip guilds
   optional ItemStatCapMultipliers item_stat_cap_multipliers = 4;
   optional Items items = 5;  
-  // skip liveEvents
+  optional LiveEvents live_events = 10; // liveEvents
   // skip loot for now, but come back to it, all the chests are there.
   // skip loyalty
   // skip onlineFeatures

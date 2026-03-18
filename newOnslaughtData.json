@@ -1,0 +1,3159 @@
+[
+  {
+    "visualId": "stone_1",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 100
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 100
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 100
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 100
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 100
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 100
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "stone_2",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 100
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 50
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 50
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "stone_3",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 100
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "iron_1",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 100
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 60
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 40
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 50
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "iron_2",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 40
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 100
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "iron_3",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 10,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 35
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 20
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 60
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 40
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 50
+        },
+        {
+          "tyranidEnemyCount": 10,
+          "weight": 50
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 12,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 10,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 20
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 40
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 40
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "bronze_1",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 8
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 10
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 8
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "bronze_2",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 8
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 8
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "bronze_3",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 13
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 5
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 8
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 35
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 31
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 31
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 23
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 15
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 22
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 22
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 16
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 6
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "silver_1",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 7
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 5
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 27
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 22
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 6
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 19
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 13
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 13
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "silver_2",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 7
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 35
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 7
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 5
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 27
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 22
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 6
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 19
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 13
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 13
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "silver_3",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 7
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 27
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 22
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 6
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 5
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "gold_1",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 5
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 5
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 14
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 8
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "gold_2",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 5
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 14
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 6
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 7
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 7
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 6
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 7
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 6
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "gold_3",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 22
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 22
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 18
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 14
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 14
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 15
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 5
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 5
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "diamond_1",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "diamond_2",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 4
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "diamond_3",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 10
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 2
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 2
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 3
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 33
+        },
+        {
+          "tyranidEnemyCount": 2,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 0,
+          "weight": 30
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 1,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 2
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 3
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 5
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 5
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "mythic_1",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 7
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 5
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "mythic_2",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 7
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 5
+        }
+      ]
+    }
+  },
+  {
+    "visualId": "mythic_3",
+    "waves": {
+      "1": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 9,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 10
+        }
+      ],
+      "3": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "4": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 3,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "5": [
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 20
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 15
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 10
+        }
+      ],
+      "6": [
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        },
+        {
+          "tyranidEnemyCount": 8,
+          "weight": 25
+        }
+      ],
+      "8": [
+        {
+          "tyranidEnemyCount": 4,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 12
+        },
+        {
+          "tyranidEnemyCount": 5,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 7,
+          "weight": 10
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 9
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 8
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 7
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 6
+        },
+        {
+          "tyranidEnemyCount": 6,
+          "weight": 5
+        }
+      ]
+    }
+  }
+]
