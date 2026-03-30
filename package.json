@@ -1,0 +1,22 @@
+{
+    "name": "datamine-tacticus",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "A tool for datamining Snowprint's Tacticus game files.",
+    "main": "index.js",
+    "scripts": {
+        "draw": "tsx ./add_hexes_to_map.ts"
+    },
+    "dependencies": {
+        "canvas": "^2.11.2",
+        "tsx": "^4.20.5",
+        "typescript": "^5.0.0",
+        "@types/node": "^20.0.0",
+        "zod": "^4.3.6"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrstuart/datamine_tacticus.git"
+    },
+    "license": "ISC"
+}
