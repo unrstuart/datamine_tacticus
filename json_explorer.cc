@@ -96,7 +96,7 @@ void Print(const Json::Value& value, int max_depth, int max_members,
 
 void PrintDebugPath(Json::Value value) {
   std::vector<std::string> paths = absl::GetFlag(FLAGS_path);
-  if (paths.empty()) return;
+  if (paths.empty()) paths = {""};
   LOG(ERROR) << absl::StrJoin(paths, ",");
   for (const auto& path : paths) {
     if (path.empty()) {
@@ -171,8 +171,8 @@ void Main() {
   }
 
   PrintDebugPath(root);
-  PrintPathsToSearchString(
-      root, absl::AsciiStrToLower(absl::GetFlag(FLAGS_search)));
+  PrintPathsToSearchString(root,
+                           absl::AsciiStrToLower(absl::GetFlag(FLAGS_search)));
 }
 
 }  // namespace

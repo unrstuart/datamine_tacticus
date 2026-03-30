@@ -437,8 +437,10 @@ absl::Status AmendUnitsWithDisplayStrings(const Json::Value& root,
       {"_Title", &titles},
       {"_Description", &descs}};
   RET_CHECK(root.isObject()) << "Parsed JSON is not an object.";
-  RET_CHECK(root.isMember("mTerms")) << "Missing 'mTerms' in 'mSource'.";
-  const Json::Value& terms = root["mTerms"];
+  RET_CHECK(root.isMember("mSource")) << "Missing 'mSource' in JSON.";
+  const Json::Value& source = root["mSource"];
+  RET_CHECK(source.isMember("mTerms")) << "Missing 'mTerms' in 'mSource'.";
+  const Json::Value& terms = source["mTerms"];
   RET_CHECK(terms.isArray()) << "'mTerms' is not an array.";
   for (const Json::Value& term_entry : terms) {
     RET_CHECK(term_entry.isObject()) << "'mTerms' entry is not an object.";

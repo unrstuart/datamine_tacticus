@@ -387,7 +387,8 @@ absl::StatusOr<std::map<std::string, std::string>> LoadVisuals() {
 std::map<std::string, std::string> ExtractAbilityNames(
     const Json::Value& root) {
   std::map<std::string, std::string> ability_names;
-  for (const Json::Value& value : root["mTerms"]) {
+  const Json::Value& source = root["mSource"];
+  for (const Json::Value& value : source["mTerms"]) {
     if (!value.isObject()) continue;
     if (!value.isMember("Term") || !value["Term"].isString()) continue;
     if (!value.isMember("Languages") || !value["Languages"].isArray()) continue;

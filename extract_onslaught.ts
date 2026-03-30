@@ -10,6 +10,7 @@ interface Wave {
 }
 
 interface ReducedWave {
+    enemyCount: number;
     tyranidEnemyCount: number;
     weight: number;
 }
@@ -81,6 +82,7 @@ function main() {
                 .reduce(
                     (acc, wave) => {
                         const reduced: ReducedWave = {
+                            enemyCount: wave.enemies.length,
                             tyranidEnemyCount: wave.enemies.filter(enemy => enemy.toLowerCase().startsWith('tyran'))
                                 .length,
                             weight: wave.weight,
@@ -105,6 +107,9 @@ function main() {
             'Average Tyranid Count',
             'Max Tyranid Count',
             'Expected Tyranid Count',
+            'Min Total Enemy Count',
+            'Average Total Enemy Count',
+            'Max Total Enemy Count',
             'Expected Count of All Waves in Tier',
         ];
         const rows = [headers.join(',')];
@@ -118,29 +123,45 @@ function main() {
                     (sum, count, idx) => sum + count * (weights[idx] / totalWeight),
                     0
                 );
+                const enemyCounts = waves.map(wave => wave.enemyCount);
+                const expectedEnemyCount = enemyCounts.reduce(
+                    (sum, count, idx) => sum + count * (weights[idx] / totalWeight),
+                    0
+                );
 
                 rows.push(
                     `${data.visualId},${wave},${Math.min(...tyranidCounts)},${(
                         tyranidCounts.reduce((a, b) => a + b, 0) / tyranidCounts.length
-                    ).toFixed(2)},${Math.max(...tyranidCounts)},${expectedTyranidCount.toFixed(2)}`
+                    ).toFixed(
+                        2
+                    )},${Math.max(...tyranidCounts)},${expectedTyranidCount.toFixed(2)},${Math.min(...enemyCounts)},${(
+                        enemyCounts.reduce((a, b) => a + b, 0) / enemyCounts.length
+                    ).toFixed(2)},${Math.max(...enemyCounts)},${expectedEnemyCount.toFixed(2)}`
                 );
             });
         });
         // Calculate total expected tyranid count per tier
-        const tierExpectedTotals: Record<string, number> = {};
+        const tierExpectedTotals: Record<string, { tyranids: number; enemies: number }> = {};
         Object.entries(structuredData).forEach(([_, data]) => {
-            let tierTotal = 0;
+            let tierTotalTyranids = 0;
+            let tierTotalEnemies = 0;
             Object.entries(data.waves).forEach(([_, waves]) => {
                 const weights = waves.map(wave => wave.weight);
                 const totalWeight = weights.reduce((sum, w) => sum + w, 0);
                 const tyranidCounts = waves.map(wave => wave.tyranidEnemyCount);
+                const enemyCounts = waves.map(wave => wave.enemyCount);
                 const expectedTyranidCount = tyranidCounts.reduce(
                     (sum, count, idx) => sum + count * (weights[idx] / totalWeight),
                     0
                 );
-                tierTotal += expectedTyranidCount;
+                const expectedEnemyCount = enemyCounts.reduce(
+                    (sum, count, idx) => sum + count * (weights[idx] / totalWeight),
+                    0
+                );
+                tierTotalTyranids += expectedTyranidCount;
+                tierTotalEnemies += expectedEnemyCount;
             });
-            tierExpectedTotals[data.visualId] = tierTotal;
+            tierExpectedTotals[data.visualId] = { tyranids: tierTotalTyranids, enemies: tierTotalEnemies };
         });
 
         // Append tier total to last wave of each tier
@@ -150,7 +171,8 @@ function main() {
             const visualId = parts[0];
             if (!rowsByTier[visualId]) {
                 rowsByTier[visualId] = i;
-                rows[i] += `,${tierExpectedTotals[visualId].toFixed(2)}`;
+                rows[i] +=
+                    `,${tierExpectedTotals[visualId].tyranids.toFixed(2)},${tierExpectedTotals[visualId].enemies.toFixed(2)}`;
             }
         }
 

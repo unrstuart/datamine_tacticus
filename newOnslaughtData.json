@@ -4,36 +4,42 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 100
         }
       ],
       "3": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 100
         }
       ],
       "4": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 100
         }
       ],
       "5": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 100
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 100
         }
       ],
       "8": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 100
         }
@@ -45,60 +51,72 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 100
         }
       ],
       "3": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         }
       ],
       "4": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 50
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 50
         }
       ],
       "5": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 50
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 50
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         }
       ],
       "8": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 20
         }
@@ -110,64 +128,77 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         }
       ],
       "3": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         }
       ],
       "4": [
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 2,
           "weight": 100
         }
       ],
       "5": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 20
         }
       ],
       "8": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 20
         }
@@ -179,76 +210,92 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 100
         }
       ],
       "3": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 30
         },
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 15
         },
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 30
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 60
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 2,
           "weight": 40
         }
       ],
       "5": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 50
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 20
         }
       ],
       "8": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 30
         },
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 15
         },
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 30
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 25
         }
@@ -260,84 +307,102 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 30
         },
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 30
         },
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 40
         }
       ],
       "3": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 30
         },
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 15
         },
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 30
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 25
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 40
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 20
         }
       ],
       "5": [
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 100
         }
       ],
       "6": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 40
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 40
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 20
         }
       ],
       "8": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 30
         },
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 15
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 30
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 25
         }
@@ -349,84 +414,102 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 15
         },
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 25
         },
         {
+          "enemyCount": 10,
           "tyranidEnemyCount": 10,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 35
         }
       ],
       "3": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 40
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 40
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 20
         }
       ],
       "4": [
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 60
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 40
         }
       ],
       "5": [
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 50
         },
         {
+          "enemyCount": 10,
           "tyranidEnemyCount": 10,
           "weight": 50
         }
       ],
       "6": [
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 40
         },
         {
+          "enemyCount": 12,
           "tyranidEnemyCount": 12,
           "weight": 20
         },
         {
+          "enemyCount": 10,
           "tyranidEnemyCount": 10,
           "weight": 40
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 20
         }
       ],
       "8": [
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 40
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 40
         }
@@ -438,132 +521,162 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 30
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 30
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 30
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 30
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 8
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 25
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 1,
           "weight": 10
         }
       ],
       "8": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 30
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 30
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 8
         }
@@ -575,132 +688,162 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 30
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 30
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 30
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 30
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 8
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 25
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         }
       ],
       "8": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 30
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 30
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 8
         }
@@ -712,156 +855,192 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 12
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 13
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 5
         }
       ],
       "3": [
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 30
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 30
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 0,
           "weight": 20
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 1,
           "weight": 12
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 8
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 35
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 25
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 0,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 31
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 31
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 23
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 15
         }
       ],
       "8": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 22
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 22
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 16
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 1,
           "weight": 6
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 6
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 6
         }
@@ -873,152 +1052,187 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 30
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 2,
           "weight": 8
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 1,
           "weight": 7
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 0,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 2,
           "weight": 5
         }
       ],
       "6": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 27
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 3,
           "weight": 22
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 8
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 6
         }
       ],
       "8": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 19
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 13
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 13
         }
@@ -1030,156 +1244,192 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 30
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 20
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 8
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 7
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 3,
           "weight": 35
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 7
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 30
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 2,
           "weight": 5
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 27
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 2,
           "weight": 22
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 8
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 6
         }
       ],
       "8": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 19
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 13
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 13
         }
@@ -1191,180 +1441,222 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 30
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 8
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 7
         }
       ],
       "4": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 20
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 2,
           "tyranidEnemyCount": 2,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 27
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 2,
           "weight": 22
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 8
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 6
         }
       ],
       "8": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 15
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 5
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 5
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 5
         }
@@ -1376,204 +1668,252 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 30
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 30
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 30
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 5
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 25
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 25
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 2,
           "weight": 5
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 1,
           "weight": 5
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 14
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 8
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 8
         }
       ],
       "8": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 9
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 9
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         }
@@ -1585,204 +1925,252 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 3,
           "weight": 30
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 3,
           "weight": 30
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 3,
           "weight": 5
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 14
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 9
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 6
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 6
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 7
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 7
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 6
         }
       ],
       "6": [
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 7
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 6
         }
       ],
       "8": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 9
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 9
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         }
@@ -1794,204 +2182,252 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 22
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 22
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 18
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 14
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 14
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 15
         }
       ],
       "4": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 5
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 5
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 0,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 5
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 10
         }
       ],
       "8": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 9
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 9
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         }
@@ -2003,204 +2439,252 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 5
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 3,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         }
       ],
       "4": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 20
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 10
         }
       ],
       "8": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 9
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 9
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         }
@@ -2212,204 +2696,252 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 2,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         }
       ],
       "4": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 15
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 20
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 10
         }
       ],
       "8": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 9
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 9
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 6
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 4
         }
@@ -2421,204 +2953,252 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 5,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 3,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 10
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 10
         }
       ],
       "4": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 2
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 2
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 3
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 2,
           "weight": 33
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 2,
           "weight": 25
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 25
         }
       ],
       "5": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 30
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 0,
           "weight": 30
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 15
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 1,
           "weight": 15
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 2
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 3
         }
       ],
       "6": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 4,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 3,
           "tyranidEnemyCount": 3,
           "weight": 5
         }
       ],
       "8": [
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 3,
           "weight": 10
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 5,
           "weight": 5
         }
@@ -2630,172 +3210,212 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 3,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 20
         },
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 3,
           "weight": 20
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         }
       ],
       "8": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 9
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 7
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 6
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 6
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 5
         }
@@ -2807,172 +3427,212 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 3,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 20
         },
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 3,
           "weight": 20
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         }
       ],
       "8": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 9
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 7
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 6
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 6
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 5
         }
@@ -2984,172 +3644,212 @@
     "waves": {
       "1": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 3,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 20
         },
         {
+          "enemyCount": 9,
           "tyranidEnemyCount": 9,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 10
         }
       ],
       "3": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "4": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 3,
           "weight": 20
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "5": [
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 20
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 20
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 15
         },
         {
+          "enemyCount": 5,
           "tyranidEnemyCount": 4,
           "weight": 15
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 10
         }
       ],
       "6": [
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         },
         {
+          "enemyCount": 8,
           "tyranidEnemyCount": 8,
           "weight": 25
         }
       ],
       "8": [
         {
+          "enemyCount": 4,
           "tyranidEnemyCount": 4,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 12
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 5,
           "weight": 10
         },
         {
+          "enemyCount": 7,
           "tyranidEnemyCount": 7,
           "weight": 10
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 9
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 8
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 7
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 6
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 6
         },
         {
+          "enemyCount": 6,
           "tyranidEnemyCount": 6,
           "weight": 5
         }
