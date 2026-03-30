@@ -578,6 +578,36 @@ class UnityAssetExtractor:
             print(f"  📋 Collected {len(found)} boardId references "
                   f"({len(new_ids)} new) from {source_name}")
 
+    def _resolve_sprite_pptr(self, data, attr_name: str):
+        """
+        Try to resolve a named PPtr attribute to the actual sprite name
+        by looking up its path_id in the assets file.
+        Returns (sprite_name, resolved_attr_name) or (None, None).
+        """
+        try:
+            pptr = getattr(data, attr_name, None)
+            if pptr is None:
+                return None, None
+            asset = getattr(pptr, 'asset', None)
+            if asset is None:
+                return None, None
+            path_id = getattr(asset, 'path_id', 0) or getattr(asset, 'm_PathID', 0)
+            if not path_id:
+                return None, None
+            assets_file = getattr(data, 'assets_file', None)
+            if assets_file is None:
+                return None, None
+            # UnityPy SerializedFile stores objects in .objects dict keyed by path_id
+            obj_map = getattr(assets_file, 'objects', None)
+            if obj_map and path_id in obj_map:
+                sobj = obj_map[path_id]
+                sdata = sobj.read()
+                name = str(getattr(sdata, 'm_Name', '') or getattr(sdata, 'name', '') or '').strip()
+                return (name or None), attr_name
+        except Exception as e:
+            pass
+        return None, None
+
     def _extract_monobehaviour(self, env, data, obj, sequence_num):
         """Extract MonoBehaviour objects: board configs to JSON, _visual objects to visuals.csv."""
         try:
@@ -590,36 +620,47 @@ class UnityAssetExtractor:
                 asset_naming = str(getattr(data, 'assetNaming', '') or '').strip()
                 key = (unit_id + "_visual") if unit_id else m_name
 
-                # Try to resolve the Sprite PPtr to get the actual sprite name,
-                # since assetNaming sometimes points to a different visual theme
-                sprite_name = None
-                try:
-                    sprite_pptr = getattr(data, 'Sprite', None)
-                    if sprite_pptr is not None:
-                        sprite_asset = getattr(sprite_pptr, 'asset', None)
-                        path_id = getattr(sprite_asset, 'path_id', 0) or getattr(sprite_asset, 'm_PathID', 0)
-                        if path_id and path_id != 0:
-                            assets_file = getattr(data, 'assets_file', None)
-                            if assets_file:
-                                for sobj in assets_file.get_objects():
-                                    if sobj.path_id == path_id:
-                                        sdata = sobj.read()
-                                        sprite_name = str(getattr(sdata, 'm_Name', '') or getattr(sdata, 'name', '') or '').strip()
-                                        break
-                except Exception:
-                    pass
+                # Try Sprite PPtr first, then RoundPortrait as fallback
+                sprite_name, resolved_from = self._resolve_sprite_pptr(data, 'Sprite')
+                if not sprite_name:
+                    sprite_name, resolved_from = self._resolve_sprite_pptr(data, 'RoundPortrait')
+                # Trim off unnecessary prefixes
+                if sprite_name and sprite_name.startswith("ui_image_portrait_"):
+                    sprite_name = sprite_name[len("ui_image_portrait_"):]
+                if sprite_name and sprite_name.startswith("ui_image_RoundPortrait_"):
+                    sprite_name = sprite_name[len("ui_image_RoundPortrait_"):]
 
-                # Use sprite_name if resolved, otherwise fall back to assetNaming
                 visual_value = sprite_name if sprite_name else asset_naming
                 if visual_value:
                     self.visuals[key] = visual_value
-                elif asset_naming:
-                    self.visuals[key] = asset_naming
-                return  # _visual objects are only for the CSV, not JSON
+                    src = f"resolved from {resolved_from}" if sprite_name else "assetNaming"
+                    print(f"  👁️  {key} → {visual_value} ({src})")
+
+                # Serialize the _visual to JSON with resolved sprite name injected
+                serialized = self._serialize_unknown(data)
+                serialized['_resolved_sprite_name'] = visual_value or None
+                serialized['_resolved_sprite_from'] = resolved_from or ('assetNaming' if asset_naming else None)
+                filename = self._sanitize_filename(f"{m_name}.json")
+                filepath = self.monobehaviour_path / filename
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    json.dump(serialized, f, indent=2, ensure_ascii=False, default=str)
+                return
 
             # Handle board config MonoBehaviours
             if not self._is_board_monobehaviour(data, obj):
                 return
+
+            serialized = self._serialize_unknown(data)
+            filename = self._sanitize_filename(f"{name}.json")
+            filepath = self.monobehaviour_path / filename
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(serialized, f, indent=2, ensure_ascii=False, default=str)
+
+            self.boards_extracted.add(name.upper())
+            print(f"✅ Board config: {filename}")
+
+        except Exception as e:
+            print(f"❌ Failed to extract MonoBehaviour (ID: {obj.path_id}): {e}")
 
             serialized = self._serialize_unknown(data)
             filename = self._sanitize_filename(f"{name}.json")
