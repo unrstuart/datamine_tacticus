@@ -49,7 +49,6 @@ def save_raw_texture(data, filepath_no_ext):
     Returns the path saved, or None.
     """
     try:
-        # UnityPy exposes raw image_data and texture format
         raw = getattr(data, 'image_data', None) or getattr(data, 'm_Data', None)
         fmt = getattr(data, 'm_TextureFormat', None)
         width = getattr(data, 'm_Width', '?')
@@ -65,22 +64,258 @@ def save_raw_texture(data, filepath_no_ext):
     return None
 
 
+# ---------------------------------------------------------------------------
+# Camera / config scanning helpers
+# ---------------------------------------------------------------------------
+
+# Unity built-in manager class names that may contain camera settings
+CAMERA_MANAGER_TYPES = {
+    "Camera",
+    "GraphicsSettings",
+    "QualitySettings",
+    "RenderSettings",
+    "LightmapSettings",
+}
+
+# Keywords that suggest a MonoBehaviour field is camera / projection related
+CAMERA_FIELD_KEYWORDS = {
+    "camera", "orthographic", "orthosize", "zoom", "projection",
+    "fov", "fieldofview", "nearclip", "farclip", "viewport",
+    "hex", "hexsize", "hexradius", "cellsize", "tilesize",
+    "gridsize", "boardsize", "mapsize", "tilt", "pitch", "yaw",
+    "cameraheight", "cameradistance", "cameraangle",
+}
+
+
+def _flatten_keys(obj, prefix=""):
+    """Recursively yield (dotted_key, value) pairs from a nested dict."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            yield from _flatten_keys(v, f"{prefix}.{k}" if prefix else k)
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            yield from _flatten_keys(v, f"{prefix}[{i}]")
+    else:
+        yield prefix, obj
+
+
+def _has_camera_fields(serialized: dict) -> list:
+    """
+    Return list of (key, value) pairs whose key contains any camera keyword.
+    Empty list means no match.
+    """
+    hits = []
+    for key, val in _flatten_keys(serialized):
+        key_lower = key.lower().replace("_", "").replace(".", "")
+        if any(kw in key_lower for kw in CAMERA_FIELD_KEYWORDS):
+            hits.append((key, val))
+    return hits
+
+
+def scan_for_camera_config(input_path: str, output_path: Path):
+    """
+    Load a Unity asset file (globalgamemanagers, level*, bundle, .assets, etc.)
+    and extract:
+      - Built-in Camera / Graphics / Quality / Render manager objects
+      - Any MonoBehaviour whose serialized fields mention camera/hex/grid keywords
+    Results are saved as JSON files under output_path/camera_scan/.
+    """
+    out_dir = output_path / "camera_scan"
+    out_dir.mkdir(exist_ok=True)
+
+    print(f"\n🔍 Camera/config scan: {input_path}")
+
+    try:
+        env = UnityPy.load(input_path)
+    except Exception as e:
+        print(f"  ❌ Could not load: {e}")
+        return
+
+    found_any = False
+
+    for obj in env.objects:
+        obj_type = obj.type.name if hasattr(obj, 'type') and hasattr(obj.type, 'name') else str(obj.type)
+
+        # ── Built-in manager types ──────────────────────────────────────────
+        if obj_type in CAMERA_MANAGER_TYPES:
+            try:
+                data = obj.read()
+                serialized = _serialize_unknown_simple(data)
+                name = getattr(data, 'm_Name', None) or obj_type
+                filename = f"{obj_type}_{obj.path_id}.json"
+                out_file = out_dir / filename
+                with open(out_file, 'w', encoding='utf-8') as f:
+                    json.dump({"_type": obj_type, "_path_id": obj.path_id,
+                               "_source": str(input_path), **serialized},
+                              f, indent=2, ensure_ascii=False, default=str)
+                print(f"  ✅ {obj_type} (path_id={obj.path_id}) → {filename}")
+                found_any = True
+            except Exception as e:
+                print(f"  ⚠️  Could not read {obj_type} (path_id={obj.path_id}): {e}")
+
+        # ── MonoBehaviours with camera/hex-related field names ──────────────
+        elif obj_type == "MonoBehaviour":
+            try:
+                data = obj.read()
+                serialized = _serialize_unknown_simple(data)
+                hits = _has_camera_fields(serialized)
+                if hits:
+                    name = str(getattr(data, 'm_Name', None) or obj.path_id)
+                    filename = _sanitize_filename(f"mb_{name}_{obj.path_id}.json")
+                    out_file = out_dir / filename
+                    with open(out_file, 'w', encoding='utf-8') as f:
+                        json.dump({"_type": "MonoBehaviour", "_path_id": obj.path_id,
+                                   "_source": str(input_path),
+                                   "_matched_fields": [{"key": k, "value": v} for k, v in hits],
+                                   **serialized},
+                                  f, indent=2, ensure_ascii=False, default=str)
+                    hit_summary = ", ".join(k for k, _ in hits[:5])
+                    print(f"  🎯 MonoBehaviour '{name}' matched fields: {hit_summary}")
+                    if len(hits) > 5:
+                        print(f"      ... and {len(hits) - 5} more")
+                    found_any = True
+            except Exception:
+                pass  # silently skip unreadable MonoBehaviours
+
+    if not found_any:
+        print(f"  ℹ️  No camera/config objects found in this file.")
+
+
+def scan_camera_in_dir(data_dir: str, output_path: Path):
+    """
+    Scan Unity data files for camera/config objects.
+
+    `data_dir` can be:
+      - The game's Data/ directory  → scans globalgamemanagers, level*, and all bundles
+      - A StreamingAssets/Bundles subdirectory  → scans all .resource files in that folder
+      - A single file  → scans just that file
+    """
+    data_path = Path(data_dir)
+
+    # Single file passed directly
+    if data_path.is_file():
+        all_files = [data_path]
+    else:
+        # Decide if this looks like a Data/ root or a Bundles subdirectory
+        has_ggm = (data_path / "globalgamemanagers").exists()
+
+        core_files = []
+        if has_ggm:
+            # Full Data/ directory — grab core Unity files
+            core_files = [
+                data_path / "globalgamemanagers",
+                data_path / "globalgamemanagers.assets",
+            ]
+            for p in sorted(data_path.glob("level*")):
+                if p.is_file() and not p.suffix:
+                    core_files.append(p)
+            core_files = [f for f in core_files if f.exists()]
+            bundles_root = data_path / "StreamingAssets" / "Bundles"
+        else:
+            # Treat input as a Bundles subdirectory directly
+            bundles_root = data_path
+
+        # Collect bundle files — include .resource (Tacticus stores all bundles this way)
+        # Exclude .resS (raw binary companion files), .json, .meta, .bnk
+        SKIP_SUFFIXES = {'.resS', '.json', '.meta', '.bnk', '.plist', '.nib',
+                         '.dylib', '.bundle', '.dat', '.dll'}
+        bundle_files = []
+        if bundles_root.exists():
+            for p in sorted(bundles_root.rglob("*")):
+                if p.is_file() and p.suffix not in SKIP_SUFFIXES:
+                    bundle_files.append(p)
+
+        all_files = core_files + bundle_files
+
+    if not all_files:
+        print(f"⚠️  No scannable Unity files found under: {data_dir}")
+        return
+
+    print(f"\n📂 Scanning {len(all_files)} file(s) for camera/config data...")
+    print(f"   Output → {output_path / 'camera_scan'}\n")
+
+    for f in all_files:
+        scan_for_camera_config(str(f), output_path)
+
+    # Summary
+    out_dir = output_path / "camera_scan"
+    results = list(out_dir.glob("*.json"))
+    print(f"\n{'='*60}")
+    print(f"Camera scan complete. {len(results)} result file(s) in: {out_dir}")
+    if results:
+        print("\nFiles found:")
+        for r in sorted(results):
+            print(f"  📄 {r.name}")
+
+
+# ---------------------------------------------------------------------------
+# Lightweight serializer (no depth/seen overhead — used for scanning only)
+# ---------------------------------------------------------------------------
+
+_SKIP_TYPES_SIMPLE = frozenset({
+    "SerializedFile", "ObjectReader", "BundleFile",
+    "AssetsFile", "Environment", "SerializedFileHeader",
+})
+_SKIP_ATTRS_SIMPLE = frozenset({
+    "assets_file", "object_reader", "reader", "assetsfile",
+    "m_GameObject", "m_Script",
+})
+
+
+def _serialize_unknown_simple(obj, depth=0):
+    if depth > 20:
+        return "<max depth>"
+    if obj is None or isinstance(obj, (bool, int, float, str)):
+        return obj
+    cls = type(obj).__name__
+    if cls in _SKIP_TYPES_SIMPLE:
+        return f"<{cls}>"
+    if isinstance(obj, (list, tuple)):
+        return [_serialize_unknown_simple(i, depth + 1) for i in obj]
+    if isinstance(obj, dict):
+        return {k: _serialize_unknown_simple(v, depth + 1) for k, v in obj.items()}
+    if hasattr(obj, '__dict__') or hasattr(obj, '__slots__'):
+        result = {}
+        attrs = list(obj.__dict__.keys()) if hasattr(obj, '__dict__') else dir(obj)
+        for attr in attrs:
+            if attr.startswith('_') or attr in _SKIP_ATTRS_SIMPLE:
+                continue
+            try:
+                val = getattr(obj, attr)
+                if callable(val):
+                    continue
+                result[attr] = _serialize_unknown_simple(val, depth + 1)
+            except Exception as e:
+                result[attr] = f"<error: {e}>"
+        return result
+    return str(obj)
+
+
+def _sanitize_filename(filename):
+    for char in '<>:"/\\|?*':
+        filename = filename.replace(char, '_')
+    return filename[:255]
+
+
+# ---------------------------------------------------------------------------
+# Main extractor class (unchanged logic, camera scan wired in via CLI)
+# ---------------------------------------------------------------------------
+
 class UnityAssetExtractor:
     def __init__(self, input_path, output_path="extracted_assets"):
         self.input_path = input_path
         self.output_path = Path(output_path)
         self.output_path.mkdir(exist_ok=True)
         self.visuals = dict()
-        self.decode_failures = []  # Track failed textures for summary
-        self.board_ids_from_config = set()  # boardIds found in gameconfig text assets
-        self.boards_extracted = set()       # board MonoBehaviours actually serialized
+        self.decode_failures = []
+        self.board_ids_from_config = set()
+        self.boards_extracted = set()
 
-        # Create output folders for required resource types
         self.texture2d_path = self.output_path / "texture2d"
         self.sprite_path = self.output_path / "sprites"
         self.text_path = self.output_path / "text_assets"
         self.monobehaviour_path = self.output_path / "monobehaviour"
-        self.raw_path = self.output_path / "raw_textures"  # For decode failures
+        self.raw_path = self.output_path / "raw_textures"
 
         for path in [self.texture2d_path, self.sprite_path, self.text_path,
                      self.monobehaviour_path, self.raw_path]:
@@ -92,20 +327,16 @@ class UnityAssetExtractor:
             sprite = sprite_data.read()
             img, err = try_get_image(sprite, sprite_name)
             if img:
-                filename = self._sanitize_filename(f"{sprite_name}.png")
+                filename = _sanitize_filename(f"{sprite_name}.png")
                 filepath = self.sprite_path / filename
                 img.save(filepath)
                 print(f"✅ SpriteAtlas sprite: {filename}")
             else:
                 print(f"    ❌ SpriteAtlas sprite decode failed [{sprite_name}]: {err}")
-                save_raw_texture(sprite, self.raw_path / self._sanitize_filename(sprite_name))
+                save_raw_texture(sprite, self.raw_path / _sanitize_filename(sprite_name))
                 self.decode_failures.append(('SpriteAtlas', sprite_name, err))
 
     def search_by_name(self, query: str, extract: bool = False):
-        """
-        Search all assets whose name, m_Name, or container path contains `query` (case-insensitive).
-        If extract=True, also attempt to save any image assets found.
-        """
         env = UnityPy.load(self.input_path)
         q = query.lower()
         matches = []
@@ -132,7 +363,6 @@ class UnityAssetExtractor:
 
         if not matches:
             print(f"\n❌ No assets found matching '{query}'")
-            print("   Try a shorter substring, e.g. 'EC2' instead of 'EC2_08'")
             return
 
         print(f"\n✅ Found {len(matches)} asset(s) matching '{query}':\n")
@@ -151,10 +381,6 @@ class UnityAssetExtractor:
                         print(f"  ❌ SpriteAtlas failed: {e}")
 
     def inspect_by_ids(self, path_ids: list[int], extract: bool = False):
-        """
-        Load the asset file and dump everything known about each requested path_id.
-        If extract=True, also save any image assets found.
-        """
         env = UnityPy.load(self.input_path)
         targets = set(path_ids)
         found = set()
@@ -187,7 +413,6 @@ class UnityAssetExtractor:
                     except Exception as e:
                         print(f"  {attr}: <error reading: {e}>")
 
-                # If it has image data, try decoding and optionally saving
                 if obj_type in ("Texture2D", "Sprite"):
                     img, err = try_get_image(data)
                     if img:
@@ -195,7 +420,7 @@ class UnityAssetExtractor:
                         if extract:
                             name = getattr(data, 'm_Name', None) or getattr(data, 'name', None) or str(obj.path_id)
                             out_dir = self.texture2d_path if obj_type == "Texture2D" else self.sprite_path
-                            filename = self._sanitize_filename(f"{name}.png")
+                            filename = _sanitize_filename(f"{name}.png")
                             filepath = out_dir / filename
                             img.save(filepath)
                             print(f"✅ Saved: {filepath}")
@@ -212,14 +437,9 @@ class UnityAssetExtractor:
         missing = targets - found
         if missing:
             print(f"\n⚠️  These IDs were not found in the asset file: {missing}")
-            print("   (They may be in a different bundle/file)")
         print(f"\n{'='*60}")
 
     def extract_all_assets(self, only: set = None):
-        """Extract all assets. Pass `only` to restrict which types are processed.
-        Valid values: 'boards', 'sprites', 'textures', 'text', 'monobehaviour'
-        """
-        # Map friendly --only names to Unity type names
         ONLY_MAP = {
             'boards':        {"MonoBehaviour"},
             'monobehaviour': {"MonoBehaviour"},
@@ -238,11 +458,7 @@ class UnityAssetExtractor:
                 else:
                     print(f"⚠️  Unknown --only value '{key}'. "
                           f"Valid options: {', '.join(ONLY_MAP.keys())}")
-            # Always include MonoBehaviour so _visual objects are captured for visuals.csv,
-            # even when the user restricts extraction with --only
             TARGET_TYPES.add("MonoBehaviour")
-            # Always include TextAsset when extracting boards so we can
-            # scan GameConfig for boardId references and produce the coverage report
             if 'boards' in only or 'monobehaviour' in only:
                 TARGET_TYPES.add("TextAsset")
             if not TARGET_TYPES:
@@ -286,29 +502,22 @@ class UnityAssetExtractor:
                     print(f"Error processing object (ID: {getattr(obj, 'path_id', 'unknown')}): {e}")
                     continue
 
-            # Display type statistics
             print("\n=== Object Type Statistics ===")
             for obj_type, count in sorted(type_stats.items()):
                 marker = " ✓" if obj_type in TARGET_TYPES else ""
                 print(f"{obj_type}: {count}{marker}")
 
-            # Report decode failures
             if self.decode_failures:
                 print(f"\n⚠️  === Texture Decode Failures ({len(self.decode_failures)}) ===")
-                print("These textures could not be decoded on macOS.")
-                print("Raw binary files have been saved to: raw_textures/")
-                print("You can convert them with tools like 'texconv' or 'PVRTexTool'.\n")
-                # Show unique formats that failed
                 failure_msgs = set(f[2] for f in self.decode_failures)
                 for msg in failure_msgs:
                     print(f"  • {msg}")
                 print(f"\nFailed assets:")
-                for asset_type, name, err in self.decode_failures[:20]:  # cap at 20
+                for asset_type, name, err in self.decode_failures[:20]:
                     print(f"  [{asset_type}] {name}")
                 if len(self.decode_failures) > 20:
                     print(f"  ... and {len(self.decode_failures) - 20} more")
 
-            # Save visuals mapping
             if self.visuals:
                 try:
                     filepath = self.monobehaviour_path / "visuals.csv"
@@ -323,7 +532,6 @@ class UnityAssetExtractor:
 
             print(f"\nExtraction complete! Checked: {asset_count}, Processed: {processed_count}")
 
-            # Cross-reference boardIds from gameconfig against extracted boards
             if self.board_ids_from_config:
                 print(f"\n=== Board Coverage Report ===")
                 print(f"boardIds referenced in gameconfig : {len(self.board_ids_from_config)}")
@@ -348,7 +556,6 @@ class UnityAssetExtractor:
         return True
 
     def _extract_single_asset(self, env, obj, sequence_num):
-        """Extract a single asset"""
         try:
             obj_type = obj.type.name if hasattr(obj, 'type') and hasattr(obj.type, 'name') else str(obj.type)
 
@@ -380,7 +587,6 @@ class UnityAssetExtractor:
             print(f"Failed to extract resource ({obj_info}): {e}")
 
     def _get_asset_name(self, data, obj, asset_type, sequence_num):
-        """Get the real name of the asset"""
         name_candidates = []
 
         if data:
@@ -432,7 +638,6 @@ class UnityAssetExtractor:
         return clean_name.strip()
 
     def _extract_texture2d(self, data, obj, sequence_num):
-        """Extract Texture2D images"""
         try:
             name = self._get_asset_name(data, obj, "Texture2D", sequence_num)
             fmt = getattr(data, 'm_TextureFormat', 'unknown')
@@ -440,13 +645,13 @@ class UnityAssetExtractor:
 
             img, err = try_get_image(data, name)
             if img:
-                filename = self._sanitize_filename(f"{name}.png")
+                filename = _sanitize_filename(f"{name}.png")
                 filepath = self.texture2d_path / filename
                 img.save(filepath)
                 print(f"✅ Extracted Texture2D: {filename}")
             else:
                 print(f"❌ Decode failed: {err}")
-                raw_path = save_raw_texture(data, self.raw_path / self._sanitize_filename(name))
+                raw_path = save_raw_texture(data, self.raw_path / _sanitize_filename(name))
                 if raw_path:
                     print(f"   💾 Raw data saved: {raw_path.name}")
                 self.decode_failures.append(('Texture2D', name, err))
@@ -455,50 +660,46 @@ class UnityAssetExtractor:
             print(f"❌ Failed to extract Texture2D: {e}")
 
     def _extract_sprite(self, data, obj, sequence_num):
-        """Extract Sprite images"""
         try:
             name = self._get_asset_name(data, obj, "Sprite", sequence_num)
             print(f"\n🎨 Sprite [{name}]")
 
             img, err = try_get_image(data, name)
             if img:
-                filename = self._sanitize_filename(f"{name}.png")
+                filename = _sanitize_filename(f"{name}.png")
                 filepath = self.sprite_path / filename
                 img.save(filepath)
                 print(f"✅ Extracted Sprite: {filename}")
             else:
                 print(f"❌ Sprite decode failed: {err}")
-                # Sprites delegate to their Texture2D, so try fetching that directly
                 try:
                     tex = data.m_RD.texture.read()
                     tex_fmt = getattr(tex, 'm_TextureFormat', 'unknown')
                     print(f"   Source Texture2D format: {tex_fmt}")
                     tex_img, tex_err = try_get_image(tex, name)
                     if tex_img:
-                        # Crop to sprite rect if available
                         try:
                             rd = data.m_RD
                             rect = rd.textureRect
                             tex_h = tex.m_Height
-                            # PIL origin is top-left, Unity is bottom-left — flip Y
                             x = int(rect.x)
                             y = int(tex_h - rect.y - rect.height)
                             w = int(rect.width)
                             h = int(rect.height)
                             cropped = tex_img.crop((x, y, x + w, y + h))
-                            filename = self._sanitize_filename(f"{name}.png")
+                            filename = _sanitize_filename(f"{name}.png")
                             cropped.save(self.sprite_path / filename)
                             print(f"✅ Extracted Sprite (via Texture2D crop): {filename}")
                             return
                         except Exception as crop_e:
                             print(f"   Crop failed ({crop_e}), saving full texture instead")
-                            filename = self._sanitize_filename(f"{name}_fulltex.png")
+                            filename = _sanitize_filename(f"{name}_fulltex.png")
                             tex_img.save(self.sprite_path / filename)
                             print(f"✅ Saved full source texture: {filename}")
                             return
                     else:
                         print(f"   Source texture also failed: {tex_err}")
-                        raw_path = save_raw_texture(tex, self.raw_path / self._sanitize_filename(name))
+                        raw_path = save_raw_texture(tex, self.raw_path / _sanitize_filename(name))
                         if raw_path:
                             print(f"   💾 Raw texture saved: {raw_path.name}")
                         self.decode_failures.append(('Sprite', name, tex_err))
@@ -510,7 +711,6 @@ class UnityAssetExtractor:
             print(f"❌ Failed to extract Sprite: {e}")
 
     def _extract_text_asset(self, data, obj, sequence_num):
-        """Extract TextAsset text files"""
         try:
             print(f"\n📄 Processing TextAsset (Sequence: {sequence_num}, ID: {obj.path_id})")
 
@@ -527,7 +727,7 @@ class UnityAssetExtractor:
                 text_content = data.bytes
 
             if text_content is not None:
-                filename = self._sanitize_filename(name)
+                filename = _sanitize_filename(name)
                 filepath = self.text_path / filename
 
                 if isinstance(text_content, bytes):
@@ -544,7 +744,6 @@ class UnityAssetExtractor:
 
                 print(f"✅ Extracted TextAsset: {filename} ({len(text_content)} characters)")
 
-                # Scan for boardId references only in the GameConfig asset
                 if filename.lower().startswith('gameconfig'):
                     self._collect_board_ids_from_gameconfig(text_content, filename)
             else:
@@ -553,24 +752,18 @@ class UnityAssetExtractor:
         except Exception as e:
             print(f"❌ Failed to extract TextAsset: {e}")
 
-    # Matches board ID patterns: EC2_08, LE3_deathguard_04, Waves_Xenos_19, PVP_desert_01, survival_11, etc.
     BOARD_ID_RE = re.compile(r'^[A-Za-z][A-Za-z0-9]*(_[A-Za-z0-9]+)+$')
 
     def _is_board_monobehaviour(self, data, obj) -> bool:
-        """Return True if this MonoBehaviour looks like a board config."""
         container = (getattr(obj, 'container', '') or '').lower()
         if 'boards/' in container or 'board/' in container:
             return True
         name = str(getattr(data, 'm_Name', '') or '').strip()
-        # Matches the board ID pattern and isn't a _Config_Visual or _visual suffix
-        # (those are separate visual configs — we want both)
         if self.BOARD_ID_RE.match(name):
             return True
         return False
 
     def _collect_board_ids_from_gameconfig(self, text: str, source_name: str):
-        """Parse boardId values out of a text asset that looks like a gameconfig."""
-        import re
         found = re.findall(r'"boardId"\s*:\s*"([^"]+)"', text)
         if found:
             new_ids = set(found) - self.board_ids_from_config
@@ -579,11 +772,6 @@ class UnityAssetExtractor:
                   f"({len(new_ids)} new) from {source_name}")
 
     def _resolve_sprite_pptr(self, data, attr_name: str):
-        """
-        Try to resolve a named PPtr attribute to the actual sprite name
-        by looking up its path_id in the assets file.
-        Returns (sprite_name, resolved_attr_name) or (None, None).
-        """
         try:
             pptr = getattr(data, attr_name, None)
             if pptr is None:
@@ -597,34 +785,29 @@ class UnityAssetExtractor:
             assets_file = getattr(data, 'assets_file', None)
             if assets_file is None:
                 return None, None
-            # UnityPy SerializedFile stores objects in .objects dict keyed by path_id
             obj_map = getattr(assets_file, 'objects', None)
             if obj_map and path_id in obj_map:
                 sobj = obj_map[path_id]
                 sdata = sobj.read()
                 name = str(getattr(sdata, 'm_Name', '') or getattr(sdata, 'name', '') or '').strip()
                 return (name or None), attr_name
-        except Exception as e:
+        except Exception:
             pass
         return None, None
 
     def _extract_monobehaviour(self, env, data, obj, sequence_num):
-        """Extract MonoBehaviour objects: board configs to JSON, _visual objects to visuals.csv."""
         try:
             name = self._get_asset_name(data, obj, "MonoBehaviour", sequence_num)
             m_name = str(getattr(data, 'm_Name', '') or '')
 
-            # Handle _visual MonoBehaviours — always process these regardless of --only
             if m_name.lower().endswith("_visual"):
                 unit_id = str(getattr(data, 'unitId', '') or '').strip()
                 asset_naming = str(getattr(data, 'assetNaming', '') or '').strip()
                 key = (unit_id + "_visual") if unit_id else m_name
 
-                # Try Sprite PPtr first, then RoundPortrait as fallback
                 sprite_name, resolved_from = self._resolve_sprite_pptr(data, 'Sprite')
                 if not sprite_name:
                     sprite_name, resolved_from = self._resolve_sprite_pptr(data, 'RoundPortrait')
-                # Trim off unnecessary prefixes
                 if sprite_name and sprite_name.startswith("ui_image_portrait_"):
                     sprite_name = sprite_name[len("ui_image_portrait_"):]
                 if sprite_name and sprite_name.startswith("ui_image_RoundPortrait_"):
@@ -636,22 +819,20 @@ class UnityAssetExtractor:
                     src = f"resolved from {resolved_from}" if sprite_name else "assetNaming"
                     print(f"  👁️  {key} → {visual_value} ({src})")
 
-                # Serialize the _visual to JSON with resolved sprite name injected
                 serialized = self._serialize_unknown(data)
                 serialized['_resolved_sprite_name'] = visual_value or None
                 serialized['_resolved_sprite_from'] = resolved_from or ('assetNaming' if asset_naming else None)
-                filename = self._sanitize_filename(f"{m_name}.json")
+                filename = _sanitize_filename(f"{m_name}.json")
                 filepath = self.monobehaviour_path / filename
                 with open(filepath, 'w', encoding='utf-8') as f:
                     json.dump(serialized, f, indent=2, ensure_ascii=False, default=str)
                 return
 
-            # Handle board config MonoBehaviours
             if not self._is_board_monobehaviour(data, obj):
                 return
 
             serialized = self._serialize_unknown(data)
-            filename = self._sanitize_filename(f"{name}.json")
+            filename = _sanitize_filename(f"{name}.json")
             filepath = self.monobehaviour_path / filename
             with open(filepath, 'w', encoding='utf-8') as f:
                 json.dump(serialized, f, indent=2, ensure_ascii=False, default=str)
@@ -662,86 +843,22 @@ class UnityAssetExtractor:
         except Exception as e:
             print(f"❌ Failed to extract MonoBehaviour (ID: {obj.path_id}): {e}")
 
-            serialized = self._serialize_unknown(data)
-            filename = self._sanitize_filename(f"{name}.json")
-            filepath = self.monobehaviour_path / filename
-            with open(filepath, 'w', encoding='utf-8') as f:
-                json.dump(serialized, f, indent=2, ensure_ascii=False, default=str)
-
-            self.boards_extracted.add(name.upper())
-            print(f"✅ Board config: {filename}")
-
-        except Exception as e:
-            print(f"❌ Failed to extract MonoBehaviour (ID: {obj.path_id}): {e}")
-
-    def _extract_mSource_content(self, mSource):
-        """Extract detailed content from mSource"""
-        content = {
-            'type': str(type(mSource)),
-            'raw_string': str(mSource)
-        }
-
-        try:
-            for attr_name in dir(mSource):
-                if not attr_name.startswith('_'):
-                    try:
-                        attr_value = getattr(mSource, attr_name)
-                        if not callable(attr_value):
-                            if attr_name == 'mTerms' and hasattr(attr_value, '__iter__'):
-                                terms_list = []
-                                try:
-                                    for term in attr_value:
-                                        term_data = {}
-                                        for term_attr in dir(term):
-                                            if not term_attr.startswith('_'):
-                                                try:
-                                                    term_attr_value = getattr(term, term_attr)
-                                                    if not callable(term_attr_value):
-                                                        term_data[term_attr] = term_attr_value
-                                                except:
-                                                    term_data[term_attr] = "<cannot_read>"
-                                        terms_list.append(term_data)
-                                    content[attr_name] = terms_list
-                                except Exception as terms_e:
-                                    content[attr_name] = f"<mTerms processing failed: {terms_e}>"
-                            else:
-                                content[attr_name] = attr_value
-                    except Exception as attr_e:
-                        content[attr_name] = f"<cannot_read: {str(attr_e)}>"
-        except Exception as e:
-            content['extraction_error'] = str(e)
-
-        return content
-
-    # UnityPy internal types we never want to recurse into
     SKIP_TYPES = (
         "SerializedFile", "ObjectReader", "BundleFile",
         "AssetsFile", "Environment", "SerializedFileHeader",
     )
-    # Attribute names that point back into the UnityPy object graph
     SKIP_ATTRS = {
         "assets_file", "object_reader", "reader", "assetsfile",
-        "m_GameObject",  # PPtr — just a reference, not data
-        "m_Script",      # PPtr to MonoScript — not data
+        "m_GameObject", "m_Script",
     }
 
     def _serialize_unknown(self, obj, depth=0, _seen=None):
-        """
-        Recursively serialize UnityPy objects (including UnknownObject) to
-        plain Python dicts/lists suitable for JSON dumping.
-        Skips UnityPy internals and circular references.
-        """
         if _seen is None:
             _seen = set()
-
         if depth > 30:
             return "<max depth>"
-
-        # Plain JSON-safe scalars — return immediately
         if obj is None or isinstance(obj, (bool, int, float, str)):
             return obj
-
-        # Avoid circular refs for non-scalars
         try:
             obj_id = id(obj)
             if obj_id in _seen:
@@ -749,33 +866,22 @@ class UnityAssetExtractor:
             _seen.add(obj_id)
         except Exception:
             pass
-
-        # Skip known UnityPy internal types by class name
         cls_name = type(obj).__name__
         if cls_name in self.SKIP_TYPES:
             return f"<{cls_name}>"
-
-        # Lists / tuples
         if isinstance(obj, (list, tuple)):
             return [self._serialize_unknown(item, depth + 1, _seen) for item in obj]
-
-        # Dicts
         if isinstance(obj, dict):
-            return {k: self._serialize_unknown(v, depth + 1, _seen)
-                    for k, v in obj.items()}
-
-        # Objects with attributes (UnknownObject, dataclasses, etc.)
+            return {k: self._serialize_unknown(v, depth + 1, _seen) for k, v in obj.items()}
         if hasattr(obj, '__dict__') or hasattr(obj, '__slots__'):
             result = {}
             try:
-                # Prefer __dict__ keys over dir() to avoid triggering properties
                 if hasattr(obj, '__dict__'):
                     attrs = [k for k in obj.__dict__.keys() if not k.startswith('_')]
                 else:
                     attrs = [a for a in dir(obj) if not a.startswith('_')]
             except Exception:
                 return str(obj)
-
             for attr in attrs:
                 if attr in self.SKIP_ATTRS:
                     continue
@@ -787,15 +893,9 @@ class UnityAssetExtractor:
                 except Exception as e:
                     result[attr] = f"<error: {e}>"
             return result
-
-        # Fallback
         return str(obj)
 
     def dump_to_json(self, path_ids: list[int]):
-        """
-        Fully serialize MonoBehaviour (or any) objects to JSON, recursively
-        expanding all UnknownObject fields. Saves to monobehaviour/ directory.
-        """
         env = UnityPy.load(self.input_path)
         targets = set(path_ids)
         found = set()
@@ -812,8 +912,7 @@ class UnityAssetExtractor:
                 print(f"Serializing {obj_type} '{name}' (path_id={obj.path_id})...")
 
                 serialized = self._serialize_unknown(data)
-
-                filename = self._sanitize_filename(f"{name}.json")
+                filename = _sanitize_filename(f"{name}.json")
                 filepath = self.monobehaviour_path / filename
                 with open(filepath, 'w', encoding='utf-8') as f:
                     json.dump(serialized, f, indent=2, ensure_ascii=False, default=str)
@@ -826,15 +925,6 @@ class UnityAssetExtractor:
         if missing:
             print(f"⚠️  IDs not found in this bundle: {missing}")
 
-    def _sanitize_filename(self, filename):
-        invalid_chars = '<>:"/\\|?*'
-        for char in invalid_chars:
-            filename = filename.replace(char, '_')
-        if len(filename) > 255:
-            name, ext = os.path.splitext(filename)
-            filename = name[:255 - len(ext)] + ext
-        return filename
-
 
 def main():
     check_texture_decoder()
@@ -844,20 +934,45 @@ def main():
     parser.add_argument("-o", "--output", default="extracted_assets",
                         help="Output folder (default: extracted_assets)")
     parser.add_argument("--find-name", metavar="QUERY",
-                        help="Search for assets whose name or container path contains QUERY (case-insensitive). "
-                             "E.g.: --find-name EC2_08")
+                        help="Search for assets whose name or container path contains QUERY")
     parser.add_argument("--extract-found", action="store_true",
                         help="When used with --find-name, also extract any image assets found")
     parser.add_argument("--find-id", nargs="+", type=int, metavar="PATH_ID",
-                        help="Inspect specific asset(s) by path_id and dump all info about them. "
-                             "E.g.: --find-id 6176478489775177520")
+                        help="Inspect specific asset(s) by path_id")
     parser.add_argument("--dump-id", nargs="+", type=int, metavar="PATH_ID",
-                        help="Fully serialize asset(s) by path_id to JSON, expanding all nested objects. "
-                             "E.g.: --dump-id -529856405056229085")
+                        help="Fully serialize asset(s) by path_id to JSON")
     parser.add_argument("--only", nargs="+", metavar="TYPE",
-                        help="Restrict extraction to specific asset types. "
-                             "Options: boards, sprites, textures, text, monobehaviour. "
-                             "E.g.: --only boards sprites")
+                        help="Restrict extraction to: boards, sprites, textures, text, monobehaviour")
+
+    # ── New camera/config scanning flags ────────────────────────────────────
+    parser.add_argument(
+        "--scan-camera",
+        action="store_true",
+        help=(
+            "Scan Unity core files (globalgamemanagers, level*, asset bundles) for "
+            "Camera, GraphicsSettings, QualitySettings, and any MonoBehaviour with "
+            "camera/hex/grid-related field names. "
+            "Pass the game's Data/ directory as `input`, e.g.: "
+            "  python extract.py /path/to/Tacticus.app/Contents/Resources/Data --scan-camera"
+        ),
+    )
+    parser.add_argument(
+        "--scan-camera-file",
+        metavar="FILE",
+        help=(
+            "Like --scan-camera but scans a single specific file instead of the whole Data/ dir. "
+            "Useful if you already know which bundle to inspect."
+        ),
+    )
+    parser.add_argument(
+        "--camera-keywords",
+        nargs="+",
+        metavar="KEYWORD",
+        help=(
+            "Extra keywords to add to the camera field scanner (on top of built-ins). "
+            "E.g.: --camera-keywords boardcamera battlecamera isometric"
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -865,6 +980,28 @@ def main():
         print(f"Error: Input path not found {args.input}")
         return 1
 
+    # Inject any extra keywords before scanning
+    if args.camera_keywords:
+        for kw in args.camera_keywords:
+            CAMERA_FIELD_KEYWORDS.add(kw.lower().replace("_", ""))
+        print(f"➕ Extra camera keywords: {', '.join(args.camera_keywords)}")
+
+    output_path = Path(args.output)
+    output_path.mkdir(exist_ok=True)
+
+    # ── Camera scan modes ────────────────────────────────────────────────────
+    if args.scan_camera:
+        scan_camera_in_dir(args.input, output_path)
+        return 0
+
+    if args.scan_camera_file:
+        if not os.path.exists(args.scan_camera_file):
+            print(f"Error: --scan-camera-file path not found: {args.scan_camera_file}")
+            return 1
+        scan_for_camera_config(args.scan_camera_file, output_path)
+        return 0
+
+    # ── Original extraction modes ────────────────────────────────────────────
     extractor = UnityAssetExtractor(args.input, args.output)
 
     if args.find_id:
