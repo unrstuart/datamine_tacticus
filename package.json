@@ -5,6 +5,7 @@
     "description": "A tool for datamining Snowprint's Tacticus game files.",
     "main": "index.js",
     "scripts": {
+        "diffinv": "tsx ./diff_inventory.ts",
         "draw": "tsx ./add_hexes_to_map.ts",
         "findmaps": "tsx ./render_hex_tiles.tsx"
     },

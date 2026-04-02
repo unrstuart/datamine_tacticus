@@ -357,4 +357,37 @@ export function addHexesToMap(
             }
         }
     }
+
+    // Crop to drawn hex bounds (+40px margin), then downsample to 25%.
+    if (bbox.maxX <= bbox.minX || bbox.maxY <= bbox.minY) return;
+
+    const margin = 40;
+    const sourceW = canvas.width;
+    const sourceH = canvas.height;
+
+    const cropLeft = Math.max(0, Math.floor(bbox.minX) - margin);
+    const cropTop = Math.max(0, Math.floor(bbox.minY) - margin);
+    const cropRight = Math.min(sourceW, Math.ceil(bbox.maxX) + margin);
+    const cropBottom = Math.min(sourceH, Math.ceil(bbox.maxY) + margin);
+
+    const cropW = Math.max(1, cropRight - cropLeft);
+    const cropH = Math.max(1, cropBottom - cropTop);
+
+    const croppedCanvas = createCanvas(cropW, cropH);
+    const croppedCtx = croppedCanvas.getContext('2d') as CanvasRenderingContext2D;
+    croppedCtx.drawImage(canvas as any, cropLeft, cropTop, cropW, cropH, 0, 0, cropW, cropH);
+
+    const outW = Math.max(1, Math.round(cropW * 0.25));
+    const outH = Math.max(1, Math.round(cropH * 0.25));
+
+    const downsampledCanvas = createCanvas(outW, outH);
+    const downsampledCtx = downsampledCanvas.getContext('2d') as CanvasRenderingContext2D;
+    downsampledCtx.imageSmoothingEnabled = true;
+    downsampledCtx.drawImage(croppedCanvas as any, 0, 0, cropW, cropH, 0, 0, outW, outH);
+
+    // Replace original output canvas contents with final processed result.
+    canvas.width = outW;
+    canvas.height = outH;
+    const outCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    outCtx.drawImage(downsampledCanvas as any, 0, 0);
 }
