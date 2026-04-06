@@ -77,6 +77,12 @@ async function main() {
             }
         }
     }
+    for (const file of fs.readdirSync(texturesPath)) {
+        if (file.startsWith('GB_') && file.endsWith('_Visual.png')) {
+            const boardId = file.substring(0, file.length - '_Visual.png'.length);
+            boardIds.add(boardId);
+        }
+    }
     console.log('boardIds: ', boardIds);
     const jsonPairs = findJsonPairs(targetPath, texturesPath);
     const filteredPairs = jsonPairs.filter(name => boardIds.has(name));
