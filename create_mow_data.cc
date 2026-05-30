@@ -14,7 +14,8 @@ namespace dataminer {
 
 namespace {
 
-std::string GetIconPath(const absl::string_view id,
+std::string GetIconPath(const absl::string_view assets_dir,
+                        const absl::string_view id,
                         const GameConfig& game_config) {
   const std::map<std::string, std::string> kOverrides = {
       {"orksRukkatrukk", "orkss_rukkatruk_01"}};
@@ -34,7 +35,7 @@ std::string GetIconPath(const absl::string_view id,
   }
 
   img = absl::StrCat(img_prefix, img, img_suffix);
-  const std::string full_path = absl::StrCat("out/sprites/", img);
+  const std::string full_path = absl::StrCat(assets_dir, "/sprites/", img);
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
@@ -46,7 +47,8 @@ std::string GetIconPath(const absl::string_view id,
 }
 
 // TODO: refactor this with GetIconPath and GetCharacterNumber.
-std::string GetRoundIconPath(const absl::string_view id,
+std::string GetRoundIconPath(const absl::string_view assets_dir,
+                             const absl::string_view id,
                              const GameConfig& game_config) {
   constexpr absl::string_view img_prefix = "ui_image_RoundPortrait_";
   constexpr absl::string_view img_suffix = ".png";
@@ -60,7 +62,7 @@ std::string GetRoundIconPath(const absl::string_view id,
   }
 
   img = absl::StrCat(img_prefix, img, img_suffix);
-  const std::string full_path = absl::StrCat("out/sprites/", img);
+  const std::string full_path = absl::StrCat(assets_dir, "/sprites/", img);
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
@@ -93,7 +95,8 @@ void EmitAbility(std::ostream& out, const MachineOfWar::Ability& ability,
 
 }  // namespace
 
-absl::Status CreateMowData(const absl::string_view path,
+absl::Status CreateMowData(const absl::string_view assets_dir,
+                           const absl::string_view path,
                            const GameConfig& game_config) {
   std::ofstream out(std::string(path).c_str());
 
@@ -111,10 +114,10 @@ absl::Status CreateMowData(const absl::string_view path,
     out << "            \"name\": \"" << mow.name() << "\",\n";
     out << "            \"faction\": \"" << mow.faction_id() << "\",\n";
     out << "            \"alliance\": \"" << mow.alliance() << "\",\n";
-    out << "            \"icon\": \"" << GetIconPath(mow.id(), game_config)
-        << "\",\n";
+    out << "            \"icon\": \""
+        << GetIconPath(assets_dir, mow.id(), game_config) << "\",\n";
     out << "            \"roundIcon\": \""
-        << GetRoundIconPath(mow.id(), game_config) << "\",\n";
+        << GetRoundIconPath(assets_dir, mow.id(), game_config) << "\",\n";
     EmitAbility(out, mow.active_ability(), "primaryAbility");
     out << ",\n";
     EmitAbility(out, mow.passive_ability(), "secondaryAbility");

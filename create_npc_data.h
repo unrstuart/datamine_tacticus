@@ -12,7 +12,8 @@ namespace dataminer {
 
 // Writes the NPC data in JSON to the provided path.
 // Returns an error status if the creation fails.
-absl::Status CreateNpcData(const absl::string_view path,
+absl::Status CreateNpcData(const absl::string_view assets_dir,
+                           const absl::string_view path,
                            const GameConfig& game_config,
                            const std::map<std::string, std::string>& visuals);
 

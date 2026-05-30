@@ -1,0 +1,4201 @@
+[
+  {
+    "unitId": "votanBeserk",
+    "allowedFactions": [
+      "LeaguesOfVotann",
+      "Ultramarines",
+      "AdeptusMechanicus"
+    ],
+    "enemyFactions": [
+      "Tau"
+    ],
+    "tiers": [
+      {
+        "index": 0,
+        "battles": [
+          {
+            "battleNr": "1",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgC015",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "2",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmC005",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "3",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgC007",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "battles": [
+          {
+            "battleNr": "4",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmU002",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "5",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmU013",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "6",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgU004",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "battles": [
+          {
+            "battleNr": "7",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "8",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "9",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "10",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR014",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "11",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgR005",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "battles": [
+          {
+            "battleNr": "12",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgE001",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "13",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgE011",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "14",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmE010",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "battles": [
+          {
+            "battleNr": "15",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpL099",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "16",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgL001",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "battles": [
+          {
+            "battleNr": "17",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpM001",
+                "num": 1,
+                "denom": 6
+              }
+            },
+            "enemies": [
+              {
+                "name": "tauNpc1FireWarrior",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "unitId": "votanIronmaster",
+    "allowedFactions": [
+      "LeaguesOfVotann",
+      "AdeptusMechanicus",
+      "Ultramarines"
+    ],
+    "enemyFactions": [
+      "Necrons"
+    ],
+    "tiers": [
+      {
+        "index": 0,
+        "battles": [
+          {
+            "battleNr": "1",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgC015",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 1
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "DamageType",
+                "ObjectiveTarget": "Physical",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "2",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgC007",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "3",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmC011",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroBossWardenLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 2
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "battles": [
+          {
+            "battleNr": "4",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmU014",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Overwatch",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Psychic",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "5",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgU009",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 6
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Toxic",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "6",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgU004",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroBossDestroyerLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroBossWardenLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 6
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Unstoppable",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "battles": [
+          {
+            "battleNr": "7",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 11
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 11
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 12
+              },
+              {
+                "name": "powupDamage",
+                "progressionIndex": null
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Bolter",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Energy",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "8",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 10
+              },
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 10
+              },
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 10
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 13
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Psychic",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "9",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 15
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 15
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 15
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 15
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 15
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "10",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR014",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 12
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "HasNoRangedAttack",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "11",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgR005",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroBossSpyderLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroBossWardenLHE",
+                "progressionIndex": 3
+              },
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 12
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 13
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 13
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MaxHits",
+                "ObjectiveTarget": 3,
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "battles": [
+          {
+            "battleNr": "12",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmE010",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 16
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 16
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 16
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 18
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 18
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 18
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Energy",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "13",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpE012",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 16
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 19
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 19
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 19
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 19
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 19
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 19
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 20
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 20
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MinHits",
+                "ObjectiveTarget": 2,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "14",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgE004",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroBossPlasmancerLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroBossWardenLHE",
+                "progressionIndex": 4
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 17
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 17
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 17
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 17
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 18
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 18
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 18
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 18
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 18
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 18
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Bolter",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "battles": [
+          {
+            "battleNr": "15",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpL099",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 21
+              },
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 21
+              },
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 19
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 23
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 23
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 23
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 23
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 23
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 24
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 24
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 22
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 22
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Unstoppable",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "16",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgL204",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroBossOverlordLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 23
+              },
+              {
+                "name": "necroNpc4Destroyer",
+                "progressionIndex": 23
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 25
+              },
+              {
+                "name": "necroNpc3Deathmark",
+                "progressionIndex": 25
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 26
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 26
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 26
+              },
+              {
+                "name": "necroNpc2FlayedOne",
+                "progressionIndex": 26
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "battles": [
+          {
+            "battleNr": "17",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpM004",
+                "num": 1,
+                "denom": 6
+              }
+            },
+            "enemies": [
+              {
+                "name": "necroBossOverlordLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "necroBossWardenLHE",
+                "progressionIndex": 6
+              },
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 33
+              },
+              {
+                "name": "necroNpc5Swarm",
+                "progressionIndex": 33
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 33
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 33
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 33
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 33
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 33
+              },
+              {
+                "name": "necroNpc1Warrior",
+                "progressionIndex": 33
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Overwatch",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "unitId": "emperExultant",
+    "allowedFactions": [
+      "EmperorsChildren",
+      "ThousandSons",
+      "DeathGuard",
+      "BlackLegion",
+      "WorldEaters"
+    ],
+    "enemyFactions": [
+      "Ultramarines"
+    ],
+    "tiers": [
+      {
+        "index": 0,
+        "battles": [
+          {
+            "battleNr": "1",
+            "lightningVictory": 1,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmC003",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 3
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 4
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "UseNoSummons",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "MaxHits",
+                "ObjectiveTarget": 3,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "2",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpC007",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 4
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 4
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 4
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 4
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 5
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 5
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 3
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Psychic",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "3",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpC010",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraBossInceptorSgtLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 2
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 4
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 4
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 5
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 5
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 5
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 5
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "DamageType",
+                "ObjectiveTarget": "Power",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "battles": [
+          {
+            "battleNr": "4",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpU012",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 11
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 11
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 11
+              },
+              {
+                "name": "powupHealing",
+                "progressionIndex": null
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Resilient",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "5",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmU007",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 9
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 9
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 9
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 9
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MaxHits",
+                "ObjectiveTarget": 2,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "6",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgU014",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraBossEliminatorSgtLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 10
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 10
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 9
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Flame",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "battles": [
+          {
+            "battleNr": "7",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR039",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 14
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 14
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 14
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 14
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 14
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 14
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 14
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 14
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "UseNoSummons",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "TeleportStrike",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "8",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgR039",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 14
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 14
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 14
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 14
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MaxHits",
+                "ObjectiveTarget": 1,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "9",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmR039",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 15
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 15
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 15
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 15
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Physical",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "10",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR018",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 14
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 14
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 15
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 15
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 15
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 15
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "11",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR008",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraBossInceptorSgtLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 16
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 16
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 16
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 16
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 16
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 16
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 16
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 16
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 16
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 16
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 16
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "HasNoRangedAttack",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "battles": [
+          {
+            "battleNr": "12",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgE004",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 20
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 20
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 20
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 20
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 20
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 20
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 20
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MaxHits",
+                "ObjectiveTarget": 3,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "13",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgE011",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 21
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 21
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 21
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 22
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 22
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 22
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 22
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 22
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 22
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "RapidAssault",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "14",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpE003",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraBossTitusLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 22
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 22
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 23
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 23
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 24
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 24
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 24
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 24
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 24
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 24
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 24
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "UseNoSummons",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "battles": [
+          {
+            "battleNr": "15",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpL119",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 26
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 26
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 26
+              },
+              {
+                "name": "ultraNpc2Eliminator",
+                "progressionIndex": 26
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 28
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 28
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 28
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 28
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Flame",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "16",
+            "lightningVictory": 5,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgL001",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraBossTiguriusLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 30
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 30
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 30
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 30
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 32
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 32
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "battles": [
+          {
+            "battleNr": "17",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpM003",
+                "num": 1,
+                "denom": 6
+              }
+            },
+            "enemies": [
+              {
+                "name": "ultraBossCalgarLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 35
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 35
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 35
+              },
+              {
+                "name": "ultraNpc1Inceptor",
+                "progressionIndex": 35
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 33
+              },
+              {
+                "name": "ultraNpc4HeavyIntercessor",
+                "progressionIndex": 33
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 37
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 37
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 37
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 37
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 37
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "TerminatorArmour",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "unitId": "votanMemnyr",
+    "allowedFactions": [
+      "LeaguesOfVotann",
+      "Ultramarines",
+      "AdeptusMechanicus"
+    ],
+    "enemyFactions": [
+      "Tyranids"
+    ],
+    "tiers": [
+      {
+        "index": 0,
+        "battles": [
+          {
+            "battleNr": "1",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgC015",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 5
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Bolter",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "2",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgC007",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "3",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmC011",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranBossTyrantGuardLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "tyranBossTyrantGuardLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 4
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "battles": [
+          {
+            "battleNr": "4",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmU014",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc2RipperSwarm",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc2RipperSwarm",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 10
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Power",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Flame",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "5",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgU009",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc4Warrior",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc5Barbgaunt",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc2RipperSwarm",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc2RipperSwarm",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 10
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MaxHits",
+                "ObjectiveTarget": 3,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "6",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgU004",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranBossParasiteLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "tyranNpc4Warrior",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc2RipperSwarm",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc2RipperSwarm",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 10
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 10
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "battles": [
+          {
+            "battleNr": "7",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc5Barbgaunt",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 14
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Toxic",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Energy",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "8",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc4Warrior",
+                "progressionIndex": 12
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 15
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 14
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 14
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "DamageType",
+                "ObjectiveTarget": "Physical",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "9",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmR040",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranBossTyrantGuardLHE",
+                "progressionIndex": 3
+              },
+              {
+                "name": "tyranNpc5Barbgaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 15
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 15
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 15
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MaxHits",
+                "ObjectiveTarget": 1,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "10",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR014",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "HasNoRangedAttack",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "11",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgR005",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranBossNeurothropeLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "tyranBossDeathleaperLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "tyranBossDeathleaperLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 16
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Camouflage",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "battles": [
+          {
+            "battleNr": "12",
+            "lightningVictory": 1,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmE010",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc5Barbgaunt",
+                "progressionIndex": 21
+              },
+              {
+                "name": "tyranNpc5Barbgaunt",
+                "progressionIndex": 21
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 21
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 22
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "Trait",
+                "ObjectiveTarget": "Mechanical",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "13",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpE012",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc4Warrior",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc2RipperSwarm",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc2RipperSwarm",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 22
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MaxHits",
+                "ObjectiveTarget": 3,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "14",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgE004",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranBossTyrantGuardLHE",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranBossTyrantGuardLHE",
+                "progressionIndex": 4
+              },
+              {
+                "name": "tyranBossDeathleaperLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "tyranNpc4Warrior",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 22
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 22
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Energy",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "battles": [
+          {
+            "battleNr": "15",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpL099",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranNpc5Barbgaunt",
+                "progressionIndex": 27
+              },
+              {
+                "name": "tyranNpc4Warrior",
+                "progressionIndex": 27
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 28
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 28
+              },
+              {
+                "name": "tyranNpc1Hormagaunt",
+                "progressionIndex": 28
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 28
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 28
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 28
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 28
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 28
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Piercing",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "16",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgL204",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranBossWingedPrimeLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "tyranNpc4Warrior",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc4Warrior",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc6SporeMine",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 33
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 33
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Power",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "battles": [
+          {
+            "battleNr": "17",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpM004",
+                "num": 1,
+                "denom": 6
+              }
+            },
+            "enemies": [
+              {
+                "name": "tyranBossParasiteLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "tyranBossTyrantGuardLHE",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranBossTyrantGuardLHE",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranBossTyrantGuardLHE",
+                "progressionIndex": 5
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 35
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 35
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 35
+              },
+              {
+                "name": "tyranNpc3Termagant",
+                "progressionIndex": 35
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Bolter",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "unitId": "blackObliterator",
+    "allowedFactions": [
+      "BlackLegion",
+      "ThousandSons",
+      "DeathGuard",
+      "EmperorsChildren",
+      "WorldEaters"
+    ],
+    "enemyFactions": [
+      "DarkAngels"
+    ],
+    "tiers": [
+      {
+        "index": 0,
+        "battles": [
+          {
+            "battleNr": "1",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpC010",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 3
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 3
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 3
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 3
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "2",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgC014",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 4
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 4
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 4
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 4
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 4
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "3",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgC001",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaBossAsmodaiLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 4
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 4
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 4
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 4
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 4
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 4
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NoDamageTakenByAnyHero",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "battles": [
+          {
+            "battleNr": "4",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgU019",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 8
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 8
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 8
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 8
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 9
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "HasRangedAttack",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Psychic",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "5",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmU007",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 8
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 8
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 8
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 9
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 9
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "MinHits",
+                "ObjectiveTarget": 4,
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "6",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmU002",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaBossHellblasterLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 9
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 9
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 9
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 9
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 9
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 11
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "TerminatorArmour",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "battles": [
+          {
+            "battleNr": "7",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR023",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 12
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 12
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 12
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 12
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 12
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "RapidAssault",
+                "Score": 100
+              },
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Physical",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "8",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgR023",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 11
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 12
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 12
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 12
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 12
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "UseNoSummons",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "9",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgArmR023",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 14
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 14
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 14
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 15
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 15
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 15
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 15
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 15
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 15
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "Trait",
+                "ObjectiveTarget": "SuppressiveFire",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "10",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR008",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 13
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 13
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 13
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 13
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 13
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 13
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 12
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 12
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "11",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpR019",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaBossCompanionLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 14
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 14
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 14
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 14
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 14
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 14
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 14
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "DamageType",
+                "ObjectiveTarget": "Power",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "battles": [
+          {
+            "battleNr": "12",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpE015",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "DamageType",
+                "ObjectiveTarget": "HeavyRound",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "13",
+            "lightningVictory": 2,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgE001",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 19
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotDamageType",
+                "ObjectiveTarget": "Piercing",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "14",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgE003",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaBossTerminatorLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 20
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 19
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "HasRangedAttack",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "battles": [
+          {
+            "battleNr": "15",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpL103",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 23
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 23
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 25
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 25
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 24
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 24
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 25
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 25
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 25
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "UseNoSummons",
+                "Score": 100
+              }
+            ]
+          },
+          {
+            "battleNr": "16",
+            "lightningVictory": 3,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgDmgL003",
+                "num": 3,
+                "denom": 4
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaBossAzraelLHE",
+                "progressionIndex": 1
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 28
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 28
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 28
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 26
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 30
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 30
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 30
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 30
+              },
+              {
+                "name": "astraNpc1Guardsman",
+                "progressionIndex": 30
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "RapidAssault",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "battles": [
+          {
+            "battleNr": "17",
+            "lightningVictory": 4,
+            "loot": {
+              "reward": {
+                "upgradeId": "upgHpM002",
+                "num": 1,
+                "denom": 6
+              }
+            },
+            "enemies": [
+              {
+                "name": "darkaBossAzraelLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "darkaBossTerminatorLHE",
+                "progressionIndex": 2
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 33
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 33
+              },
+              {
+                "name": "darkaNpc3Terminator",
+                "progressionIndex": 33
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 34
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 34
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 34
+              },
+              {
+                "name": "darkaNpc1Infiltrator",
+                "progressionIndex": 34
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 34
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 34
+              },
+              {
+                "name": "darkaNpc2Hellblaster",
+                "progressionIndex": 34
+              }
+            ],
+            "objectives": [
+              {
+                "ObjectiveType": "NotTrait",
+                "ObjectiveTarget": "Flying",
+                "Score": 100
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -12,9 +12,10 @@ namespace dataminer {
 
 // Creates the character data in the provided JSON root.
 // Returns an error status if the creation fails.
-absl::Status CreateCharacterData(const absl::string_view path,
-                                 const GameConfig& game_config,
-                                 const std::map<std::string, std::string>& visuals);
+absl::Status CreateCharacterData(
+    const absl::string_view assets_dir, const absl::string_view path,
+    const GameConfig& game_config,
+    const std::map<std::string, std::string>& visuals);
 
 }  // namespace dataminer
 

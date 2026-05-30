@@ -29,10 +29,6 @@ def check_texture_decoder():
 
 
 def try_get_image(data, label=""):
-    """
-    Safely attempt to get a PIL image from a Unity texture/sprite object.
-    Returns (image, error_message). image is None if decode failed.
-    """
     try:
         img = data.image
         if img is None:
@@ -43,11 +39,6 @@ def try_get_image(data, label=""):
 
 
 def save_raw_texture(data, filepath_no_ext):
-    """
-    When image decode fails, save raw texture data as a fallback.
-    Saves .dds if possible (readable by tools like texconv), otherwise raw bytes.
-    Returns the path saved, or None.
-    """
     try:
         raw = getattr(data, 'image_data', None) or getattr(data, 'm_Data', None)
         fmt = getattr(data, 'm_TextureFormat', None)
@@ -65,10 +56,596 @@ def save_raw_texture(data, filepath_no_ext):
 
 
 # ---------------------------------------------------------------------------
+# 3-D model helpers
+# ---------------------------------------------------------------------------
+
+def _mesh_name(obj) -> str:
+    """
+    Return a human-readable name for a Mesh object, trying (in order):
+      1. data.m_Name
+      2. basename of obj.container (strip extension)
+      3. fallback: mesh_<path_id>
+    """
+    try:
+        data = obj.read()
+        m = str(getattr(data, 'm_Name', '') or '').strip()
+        if m:
+            return m
+    except Exception:
+        pass
+
+    container = str(getattr(obj, 'container', '') or '')
+    if container:
+        base = os.path.splitext(os.path.basename(container))[0]
+        if base:
+            return base
+
+    return f"mesh_{obj.path_id}"
+
+
+def list_models(input_path: str):
+    """Print all Mesh assets found in input_path."""
+    env = UnityPy.load(input_path)
+    meshes = []
+    for obj in env.objects:
+        obj_type = obj.type.name if hasattr(obj.type, 'name') else str(obj.type)
+        if obj_type == "Mesh":
+            name = _mesh_name(obj)
+            container = str(getattr(obj, 'container', '') or '')
+            meshes.append((obj.path_id, name, container))
+
+    if not meshes:
+        print("ℹ️  No Mesh assets found in this input.")
+        return
+
+    print(f"\n{'─'*70}")
+    print(f"  {'path_id':<12}  {'name':<40}  container")
+    print(f"{'─'*70}")
+    for path_id, name, container in sorted(meshes, key=lambda x: x[1].lower()):
+        print(f"  {path_id:<12}  {name:<40}  {container or '—'}")
+    print(f"{'─'*70}")
+    print(f"  {len(meshes)} mesh(es) total.\n")
+
+
+def _read_mesh_typetree(obj) -> dict:
+    """
+    Read a Mesh object via read_typetree(), which gives us the fully-parsed
+    dict Unity stores internally (vertices, normals, UVs, index buffer, etc.).
+    Falls back to the older obj.read() path if typetree isn't available.
+    Returns the raw dict on success, or raises on failure.
+    """
+    # Preferred: read_typetree() returns the full parsed structure as a dict
+    if hasattr(obj, 'read_typetree'):
+        try:
+            return obj.read_typetree()
+        except Exception:
+            pass
+
+    # Fallback: read() and convert to dict via __dict__
+    data = obj.read()
+    if hasattr(data, '__dict__'):
+        return data.__dict__
+    raise RuntimeError("Cannot read mesh data from this object")
+
+
+def debug_mesh(input_path: str, pattern: str):
+    """
+    Print the raw typetree dict for the first mesh matching `pattern`.
+    Useful for figuring out what attribute names Unity is actually using.
+    """
+    try:
+        rx = re.compile(pattern)
+    except re.error as e:
+        print(f"❌ Invalid regex '{pattern}': {e}")
+        return
+
+    env = UnityPy.load(input_path)
+    for obj in env.objects:
+        obj_type = obj.type.name if hasattr(obj.type, 'name') else str(obj.type)
+        if obj_type != "Mesh":
+            continue
+        name = _mesh_name(obj)
+        if not rx.search(name):
+            continue
+
+        print(f"\n🔬 Debug dump for Mesh '{name}' (path_id={obj.path_id})\n")
+        try:
+            tree = _read_mesh_typetree(obj)
+            # Print keys and a short preview of each value
+            for k, v in tree.items():
+                if isinstance(v, (list, bytes, bytearray)):
+                    length = len(v)
+                    preview = f"[list/bytes, len={length}]"
+                    if length > 0 and isinstance(v, list):
+                        preview += f"  first item: {repr(v[0])}"
+                elif isinstance(v, dict):
+                    preview = f"{{dict, keys={list(v.keys())[:6]}}}"
+                else:
+                    preview = repr(v)
+                    if len(preview) > 120:
+                        preview = preview[:120] + "…"
+                print(f"  {k}: {preview}")
+        except Exception as e:
+            print(f"❌ Failed to read typetree: {e}")
+            print("\nFalling back to dir() on read() object:")
+            try:
+                data = obj.read()
+                for attr in sorted(dir(data)):
+                    if attr.startswith('_'):
+                        continue
+                    try:
+                        val = getattr(data, attr)
+                        if callable(val):
+                            continue
+                        s = repr(val)
+                        if len(s) > 100:
+                            s = s[:100] + "…"
+                        print(f"  {attr}: {s}")
+                    except Exception as ae:
+                        print(f"  {attr}: <error: {ae}>")
+            except Exception as e2:
+                print(f"❌ read() also failed: {e2}")
+        return  # only dump the first match
+
+    print(f"ℹ️  No mesh matched pattern '{pattern}'.")
+
+
+def _extract_floats_from_vertex_data(vd: dict, channel_idx: int, vertex_count: int) -> list[float]:
+    """
+    Unpack a single vertex channel (position=0, normal=1, uv0=4, uv1=5, etc.)
+    from Unity's packed VertexData structure.
+
+    Unity packs all vertex attributes into one or more byte streams.
+    Each channel descriptor says which stream it's in, its byte offset
+    within a vertex, its format, and its dimension.
+    """
+    import struct
+
+    channels = vd.get('m_Channels', [])
+    streams  = vd.get('m_DataSize', None)  # raw bytes in older format
+    data_bytes = vd.get('_typelessdata', None) or vd.get('m_Data', None)
+
+    if channel_idx >= len(channels):
+        return []
+
+    ch = channels[channel_idx]
+    # Channel fields vary slightly by Unity version:
+    stream    = ch.get('stream',    ch.get('m_Stream',    0))
+    offset    = ch.get('offset',    ch.get('m_Offset',    0))
+    fmt       = ch.get('format',    ch.get('m_Format',    0))
+    dimension = ch.get('dimension', ch.get('m_Dimension', 0))
+    dimension = dimension & 0x0F  # lower nibble is actual dimension
+
+    if dimension == 0:
+        return []  # channel not present
+
+    # Format → struct fmt char + byte width
+    # Unity vertex format enum: 0=float32, 1=float16, 2=unorm8, 3=snorm8,
+    #                            4=unorm16, 5=snorm16, 8=uint8, 9=sint8,
+    #                           10=uint16, 11=sint16
+    FMT_MAP = {
+        0: ('f', 4),   # Float32
+        1: ('e', 2),   # Float16
+        2: ('B', 1),   # UNorm8
+        3: ('b', 1),   # SNorm8
+        4: ('H', 2),   # UNorm16
+        5: ('h', 2),   # SNorm16
+        8: ('B', 1),   # UInt8
+        9: ('b', 1),   # SInt8
+        10: ('H', 2),  # UInt16
+        11: ('h', 2),  # SInt16
+    }
+    fmt_char, fmt_size = FMT_MAP.get(fmt, ('f', 4))
+
+    # Locate the right stream's raw bytes
+    if isinstance(data_bytes, (bytes, bytearray)):
+        raw = bytes(data_bytes)
+    elif isinstance(data_bytes, list):
+        raw = bytes(data_bytes)
+    else:
+        return []
+
+    # Compute stride: sum of sizes of all channels in the same stream
+    stride = 0
+    for c in channels:
+        c_stream = c.get('stream', c.get('m_Stream', 0))
+        c_fmt    = c.get('format', c.get('m_Format', 0))
+        c_dim    = c.get('dimension', c.get('m_Dimension', 0)) & 0x0F
+        if c_stream == stream and c_dim > 0:
+            _, csz = FMT_MAP.get(c_fmt, ('f', 4))
+            stride += csz * c_dim
+
+    if stride == 0:
+        stride = fmt_size * dimension
+
+    # Find the byte offset of this stream's data within the combined buffer.
+    # Unity lays out streams contiguously; compute the start of our stream.
+    stream_start = 0
+    for s_idx in range(stream):
+        for c in channels:
+            c_stream = c.get('stream', c.get('m_Stream', 0))
+            c_fmt    = c.get('format', c.get('m_Format', 0))
+            c_dim    = c.get('dimension', c.get('m_Dimension', 0)) & 0x0F
+            if c_stream == s_idx and c_dim > 0:
+                _, csz = FMT_MAP.get(c_fmt, ('f', 4))
+                stream_start += vertex_count * csz * c_dim
+
+    result = []
+    scale = 1.0
+    if fmt in (2,):  scale = 1.0 / 255.0   # UNorm8
+    if fmt in (3,):  scale = 1.0 / 127.0   # SNorm8
+    if fmt in (4,):  scale = 1.0 / 65535.0 # UNorm16
+    if fmt in (5,):  scale = 1.0 / 32767.0 # SNorm16
+
+    for vi in range(vertex_count):
+        base = stream_start + vi * stride + offset
+        for di in range(dimension):
+            byte_pos = base + di * fmt_size
+            if byte_pos + fmt_size > len(raw):
+                result.append(0.0)
+                continue
+            (val,) = struct.unpack_from(fmt_char, raw, byte_pos)
+            result.append(float(val) * scale if fmt not in (0, 1) else float(val))
+
+    return result
+
+
+def _unpack_packed_bit_vector(pbv: dict) -> list[float]:
+    """
+    Decompress a Unity PackedBitVector<float> back to a flat list of floats.
+
+    Unity stores: m_NumItems, m_Range, m_Start, m_BitSize, m_Data (bytes).
+    Each item is stored as a `m_BitSize`-bit unsigned integer packed
+    consecutively into m_Data (LSB-first within each byte). The float value
+    is reconstructed as:  start + (packed_int / max_int) * range
+    """
+    num_items = pbv.get('m_NumItems', 0)
+    if num_items == 0:
+        return []
+
+    range_val = pbv.get('m_Range', 1.0)
+    start     = pbv.get('m_Start', 0.0)
+    bit_size  = pbv.get('m_BitSize', 0)
+    raw       = pbv.get('m_Data', [])
+
+    if bit_size == 0 or not raw:
+        return []
+
+    if isinstance(raw, list):
+        raw = bytes(raw)
+
+    max_int = (1 << bit_size) - 1
+    result  = []
+    bit_pos = 0
+
+    for _ in range(num_items):
+        # Read `bit_size` bits starting at `bit_pos` (LSB-first)
+        val = 0
+        for b in range(bit_size):
+            byte_idx = (bit_pos + b) >> 3
+            bit_idx  = (bit_pos + b) & 7
+            if byte_idx < len(raw):
+                val |= ((raw[byte_idx] >> bit_idx) & 1) << b
+        bit_pos += bit_size
+
+        if max_int > 0:
+            result.append(start + (val / max_int) * range_val)
+        else:
+            result.append(start)
+
+    return result
+
+
+def _unpack_packed_int_vector(pbv: dict) -> list[int]:
+    """
+    Decompress a Unity PackedBitVector<int> (used for triangle indices,
+    bone weights, etc.).  Same bit-packing as floats but no float conversion.
+    """
+    num_items = pbv.get('m_NumItems', 0)
+    if num_items == 0:
+        return []
+
+    bit_size = pbv.get('m_BitSize', 0)
+    raw      = pbv.get('m_Data', [])
+
+    if bit_size == 0 or not raw:
+        return []
+
+    if isinstance(raw, list):
+        raw = bytes(raw)
+
+    result  = []
+    bit_pos = 0
+
+    for _ in range(num_items):
+        val = 0
+        for b in range(bit_size):
+            byte_idx = (bit_pos + b) >> 3
+            bit_idx  = (bit_pos + b) & 7
+            if byte_idx < len(raw):
+                val |= ((raw[byte_idx] >> bit_idx) & 1) << b
+        bit_pos += bit_size
+        result.append(val)
+
+    return result
+
+
+def _decompress_mesh(cm: dict) -> tuple[list, list, list, list]:
+    """
+    Decompress a Unity CompressedMesh dict into
+    (vertices, normals, uv0, indices) as flat float/int lists.
+
+    CompressedMesh layout:
+      m_Vertices  : PackedBitVector<float>  — x,y,z interleaved, len = vcount*3
+      m_UV        : PackedBitVector<float>  — u,v interleaved (all UV sets)
+      m_Normals   : PackedBitVector<float>  — packed as 2 components + sign
+      m_NormalSigns: PackedBitVector<float> — sign bit for reconstructing z
+      m_Tangents  : PackedBitVector<float>  — 2 components per tangent
+      m_Triangles : PackedBitVector<int>    — triangle index list
+      m_UVInfo    : int bitmask             — which UV sets are present & their dimensions
+    """
+    vertices = _unpack_packed_bit_vector(cm.get('m_Vertices', {}))
+    uv_raw   = _unpack_packed_bit_vector(cm.get('m_UV',       {}))
+    tri_raw  = _unpack_packed_int_vector(cm.get('m_Triangles', cm.get('m_Indices', {})))
+
+    # Normals: Unity stores 2 components (x, y) plus a sign for z.
+    # z = sign * sqrt(max(0, 1 - x² - y²))
+    norm_raw   = _unpack_packed_bit_vector(cm.get('m_Normals',    {}))
+    sign_raw   = _unpack_packed_bit_vector(cm.get('m_NormalSigns', {}))
+
+    normals = []
+    if len(norm_raw) >= 2:
+        for i in range(0, len(norm_raw) - 1, 2):
+            nx, ny = norm_raw[i], norm_raw[i + 1]
+            z2 = max(0.0, 1.0 - nx * nx - ny * ny)
+            nz = (z2 ** 0.5)
+            sign_idx = i // 2
+            if sign_idx < len(sign_raw) and sign_raw[sign_idx] < 0.5:
+                nz = -nz
+            normals.extend([nx, ny, nz])
+
+    # UV: m_UVInfo encodes how many UV sets and their channel counts.
+    # Bit layout per channel (4 bits each, starting from LSB):
+    #   bits 0-1 = dimension-1 (0→1D, 1→2D, 2→3D, 3→4D)
+    #   bit  2   = present flag
+    #   bit  3   = unused
+    # Channels 0..7 use bits 0..31 (4 bits each).
+    # For most game meshes channel 0 is UV0 with 2 components.
+    uv_info = cm.get('m_UVInfo', 0)
+    uv0 = []
+    offset = 0
+    for ch in range(8):
+        nibble = (uv_info >> (ch * 4)) & 0xF
+        present   = bool(nibble & 0x4)
+        dimension = (nibble & 0x3) + 1
+        if not present:
+            continue
+        ch_values = uv_raw[offset: offset + (cm.get('m_Vertices', {}).get('m_NumItems', len(vertices) // 3) * dimension)]
+        if ch == 0:
+            uv0 = ch_values
+        offset += len(ch_values)
+        if offset >= len(uv_raw):
+            break
+
+    # Fallback: if uv_info is 0 or uv0 still empty, assume first half is UV0
+    if not uv0 and uv_raw:
+        # Simple heuristic: uv_raw is len = vcount * num_uv_sets * 2
+        vcount = len(vertices) // 3
+        if vcount > 0 and len(uv_raw) >= vcount * 2:
+            uv0 = uv_raw[:vcount * 2]
+
+    return vertices, normals, uv0, tri_raw
+
+
+def _mesh_to_obj(obj, name: str) -> tuple[str, int, int]:
+    """
+    Convert a UnityPy Mesh object to an OBJ-format string.
+    Returns (obj_text, vertex_count, triangle_count).
+
+    Strategy priority:
+      1. CompressedMesh (m_MeshCompression > 0) — decompress via PackedBitVector
+      2. VertexData with m_Channels — unpack interleaved streams
+      3. Flat m_Vertices / m_UV0 lists in typetree
+      4. Legacy obj.read() attributes
+    """
+    import struct
+
+    lines = [f"# Exported by extract.py", f"o {name}", ""]
+
+    tree = None
+    if hasattr(obj, 'read_typetree'):
+        try:
+            tree = obj.read_typetree()
+        except Exception:
+            pass
+
+    # ── Pull raw data from whichever source we have ──────────────────────────
+
+    vertices = []
+    normals  = []
+    uv0      = []
+    uv1      = []
+    indices  = []
+    submeshes = []
+    vertex_count = 0
+
+    if tree is not None:
+        compression = tree.get('m_MeshCompression', 0)
+        submeshes   = tree.get('m_SubMeshes', []) or []
+
+        if compression > 0:
+            # ── Strategy 1: CompressedMesh ───────────────────────────────────
+            cm = tree.get('m_CompressedMesh', {})
+            vertices, normals, uv0, indices = _decompress_mesh(cm)
+            vertex_count = len(vertices) // 3
+
+        else:
+            vertex_count = tree.get('m_VertexCount', 0)
+            vd = tree.get('m_VertexData', {})
+            channels = vd.get('m_Channels', []) if isinstance(vd, dict) else []
+
+            if channels and vertex_count > 0:
+                # ── Strategy 2: VertexData channel unpacking ─────────────────
+                vertices = _extract_floats_from_vertex_data(vd, 0, vertex_count)
+                normals  = _extract_floats_from_vertex_data(vd, 1, vertex_count)
+                uv0      = _extract_floats_from_vertex_data(vd, 4, vertex_count)
+                uv1      = _extract_floats_from_vertex_data(vd, 5, vertex_count)
+            else:
+                # ── Strategy 3: flat lists ────────────────────────────────────
+                vertices = tree.get('m_Vertices', []) or []
+                normals  = tree.get('m_Normals',  []) or []
+                uv0      = tree.get('m_UV0',      []) or []
+                uv1      = tree.get('m_UV1',      []) or []
+
+            # Index buffer for uncompressed meshes
+            raw_idx = tree.get('m_IndexBuffer', []) or []
+            idx_fmt_val = tree.get('m_IndexFormat', 0)
+            if isinstance(raw_idx, (bytes, bytearray)):
+                b = bytes(raw_idx)
+                fmt_str = f'<{len(b)//4}I' if idx_fmt_val == 1 else f'<{len(b)//2}H'
+                indices = list(struct.unpack_from(fmt_str, b))
+            elif isinstance(raw_idx, list) and raw_idx:
+                if isinstance(raw_idx[0], int):
+                    indices = raw_idx
+                else:
+                    try:
+                        b = bytes(raw_idx)
+                        fmt_str = f'<{len(b)//4}I' if idx_fmt_val == 1 else f'<{len(b)//2}H'
+                        indices = list(struct.unpack_from(fmt_str, b))
+                    except Exception:
+                        indices = []
+
+    else:
+        # ── Strategy 4: legacy obj.read() ────────────────────────────────────
+        data = obj.read()
+        vertices  = list(getattr(data, 'm_Vertices', []) or [])
+        normals   = list(getattr(data, 'm_Normals',  []) or [])
+        uv0       = list(getattr(data, 'm_UV0',      []) or [])
+        uv1       = list(getattr(data, 'm_UV1',      []) or [])
+        indices   = list(getattr(data, 'm_IndexBuffer', []) or [])
+        submeshes = list(getattr(data, 'm_SubMeshes',   []) or [])
+        vertex_count = len(vertices) // 3
+
+    # ── Write OBJ ────────────────────────────────────────────────────────────
+
+    if not vertices:
+        raise RuntimeError(
+            f"No vertex data found (vertex_count={vertex_count}, "
+            f"verts_list_len={len(vertices)}, indices_len={len(indices)}). "
+            f"Try --debug-mesh to inspect the raw structure."
+        )
+
+    for i in range(0, len(vertices) - 2, 3):
+        lines.append(f"v {vertices[i]:.6f} {vertices[i+1]:.6f} {vertices[i+2]:.6f}")
+    lines.append("")
+
+    for i in range(0, len(uv0) - 1, 2):
+        lines.append(f"vt {uv0[i]:.6f} {uv0[i+1]:.6f}")
+    if uv1:
+        lines.append("# UV channel 1 (lightmap / secondary):")
+        for i in range(0, len(uv1) - 1, 2):
+            lines.append(f"# vt1 {uv1[i]:.6f} {uv1[i+1]:.6f}")
+    if uv0:
+        lines.append("")
+
+    for i in range(0, len(normals) - 2, 3):
+        lines.append(f"vn {normals[i]:.6f} {normals[i+1]:.6f} {normals[i+2]:.6f}")
+    if normals:
+        lines.append("")
+
+    has_uv = bool(uv0)
+    has_vn = bool(normals)
+
+    def face_vertex(idx):
+        v = idx + 1  # OBJ is 1-indexed
+        if has_uv and has_vn:
+            return f"{v}/{v}/{v}"
+        elif has_uv:
+            return f"{v}/{v}"
+        elif has_vn:
+            return f"{v}//{v}"
+        else:
+            return str(v)
+
+    if submeshes:
+        for si, sm in enumerate(submeshes):
+            if isinstance(sm, dict):
+                first = sm.get('firstByte', sm.get('firstIndex', 0))
+                count = sm.get('indexCount', 0)
+                # firstByte is a byte offset for older Unity versions
+                if 'firstByte' in sm and 'firstIndex' not in sm:
+                    idx_fmt_val = tree.get('m_IndexFormat', 0) if tree else 0
+                    first = first // (4 if idx_fmt_val == 1 else 2)
+            else:
+                first = getattr(sm, 'firstByte', None)
+                count = getattr(sm, 'indexCount', 0)
+                if first is None:
+                    first = getattr(sm, 'firstIndex', 0)
+                else:
+                    first = first // 2
+            lines.append(f"g submesh_{si}")
+            tri_indices = indices[first: first + count]
+            for j in range(0, len(tri_indices) - 2, 3):
+                a, b, c = tri_indices[j], tri_indices[j+1], tri_indices[j+2]
+                lines.append(f"f {face_vertex(a)} {face_vertex(b)} {face_vertex(c)}")
+    else:
+        lines.append("g default")
+        for j in range(0, len(indices) - 2, 3):
+            a, b, c = indices[j], indices[j+1], indices[j+2]
+            lines.append(f"f {face_vertex(a)} {face_vertex(b)} {face_vertex(c)}")
+
+    tri_count = len(indices) // 3
+    return "\n".join(lines), vertex_count, tri_count
+
+
+def extract_models_by_regex(input_path: str, pattern: str, output_path: Path):
+    """Extract all Mesh assets whose name matches `pattern` (PCRE)."""
+    try:
+        rx = re.compile(pattern)
+    except re.error as e:
+        print(f"❌ Invalid regex '{pattern}': {e}")
+        return
+
+    mesh_dir = output_path / "meshes"
+    mesh_dir.mkdir(exist_ok=True)
+
+    env = UnityPy.load(input_path)
+    matched = exported = 0
+
+    for obj in env.objects:
+        obj_type = obj.type.name if hasattr(obj.type, 'name') else str(obj.type)
+        if obj_type != "Mesh":
+            continue
+
+        name = _mesh_name(obj)
+        if not rx.search(name):
+            continue
+
+        matched += 1
+        print(f"\n🧊 Mesh [{name}] (path_id={obj.path_id})")
+
+        try:
+            obj_text, vcount, tcount = _mesh_to_obj(obj, name)
+            safe_name = _sanitize_filename(name) + ".obj"
+            out_file = mesh_dir / safe_name
+            out_file.write_text(obj_text, encoding='utf-8')
+            print(f"   ✅ Saved: {safe_name}  ({vcount} verts, {tcount} tris)")
+            exported += 1
+        except Exception as e:
+            print(f"   ❌ Failed to export: {e}")
+            print(f"      Tip: run --debug-mesh '{name}' to inspect the raw structure.")
+
+    print(f"\n{'='*60}")
+    if matched == 0:
+        print(f"ℹ️  No meshes matched pattern '{pattern}'.")
+    else:
+        print(f"Mesh export complete: {exported}/{matched} exported → {mesh_dir}")
+
+
+# ---------------------------------------------------------------------------
 # Camera / config scanning helpers
 # ---------------------------------------------------------------------------
 
-# Unity built-in manager class names that may contain camera settings
 CAMERA_MANAGER_TYPES = {
     "Camera",
     "GraphicsSettings",
@@ -77,7 +654,6 @@ CAMERA_MANAGER_TYPES = {
     "LightmapSettings",
 }
 
-# Keywords that suggest a MonoBehaviour field is camera / projection related
 CAMERA_FIELD_KEYWORDS = {
     "camera", "orthographic", "orthosize", "zoom", "projection",
     "fov", "fieldofview", "nearclip", "farclip", "viewport",
@@ -88,7 +664,6 @@ CAMERA_FIELD_KEYWORDS = {
 
 
 def _flatten_keys(obj, prefix=""):
-    """Recursively yield (dotted_key, value) pairs from a nested dict."""
     if isinstance(obj, dict):
         for k, v in obj.items():
             yield from _flatten_keys(v, f"{prefix}.{k}" if prefix else k)
@@ -100,10 +675,6 @@ def _flatten_keys(obj, prefix=""):
 
 
 def _has_camera_fields(serialized: dict) -> list:
-    """
-    Return list of (key, value) pairs whose key contains any camera keyword.
-    Empty list means no match.
-    """
     hits = []
     for key, val in _flatten_keys(serialized):
         key_lower = key.lower().replace("_", "").replace(".", "")
@@ -113,13 +684,6 @@ def _has_camera_fields(serialized: dict) -> list:
 
 
 def scan_for_camera_config(input_path: str, output_path: Path):
-    """
-    Load a Unity asset file (globalgamemanagers, level*, bundle, .assets, etc.)
-    and extract:
-      - Built-in Camera / Graphics / Quality / Render manager objects
-      - Any MonoBehaviour whose serialized fields mention camera/hex/grid keywords
-    Results are saved as JSON files under output_path/camera_scan/.
-    """
     out_dir = output_path / "camera_scan"
     out_dir.mkdir(exist_ok=True)
 
@@ -136,7 +700,6 @@ def scan_for_camera_config(input_path: str, output_path: Path):
     for obj in env.objects:
         obj_type = obj.type.name if hasattr(obj, 'type') and hasattr(obj.type, 'name') else str(obj.type)
 
-        # ── Built-in manager types ──────────────────────────────────────────
         if obj_type in CAMERA_MANAGER_TYPES:
             try:
                 data = obj.read()
@@ -153,7 +716,6 @@ def scan_for_camera_config(input_path: str, output_path: Path):
             except Exception as e:
                 print(f"  ⚠️  Could not read {obj_type} (path_id={obj.path_id}): {e}")
 
-        # ── MonoBehaviours with camera/hex-related field names ──────────────
         elif obj_type == "MonoBehaviour":
             try:
                 data = obj.read()
@@ -175,33 +737,22 @@ def scan_for_camera_config(input_path: str, output_path: Path):
                         print(f"      ... and {len(hits) - 5} more")
                     found_any = True
             except Exception:
-                pass  # silently skip unreadable MonoBehaviours
+                pass
 
     if not found_any:
         print(f"  ℹ️  No camera/config objects found in this file.")
 
 
 def scan_camera_in_dir(data_dir: str, output_path: Path):
-    """
-    Scan Unity data files for camera/config objects.
-
-    `data_dir` can be:
-      - The game's Data/ directory  → scans globalgamemanagers, level*, and all bundles
-      - A StreamingAssets/Bundles subdirectory  → scans all .resource files in that folder
-      - A single file  → scans just that file
-    """
     data_path = Path(data_dir)
 
-    # Single file passed directly
     if data_path.is_file():
         all_files = [data_path]
     else:
-        # Decide if this looks like a Data/ root or a Bundles subdirectory
         has_ggm = (data_path / "globalgamemanagers").exists()
 
         core_files = []
         if has_ggm:
-            # Full Data/ directory — grab core Unity files
             core_files = [
                 data_path / "globalgamemanagers",
                 data_path / "globalgamemanagers.assets",
@@ -212,11 +763,8 @@ def scan_camera_in_dir(data_dir: str, output_path: Path):
             core_files = [f for f in core_files if f.exists()]
             bundles_root = data_path / "StreamingAssets" / "Bundles"
         else:
-            # Treat input as a Bundles subdirectory directly
             bundles_root = data_path
 
-        # Collect bundle files — include .resource (Tacticus stores all bundles this way)
-        # Exclude .resS (raw binary companion files), .json, .meta, .bnk
         SKIP_SUFFIXES = {'.resS', '.json', '.meta', '.bnk', '.plist', '.nib',
                          '.dylib', '.bundle', '.dat', '.dll'}
         bundle_files = []
@@ -237,7 +785,6 @@ def scan_camera_in_dir(data_dir: str, output_path: Path):
     for f in all_files:
         scan_for_camera_config(str(f), output_path)
 
-    # Summary
     out_dir = output_path / "camera_scan"
     results = list(out_dir.glob("*.json"))
     print(f"\n{'='*60}")
@@ -249,7 +796,7 @@ def scan_camera_in_dir(data_dir: str, output_path: Path):
 
 
 # ---------------------------------------------------------------------------
-# Lightweight serializer (no depth/seen overhead — used for scanning only)
+# Lightweight serializer
 # ---------------------------------------------------------------------------
 
 _SKIP_TYPES_SIMPLE = frozenset({
@@ -298,7 +845,7 @@ def _sanitize_filename(filename):
 
 
 # ---------------------------------------------------------------------------
-# Main extractor class (unchanged logic, camera scan wired in via CLI)
+# Main extractor class
 # ---------------------------------------------------------------------------
 
 class UnityAssetExtractor:
@@ -944,7 +1491,36 @@ def main():
     parser.add_argument("--only", nargs="+", metavar="TYPE",
                         help="Restrict extraction to: boards, sprites, textures, text, monobehaviour")
 
-    # ── New camera/config scanning flags ────────────────────────────────────
+    # ── 3D model flags ───────────────────────────────────────────────────────
+    parser.add_argument(
+        "--list-models",
+        action="store_true",
+        help=(
+            "List all Mesh assets in the input file without extracting anything. "
+            "Shows path_id, name, and container path for each mesh."
+        ),
+    )
+    parser.add_argument(
+        "--model-regex",
+        metavar="PATTERN",
+        help=(
+            "Extract Mesh assets whose name matches PATTERN (PCRE regex). "
+            "Use '.*' to extract all meshes, or e.g. 'hero_.*' for a subset. "
+            "Outputs .obj files to <o>/meshes/. "
+            "UVs, normals, and submesh groups are preserved."
+        ),
+    )
+    parser.add_argument(
+        "--debug-mesh",
+        metavar="PATTERN",
+        help=(
+            "Dump the raw typetree of the first mesh matching PATTERN (no files written). "
+            "Use when --model-regex produces empty .obj files."
+        ),
+    )
+
+
+    # ── Camera/config scanning flags ─────────────────────────────────────────
     parser.add_argument(
         "--scan-camera",
         action="store_true",
@@ -952,26 +1528,19 @@ def main():
             "Scan Unity core files (globalgamemanagers, level*, asset bundles) for "
             "Camera, GraphicsSettings, QualitySettings, and any MonoBehaviour with "
             "camera/hex/grid-related field names. "
-            "Pass the game's Data/ directory as `input`, e.g.: "
-            "  python extract.py /path/to/Tacticus.app/Contents/Resources/Data --scan-camera"
+            "Pass the game's Data/ directory as `input`."
         ),
     )
     parser.add_argument(
         "--scan-camera-file",
         metavar="FILE",
-        help=(
-            "Like --scan-camera but scans a single specific file instead of the whole Data/ dir. "
-            "Useful if you already know which bundle to inspect."
-        ),
+        help="Like --scan-camera but scans a single specific file.",
     )
     parser.add_argument(
         "--camera-keywords",
         nargs="+",
         metavar="KEYWORD",
-        help=(
-            "Extra keywords to add to the camera field scanner (on top of built-ins). "
-            "E.g.: --camera-keywords boardcamera battlecamera isometric"
-        ),
+        help="Extra keywords to add to the camera field scanner.",
     )
 
     args = parser.parse_args()
@@ -980,7 +1549,6 @@ def main():
         print(f"Error: Input path not found {args.input}")
         return 1
 
-    # Inject any extra keywords before scanning
     if args.camera_keywords:
         for kw in args.camera_keywords:
             CAMERA_FIELD_KEYWORDS.add(kw.lower().replace("_", ""))
@@ -988,6 +1556,19 @@ def main():
 
     output_path = Path(args.output)
     output_path.mkdir(exist_ok=True)
+
+    # ── 3D model modes ───────────────────────────────────────────────────────
+    if args.list_models:
+        list_models(args.input)
+        return 0
+
+    if args.debug_mesh:
+        debug_mesh(args.input, args.debug_mesh)
+        return 0
+
+    if args.model_regex:
+        extract_models_by_regex(args.input, args.model_regex, output_path)
+        return 0
 
     # ── Camera scan modes ────────────────────────────────────────────────────
     if args.scan_camera:

@@ -9,7 +9,8 @@ namespace dataminer {
 
 // Creates the MoW data in the provided JSON root.
 // Returns an error status if the creation fails.
-absl::Status CreateMowData(const absl::string_view path,
+absl::Status CreateMowData(const absl::string_view assets_dir,
+                           const absl::string_view path,
                            const GameConfig& game_config);
 
 }  // namespace dataminer

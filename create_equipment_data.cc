@@ -77,6 +77,7 @@ void EmitArray(std::ostream& out, const Array& array) {
 }
 
 void EmitItem(std::ostream& out, const Item& item) {
+  std::cerr << "Emitting item: " << item.id() << "\n";
   out << "    \"" << item.id() << "\": {\n";
   out << "        \"name\": \"" << item.name() << "\",\n";
   out << "        \"rarity\": \"" << item.rarity() << "\",\n";

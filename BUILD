@@ -29,6 +29,11 @@ cc_binary(
 )
 
 cc_binary(
+    name = "rankup",
+    srcs = ["rankup.cc"],
+)
+
+cc_binary(
     name = "json_explorer",
     srcs = ["json_explorer.cc"],
     deps = [

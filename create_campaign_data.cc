@@ -39,11 +39,13 @@ std::string GetCampaignName(const Campaign& campaign,
       {"eventStandard3", "T'au Empire Standard"},
       {"eventStandard4", "Death Guard Standard"},
       {"eventStandard5", "Adepta Sororitas Standard"},
+      {"eventStandard6", "Dark Angels Standard"},
       {"eventExtremis1", "Adeptus Mechanicus Extremis"},
       {"eventExtremis2", "Tyranids Extremis"},
       {"eventExtremis3", "T'au Empire Extremis"},
       {"eventExtremis4", "Death Guard Extremis"},
       {"eventExtremis5", "Adepta Sororitas Extremis"},
+      {"eventExtremis6", "Dark Angels Extremis"},
   };
   auto it = kCampaignNames.find(campaign.id());
   if (it == kCampaignNames.end()) {
@@ -95,9 +97,10 @@ std::string GetBattleId(const Campaign& campaign,
       {"eliteMirror3", "OME"},   {"eliteMirror4", "SHME"},
       {"eventStandard1", "AMS"}, {"eventStandard2", "TS"},
       {"eventStandard3", "TAS"}, {"eventStandard4", "DGS"},
-      {"eventStandard5", "ASS"},  {"eventExtremis1", "AME"},
-      {"eventExtremis2", "TE"},  {"eventExtremis3", "TAE"},
-      {"eventExtremis4", "DGE"}, {"eventExtremis5", "ASE"},
+      {"eventStandard5", "ASS"}, {"eventStandard6", "DAS"},
+      {"eventExtremis1", "AME"}, {"eventExtremis2", "TE"},
+      {"eventExtremis3", "TAE"}, {"eventExtremis4", "DGE"},
+      {"eventExtremis5", "ASE"}, {"eventExtremis6", "DAE"},
   };
   if (kCampaignPrefixes.find(campaign.id()) == kCampaignPrefixes.end()) {
     LOG(FATAL) << "Unknown campaign id: " << campaign.id();

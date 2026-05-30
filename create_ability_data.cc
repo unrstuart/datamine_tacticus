@@ -23,7 +23,7 @@ constexpr absl::string_view kRecordStart =
 constexpr absl::string_view kRecordEnd = R"(};)";
 
 std::map<absl::string_view, std::string> GetAbilityIconMap(
-    const GameConfig& game_config) {
+    const absl::string_view assets_dir, const GameConfig& game_config) {
   std::map<absl::string_view, std::string> visuals;
   for (const Unit& unit : game_config.client_game_config().units().units()) {
     for (const absl::string_view ability : unit.active_abilities()) {
@@ -43,8 +43,8 @@ std::map<absl::string_view, std::string> GetAbilityIconMap(
   }
 
   for (const auto& visual : visuals) {
-    constexpr absl::string_view kPathPrefix =
-        "extracted_assets/sprites/ui_icon_ability2_";
+    const std::string kPathPrefix =
+        absl::StrCat(assets_dir, "/sprites/ui_icon_ability2_");
     constexpr absl::string_view kPathSuffix = ".png";
     const std::string path =
         absl::StrCat(kPathPrefix, visual.first, kPathSuffix);
@@ -60,7 +60,7 @@ std::map<absl::string_view, std::string> GetAbilityIconMap(
 }
 
 absl::Status CreateAbilityData(
-    const absl::string_view path,
+    const absl::string_view assets_dir, const absl::string_view path,
     const std::map<std::string, std::string> ability_names,
     const GameConfig& game_config) {
   std::ofstream out(std::string(path).c_str());
@@ -68,7 +68,7 @@ absl::Status CreateAbilityData(
   bool first = true;
 
   std::map<absl::string_view, std::string> icon_files =
-      GetAbilityIconMap(game_config);
+      GetAbilityIconMap(assets_dir, game_config);
 
   out << "/* eslint-disable import-x/no-internal-modules */" << std::endl;
   for (const auto& icons : icon_files) {

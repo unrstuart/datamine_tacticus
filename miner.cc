@@ -13,19 +13,20 @@
 //
 
 /*
-bazel run -c opt :miner -- \
-  --game_config=gameconfig.1.36.json \
-  --i18n_strings_json=I2Languages_en.1.36.json \
-  --visuals_file=visuals_1.36.csv \
-  --recipe_data=$MINING_OUTPUT/newRecipeData.json \
-  --rank_up_data=$MINING_OUTPUT/newRankUpData.json \
-  --character_data=$MINING_OUTPUT/newCharacterData.json \
-  --campaign_data=$MINING_OUTPUT/newCampaignData.json \
-  --le_data=$MINING_OUTPUT/newLeData.json \
-  --mow_data=$MINING_OUTPUT/newMowData.json \
-  --npc_data=$MINING_OUTPUT/newNpcData.json \
-  --le_data=$MINING_OUTPUT/newLeBattlesData.json \
-  --equipment_data=$MINING_OUTPUT/newEquipmentData.json \
+bazel-bin/miner  \
+  --assets_dir=extracted_assets_139_marketing \
+  --game_config=text_assets/GameConfig \
+  --i18n_strings_json=monobehaviour/I2Languages_en.json       \
+  --visuals_file=monobehaviour/visuals.csv \
+  --recipe_data=$MINING_OUTPUT/new-recipe-data.json \
+  --rank_up_data=$MINING_OUTPUT/new-rank-up-data.json \
+  --character_data=$MINING_OUTPUT/new-character-data.json \
+  --campaign_data=$MINING_OUTPUT/new-campaign-data.json \
+  --le_data=$MINING_OUTPUT/new-le-data.json \
+  --mow_data=$MINING_OUTPUT/new-mow-data.json \
+  --npc_data=$MINING_OUTPUT/new-npc-data.json \
+  --le_data=$MINING_OUTPUT/new-le-battle-Data.json \
+  --equipment_data=$MINING_OUTPUT/new-equipment-data.json \
   --ability_icon_file=$MINING_OUTPUT/ability-icons.ts \
   --drop_rate_config_path=drop_rate_config.binaryproto \
   --effective_rate_simulation_runs=10000000
@@ -81,6 +82,8 @@ bazel run -c opt :miner -- \
 #include "parse_upgrades.h"
 #include "status_macros.h"
 
+ABSL_FLAG(std::string, asset_dir, "",
+          "The directory where the extracted game assets are located.");
 ABSL_FLAG(std::string, game_config, "", "The GameConfig.json file to parse");
 ABSL_FLAG(std::string, i18n_strings_json, "",
           "The json file with the i18n'd display strings for things like the "
@@ -350,8 +353,10 @@ void EmitRankUp(const GameConfig& config, const absl::string_view output_path) {
   if (file_out != nullptr) file_out->close();
 }
 
-absl::StatusOr<std::map<std::string, std::string>> LoadVisuals() {
-  const std::string visuals_file = absl::GetFlag(FLAGS_visuals_file);
+absl::StatusOr<std::map<std::string, std::string>> LoadVisuals(
+    const absl::string_view assets_root) {
+  const std::string visuals_file =
+      absl::StrCat(assets_root, "/", absl::GetFlag(FLAGS_visuals_file));
   std::ifstream in(visuals_file);
   if (!in.is_open()) {
     return absl::InvalidArgumentError(
@@ -408,7 +413,9 @@ std::map<std::string, std::string> ExtractAbilityNames(
 
 void Main() {
   GameConfig config;
-  absl::StatusOr<std::map<std::string, std::string>> visuals = LoadVisuals();
+  const std::string assets_root = absl::GetFlag(FLAGS_asset_dir);
+  absl::StatusOr<std::map<std::string, std::string>> visuals =
+      LoadVisuals(assets_root);
   if (!visuals.ok()) {
     LOG(ERROR) << "Error loading visuals: " << visuals.status().message();
     return;
@@ -417,7 +424,8 @@ void Main() {
     Json::Value root;
     Json::Reader reader;
 
-    const std::string input_file = absl::GetFlag(FLAGS_game_config);
+    const std::string input_file =
+        absl::StrCat(assets_root, "/", absl::GetFlag(FLAGS_game_config));
     std::ifstream in(input_file);
     if (!reader.parse(in, root)) {
       LOG(ERROR) << "Couldn't parse json file: '" << input_file << "'.";
@@ -446,7 +454,8 @@ void Main() {
     Json::Value root;
     Json::Reader reader;
 
-    const std::string input_file = absl::GetFlag(FLAGS_i18n_strings_json);
+    const std::string input_file =
+        absl::StrCat(assets_root, "/", absl::GetFlag(FLAGS_i18n_strings_json));
     std::ifstream in(input_file);
     if (!reader.parse(in, root)) {
       LOG(ERROR) << "Couldn't parse json file: '" << input_file << "'.";
@@ -499,8 +508,8 @@ void Main() {
   const std::string character_data_file = absl::GetFlag(FLAGS_character_data);
   if (!character_data_file.empty()) {
     LOG(INFO) << "Writing character data to: " << character_data_file;
-    if (const absl::Status status =
-            CreateCharacterData(character_data_file, config, *visuals);
+    if (const absl::Status status = CreateCharacterData(
+            assets_root, character_data_file, config, *visuals);
         !status.ok()) {
       LOG(ERROR) << "Error creating character data: " << status.message();
     }
@@ -529,7 +538,8 @@ void Main() {
   const std::string mow_data_file = absl::GetFlag(FLAGS_mow_data);
   if (!mow_data_file.empty()) {
     LOG(INFO) << "Writing MoW data to: " << mow_data_file;
-    if (const absl::Status status = CreateMowData(mow_data_file, config);
+    if (const absl::Status status =
+            CreateMowData(assets_root, mow_data_file, config);
         !status.ok()) {
       LOG(ERROR) << "Error creating MoW data: " << status.message();
     }
@@ -539,7 +549,7 @@ void Main() {
   if (!npc_data_file.empty()) {
     LOG(INFO) << "Writing NPC data to: " << npc_data_file;
     if (const absl::Status status =
-            CreateNpcData(npc_data_file, config, *visuals);
+            CreateNpcData(assets_root, npc_data_file, config, *visuals);
         !status.ok()) {
       LOG(ERROR) << "Error creating NPC data: " << status.message();
     }
@@ -558,8 +568,8 @@ void Main() {
   const std::string ability_icon_file = absl::GetFlag(FLAGS_ability_icon_file);
   if (!ability_icon_file.empty()) {
     LOG(INFO) << "Writing ability icon data to: " << ability_icon_file;
-    if (const absl::Status status =
-            CreateAbilityData(ability_icon_file, ability_names, config);
+    if (const absl::Status status = CreateAbilityData(
+            assets_root, ability_icon_file, ability_names, config);
         !status.ok()) {
       LOG(ERROR) << "Error creating ability icon data: " << status.message();
     }

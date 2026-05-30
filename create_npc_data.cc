@@ -82,7 +82,8 @@ void EmitAbilities(
 // ui_image_portrait_<faction>_<lowername>_01.png. The _01 is because some units
 // appear multiple times with different color schemes (tyranids and TSons
 // horrors), but we can take the first one for our purpose.
-std::string GetIconPath(const absl::string_view id,
+std::string GetIconPath(const absl::string_view assets_dir,
+                        const absl::string_view id,
                         const GameConfig& game_config,
                         const std::map<std::string, std::string>& visuals) {
   const std::map<std::string, std::string> kOverrides = {
@@ -107,7 +108,7 @@ std::string GetIconPath(const absl::string_view id,
   }
 
   const std::string img = absl::StrCat(img_prefix, it->second, img_suffix);
-  const std::string full_path = absl::StrCat("extracted_assets/sprites/", img);
+  const std::string full_path = absl::StrCat(assets_dir, "/sprites/", img);
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
@@ -146,7 +147,8 @@ void EmitStats(std::ofstream& out,
 
 // Creates the character data in the provided JSON root.
 // Returns an error status if the creation fails.
-absl::Status CreateNpcData(const absl::string_view path,
+absl::Status CreateNpcData(const absl::string_view assets_dir,
+                           const absl::string_view path,
                            const GameConfig& game_config,
                            const std::map<std::string, std::string>& visuals) {
   std::ofstream out(std::string(path).c_str());
@@ -191,7 +193,8 @@ absl::Status CreateNpcData(const absl::string_view path,
                   "Passive Abilities");
     out << ",\n";
     out << "        \"Icon\": \""
-        << GetIconPath(npc.visual_id(), game_config, visuals) << "\"\n";
+        << GetIconPath(assets_dir, npc.visual_id(), game_config, visuals)
+        << "\"\n";
     out << "    }";
   }
   out << "\n]\n";

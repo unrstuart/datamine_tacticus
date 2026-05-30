@@ -75,7 +75,8 @@ int GetCharacterNumber(const absl::string_view id,
   return -1;
 }
 
-std::string GetIconPath(const absl::string_view id,
+std::string GetIconPath(const absl::string_view assets_dir,
+                        const absl::string_view id,
                         const GameConfig& game_config,
                         const std::map<std::string, std::string>& visuals) {
   constexpr absl::string_view img_prefix = "ui_image_portrait_";
@@ -88,7 +89,7 @@ std::string GetIconPath(const absl::string_view id,
   }
 
   img = absl::StrCat(img_prefix, img, img_suffix);
-  const std::string full_path = absl::StrCat("extracted_assets/sprites/", img);
+  const std::string full_path = absl::StrCat(assets_dir, "/sprites/", img);
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
@@ -100,7 +101,8 @@ std::string GetIconPath(const absl::string_view id,
 }
 
 // TODO: refactor this with GetIconPath and GetCharacterNumber.
-std::string GetRoundIconPath(const absl::string_view id,
+std::string GetRoundIconPath(const absl::string_view assets_dir,
+                             const absl::string_view id,
                              const GameConfig& game_config) {
   const std::map<std::string, std::string> kOverrides = {
       {"spaceStormcaller",
@@ -122,7 +124,7 @@ std::string GetRoundIconPath(const absl::string_view id,
   }
 
   img = absl::StrCat(img_prefix, img, img_suffix);
-  const std::string full_path = absl::StrCat("extracted_assets/sprites/", img);
+  const std::string full_path = absl::StrCat(assets_dir, "/sprites/", img);
   struct stat sbuf;
   const int res = stat(full_path.c_str(), &sbuf);
   if (res != 0) {
@@ -138,7 +140,8 @@ std::string GetRoundIconPath(const absl::string_view id,
 // Creates the character data in the provided JSON root.
 // Returns an error status if the creation fails.
 absl::Status CreateCharacterData(
-    const absl::string_view path, const GameConfig& game_config,
+    const absl::string_view assets_dir, const absl::string_view path,
+    const GameConfig& game_config,
     const std::map<std::string, std::string>& visuals) {
   std::ofstream out(std::string(path).c_str());
 
@@ -147,6 +150,7 @@ absl::Status CreateCharacterData(
 
   for (const Unit& unit : game_config.client_game_config().units().units()) {
     if (!first) out << ",";
+    std::cout << "Processing character: " << unit.id() << std::endl;
     first = false;
     out << "\n";
     out << "    {\n";
@@ -191,9 +195,9 @@ absl::Status CreateCharacterData(
     out << "        \"Number\": " << GetCharacterNumber(unit.id(), game_config)
         << ",\n";
     out << "        \"Icon\": \""
-        << GetIconPath(unit.id(), game_config, visuals) << "\",\n";
+        << GetIconPath(assets_dir, unit.id(), game_config, visuals) << "\",\n";
     out << "        \"RoundIcon\": \""
-        << GetRoundIconPath(unit.id(), game_config) << "\"\n";
+        << GetRoundIconPath(assets_dir, unit.id(), game_config) << "\"\n";
     out << "    }";
   }
   out << "\n]\n";
