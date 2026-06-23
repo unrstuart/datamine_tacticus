@@ -15,7 +15,7 @@ interface Loot {
 
 interface Objective {
     ObjectiveType?: string;
-    ObjectiveTarget?: string;
+    ObjectiveTarget?: string | number;
     Score?: number;
 }
 
