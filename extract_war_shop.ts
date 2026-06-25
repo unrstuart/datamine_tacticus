@@ -31,7 +31,6 @@ function convertReward(reward: string, data: any): string {
     const equipment = data.clientGameConfig.items;
 
     if (reward in equipment) return equipment[reward].name;
-
     if (reward.startsWith('upg')) return upgrades[reward].name;
 
     if (reward.startsWith('shards_')) {
@@ -44,10 +43,35 @@ function convertReward(reward: string, data: any): string {
         }
     }
 
+    if (reward.startsWith('draft_abilityTokens')) {
+        const rarity = reward.replace('draft_abilityTokens', '');
+        const quantity = reward.split(':')[1] ?? '1';
+        return `${quantity}x ${rarity} Ability Tokens (Draft)`;
+    }
+
+    if (reward.startsWith('draft_machinesOfWarTokens')) {
+        const quantity = reward.split(':')[1] ?? '1';
+        return `${quantity}x Machines of War Tokens (Draft)`;
+    }
+
     if (reward.startsWith('draft_ascensionOrbs')) {
         const rarity = reward.replace('draft_ascensionOrbs', '');
         const quantity = reward.split(':')[1] ?? '1';
         return `${quantity}x ${rarity} Ascension Orbs (Draft)`;
+    }
+
+    if (reward.startsWith('itemAscensionResource_')) {
+        const match = reward.match(/itemAscensionResource_(\w+)/);
+        if (match) {
+            const rarity = match[1];
+            const quantity = reward.split(':')[1];
+            return `${quantity}x ${rarity} Forge Badges`;
+        }
+    }
+
+    if (reward.startsWith('dust:')) {
+        const quantity = reward.split(':')[1];
+        return `${quantity}x Salvage`;
     }
 
     if (reward.startsWith('gold:')) {
@@ -65,7 +89,7 @@ function convertReward(reward: string, data: any): string {
     return reward;
 }
 
-function formatCondition(conditions: any, data: any): string {
+function formatCondition(conditions: any): string {
     if (conditions === undefined || Object.keys(conditions).length === 0) return '(none)';
 
     const parts: string[] = [];
@@ -89,7 +113,7 @@ function formatCondition(conditions: any, data: any): string {
 }
 
 function emitCsv(data: any) {
-    const shop = data.clientGameConfig.shop.merchants.guild;
+    const shop = data.clientGameConfig.shop.merchants.guildWars;
     const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
     console.log('slot,day,condition,cost,maxPurchases,item');
@@ -100,20 +124,26 @@ function emitCsv(data: any) {
         for (let day = 0; day < 7; ++day) {
             for (const offer of product) {
                 if (!isCronScheduleMatchDay(offer.cronSchedule, day)) continue;
-                const condition = formatCondition(offer.conditions, data);
-                const cost = offer.freeOffer ? 'FREE' : offer.cost.amount;
-                const maxPurchases = offer.freeOffer ? 1 : (offer.maxPurchases ?? '-');
-                const item = offer.freeOffer
-                    ? convertReward(offer.freeOffer, data)
-                    : convertReward(offer.reward, data);
-                console.log(`${slot},${DAYS[day]},${condition},${cost},${maxPurchases},${item}`);
+                const condition = formatCondition(offer.conditions);
+
+                if (offer.freeOffer) {
+                    const freeItem = convertReward(offer.freeOffer, data);
+                    console.log(`${slot},${DAYS[day]},${condition},FREE,1,${freeItem}`);
+                }
+
+                if (offer.reward && offer.cost) {
+                    const cost = offer.cost.amount;
+                    const maxPurchases = offer.maxPurchases ?? '-';
+                    const item = convertReward(offer.reward, data);
+                    console.log(`${slot},${DAYS[day]},${condition},${cost},${maxPurchases},${item}`);
+                }
             }
         }
     }
 }
 
 function emitJson(data: any) {
-    const shop = data.clientGameConfig.shop.merchants.guild;
+    const shop = data.clientGameConfig.shop.merchants.guildWars;
     console.log(JSON.stringify(shop, null, 2));
 }
 
@@ -122,7 +152,7 @@ function main() {
     const inputPath = flags.input;
 
     if (!inputPath) {
-        console.error('Usage: npx ts-node extract_guild_shop.ts --input <file.json> [--json]');
+        console.error('Usage: npx ts-node extract_war_shop.ts --input <file.json> [--json]');
         process.exit(1);
     }
 
