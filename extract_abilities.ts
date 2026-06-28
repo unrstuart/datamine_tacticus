@@ -49,6 +49,13 @@ function loadI2Terms(i2Path: string): Map<string, string> {
     return map;
 }
 
+function fixMalformedStyle(text: string | undefined): string | undefined {
+    if (!text) return text;
+    text = text.split('<style=Buff_Infiltrate">').join('<style="Buff_Infiltrate">');
+    text = text.split('<Style="Faction_Genestealers">').join('<style="Faction_Genestealers">');
+    return text;
+}
+
 function main() {
     const flags = getArgs();
     const configPath = flags.config;
@@ -88,7 +95,7 @@ function main() {
                     id,
                     text: {
                         name: name ?? '',
-                        currentLevelDescription: currentLevelDescription ?? '',
+                        currentLevelDescription: fixMalformedStyle(currentLevelDescription) ?? '',
                         nextLevelDescription: nextLevelDescription ?? '',
                     },
                     attackRangeType:
