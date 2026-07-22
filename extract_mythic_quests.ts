@@ -14,29 +14,31 @@ interface MythicQuest {
     tasks: MythicQuestTask[];
 }
 
-interface MythicCharacterQuests {
+export interface MythicCharacterQuests {
     characterId: string;
     characterName: string;
     quests: MythicQuest[];
 }
 
-function getArgs() {
-    const args: Record<string, string> = {};
-    process.argv.slice(2).forEach((val, index, array) => {
-        if (val.startsWith('--')) {
-            const key = val.slice(2);
-            const nextValue = array[index + 1];
-            if (nextValue && !nextValue.startsWith('--')) {
-                args[key] = nextValue;
-            } else {
-                args[key] = 'true';
-            }
-        }
-    });
-    return args;
+interface I2Term {
+    Term: string;
+    Languages: string[];
 }
 
-function extractMythicQuests(data: any): MythicCharacterQuests[] {
+function loadI2Terms(i2Path: string): Map<string, I2Term> {
+    const raw = fs.readFileSync(i2Path, 'utf-8');
+    const data = JSON.parse(raw);
+    const terms: I2Term[] = data.mSource.mTerms;
+    const map = new Map<string, I2Term>();
+    for (const term of terms) {
+        if (term.Languages && term.Languages.length > 0) {
+            map.set(term.Term, { Term: term.Term, Languages: term.Languages });
+        }
+    }
+    return map;
+}
+
+function groupMythicQuestsByCharacter(data: any): MythicCharacterQuests[] {
     const quests: any[] = data.clientGameConfig?.quests?.groups?.hero?.quests ?? [];
     const characters: Record<string, any> = data.clientGameConfig?.units?.lineup ?? {};
 
@@ -76,6 +78,45 @@ function extractMythicQuests(data: any): MythicCharacterQuests[] {
     return result;
 }
 
+function collectDescriptionTerms(
+    characters: MythicCharacterQuests[],
+    i2Terms: Map<string, I2Term>,
+    ignoreMissing: boolean
+): I2Term[] {
+    const terms = new Map<string, I2Term>();
+
+    for (const character of characters) {
+        for (const quest of character.quests) {
+            for (const task of quest.tasks) {
+                const key = task.locaKey ? `Quests/${task.locaKey}` : undefined;
+                const term = key ? i2Terms.get(key) : undefined;
+
+                if (term) {
+                    terms.set(term.Term, term);
+                    continue;
+                }
+
+                const message = [
+                    `Missing I2 description term for a mythic quest task.`,
+                    `  Character: ${character.characterId} (${character.characterName})`,
+                    `  Quest: ${quest.name} (quest ${quest.number})`,
+                    `  Task: ${task.name}`,
+                    `  Expected I2 term: ${key ?? '(no locaKey on task)'}`,
+                    `  taskParameters: ${JSON.stringify(task.taskParameters ?? {})}`,
+                ].join('\n');
+
+                if (ignoreMissing) {
+                    console.error(`WARNING: ${message}`);
+                } else {
+                    throw new Error(`${message}\n\nPass ignoreMissingDescriptions to skip this check and continue.`);
+                }
+            }
+        }
+    }
+
+    return Array.from(terms.values());
+}
+
 function formatTask(task: MythicQuestTask): string {
     const params = Object.entries(task.taskParameters ?? {})
         .filter(([key]) => key !== 'heroId')
@@ -84,43 +125,35 @@ function formatTask(task: MythicQuestTask): string {
     return params ? `${task.name}(${params})` : task.name;
 }
 
-function emitText(characters: MythicCharacterQuests[]) {
+export function formatMythicQuestsText(characters: MythicCharacterQuests[]): string {
+    const lines: string[] = [];
     for (const character of characters) {
-        console.log(character.characterName);
+        lines.push(character.characterName);
         for (const quest of character.quests) {
             const rewards = quest.rewards.join(', ');
             const tasks = quest.tasks.map(formatTask).join('; ');
-            console.log(`  ${quest.number}: ${rewards} | ${tasks}`);
+            lines.push(`  ${quest.number}: ${rewards} | ${tasks}`);
         }
     }
+    return lines.join('\n');
 }
 
-function emitJson(characters: MythicCharacterQuests[]) {
-    console.log(JSON.stringify(characters, null, 2));
+export interface ExtractMythicQuestsParams {
+    gameconfigPath: string;
+    i2Path: string;
+    ignoreMissingDescriptions?: boolean;
 }
 
-function main() {
-    const flags = getArgs();
-    const inputPath = flags.input;
-
-    if (!inputPath) {
-        console.error('Usage: npx tsx extract_mythic_quests.ts --input <file.json> [--json]');
-        process.exit(1);
-    }
-
-    try {
-        const data = JSON.parse(fs.readFileSync(inputPath, 'utf-8'));
-        const characters = extractMythicQuests(data);
-
-        if ('json' in flags) {
-            emitJson(characters);
-        } else {
-            emitText(characters);
-        }
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
-    }
+export interface MythicQuestsResult {
+    quests: MythicCharacterQuests[];
+    terms: I2Term[];
 }
 
-main();
+export function extractMythicQuests({ gameconfigPath, i2Path, ignoreMissingDescriptions = false }: ExtractMythicQuestsParams): MythicQuestsResult {
+    const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+    const i2Terms = loadI2Terms(i2Path);
+    const quests = groupMythicQuestsByCharacter(data);
+    const terms = collectDescriptionTerms(quests, i2Terms, ignoreMissingDescriptions);
+
+    return { quests, terms };
+}

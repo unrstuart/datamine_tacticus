@@ -10,10 +10,12 @@
         "findmaps": "tsx ./render_hex_tiles.tsx"
     },
     "dependencies": {
-        "canvas": "^2.11.2",
+        "canvas": "^3.2.2",
+        "eslint": "^9.39.2",
+        "ts-node": "^10.9.2",
         "tsx": "^4.20.5",
-        "typescript": "^5.0.0",
-        "@types/node": "^20.0.0",
+        "typescript": "^6.0.2",
+        "@types/node": "^25.5.0",
         "zod": "^4.3.6"
     },
     "repository": {

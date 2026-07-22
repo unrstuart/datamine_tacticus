@@ -40,7 +40,7 @@ function main(): void {
     }
 
     const getUpgradeName = (id: string): string => {
-        const recipe = recipeData[id];
+        const recipe = (recipeData as Record<string, { material: string }>)[id];
         return recipe ? recipe.material : 'Unknown Upgrade';
     };
 

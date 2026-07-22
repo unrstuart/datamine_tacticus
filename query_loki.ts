@@ -39,7 +39,7 @@ async function discoverLatestHash() {
         installId: 'scraper-installid',
     };
     const res = await fetch(
-        `https://api-live.loki.snowprintstudios.com/player/player2/userId/${encodeURIComponent(USER_ID)}`,
+        `https://api-live.loki.snowprintstudios.com/player/player2/userId/${encodeURIComponent(USER_ID!)}`,
         { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
     );
     if (!res.ok) throw new Error(`APP_START HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);

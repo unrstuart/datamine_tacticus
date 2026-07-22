@@ -1,21 +1,5 @@
 import * as fs from 'fs';
 
-function getArgs() {
-    const args: Record<string, string> = {};
-    process.argv.slice(2).forEach((val, index, array) => {
-        if (val.startsWith('--')) {
-            const key = val.slice(2);
-            const nextValue = array[index + 1];
-            if (nextValue && !nextValue.startsWith('--')) {
-                args[key] = nextValue;
-            } else {
-                args[key] = 'true';
-            }
-        }
-    });
-    return args;
-}
-
 function isCronScheduleMatchDay(cronSchedule: string, day: number): boolean {
     const parts = cronSchedule.split(' ');
     if (parts.length < 6) return false;
@@ -112,11 +96,9 @@ function formatCondition(conditions: any): string {
     return parts.join(' AND ');
 }
 
-function emitCsv(data: any) {
-    const shop = data.clientGameConfig.shop.merchants.guildWars;
+export function formatWarShopCsv(shop: any, data: any): string {
     const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-
-    console.log('slot,day,condition,cost,maxPurchases,item');
+    const lines: string[] = ['slot,day,condition,cost,maxPurchases,item'];
 
     let slot = 0;
     for (const product of shop.products) {
@@ -128,45 +110,27 @@ function emitCsv(data: any) {
 
                 if (offer.freeOffer) {
                     const freeItem = convertReward(offer.freeOffer, data);
-                    console.log(`${slot},${DAYS[day]},${condition},FREE,1,${freeItem}`);
+                    lines.push(`${slot},${DAYS[day]},${condition},FREE,1,${freeItem}`);
                 }
 
                 if (offer.reward && offer.cost) {
                     const cost = offer.cost.amount;
                     const maxPurchases = offer.maxPurchases ?? '-';
                     const item = convertReward(offer.reward, data);
-                    console.log(`${slot},${DAYS[day]},${condition},${cost},${maxPurchases},${item}`);
+                    lines.push(`${slot},${DAYS[day]},${condition},${cost},${maxPurchases},${item}`);
                 }
             }
         }
     }
+
+    return lines.join('\n');
 }
 
-function emitJson(data: any) {
-    const shop = data.clientGameConfig.shop.merchants.guildWars;
-    console.log(JSON.stringify(shop, null, 2));
+export interface GetWarShopDataParams {
+    gameconfigPath: string;
 }
 
-function main() {
-    const flags = getArgs();
-    const inputPath = flags.input;
-
-    if (!inputPath) {
-        console.error('Usage: npx ts-node extract_war_shop.ts --input <file.json> [--json]');
-        process.exit(1);
-    }
-
-    try {
-        const data = JSON.parse(fs.readFileSync(inputPath, 'utf-8'));
-        if ('json' in flags) {
-            emitJson(data);
-        } else {
-            emitCsv(data);
-        }
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
-    }
+export function getWarShopData({ gameconfigPath }: GetWarShopDataParams): any {
+    const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+    return data.clientGameConfig.shop.merchants.guildWars;
 }
-
-main();

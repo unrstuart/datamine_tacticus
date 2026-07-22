@@ -1,19 +1,5 @@
 import * as fs from 'fs';
 
-function getArgs() {
-    const args: Record<string, string> = {};
-    process.argv.slice(2).forEach((val, index, array) => {
-        if (val.startsWith('--')) {
-            const key = val.slice(2);
-            const nextValue = array[index + 1];
-            if (nextValue && !nextValue.startsWith('--')) {
-                args[key] = nextValue;
-            }
-        }
-    });
-    return args;
-}
-
 function getRewardDescription(reward: string): string {
     const lastColon = reward.lastIndexOf(':');
     if (lastColon === -1) return reward;
@@ -52,7 +38,7 @@ function getRewardDescription(reward: string): string {
     if (desc === 'dust') return 'Salvage';
     if (desc === 'mythicDust') return 'Mythic Salvage';
     if (desc === 'ShardsIfUnlocked') return 'Shards of Unlocked Character';
-    console.log('unknown reward desc: ', desc);
+    console.error('unknown reward desc: ', desc);
     return desc;
 }
 
@@ -61,53 +47,76 @@ function getRewardQuantity(reward: string): string {
     return parts[parts.length - 1];
 }
 
-function main() {
-    const flags = getArgs();
-    const inputPath = flags.input;
-    const outputPath = flags.output;
-
-    if (!inputPath || !outputPath) {
-        console.error('Usage: npx ts-node extract_survival_offers.ts --input <file.json> --output <result.json>');
-        process.exit(1);
-    }
-
-    try {
-        const data = JSON.parse(fs.readFileSync(inputPath, 'utf-8'));
-        console.log(`Reading: ${inputPath}...`);
-        const offers = data.clientGameConfig.shop.realMoneyProducts;
-
-        for (const day of [1, 2, 3, 4, 5, 6, 7, 0]) {
-            console.log('day ', day);
-            for (const key of Object.keys(data.clientGameConfig.shop.realMoneyProducts)) {
-                const match = key.match(/day_(\d+)/);
-                if (!match || parseInt(match[1], 10) !== day) {
-                    if (day !== 0) continue;
-                    if (match !== undefined) continue;
-                }
-                if (key.includes('product_calendar_seasonal_event_april_2026')) {
-                    const offer = offers[key];
-                    const priceDollars = (offer.price / 100).toFixed(2);
-                    console.log(`  Offer: ${key} - $${priceDollars}`);
-                    for (const reward of offer.rewards) {
-                        console.log(`    ${getRewardQuantity(reward)}x ${getRewardDescription(reward)}`);
-                    }
-                }
-            }
-        }
-        for (const key of Object.keys(data.clientGameConfig.shop.realMoneyProducts)) {
-            const offer = data.clientGameConfig.shop.realMoneyProducts[key];
-            if (key.includes('playmore')) {
-                console.log('key: ', key, ' - ', (Math.ceil(offer.price / 100)).toFixed(2));
-                for (const reward of offer.rewards) {
-                    console.log('  ', reward);
-                }
-                console.log('');
-            }
-        }
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
-    }
+export interface SurvivalOfferReward {
+    quantity: string;
+    description: string;
 }
 
-main();
+export interface SurvivalOffer {
+    key: string;
+    priceDollars: string;
+    rewards: SurvivalOfferReward[];
+}
+
+export interface SurvivalOfferDay {
+    day: number;
+    offers: SurvivalOffer[];
+}
+
+export interface SurvivalPlaymoreOffer {
+    key: string;
+    priceDollars: string;
+    rewards: string[];
+}
+
+export interface ExtractSurvivalOffersParams {
+    gameconfigPath: string;
+}
+
+export interface SurvivalOffersResult {
+    byDay: SurvivalOfferDay[];
+    playmore: SurvivalPlaymoreOffer[];
+}
+
+export function extractSurvivalOffers({ gameconfigPath }: ExtractSurvivalOffersParams): SurvivalOffersResult {
+    const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+    const offers = data.clientGameConfig.shop.realMoneyProducts;
+
+    const byDay: SurvivalOfferDay[] = [];
+    for (const day of [1, 2, 3, 4, 5, 6, 7, 0]) {
+        const dayOffers: SurvivalOffer[] = [];
+        for (const key of Object.keys(offers)) {
+            const match = key.match(/day_(\d+)/);
+            if (!match || parseInt(match[1], 10) !== day) {
+                if (day !== 0) continue;
+                if (match !== undefined) continue;
+            }
+            if (key.includes('product_calendar_seasonal_event_april_2026')) {
+                const offer = offers[key];
+                dayOffers.push({
+                    key,
+                    priceDollars: (offer.price / 100).toFixed(2),
+                    rewards: offer.rewards.map((reward: string) => ({
+                        quantity: getRewardQuantity(reward),
+                        description: getRewardDescription(reward),
+                    })),
+                });
+            }
+        }
+        byDay.push({ day, offers: dayOffers });
+    }
+
+    const playmore: SurvivalPlaymoreOffer[] = [];
+    for (const key of Object.keys(offers)) {
+        const offer = offers[key];
+        if (key.includes('playmore')) {
+            playmore.push({
+                key,
+                priceDollars: Math.ceil(offer.price / 100).toFixed(2),
+                rewards: offer.rewards,
+            });
+        }
+    }
+
+    return { byDay, playmore };
+}

@@ -1,21 +1,5 @@
 import * as fs from 'fs';
 
-function getArgs() {
-    const args: Record<string, string> = {};
-    process.argv.slice(2).forEach((val, index, array) => {
-        if (val.startsWith('--')) {
-            const key = val.slice(2);
-            const nextValue = array[index + 1];
-            if (nextValue && !nextValue.startsWith('--')) {
-                args[key] = nextValue;
-            } else {
-                args[key] = 'true';
-            }
-        }
-    });
-    return args;
-}
-
 interface ActiveSeason {
     seasonNumber: number;
     rotationIndex: number;
@@ -48,7 +32,7 @@ function computeActiveSeason(misc: any, rotation: string[], now: number): Active
 
 // unitSets.unit_set_1 and unit_set_2 are exact duplicates of each other (same ids, same
 // stats) -- just keep one, flattened, instead of the redundant wrapper.
-function flattenUnitSets(unitSets: Record<string, any>): Record<string, any> {
+export function flattenUnitSets(unitSets: Record<string, any>): Record<string, any> {
     return Object.values(unitSets)[0] ?? {};
 }
 
@@ -56,40 +40,49 @@ function resolveBossUnit(unitId: string, units: Record<string, any>): any {
     return units[unitId.split(':')[0]];
 }
 
-function emitJson(data: any) {
-    const guildBoss = { ...data.guildBoss, unitSets: flattenUnitSets(data.guildBoss.unitSets) };
-    console.log(JSON.stringify(guildBoss, null, 2));
+export interface GetGuildBossDataParams {
+    globalConfigPath: string;
 }
 
-function emitSummary(data: any) {
+export function getGuildBossData({ globalConfigPath }: GetGuildBossDataParams): any {
+    const data = JSON.parse(fs.readFileSync(globalConfigPath, 'utf-8'));
+    return { ...data.guildBoss, unitSets: flattenUnitSets(data.guildBoss.unitSets) };
+}
+
+export interface SummarizeActiveGuildBossSeasonParams {
+    globalConfigPath: string;
+}
+
+export function summarizeActiveGuildBossSeason({ globalConfigPath }: SummarizeActiveGuildBossSeasonParams): string {
+    const data = JSON.parse(fs.readFileSync(globalConfigPath, 'utf-8'));
     const guildBoss = data.guildBoss;
     if (!guildBoss) {
-        console.error('No guildBoss config found at the top level of this file.');
-        return;
+        throw new Error('No guildBoss config found at the top level of this file.');
     }
 
+    const lines: string[] = [];
+
     const season = computeActiveSeason(guildBoss.misc, guildBoss.guildBossSeasonConfigRotation, Date.now());
-    console.log(
+    lines.push(
         `Active guild boss season: ${season.seasonConfigId} (rotation slot ${season.rotationIndex + 1}/${guildBoss.guildBossSeasonConfigRotation.length}, season #${season.seasonNumber})`
     );
-    console.log(`Window: ${new Date(season.startMs).toISOString()} -> ${new Date(season.endMs).toISOString()}`);
-    console.log();
+    lines.push(`Window: ${new Date(season.startMs).toISOString()} -> ${new Date(season.endMs).toISOString()}`);
+    lines.push('');
 
     const seasonData = guildBoss.guildBossSeasonDataConfigsGDTO?.[season.seasonConfigId];
     if (!seasonData) {
-        console.error(`No season data found for ${season.seasonConfigId}`);
-        return;
+        throw new Error(`No season data found for ${season.seasonConfigId}`);
     }
 
     const units = flattenUnitSets(guildBoss.unitSets);
-    console.log('tier,set,chestId,guildXp,encounterIndex,type,bossType,faction,boardId,disallowedFactions');
+    lines.push('tier,set,chestId,guildXp,encounterIndex,type,bossType,faction,boardId,disallowedFactions');
     for (const tier of seasonData.tiers) {
         for (const set of tier.sets) {
             for (const encounter of set.encounters) {
                 const unit = resolveBossUnit(encounter.unitId, units);
                 const faction = unit?.FactionId ?? '';
                 const disallowed = (encounter.disallowedFactions ?? []).join('|');
-                console.log(
+                lines.push(
                     `${tier.tier},${set.set},${set.chestId},${set.guildXp},${encounter.encounterIndex},${encounter.guildBossEncounterType},${encounter.bossType},${faction},${encounter.boardId},${disallowed}`
                 );
             }
@@ -97,31 +90,9 @@ function emitSummary(data: any) {
     }
 
     if (guildBoss.primarchs?.length > 0) {
-        console.log();
-        console.log('Primarch-tier bosses (bonus/hardest encounters): ' + guildBoss.primarchs.join(', '));
+        lines.push('');
+        lines.push('Primarch-tier bosses (bonus/hardest encounters): ' + guildBoss.primarchs.join(', '));
     }
+
+    return lines.join('\n');
 }
-
-function main() {
-    const flags = getArgs();
-    const inputPath = flags.input;
-
-    if (!inputPath) {
-        console.error('Usage: npx ts-node extract_guild_boss.ts --input <file.json> [--json]');
-        process.exit(1);
-    }
-
-    try {
-        const data = JSON.parse(fs.readFileSync(inputPath, 'utf-8'));
-        if ('json' in flags) {
-            emitJson(data);
-        } else {
-            emitSummary(data);
-        }
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
-    }
-}
-
-main();

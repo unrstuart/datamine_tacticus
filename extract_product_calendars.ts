@@ -1,21 +1,5 @@
 import * as fs from 'fs';
 
-function getArgs() {
-    const args: Record<string, string> = {};
-    process.argv.slice(2).forEach((val, index, array) => {
-        if (val.startsWith('--')) {
-            const key = val.slice(2);
-            const nextValue = array[index + 1];
-            if (nextValue && !nextValue.startsWith('--')) {
-                args[key] = nextValue;
-            } else {
-                args[key] = 'true';
-            }
-        }
-    });
-    return args;
-}
-
 function globToRegex(pattern: string): RegExp {
     const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.');
     return new RegExp(`^${escaped}$`);
@@ -223,13 +207,13 @@ function resolveOfferLabels(
 // Calendar discovery
 // ---------------------------------------------------------------------------
 
-interface CalendarSummary {
+export interface CalendarSummary {
     name: string;
     days: number[];
     variantsByDay: Map<number, string[]>;
 }
 
-function discoverCalendars(data: any): Map<string, CalendarSummary> {
+export function discoverCalendars(data: any): Map<string, CalendarSummary> {
     const events = data.clientGameConfig.liveEvents.idunLiveEventConfigs as any[];
     const calendars = new Map<string, CalendarSummary>();
 
@@ -258,32 +242,33 @@ function discoverCalendars(data: any): Map<string, CalendarSummary> {
     return calendars;
 }
 
-function findCalendars(data: any, globPattern?: string) {
+export function formatCalendarFindResults(data: any, globPattern?: string): string {
     const calendars = discoverCalendars(data);
     const regex = globPattern ? globToRegex(globPattern) : undefined;
 
     const names = [...calendars.keys()].filter((name) => !regex || regex.test(name)).sort();
 
     if (names.length === 0) {
-        console.log(globPattern ? `No calendars matched pattern: ${globPattern}` : 'No calendars found.');
-        return;
+        return globPattern ? `No calendars matched pattern: ${globPattern}` : 'No calendars found.';
     }
 
+    const lines: string[] = [];
     for (const name of names) {
         const calendar = calendars.get(name)!;
         const totalOffers = [...calendar.variantsByDay.values()].reduce(
             (sum, variants) => sum + variants.filter((v) => v !== 'closed' && v !== 'expired').length,
             0
         );
-        console.log(`${name}  (${calendar.days.length} days, days ${calendar.days[0]}-${calendar.days[calendar.days.length - 1]}, ${totalOffers} offers)`);
+        lines.push(`${name}  (${calendar.days.length} days, days ${calendar.days[0]}-${calendar.days[calendar.days.length - 1]}, ${totalOffers} offers)`);
     }
+    return lines.join('\n');
 }
 
 // ---------------------------------------------------------------------------
 // Calendar extraction
 // ---------------------------------------------------------------------------
 
-interface CalendarOffer {
+export interface CalendarOffer {
     variant: string;
     title?: string;
     banner?: string;
@@ -292,12 +277,12 @@ interface CalendarOffer {
     rewards: string[];
 }
 
-interface CalendarDay {
+export interface CalendarDay {
     day: number;
     offers: CalendarOffer[];
 }
 
-interface CalendarData {
+export interface CalendarData {
     calendar: string;
     days: CalendarDay[];
 }
@@ -329,7 +314,7 @@ function resolveOfferContent(
     return null;
 }
 
-function extractCalendar(data: any, name: string, terms: Map<string, string> | null): CalendarData {
+function extractCalendarData(data: any, name: string, terms: Map<string, string> | null): CalendarData {
     const events = data.clientGameConfig.liveEvents.idunLiveEventConfigs as any[];
     const productViewConfigs = data.clientGameConfig.shop.productViewConfigs;
     const prefix = `offer_${name}_day_`;
@@ -371,76 +356,36 @@ function extractCalendar(data: any, name: string, terms: Map<string, string> | n
     return { calendar: name, days };
 }
 
-function printCalendarText(calendarData: CalendarData, data: any) {
-    console.log(`=== ${calendarData.calendar} (${calendarData.days.length} days) ===\n`);
+export function printCalendarText(calendarData: CalendarData, data: any): string {
+    const lines: string[] = [];
+    lines.push(`=== ${calendarData.calendar} (${calendarData.days.length} days) ===\n`);
     for (const { day, offers } of calendarData.days) {
-        console.log(`Day ${day}:`);
+        lines.push(`Day ${day}:`);
         for (const offer of offers) {
             const label = [offer.title, offer.banner].filter(Boolean).join(' - ');
             const suffix = label ? `  (${label})` : '';
-            console.log(`  [${offer.variant}] ${formatPrice(offer.priceCents)}${suffix}`);
+            lines.push(`  [${offer.variant}] ${formatPrice(offer.priceCents)}${suffix}`);
             for (const { type, quantity } of mergeRewards(offer.rewards)) {
-                console.log(`    - ${convertReward(`${type}:${quantity}`, data)}`);
+                lines.push(`    - ${convertReward(`${type}:${quantity}`, data)}`);
             }
         }
-        console.log('');
+        lines.push('');
     }
+    return lines.join('\n');
 }
 
 // ---------------------------------------------------------------------------
-// Main
+// Public extraction API
 // ---------------------------------------------------------------------------
 
-function main() {
-    const flags = getArgs();
-    const inputPath = flags.input;
-    const mode = flags.mode;
-
-    if (!inputPath || (mode !== 'find' && mode !== 'extract')) {
-        console.error('Usage: npx ts-node extract_product_calendars.ts --input <file.json> --mode find [--glob <pattern>]');
-        console.error(
-            '       npx ts-node extract_product_calendars.ts --input <file.json> --mode extract --calendar <name-or-glob> [--i2 <I2Languages.json>] [--format text|json]'
-        );
-        process.exit(1);
-    }
-
-    try {
-        const data = JSON.parse(fs.readFileSync(inputPath, 'utf-8'));
-
-        if (mode === 'find') {
-            findCalendars(data, flags.glob);
-            return;
-        }
-
-        if (!flags.calendar) {
-            console.error('Error: --mode extract requires --calendar <name-or-glob>');
-            process.exit(1);
-        }
-
-        const calendars = discoverCalendars(data);
-        const regex = globToRegex(flags.calendar);
-        const names = [...calendars.keys()].filter((name) => name === flags.calendar || regex.test(name)).sort();
-
-        if (names.length === 0) {
-            console.error(`No calendars matched: ${flags.calendar}`);
-            console.error('Available calendars:');
-            for (const name of [...calendars.keys()].sort()) console.error(`  ${name}`);
-            process.exit(1);
-        }
-
-        const terms = flags.i2 ? loadTerms(flags.i2) : null;
-        const results = names.map((name) => extractCalendar(data, name, terms));
-        const format = flags.format ?? 'text';
-
-        if (format === 'json') {
-            console.log(JSON.stringify(results.length === 1 ? results[0] : results, null, 2));
-        } else {
-            for (const result of results) printCalendarText(result, data);
-        }
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
-    }
+export interface ExtractCalendarParams {
+    gameconfigPath: string;
+    calendarName: string;
+    i2Path?: string;
 }
 
-main();
+export function extractCalendar({ gameconfigPath, calendarName, i2Path }: ExtractCalendarParams): CalendarData {
+    const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+    const terms = i2Path ? loadTerms(i2Path) : null;
+    return extractCalendarData(data, calendarName, terms);
+}

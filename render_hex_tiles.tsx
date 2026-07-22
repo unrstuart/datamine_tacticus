@@ -11,7 +11,7 @@ import { createCanvas, loadImage } from 'canvas';
  * _Config_Visual.json file exist (case-insensitive).
  * * @param targetDir The directory to search in.
  */
-function findJsonPairs(targetDir: string, texturesDir): string[] {
+function findJsonPairs(targetDir: string, texturesDir: string): string[] {
     const ret: string[] = [];
     try {
         // 1. Get all files in the directory

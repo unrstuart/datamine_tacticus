@@ -18,7 +18,7 @@ interface Stats {
     initialProgressionIndex: number;
 }
 
-interface IUnit {
+export interface IUnit {
     id: string;
     name: string;
     movement: number;
@@ -33,40 +33,19 @@ interface IUnit {
     initialStats: Stats;
 }
 
-function getArgs() {
-    const args: Record<string, string> = {};
-    process.argv.slice(2).forEach((val, index, array) => {
-        if (val.startsWith('--')) {
-            const key = val.slice(2);
-            const nextValue = array[index + 1];
-            if (nextValue && !nextValue.startsWith('--')) {
-                args[key] = nextValue;
-            }
-        }
-    });
-    return args;
+export interface ExtractHeroesParams {
+    gameconfigPath: string;
 }
 
-function main() {
-    const flags = getArgs();
-    const inputPath = flags.input;
-    const outputPath = flags.output;
+export function extractHeroes({ gameconfigPath }: ExtractHeroesParams): IUnit[] {
+    const rawData = fs.readFileSync(gameconfigPath, 'utf-8');
+    const data = JSON.parse(rawData);
 
-    if (!inputPath || !outputPath) {
-        console.error('Usage: npx ts-node extract_hero_quests.ts --input <file.json> --output <result.json>');
-        process.exit(1);
-    }
+    const rawUnits: Record<string, any> = data.clientGameConfig.units.lineup;
 
-    try {
-        console.log(`Reading: ${inputPath}...`);
-        const rawData = fs.readFileSync(inputPath, 'utf-8');
-        const data = JSON.parse(rawData);
-
-        const rawUnits: Record<string, any> = data.clientGameConfig.units.lineup;
-
-        const ret: IUnit[] = Object.entries(rawUnits).map(([id, unit]) => {
+    return Object.entries(rawUnits)
+        .map(([id, unit]: [string, any]): IUnit | undefined => {
             if ((unit.Movement ?? 0) === 0) return undefined;
-            console.log(unit.name);
             return {
                 id: id,
                 name: unit.name,
@@ -96,14 +75,6 @@ function main() {
                               range: unit.weapons[1].Range,
                           },
             };
-        }).filter(unit => !!unit);
-
-        fs.writeFileSync(outputPath, JSON.stringify(ret, null, 2));
-        console.log(`Success! Extracted ${ret.length} matching nodes to ${outputPath}.`);
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
-    }
+        })
+        .filter((unit): unit is IUnit => !!unit);
 }
-
-main();

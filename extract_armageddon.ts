@@ -1,19 +1,5 @@
 import * as fs from 'fs';
-import { string } from 'zod';
 
-function getArgs() {
-    const args: Record<string, string> = {};
-    process.argv.slice(2).forEach((val, index, array) => {
-        if (val.startsWith('--')) {
-            const key = val.slice(2);
-            const nextValue = array[index + 1];
-            if (nextValue && !nextValue.startsWith('--')) {
-                args[key] = nextValue;
-            }
-        }
-    });
-    return args;
-}
 function isCronScheduleMatchDay(cronSchedule: string, day: number): boolean {
     const parts = cronSchedule.split(' ');
     if (parts.length < 6) return false;
@@ -154,72 +140,53 @@ function formatCondition(conditions: any, data: any): string {
     return conditionsArray.join(' AND ');
 }
 
-function emitShopSlots(data: any) {
-    const weeks = [
+function armageddonWeeks(data: any): any[] {
+    return [
         data.clientGameConfig.shop.merchants.June2026Week1EventShop,
         data.clientGameConfig.shop.merchants.June2026Week2EventShop,
         data.clientGameConfig.shop.merchants.June2026Week3EventShop,
     ];
-    console.log(
-        'week,day,slot,condition,cost,maxPurchases,item,condition,cost,maxPurchases,item,condition,cost,maxPurchases,item,condition,cost,maxPurchases,item,condition,cost,maxPurchases,item'
-    );
+}
+
+export function formatArmageddonCsv(data: any): string {
+    const weeks = armageddonWeeks(data);
     const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+    const lines = [
+        'week,day,slot,condition,cost,maxPurchases,item,condition,cost,maxPurchases,item,condition,cost,maxPurchases,item,condition,cost,maxPurchases,item,condition,cost,maxPurchases,item',
+    ];
     let week = 0;
     for (const shop of weeks) {
         ++week;
         for (let day = 0; day < 7; ++day) {
             let slot = 0;
             for (const product of shop.products) {
-                process.stdout.write(`${week},${DAYS[day]},${++slot},`);
+                let line = `${week},${DAYS[day]},${++slot},`;
                 for (const offer of product) {
-                    // console.log(offer);
-                    // console.log(offer.cronSchedule);
                     if (!isCronScheduleMatchDay(offer.cronSchedule, day)) {
                         continue;
                     }
-                    process.stdout.write(formatCondition(offer.conditions, data) + ',');
+                    line += formatCondition(offer.conditions, data) + ',';
                     if (offer.freeOffer) {
-                        process.stdout.write('FREE,1,');
-                        process.stdout.write(convertReward(offer.freeOffer, data) + ',');
+                        line += 'FREE,1,';
+                        line += convertReward(offer.freeOffer, data) + ',';
                     } else {
-                        process.stdout.write(offer.cost.amount + ',');
-                        process.stdout.write(offer.maxPurchases + ',');
-                        process.stdout.write(convertReward(offer.reward, data) + ',');
+                        line += offer.cost.amount + ',';
+                        line += offer.maxPurchases + ',';
+                        line += convertReward(offer.reward, data) + ',';
                     }
                 }
-                process.stdout.write('\n');
+                lines.push(line);
             }
         }
     }
+    return lines.join('\n');
 }
 
-function emitShopJson(data: any) {
-    const weeks = [
-        data.clientGameConfig.shop.merchants.June2026Week1EventShop,
-        data.clientGameConfig.shop.merchants.June2026Week2EventShop,
-        data.clientGameConfig.shop.merchants.June2026Week3EventShop,
-    ];
-    console.log(JSON.stringify(weeks, null, 2));
+export interface ExtractArmageddonParams {
+    gameconfigPath: string;
 }
 
-function main() {
-    const flags = getArgs();
-    const inputPath = flags.input;
-
-    if (!inputPath) {
-        console.error('Usage: npx ts-node extract_armageddon.ts --input <file.json>');
-        process.exit(1);
-    }
-
-    try {
-        console.log(`Reading: ${inputPath}...`);
-        const data = JSON.parse(fs.readFileSync(inputPath, 'utf-8'));
-        // emitShopSlots(data);
-        emitShopJson(data);
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
-    }
+export function extractArmageddon({ gameconfigPath }: ExtractArmageddonParams): any {
+    const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+    return armageddonWeeks(data);
 }
-
-main();
