@@ -99,15 +99,87 @@ export function formatHomescreenEventFindResults(data: any, i2Path?: string, glo
 }
 
 // ---------------------------------------------------------------------------
+// Descriptive text resolution - none of titleLocaKey/subtitleLocaKey/shortDescriptionLocaKey/
+// longDescriptionLocaKey are ever populated on a homeScreenEvent config (confirmed across all 70
+// entries). The actual gameplay-rule text (buffs, point-scoring rules) lives scattered across
+// modifiers[].locaKey and trackers[].locaKey instead, alongside the previewTitleLocaKey/
+// previewSubtitleLocaKey header/teaser copy. locaKeys can repeat across multiple modifier/tracker
+// entries (same text, different numeric params), so this dedupes before resolving.
+// ---------------------------------------------------------------------------
+
+function collectDescriptionLocaKeys(config: any): string[] {
+    const keys: string[] = [];
+    const seen = new Set<string>();
+
+    function add(key: string | undefined) {
+        if (key && !seen.has(key)) {
+            seen.add(key);
+            keys.push(key);
+        }
+    }
+
+    add(config.previewTitleLocaKey);
+    add(config.previewSubtitleLocaKey);
+    for (const modifier of config.modifiers ?? []) add(modifier.locaKey);
+    for (const tracker of config.trackers ?? []) add(tracker.locaKey);
+
+    return keys;
+}
+
+function resolveDescriptions(config: any, terms: Map<string, string>): string[] {
+    return collectDescriptionLocaKeys(config)
+        .map((key) => terms.get(key))
+        .filter((text): text is string => !!text);
+}
+
+// ---------------------------------------------------------------------------
+// Some modifiers (type "battleEnvironmentAbility") only carry an abilityId - the actual stat-boost
+// values (e.g. FactionBoost_DarkAngels's armorPct/dmgPct/healthPct) live in units.abilities and
+// units.abilityPowerModifiers instead. A tier can reference more than one ability (e.g.
+// warp_surge_tier_high has two), so these are joined in as a map keyed by abilityId rather than
+// decoded/flattened - ability shapes vary too much (simple stat boosts vs. summon abilities with
+// per-level variable arrays) to normalize here.
+// ---------------------------------------------------------------------------
+
+export interface HomescreenEventModifierAbility {
+    ability: any;
+    powerModifier?: any;
+}
+
+function resolveModifierAbilities(
+    config: any,
+    abilities: Record<string, any>,
+    abilityPowerModifiers: Record<string, any>
+): Record<string, HomescreenEventModifierAbility> {
+    const resolved: Record<string, HomescreenEventModifierAbility> = {};
+    for (const modifier of config.modifiers ?? []) {
+        const abilityId = modifier.abilityId;
+        if (!abilityId || resolved[abilityId]) continue;
+        const ability = abilities[abilityId];
+        if (!ability) {
+            throw new Error(
+                `Homescreen event "${config.eventName}" modifier references abilityId "${abilityId}", which was not found in units.abilities`
+            );
+        }
+        resolved[abilityId] = { ability, powerModifier: abilityPowerModifiers[abilityId] };
+    }
+    return resolved;
+}
+
+// ---------------------------------------------------------------------------
 // Extraction - a straight join of each tier's raw idunLiveEventConfigs entry with its
-// tieredProgressRewards array (looked up via rewardProgressId). No reward-string decoding or
-// restructuring here: GameConfig ships no start/end scheduling for these events (see
-// investigation notes), so this is raw material for further tooling rather than a finished report.
+// tieredProgressRewards array (looked up via rewardProgressId), any abilities its modifiers
+// reference, plus resolved descriptive text.
+// No reward-string decoding or restructuring here: GameConfig ships no start/end scheduling for
+// these events (see investigation notes), so this is raw material for further tooling rather than
+// a finished report.
 // ---------------------------------------------------------------------------
 
 export interface HomescreenEventTierData {
     liveEventConfig: any;
     tieredProgressRewards: any[];
+    abilities?: Record<string, HomescreenEventModifierAbility>;
+    descriptions?: string[];
 }
 
 export interface HomescreenEventData {
@@ -115,10 +187,13 @@ export interface HomescreenEventData {
     tiers: Partial<Record<HomescreenEventTier, HomescreenEventTierData>>;
 }
 
-function extractHomescreenEventData(data: any, eventName: string): HomescreenEventData {
+function extractHomescreenEventData(data: any, eventName: string, terms: Map<string, string> | null): HomescreenEventData {
     const events = data.clientGameConfig.liveEvents.idunLiveEventConfigs as any[];
     const matches = events.filter((e) => e.eventType === 'homeScreenEvent' && splitEventName(e.eventName).name === eventName);
     if (matches.length === 0) throw new Error(`No homescreen event found with name "${eventName}"`);
+
+    const abilities = data.clientGameConfig.units.abilities;
+    const abilityPowerModifiers = data.clientGameConfig.units.abilityPowerModifiers;
 
     const tiers: Partial<Record<HomescreenEventTier, HomescreenEventTierData>> = {};
     for (const liveEventConfig of matches) {
@@ -130,7 +205,13 @@ function extractHomescreenEventData(data: any, eventName: string): HomescreenEve
                 `Homescreen event "${liveEventConfig.eventName}" references rewardProgressId "${rewardProgressId}", which was not found in loot.tieredProgressRewards`
             );
         }
-        tiers[tier] = { liveEventConfig, tieredProgressRewards };
+        const resolvedAbilities = resolveModifierAbilities(liveEventConfig, abilities, abilityPowerModifiers);
+        tiers[tier] = {
+            liveEventConfig,
+            tieredProgressRewards,
+            abilities: Object.keys(resolvedAbilities).length > 0 ? resolvedAbilities : undefined,
+            descriptions: terms ? resolveDescriptions(liveEventConfig, terms) : undefined,
+        };
     }
 
     return { eventName, tiers };
@@ -139,9 +220,11 @@ function extractHomescreenEventData(data: any, eventName: string): HomescreenEve
 export interface ExtractHomescreenEventParams {
     gameconfigPath: string;
     eventName: string;
+    i2Path?: string;
 }
 
-export function extractHomescreenEvent({ gameconfigPath, eventName }: ExtractHomescreenEventParams): HomescreenEventData {
+export function extractHomescreenEvent({ gameconfigPath, eventName, i2Path }: ExtractHomescreenEventParams): HomescreenEventData {
     const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
-    return extractHomescreenEventData(data, eventName);
+    const terms = i2Path ? loadTerms(i2Path) : null;
+    return extractHomescreenEventData(data, eventName, terms);
 }

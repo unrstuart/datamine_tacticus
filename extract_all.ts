@@ -16,6 +16,7 @@ import { extractHeroes } from './extract_heroes';
 import { discoverHomescreenEvents, extractHomescreenEvent, formatHomescreenEventFindResults } from './extract_homescreen_events';
 import { extractIncursionEnemies } from './extract_incursion_enemies';
 import { extractLeData } from './extract_le_data';
+import { discoverLegendaryEvents, extractLegendaryEventMetadata, formatLegendaryEventFindResults } from './extract_le_metadata';
 import { extractMowData } from './extract_mow_data';
 import { extractMows } from './extract_mows';
 import { extractMythicQuests, formatMythicQuestsText } from './extract_mythic_quests';
@@ -343,6 +344,25 @@ function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: string, re
 
     runJob(results, 'le_data', () => writeJson(resolvePath('le_data', 'new-le-data.json'), extractLeData({ gameconfigPath })));
 
+    // Find-then-loop: le_metadata
+    try {
+        const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+        const events = discoverLegendaryEvents(data);
+        for (const [id, summary] of events) {
+            runJob(results, `le_metadata:${id}`, () => {
+                const eventData = extractLegendaryEventMetadata({ gameconfigPath, id, i2Path });
+                const filename = `${id}-${kebabCase(summary.name)}.json`;
+                const outputPath = plannerDir
+                    ? path.join(plannerDir, 'src/fsd/4-entities/lre/data', filename)
+                    : path.join(outputDir, filename);
+                return writeJson(outputPath, eventData);
+            });
+        }
+    } catch (error: any) {
+        results.push({ name: 'le_metadata:discover', ok: false, error: error.message });
+        console.error(`FAIL le_metadata:discover: ${error.message}`);
+    }
+
     runJob(results, 'mow_data', () => {
         if (!assetsDir) throw new Error('--assets-dir is required for mow_data');
         return writeJson(resolvePath('mow_data', 'new-mow-data.json'), extractMowData({ gameconfigPath, assetsDir }));
@@ -414,7 +434,7 @@ function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: string, re
         const events = discoverHomescreenEvents(data);
         for (const name of events.keys()) {
             runJob(results, `homescreen_event:${name}`, () => {
-                const eventData = extractHomescreenEvent({ gameconfigPath, eventName: name });
+                const eventData = extractHomescreenEvent({ gameconfigPath, eventName: name, i2Path });
                 const filename = `${kebabCase(name)}.json`;
                 // No tacticusplanner destination is confirmed for these yet (plan-hse.tsx is a
                 // static calculator today, not data-driven) - this follows the same
@@ -492,7 +512,7 @@ function printJson(value: unknown): void {
 const EXTRACTOR_NAMES = [
     'abilities', 'ability_icons', 'armageddon', 'campaign_data', 'ce_gold_medal_rewards', 'character_data',
     'crusade_shop', 'equipment_data', 'guild_boss', 'guild_shop', 'hero_quests', 'heroes', 'homescreen_event',
-    'incursion_enemies', 'le_data', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'pierce',
+    'incursion_enemies', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'pierce',
     'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'shop_event',
     'survival_offers', 'traits', 'war_shop',
 ];
@@ -592,15 +612,16 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
             return;
         }
         case 'homescreen_event': {
-            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts homescreen_event --gameconfig <p> --mode find|extract ... (or --assets-dir)');
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts homescreen_event --gameconfig <p> --mode find|extract ... [--i2 <p>] (or --assets-dir)');
             const mode = requireFlag(flags, 'mode', 'Usage: extract_all.ts homescreen_event --gameconfig <p> --mode find|extract ...');
             const data = JSON.parse(fs.readFileSync(gc, 'utf-8'));
+            const i2 = flags.i2 ?? paths.i2Path;
             if (mode === 'find') {
-                console.log(formatHomescreenEventFindResults(data, flags.i2 ?? paths.i2Path, flags.glob));
+                console.log(formatHomescreenEventFindResults(data, i2, flags.glob));
                 return;
             }
-            const eventName = requireFlag(flags, 'event', 'Usage: extract_all.ts homescreen_event --gameconfig <p> --mode extract --event <name>');
-            printJson(extractHomescreenEvent({ gameconfigPath: gc, eventName }));
+            const eventName = requireFlag(flags, 'event', 'Usage: extract_all.ts homescreen_event --gameconfig <p> --mode extract --event <name> [--i2 <p>]');
+            printJson(extractHomescreenEvent({ gameconfigPath: gc, eventName, i2Path: i2 }));
             return;
         }
         case 'incursion_enemies': {
@@ -611,6 +632,18 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
         case 'le_data': {
             const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts le_data --gameconfig <p> (or --assets-dir)');
             printJson(extractLeData({ gameconfigPath: gc }));
+            return;
+        }
+        case 'le_metadata': {
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts le_metadata --gameconfig <p> --mode find|extract ... [--i2 <p>] (or --assets-dir)');
+            const mode = requireFlag(flags, 'mode', 'Usage: extract_all.ts le_metadata --gameconfig <p> --mode find|extract ...');
+            const data = JSON.parse(fs.readFileSync(gc, 'utf-8'));
+            if (mode === 'find') {
+                console.log(formatLegendaryEventFindResults(data, flags.glob));
+                return;
+            }
+            const id = requireFlag(flags, 'id', 'Usage: extract_all.ts le_metadata --gameconfig <p> --mode extract --id <n> [--i2 <p>]');
+            printJson(extractLegendaryEventMetadata({ gameconfigPath: gc, id, i2Path: flags.i2 ?? paths.i2Path }));
             return;
         }
         case 'mow_data': {
