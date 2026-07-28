@@ -4,6 +4,7 @@ import * as path from 'path';
 import { extractAbilities } from './extract_abilities';
 import { extractAbilityIcons } from './extract_ability_icons';
 import { extractArmageddon, formatArmageddonCsv } from './extract_armageddon';
+import { discoverBlessedReqBanners, extractBlessedReqBanner, formatBlessedReqBannerFindResults } from './extract_blessed_req_banners';
 import { extractCampaignData } from './extract_campaign_data';
 import { extractCeGoldMedalRewards } from './extract_ce_gold_medal_rewards';
 import { extractCharacterData } from './extract_character_data';
@@ -29,6 +30,7 @@ import { findRealMoneyProducts } from './extract_real_money_products';
 import { extractRecipeData } from './extract_recipe_data';
 import { getRogueTraderData, formatRogueTraderCsv } from './extract_rogue_trader';
 import { discoverShopEvents, extractShopEvent, printShopEventText, formatShopEventFindResults, parseLevel } from './extract_shop_event';
+import { discoverSurvivalEvents, extractSurvivalEvent, formatSurvivalEventFindResults } from './extract_survival_events';
 import { extractSurvivalOffers } from './extract_survival_offers';
 import { extractTraits } from './extract_traits';
 import { getWarShopData, formatWarShopCsv } from './extract_war_shop';
@@ -451,6 +453,50 @@ function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: string, re
         console.error(`FAIL homescreen_event:discover: ${error.message}`);
     }
 
+    // Find-then-loop: survival_event
+    try {
+        const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+        const events = discoverSurvivalEvents(data);
+        for (const name of events.keys()) {
+            runJob(results, `survival_event:${name}`, () => {
+                const eventData = extractSurvivalEvent({ gameconfigPath, eventName: name, i2Path });
+                const filename = `${kebabCase(name)}.json`;
+                // No tacticusplanner destination is confirmed for these yet - follows the same
+                // 4-entities/<domain>/data convention as everything else but, unlike
+                // PLANNER_DESTINATIONS, hasn't been checked against the live repo.
+                const outputPath = plannerDir
+                    ? path.join(plannerDir, 'src/fsd/4-entities/survival/data', filename)
+                    : path.join(outputDir, filename);
+                return writeJson(outputPath, eventData);
+            });
+        }
+    } catch (error: any) {
+        results.push({ name: 'survival_event:discover', ok: false, error: error.message });
+        console.error(`FAIL survival_event:discover: ${error.message}`);
+    }
+
+    // Find-then-loop: blessed_req_banner
+    try {
+        const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+        const banners = discoverBlessedReqBanners(data);
+        for (const bannerId of banners.keys()) {
+            runJob(results, `blessed_req_banner:${bannerId}`, () => {
+                const bannerData = extractBlessedReqBanner({ gameconfigPath, bannerId, i2Path });
+                const filename = `${kebabCase(bannerId)}.json`;
+                // No tacticusplanner destination is confirmed for these yet - follows the same
+                // 4-entities/<domain>/data convention as everything else but, unlike
+                // PLANNER_DESTINATIONS, hasn't been checked against the live repo.
+                const outputPath = plannerDir
+                    ? path.join(plannerDir, 'src/fsd/4-entities/blessed_req_banners/data', filename)
+                    : path.join(outputDir, filename);
+                return writeJson(outputPath, bannerData);
+            });
+        }
+    } catch (error: any) {
+        results.push({ name: 'blessed_req_banner:discover', ok: false, error: error.message });
+        console.error(`FAIL blessed_req_banner:discover: ${error.message}`);
+    }
+
     // Asset copying only makes sense against a tacticusplanner checkout - --output-dir's flat
     // dump has no snowprint_assets/<subfolder> convention to target.
     if (plannerDir && assetsDir) {
@@ -514,7 +560,7 @@ const EXTRACTOR_NAMES = [
     'crusade_shop', 'equipment_data', 'guild_boss', 'guild_shop', 'hero_quests', 'heroes', 'homescreen_event',
     'incursion_enemies', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'pierce',
     'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'shop_event',
-    'survival_offers', 'traits', 'war_shop',
+    'survival_events', 'survival_offers', 'traits', 'war_shop',
 ];
 
 function runOne(name: string, flags: Record<string, string>, paths: ResolvedPaths): void {
@@ -542,6 +588,19 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
                 const data = JSON.parse(fs.readFileSync(gc, 'utf-8'));
                 console.log(formatArmageddonCsv(data));
             }
+            return;
+        }
+        case 'blessed_req_banner': {
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts blessed_req_banner --gameconfig <p> --mode find|extract ... [--i2 <p>] (or --assets-dir)');
+            const mode = requireFlag(flags, 'mode', 'Usage: extract_all.ts blessed_req_banner --gameconfig <p> --mode find|extract ...');
+            const data = JSON.parse(fs.readFileSync(gc, 'utf-8'));
+            const i2 = flags.i2 ?? paths.i2Path;
+            if (mode === 'find') {
+                console.log(formatBlessedReqBannerFindResults(data, i2, flags.glob));
+                return;
+            }
+            const bannerId = requireFlag(flags, 'id', 'Usage: extract_all.ts blessed_req_banner --gameconfig <p> --mode extract --id <name> [--i2 <p>]');
+            printJson(extractBlessedReqBanner({ gameconfigPath: gc, bannerId, i2Path: i2 }));
             return;
         }
         case 'campaign_data': {
@@ -762,6 +821,18 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
             } else {
                 console.log(printShopEventText(eventData, data, level));
             }
+            return;
+        }
+        case 'survival_events': {
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts survival_events --gameconfig <p> --mode find|extract ... [--i2 <p>] (or --assets-dir)');
+            const mode = requireFlag(flags, 'mode', 'Usage: extract_all.ts survival_events --gameconfig <p> --mode find|extract ...');
+            const data = JSON.parse(fs.readFileSync(gc, 'utf-8'));
+            if (mode === 'find') {
+                console.log(formatSurvivalEventFindResults(data, flags.glob));
+                return;
+            }
+            const eventName = requireFlag(flags, 'event', 'Usage: extract_all.ts survival_events --gameconfig <p> --mode extract --event <name> [--i2 <p>]');
+            printJson(extractSurvivalEvent({ gameconfigPath: gc, eventName, i2Path: flags.i2 ?? paths.i2Path }));
             return;
         }
         case 'survival_offers': {

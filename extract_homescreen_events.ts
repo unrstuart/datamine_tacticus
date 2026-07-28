@@ -167,9 +167,42 @@ function resolveModifierAbilities(
 }
 
 // ---------------------------------------------------------------------------
+// Each tier's initialOfferIds (2-3 ids: a "bundle", "playmore", and/or "booster" variant - these
+// are the only three suffixes seen so far) point into shop.offers, which in turn points at a
+// realMoneyProducts entry for price/rewards. Offer naming doesn't reliably mirror the tier's own
+// eventName (e.g. hse_trait_boost_rapid_assault_tier_high's offers are named
+// offer_homescreen_event_trait_boost_rapidassault_tier_high_*), so these must be resolved via
+// initialOfferIds/offerId directly rather than guessed from the event name.
+// ---------------------------------------------------------------------------
+
+export interface HomescreenEventOffer {
+    offer: any;
+    realMoneyProduct?: any;
+}
+
+function resolveTierOffers(
+    config: any,
+    offersById: Map<string, any>,
+    realMoneyProducts: Record<string, any>
+): Record<string, HomescreenEventOffer> {
+    const ids = new Set<string>(config.initialOfferIds ?? []);
+    if (config.offerId) ids.add(config.offerId);
+
+    const resolved: Record<string, HomescreenEventOffer> = {};
+    for (const offerId of ids) {
+        const offer = offersById.get(offerId);
+        if (!offer) {
+            throw new Error(`Homescreen event "${config.eventName}" references offerId "${offerId}", which was not found in shop.offers`);
+        }
+        resolved[offerId] = { offer, realMoneyProduct: realMoneyProducts[offer.realMoneyProductId] };
+    }
+    return resolved;
+}
+
+// ---------------------------------------------------------------------------
 // Extraction - a straight join of each tier's raw idunLiveEventConfigs entry with its
 // tieredProgressRewards array (looked up via rewardProgressId), any abilities its modifiers
-// reference, plus resolved descriptive text.
+// reference, its offers, plus resolved descriptive text.
 // No reward-string decoding or restructuring here: GameConfig ships no start/end scheduling for
 // these events (see investigation notes), so this is raw material for further tooling rather than
 // a finished report.
@@ -179,6 +212,7 @@ export interface HomescreenEventTierData {
     liveEventConfig: any;
     tieredProgressRewards: any[];
     abilities?: Record<string, HomescreenEventModifierAbility>;
+    offers?: Record<string, HomescreenEventOffer>;
     descriptions?: string[];
 }
 
@@ -194,6 +228,8 @@ function extractHomescreenEventData(data: any, eventName: string, terms: Map<str
 
     const abilities = data.clientGameConfig.units.abilities;
     const abilityPowerModifiers = data.clientGameConfig.units.abilityPowerModifiers;
+    const offersById = new Map<string, any>(data.clientGameConfig.shop.offers.map((o: any) => [o.offerId, o]));
+    const realMoneyProducts = data.clientGameConfig.shop.realMoneyProducts;
 
     const tiers: Partial<Record<HomescreenEventTier, HomescreenEventTierData>> = {};
     for (const liveEventConfig of matches) {
@@ -206,10 +242,12 @@ function extractHomescreenEventData(data: any, eventName: string, terms: Map<str
             );
         }
         const resolvedAbilities = resolveModifierAbilities(liveEventConfig, abilities, abilityPowerModifiers);
+        const resolvedOffers = resolveTierOffers(liveEventConfig, offersById, realMoneyProducts);
         tiers[tier] = {
             liveEventConfig,
             tieredProgressRewards,
             abilities: Object.keys(resolvedAbilities).length > 0 ? resolvedAbilities : undefined,
+            offers: Object.keys(resolvedOffers).length > 0 ? resolvedOffers : undefined,
             descriptions: terms ? resolveDescriptions(liveEventConfig, terms) : undefined,
         };
     }
