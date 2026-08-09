@@ -34,6 +34,7 @@ import { discoverSurvivalEvents, extractSurvivalEvent, formatSurvivalEventFindRe
 import { extractSurvivalOffers } from './extract_survival_offers';
 import { extractTraits } from './extract_traits';
 import { getWarShopData, formatWarShopCsv } from './extract_war_shop';
+import { mergeSeasonLineups, formatMergeSummary } from './merge_season_lineups';
 
 // ---------------------------------------------------------------------------
 // CLI parsing - extract_all.ts owns all command-line parsing now; none of the
@@ -559,8 +560,8 @@ const EXTRACTOR_NAMES = [
     'abilities', 'ability_icons', 'armageddon', 'campaign_data', 'ce_gold_medal_rewards', 'character_data',
     'crusade_shop', 'equipment_data', 'guild_boss', 'guild_shop', 'hero_quests', 'heroes', 'homescreen_event',
     'incursion_enemies', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'pierce',
-    'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'shop_event',
-    'survival_events', 'survival_offers', 'traits', 'war_shop',
+    'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'season_lineups',
+    'shop_event', 'survival_events', 'survival_offers', 'traits', 'war_shop',
 ];
 
 function runOne(name: string, flags: Record<string, string>, paths: ResolvedPaths): void {
@@ -803,6 +804,23 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
                 const data = JSON.parse(fs.readFileSync(gc, 'utf-8'));
                 console.log(formatRogueTraderCsv(shop, data));
             }
+            return;
+        }
+        case 'season_lineups': {
+            const gcfg = requireResolved(
+                paths.globalConfigPath,
+                'global-config',
+                'Usage: extract_all.ts season_lineups --global-config <p> [--overlay season-lineups.json] [--capture-season N] [--captured-at <iso>] (or --assets-dir)'
+            );
+            const overlayPath = flags.overlay ?? 'season-lineups.json';
+            const result = mergeSeasonLineups({
+                globalConfigPath: gcfg,
+                overlayPath,
+                captureSeason: flags['capture-season'] ? Number(flags['capture-season']) : undefined,
+                capturedAt: flags['captured-at'],
+                configVersion: flags['config-version'],
+            });
+            console.log(formatMergeSummary(result, overlayPath));
             return;
         }
         case 'shop_event': {
