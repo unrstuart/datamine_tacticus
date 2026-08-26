@@ -53,10 +53,77 @@ export interface MowEntry {
     name: string;
     faction: string;
     alliance: string;
+    deployableAlliance: string;
     icon: string;
     roundIcon: string;
     primaryAbility?: MowAbility;
     secondaryAbility?: MowAbility;
+}
+
+// `deployableAlliance` - the alliance whose characters a MoW can be deployed alongside in
+// Incursion - isn't a direct gameconfig field. It's derived from the "mowEvent" live-event config
+// (one entry per game, eventName "mow_event"), whose per-MoW `allowedFactions` list (the factions
+// permitted to fight alongside it in its own release-event battles) always resolves to a single
+// alliance, matching every known Incursion pairing. Verified against all 11 MoWs at gameconfig
+// 1.40.
+interface MowEventConfigEntry {
+    unitId: string;
+    allowedFactions: string[];
+}
+
+function getMowEventEntries(data: any): Map<string, MowEventConfigEntry> {
+    const events: any[] = data.clientGameConfig.liveEvents.idunLiveEventConfigs;
+    const mowEvent = events.find((e) => e.eventType === 'mowEvent');
+    if (!mowEvent) {
+        throw new Error('No "mowEvent" live-event config found - needed to derive deployableAlliance.');
+    }
+    const byUnitId = new Map<string, MowEventConfigEntry>();
+    for (const entry of mowEvent.mows as any[]) {
+        byUnitId.set(entry.unitId, { unitId: entry.unitId, allowedFactions: entry.allowedFactions ?? [] });
+    }
+    return byUnitId;
+}
+
+function buildFactionAllianceMap(lineup: Record<string, any>): Map<string, string> {
+    const map = new Map<string, string>();
+    for (const unit of Object.values<any>(lineup)) {
+        if (unit.FactionId && unit.GrandAllianceId && !map.has(unit.FactionId)) {
+            map.set(unit.FactionId, unit.GrandAllianceId);
+        }
+    }
+    return map;
+}
+
+function resolveDeployableAlliance(
+    mowId: string,
+    mowEventEntries: Map<string, MowEventConfigEntry>,
+    factionAlliance: Map<string, string>,
+): string {
+    const entry = mowEventEntries.get(mowId);
+    if (!entry || entry.allowedFactions.length === 0) {
+        throw new Error(
+            `No "mowEvent" entry (or empty allowedFactions) for MoW "${mowId}" - can't derive deployableAlliance. ` +
+                `This usually means a new MoW shipped without a mow_event entry yet; check the live event config.`,
+        );
+    }
+    const alliances = new Set(
+        entry.allowedFactions.map((faction) => {
+            const alliance = factionAlliance.get(faction);
+            if (!alliance) {
+                throw new Error(
+                    `Unknown faction "${faction}" (from MoW "${mowId}"'s allowedFactions) - not found on any unit in the lineup.`,
+                );
+            }
+            return alliance;
+        }),
+    );
+    if (alliances.size !== 1) {
+        throw new Error(
+            `MoW "${mowId}"'s allowedFactions resolve to multiple alliances (${[...alliances].join(', ')}) - ` +
+                `the single-alliance assumption behind deployableAlliance no longer holds for this MoW.`,
+        );
+    }
+    return [...alliances][0];
 }
 
 interface UpgradeCostBadges {
@@ -111,6 +178,8 @@ export function extractMowData({ gameconfigPath, assetsDir }: ExtractMowDataPara
         id: a.avatarId,
         unitId: a.value,
     }));
+    const mowEventEntries = getMowEventEntries(data);
+    const factionAlliance = buildFactionAllianceMap(lineup);
 
     const mows: MowEntry[] = [];
     for (const [id, unit] of Object.entries<any>(lineup)) {
@@ -122,6 +191,7 @@ export function extractMowData({ gameconfigPath, assetsDir }: ExtractMowDataPara
             name: unit.name,
             faction: unit.FactionId,
             alliance: unit.GrandAllianceId,
+            deployableAlliance: resolveDeployableAlliance(id, mowEventEntries, factionAlliance),
             icon: getIconPath(spriteFiles, id, avatars),
             roundIcon: getRoundIconPath(spriteFiles, id, avatars),
             primaryAbility: buildAbility(abilities, primaryId),
