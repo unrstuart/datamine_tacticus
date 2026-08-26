@@ -22,6 +22,28 @@ Provide the folder path containing the game assets, and a directory path to save
 python image_miner.py $HOME/Library/Caches/tacticus/games/$GAME_VERSION_HASH/Tacticus.app ./out
 ```
 
+## Live GlobalConfig fetching
+
+Jobs that read `--global-config` (`guild_boss`, `planet_data`, `season_lineups`,
+`ability_icons`, and `all`) fetch it live automatically if you don't pass
+`--global-config` yourself - no more manually running `query_loki.ts` and
+copying the result in by hand.
+
+Fetching needs an account id, read from `LOKI_USER_ID` if set, otherwise from
+the local Tacticus install's own
+`~/Library/Application Support/com.snowprintstudios.tacticus/live-loki_user_data.json`
+(its `userId` field). It also needs a patch version, to name the saved file -
+derived from whichever of `--gameconfig` (`gameconfig.<version>.json`) or
+`--assets-dir` (`extracted_assets_<version>_...`) you passed. The fetched
+config is written to `liveconfig.<version>.json` in the repo root, overwriting
+any earlier fetch for that same patch (GlobalConfig is a live-ops config that
+can change within a single app version, so this is meant to always reflect
+"the latest live state for this patch," not a historical archive).
+
+Pass `--global-config <path>` explicitly to skip the live fetch entirely and
+use a specific snapshot instead - useful offline, or to pin a job against an
+older capture.
+
 ## Guild boss seasons
 
 Two things about the guild-raid season schedule are easy to get wrong, and both

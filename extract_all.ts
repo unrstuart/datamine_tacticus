@@ -23,7 +23,9 @@ import { extractMows } from './extract_mows';
 import { extractMythicQuests, formatMythicQuestsText } from './extract_mythic_quests';
 import { extractNpcData } from './extract_npc_data';
 import { extractOnslaught } from './extract_onslaught';
+import { extractOperations } from './extract_operations';
 import { extractPierce } from './extract_pierce';
+import { extractPlanetData } from './extract_planet_data';
 import { discoverCalendars, extractCalendar, printCalendarText, formatCalendarFindResults } from './extract_product_calendars';
 import { extractRankUpData } from './extract_rank_up_data';
 import { findRealMoneyProducts } from './extract_real_money_products';
@@ -35,6 +37,7 @@ import { extractSurvivalOffers } from './extract_survival_offers';
 import { extractTraits } from './extract_traits';
 import { getWarShopData, formatWarShopCsv } from './extract_war_shop';
 import { mergeSeasonLineups, formatMergeSummary } from './merge_season_lineups';
+import { fetchLatestGlobalConfigText, readLokiUserId } from './query_loki';
 
 // ---------------------------------------------------------------------------
 // CLI parsing - extract_all.ts owns all command-line parsing now; none of the
@@ -99,6 +102,50 @@ function resolveAllPaths(flags: Record<string, string>): ResolvedPaths {
 function requireResolved(value: string | undefined, flagName: string, usageHint: string): string {
     if (!value) throw new Error(`Missing required --${flagName} (or --assets-dir to derive it). ${usageHint}`);
     return value;
+}
+
+// ---------------------------------------------------------------------------
+// Live GlobalConfig fetching - jobs that need --global-config (guild_boss,
+// planet_data, season_lineups, ability_icons, and "all") fetch it live via
+// query_loki.ts instead of requiring a manually-scraped file, unless
+// --global-config is passed explicitly.
+// ---------------------------------------------------------------------------
+
+const JOBS_NEEDING_GLOBAL_CONFIG = new Set(['guild_boss', 'planet_data', 'season_lineups', 'ability_icons']);
+
+// Derives the dotted patch version (e.g. "1.41") used to name the fetched snapshot, from
+// either a "gameconfig.<version>.json" filename or an "extracted_assets_<version>_..."
+// directory - the two conventions already used for gameconfig/assets-dir in this repo.
+function derivePatchVersion(gameconfigPath: string, assetsDir?: string): string {
+    const filenameMatch = path.basename(gameconfigPath).match(/^gameconfig\.([\d.]+)\.json$/i);
+    if (filenameMatch) return filenameMatch[1];
+
+    const dirMatch = (assetsDir ?? gameconfigPath).match(/extracted_assets_(\d+)_/);
+    if (dirMatch) return `${dirMatch[1].slice(0, 1)}.${dirMatch[1].slice(1)}`;
+
+    throw new Error(
+        `Couldn't derive a patch version from "${gameconfigPath}"${assetsDir ? ` or "${assetsDir}"` : ''}. ` +
+        `Expected a "gameconfig.<version>.json" filename or an "extracted_assets_<version>_..." directory, ` +
+        `or pass --global-config explicitly to skip live fetching.`
+    );
+}
+
+// Fetches the live GlobalConfig and points paths.globalConfigPath at the saved copy, unless
+// --global-config was passed explicitly (which always wins and skips the network call).
+async function ensureGlobalConfigPath(paths: ResolvedPaths, flags: Record<string, string>): Promise<void> {
+    if (flags['global-config']) return;
+
+    const gameconfigPath = requireResolved(
+        paths.gameconfigPath,
+        'gameconfig',
+        'Auto-fetching the live GlobalConfig needs a patch version, derived from --gameconfig or --assets-dir; pass one of those, or pass --global-config explicitly to skip live fetching.'
+    );
+    const version = derivePatchVersion(gameconfigPath, paths.assetsDir);
+    const { hash, text } = await fetchLatestGlobalConfigText(readLokiUserId());
+    const outputPath = path.resolve(`liveconfig.${version}.json`);
+    fs.writeFileSync(outputPath, text);
+    console.error(`Fetched live GlobalConfig (hash ${hash}) -> ${outputPath}`);
+    paths.globalConfigPath = outputPath;
 }
 
 // ---------------------------------------------------------------------------
@@ -172,6 +219,7 @@ const PLANNER_DESTINATIONS: Record<string, string> = {
     heroes: 'src/fsd/4-entities/character/data/new-character-data2.json',
     mows: 'src/fsd/4-entities/mow/data/new-mows-data2.json',
     mythic_quests: 'src/fsd/4-entities/mythic_quests/data/mythic-quests.json',
+    operations: 'src/fsd/4-entities/operations/data/new-operations-data.json',
     rogue_trader: 'src/fsd/4-entities/shops/data/new-rogue-trader.json',
     traits: 'src/fsd/4-entities/traits/data/new-traits-data.json',
     war_shop: 'src/fsd/4-entities/shops/data/new-war-shop.json',
@@ -311,6 +359,15 @@ function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: string, re
     );
 
     runJob(results, 'mows', () => writeJson(resolvePath('mows', 'new-mows-data2.json'), extractMows({ gameconfigPath })));
+
+    runJob(results, 'operations', () =>
+        writeJson(resolvePath('operations', 'new-operations-data.json'), extractOperations({ gameconfigPath, i2Path }))
+    );
+
+    runJob(results, 'planet_data', () => {
+        if (!globalConfigPath) throw new Error('--global-config is required for planet_data');
+        return writeJson(resolvePath('planet_data', 'planet-data.json'), extractPlanetData({ globalConfigPath, i2Path }));
+    });
 
     runJob(results, 'mythic_quests', () =>
         writeJson(resolvePath('mythic_quests', 'mythic-quests.json'), extractMythicQuests({ gameconfigPath, i2Path }))
@@ -559,8 +616,8 @@ function printJson(value: unknown): void {
 const EXTRACTOR_NAMES = [
     'abilities', 'ability_icons', 'armageddon', 'campaign_data', 'ce_gold_medal_rewards', 'character_data',
     'crusade_shop', 'equipment_data', 'guild_boss', 'guild_shop', 'hero_quests', 'heroes', 'homescreen_event',
-    'incursion_enemies', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'pierce',
-    'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'season_lineups',
+    'incursion_enemies', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'operations', 'pierce',
+    'planet_data', 'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'season_lineups',
     'shop_event', 'survival_events', 'survival_offers', 'traits', 'war_shop',
 ];
 
@@ -749,9 +806,21 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
             }
             return;
         }
+        case 'operations': {
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts operations --gameconfig <p> --i2 <p> (or --assets-dir)');
+            const i2 = requireResolved(paths.i2Path, 'i2', 'Usage: extract_all.ts operations --gameconfig <p> --i2 <p> (or --assets-dir)');
+            printJson(extractOperations({ gameconfigPath: gc, i2Path: i2 }));
+            return;
+        }
         case 'pierce': {
             const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts pierce --gameconfig <p> (or --assets-dir)');
             printJson(extractPierce({ gameconfigPath: gc }));
+            return;
+        }
+        case 'planet_data': {
+            const gcfg = requireResolved(paths.globalConfigPath, 'global-config', 'Usage: extract_all.ts planet_data --global-config <p> --i2 <p> (or --assets-dir)');
+            const i2 = requireResolved(paths.i2Path, 'i2', 'Usage: extract_all.ts planet_data --global-config <p> --i2 <p> (or --assets-dir)');
+            printJson(extractPlanetData({ globalConfigPath: gcfg, i2Path: i2 }));
             return;
         }
         case 'product_calendars': {
@@ -883,7 +952,7 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
 // Main
 // ---------------------------------------------------------------------------
 
-function main() {
+async function main() {
     const { positional, flags } = parseArgs(process.argv.slice(2));
 
     if (!positional) {
@@ -910,6 +979,10 @@ function main() {
 
     try {
         const paths = resolveAllPaths(flags);
+
+        if (positional === 'all' || JOBS_NEEDING_GLOBAL_CONFIG.has(positional)) {
+            await ensureGlobalConfigPath(paths, flags);
+        }
 
         if (positional === 'all') {
             const outputDir = flags['output-dir'] ?? '/tmp/mined';

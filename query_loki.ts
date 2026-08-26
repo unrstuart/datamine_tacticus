@@ -1,16 +1,38 @@
 #!/usr/bin/env node
 // Discover + fetch the live Tacticus GlobalConfig. Flow credit: Ahriman dev (TableTheTable).
-// Usage: LOKI_USER_ID=<your-tacticus-uuid> node loki-config.js > GlobalConfig.json
-const USER_ID = process.env.LOKI_USER_ID;
-if (!USER_ID) {
-    console.error('set LOKI_USER_ID');
-    process.exit(2);
-}
+// Usage: node query_loki.ts > GlobalConfig.json
+// Reads the account's userId from LOKI_USER_ID if set, otherwise from the local Tacticus
+// install's own live-loki_user_data.json - see readLokiUserId(). Also importable from
+// extract_all.ts (readLokiUserId/fetchLatestGlobalConfigText) for the live-fetch pre-step.
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import { pathToFileURL } from 'url';
 
 // Any recent known hash works as a seed; the server tells you the real latest one.
 const SEED_HASH = 'a6117d40ed0e8688a3dca497aa29e1e6';
 
-async function discoverLatestHash() {
+export function readLokiUserId(): string {
+    if (process.env.LOKI_USER_ID) return process.env.LOKI_USER_ID;
+
+    const credPath = path.join(
+        os.homedir(),
+        'Library/Application Support/com.snowprintstudios.tacticus/live-loki_user_data.json'
+    );
+    let raw: string;
+    try {
+        raw = fs.readFileSync(credPath, 'utf-8');
+    } catch (error: any) {
+        throw new Error(
+            `Couldn't read Loki credentials from "${credPath}" (${error.message}). Set LOKI_USER_ID or pass --global-config explicitly.`
+        );
+    }
+    const userId = JSON.parse(raw)?.userId;
+    if (!userId) throw new Error(`"${credPath}" has no "userId" field.`);
+    return userId;
+}
+
+export async function discoverLatestHash(userId: string): Promise<string> {
     const payload = {
         playerEvent: {
             playerEventType: 'APP_START',
@@ -22,7 +44,7 @@ async function discoverLatestHash() {
                 deviceName: 'scraper',
                 deviceId: 'scraper',
                 locale: 'en_US',
-                userId: USER_ID,
+                userId,
                 appVersion: '1.21.46.689',
                 universeVersion: 'universe_not_needed',
                 installId: 'scraper-installid',
@@ -39,7 +61,7 @@ async function discoverLatestHash() {
         installId: 'scraper-installid',
     };
     const res = await fetch(
-        `https://api-live.loki.snowprintstudios.com/player/player2/userId/${encodeURIComponent(USER_ID!)}`,
+        `https://api-live.loki.snowprintstudios.com/player/player2/userId/${encodeURIComponent(userId)}`,
         { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
     );
     if (!res.ok) throw new Error(`APP_START HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
@@ -50,14 +72,22 @@ async function discoverLatestHash() {
     return hash;
 }
 
-async function main() {
-    const hash = await discoverLatestHash();
-    console.error(`latest hash: ${hash}`);
+export async function fetchLatestGlobalConfigText(userId: string): Promise<{ hash: string; text: string }> {
+    const hash = await discoverLatestHash(userId);
     const res = await fetch(`https://cdn.loki.snowprintstudios.com/config/global/GlobalConfig.${hash}.json`);
     if (!res.ok) throw new Error(`config HTTP ${res.status}`);
-    process.stdout.write(await res.text()); // full ~2MB config to stdout
+    return { hash, text: await res.text() };
 }
-main().catch(e => {
-    console.error('FAILED:', e.message);
-    process.exit(1);
-});
+
+async function main() {
+    const { hash, text } = await fetchLatestGlobalConfigText(readLokiUserId());
+    console.error(`latest hash: ${hash}`);
+    process.stdout.write(text); // full ~2MB config to stdout
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+    main().catch((e) => {
+        console.error('FAILED:', e.message);
+        process.exit(1);
+    });
+}

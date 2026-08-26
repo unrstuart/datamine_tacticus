@@ -1,4 +1,12 @@
 import * as fs from 'fs';
+import {
+    convertReward,
+    resolveTieredProgressRewards,
+    extractSeasonalMissions,
+    deriveEventPrefix,
+    ProgressRewardTier,
+    SeasonalMissions,
+} from './seasonal_event_shared';
 
 function globToRegex(pattern: string): RegExp {
     const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.');
@@ -18,132 +26,8 @@ function isCronScheduleMatchDay(cronSchedule: string, day: number): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Reward formatting
-// ---------------------------------------------------------------------------
-
-function niceLabel(id: string): string {
-    // Splits a camelCase/PascalCase identifier into words, e.g. "TreasureBeach" -> "Treasure Beach".
-    return id.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
-}
-
-function convertReward(reward: string, data: any): string {
-    const characters = data.clientGameConfig.units.lineup;
-    const upgrades = data.clientGameConfig.upgrades;
-    const equipment = data.clientGameConfig.items;
-
-    const colon = reward.lastIndexOf(':');
-    const type = colon === -1 ? reward : reward.slice(0, colon);
-    const quantity = colon === -1 ? '1' : reward.slice(colon + 1);
-
-    if (type in equipment) return `${quantity}x ${equipment[type].name}`;
-
-    if (type.startsWith('upgrades')) {
-        const rarity = type.substring('upgrades'.length);
-        return `${quantity}x ${rarity} Upgrade Material (Random)`;
-    }
-    if (type.startsWith('upg')) {
-        const upgrade = upgrades[type];
-        if (upgrade) return `${quantity}x ${upgrade.name}`;
-    }
-
-    if (type.startsWith('draft_abilityTokens')) {
-        const rarity = type.substring('draft_abilityTokens'.length);
-        return `${quantity}x ${rarity} Ability Badges (Draft)`;
-    }
-    if (type.startsWith('draft_ascensionOrbs')) {
-        const rarity = type.substring('draft_ascensionOrbs'.length);
-        return `${quantity}x ${rarity} Ascension Orb (Draft)`;
-    }
-    if (type === 'draft_machinesOfWarTokens') {
-        return `${quantity}x Machines of War Tokens (Draft)`;
-    }
-
-    if (type.startsWith('itemAscensionResource_')) {
-        const rarity = type.substring('itemAscensionResource_'.length);
-        return `${quantity}x ${rarity} Forge Badges`;
-    }
-
-    let match = type.match(/^abilityToken(\w+?)_(\w+)$/);
-    if (match) {
-        const [, rarity, alliance] = match;
-        return `${quantity}x ${rarity} ${alliance} Ability Badges`;
-    }
-    if (type.startsWith('abilityTokens')) {
-        const rarity = type.substring('abilityTokens'.length);
-        return `${quantity}x ${rarity} Ability Badges (Any Alliance)`;
-    }
-
-    match = type.match(/^heroAscensionOrb(\w+?)_(\w+)$/);
-    if (match) {
-        const [, rarity, alliance] = match;
-        return `${quantity}x ${rarity} ${alliance} Ascension Orb`;
-    }
-    if (type.startsWith('ascensionOrbs')) {
-        const rarity = type.substring('ascensionOrbs'.length);
-        return `${quantity}x ${rarity} Ascension Orb (Any Alliance)`;
-    }
-
-    if (type === 'machinesOfWarAmmo') return `${quantity}x Munitions`;
-    match = type.match(/^machinesOfWarToken_(\w+)$/);
-    if (match) return `${quantity}x ${match[1]} Machines of War Token`;
-
-    if (type.startsWith('items')) {
-        const rarity = type.substring('items'.length);
-        if (['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic'].includes(rarity)) {
-            return `${quantity}x ${rarity} Equipment (Random)`;
-        }
-    }
-
-    match = type.match(/^mythicShards_(\w+)$/);
-    if (match) {
-        const unit = characters[match[1]];
-        return `${quantity}x ${unit ? unit.name : match[1]} Mythic Shards`;
-    }
-    match = type.match(/^shards_(\w+)$/);
-    if (match) {
-        const unit = characters[match[1]];
-        return `${quantity}x ${unit ? unit.name : match[1]} Shards`;
-    }
-
-    if (type === 'ShardsAll') return `${quantity}x Random Shards (Any Character)`;
-    if (type === 'ShardsIfUnlocked') return `${quantity}x Shards of Unlocked Character`;
-    if (type === 'ShardsMoW') return `${quantity}x Random MoW Shards`;
-    match = type.match(/^Shards(\w+)$/);
-    if (match) return `${quantity}x Random ${match[1]} Shards`;
-
-    if (type === 'mythicDust') return `${quantity}x Mythic Salvage`;
-    if (type === 'dust') return `${quantity}x Salvage`;
-    if (type === 'gold') return `${quantity}x Gold`;
-    if (type === 'gems') return `${quantity}x Blackstone`;
-    if (type === 'raidTicket') return `${quantity}x Raid Ticket`;
-    if (type === 'summoningToken') return `${quantity}x Req Order`;
-    if (type === 'specialSummoningToken') return `${quantity}x Blessed Req Order`;
-    if (type === 'intel') return `${quantity}x Intel`;
-    if (type === 'crusadeBomb') return `${quantity}x Ordnance`;
-    if (type === 'crusadeNpc') return `${quantity}x Forces`;
-
-    match = type.match(/^[Ss]tamina(?:_(\w+))?$/);
-    if (match) {
-        return match[1] ? `${quantity}x Energy (${niceLabel(match[1])})` : `${quantity}x Energy`;
-    }
-
-    match = type.match(/^seasonalEventCurrency(\D+?)(\d{4})$/);
-    if (match) {
-        const [, month, year] = match;
-        return `${quantity}x ${month} ${year} Event Currency`;
-    }
-
-    if (type.startsWith('xp')) {
-        const rarity = type.substring(2);
-        return `${quantity}x ${rarity} XP Book`;
-    }
-
-    console.error('Unknown reward type: ', reward);
-    return reward;
-}
-
-// ---------------------------------------------------------------------------
 // Lock/condition formatting
+// ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 
 function formatLockId(lockId: string, data: any): string {
@@ -312,6 +196,14 @@ export interface ShopEventWeek {
     merchant: string;
     subtitle?: string;
     slots: ShopEventSlot[];
+    // Progress toward the event's own maxPoints bar (rewardProgressId), paid out in the event's
+    // seasonalEventCurrency or, near the top, a bonus resource. Always present on a seasonalEvent.
+    milestoneRewards?: ProgressRewardTier[];
+    // A separate, optional purchase-progress ladder (merchantProgressRewardId) - not every week has
+    // one (e.g. season_may_2026_event has none).
+    progressChests?: ProgressRewardTier[];
+    // Missions (daily/free/premium/battle-pass) that pay xp_seasonal into the milestone bar above.
+    missions?: SeasonalMissions;
 }
 
 export interface ShopEventData {
@@ -437,10 +329,55 @@ function extractShopEventData(
             })
             .filter((slot: ShopEventSlot) => slot.variants.length > 0);
 
-        weeks.push({ week, merchant: merchantKey, subtitle, slots });
+        let milestoneRewards: ProgressRewardTier[] | undefined;
+        let progressChests: ProgressRewardTier[] | undefined;
+        let missions: SeasonalMissions | undefined;
+        if (seasonalConfig) {
+            if (seasonalConfig.rewardProgressId) {
+                milestoneRewards = resolveTieredProgressRewards(data, seasonalConfig.rewardProgressId);
+            }
+            if (seasonalConfig.merchantProgressRewardId) {
+                progressChests = resolveTieredProgressRewards(data, seasonalConfig.merchantProgressRewardId);
+            }
+            if (seasonalConfig.questGroups) {
+                const prefix = deriveEventPrefix(seasonalConfig.theme, week);
+                missions = extractSeasonalMissions(data, prefix, seasonalConfig.questGroups);
+            }
+        }
+
+        weeks.push({ week, merchant: merchantKey, subtitle, slots, milestoneRewards, progressChests, missions });
     }
 
     return { event: eventName, title, weeks };
+}
+
+function formatProgressTier(tier: ProgressRewardTier, data: any): string {
+    if (tier.chest) {
+        const variants = tier.chest
+            .map((v) => `${v.type ? `${v.type}: ` : ''}${v.rewards.map((r) => convertReward(r, data)).join(', ')}`)
+            .join(' | ');
+        return `  ${tier.requiredProgress}: ${variants}`;
+    }
+    return `  ${tier.requiredProgress}: ${convertReward(tier.reward!, data)}`;
+}
+
+function formatMissionLines(missions: SeasonalMissions, data: any): string[] {
+    const lines: string[] = [];
+    const section = (heading: string, list: SeasonalMissions['daily']) => {
+        if (list.length === 0) return;
+        lines.push(`${heading}:`);
+        for (const m of list) {
+            lines.push(`  ${m.name}: ${m.rewards.map((r) => convertReward(r, data)).join(', ')}`);
+        }
+        lines.push('');
+    };
+    section('Daily Missions', missions.daily);
+    section('Free Missions', missions.free);
+    section('Premium Missions', missions.premium);
+    // Battle-pass dailies pay xp_seasonal alongside their normal battle-pass rewards - they're not
+    // part of this event's own questGroups, but have long contributed to the same milestone bar.
+    section('Battle Pass Missions (also feed seasonal points)', missions.battlePass);
+    return lines;
 }
 
 export function printShopEventText(shopEventData: ShopEventData, data: any, level: Level | null): string {
@@ -457,6 +394,20 @@ export function printShopEventText(shopEventData: ShopEventData, data: any, leve
         if (weekCount > 1) {
             const subtitleSuffix = week.subtitle ? `  (${week.subtitle})` : '';
             lines.push(`--- Week ${week.week}${subtitleSuffix} ---\n`);
+        }
+
+        if (week.milestoneRewards && week.milestoneRewards.length > 0) {
+            lines.push('Milestone Rewards:');
+            lines.push(...week.milestoneRewards.map((t) => formatProgressTier(t, data)));
+            lines.push('');
+        }
+        if (week.progressChests && week.progressChests.length > 0) {
+            lines.push('Progress Chests:');
+            lines.push(...week.progressChests.map((t) => formatProgressTier(t, data)));
+            lines.push('');
+        }
+        if (week.missions) {
+            lines.push(...formatMissionLines(week.missions, data));
         }
 
         for (let day = 0; day < 7; day++) {

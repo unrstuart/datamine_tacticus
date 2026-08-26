@@ -21,6 +21,8 @@ interface Stats {
 export interface IUnit {
     id: string;
     name: string;
+    faction: string;
+    alliance: string;
     movement: number;
     activeAbilityId: string;
     passiveAbilityIds: string;
@@ -49,6 +51,8 @@ export function extractHeroes({ gameconfigPath }: ExtractHeroesParams): IUnit[] 
             return {
                 id: id,
                 name: unit.name,
+                faction: unit.FactionId,
+                alliance: unit.GrandAllianceId,
                 movement: unit.Movement ?? 0,
                 activeAbilityId: unit.activeAbilities[0],
                 passiveAbilityIds: unit.passiveAbilities[0],

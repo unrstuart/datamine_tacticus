@@ -1,4 +1,11 @@
 import * as fs from 'fs';
+import {
+    resolveTieredProgressRewards,
+    extractSeasonalMissions,
+    deriveEventPrefix,
+    ProgressRewardTier,
+    SeasonalMissions,
+} from './seasonal_event_shared';
 
 function globToRegex(pattern: string): RegExp {
     const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.');
@@ -124,35 +131,56 @@ function extractChests(data: any, theme: string): SurvivalEventChest[] {
 }
 
 // ---------------------------------------------------------------------------
-// Quest groups - questGroups[] names the quest chains that pay survivalBoost_stats (the featured
-// hero's stat-boost currency) for completing missions, including ones in other game modes entirely.
-// Same join as extract_le_metadata.ts's parseQuestGroup, split into regular/premium by questType.
+// Points that feed the milestone bar directly from playing survival battles, rather than from
+// mission chains - rarityCapMilestones (one xp_seasonal payout per character-rarity cap reached
+// during a run) and the per-medal-tier rewards. Not every medal reward is xp_seasonal (silver/
+// platinum/diamond/adamantine pay XP books instead), so all six are surfaced rather than assumed.
+// Matches maxPayouts.points.survivalFree/survivalPremium on the event config. Left raw, same as
+// everything else here - see the note on ChestVariant in seasonal_event_shared.ts.
 // ---------------------------------------------------------------------------
 
-export interface SurvivalEventQuestTask {
-    name: string;
-    target?: number;
-    locaKey?: string;
-    taskParameters?: Record<string, string>;
+export interface SurvivalEventPoints {
+    rarityCapMilestones: Record<string, string>;
+    medalRewards: Record<string, string>;
 }
 
-export interface SurvivalEventQuest {
-    name: string;
-    rewards: string[];
-    tasks: SurvivalEventQuestTask[];
+const MEDAL_REWARD_FIELDS = [
+    'ironMedalReward',
+    'bronzeMedalReward',
+    'silverMedalReward',
+    'goldMedalReward',
+    'platinumMedalReward',
+    'diamondMedalReward',
+    'adamantineMedalReward',
+] as const;
+
+function extractSurvivalPoints(survival: any): SurvivalEventPoints {
+    const rarityCapMilestones: Record<string, string> = { ...(survival?.rarityCapMilestones ?? {}) };
+
+    const medalRewards: Record<string, string> = {};
+    for (const field of MEDAL_REWARD_FIELDS) {
+        if (survival?.[field]) medalRewards[field] = survival[field];
+    }
+
+    return { rarityCapMilestones, medalRewards };
 }
 
-function parseQuestGroup(group: any): SurvivalEventQuest[] {
-    return (group?.quests ?? []).map((q: any) => ({
-        name: q.name,
-        rewards: q.rewards ?? [],
-        tasks: (q.tasks ?? []).map((t: any) => ({
-            name: t.name,
-            target: t.target,
-            locaKey: t.locaKey,
-            taskParameters: t.taskParameters,
-        })),
-    }));
+// ---------------------------------------------------------------------------
+// Missions - questGroups[] names the quest chains that pay xp_seasonal (into the milestone bar)
+// and survivalBoost_stats (the featured hero's stat-boost currency), including chains in other game
+// modes entirely. Resolution (dedup, reward conversion, month/week prefix filtering, and folding in
+// battlepass_daily's "bp_se_*" dailies) is shared with extract_shop_event.ts - see
+// seasonal_event_shared.ts for why the prefix filter is necessary: quests.groups.seasonal_daily/
+// seasonal_seasonal/seasonal_seasonal_premium are reused every event cycle and accumulate every
+// month's quests in the same array rather than being replaced.
+// ---------------------------------------------------------------------------
+
+// Survival events observed so far are single-week (theme has no week component, e.g. "may_2026"),
+// but the eventName pattern used by weekly shop events ("..._week{N}_event") is checked too in case
+// a future survival event is split across weeks the same way.
+function deriveSurvivalEventWeek(eventName: string): number | undefined {
+    const match = eventName.match(/_week(\d+)_event$/i);
+    return match ? parseInt(match[1], 10) : undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -171,10 +199,11 @@ export interface SurvivalEventData {
     tradeInResourceAmountPerSeasonalCurrency?: number;
     survival: any;
     battle: any;
-    milestoneRewards: any[];
+    milestoneRewards: ProgressRewardTier[];
+    survivalPoints: SurvivalEventPoints;
     chests: SurvivalEventChest[];
     offers?: Record<string, SurvivalEventOffer>;
-    quests: { regular: SurvivalEventQuest[]; premium: SurvivalEventQuest[] };
+    missions: SeasonalMissions;
     chestId?: string;
     ohSoCloseOffer?: any;
     descriptions?: string[];
@@ -194,25 +223,18 @@ function extractSurvivalEventData(data: any, eventName: string, terms: Map<strin
         throw new Error(`Survival event "${eventName}" references battleSetId "${battleSetId}", which was not found in battles.battleSets`);
     }
 
-    const rewardProgressId = config.rewardProgressId;
-    const milestoneRewards = data.clientGameConfig.loot.tieredProgressRewards[rewardProgressId];
-    if (!milestoneRewards) {
+    if (!config.rewardProgressId || !data.clientGameConfig.loot.tieredProgressRewards[config.rewardProgressId]) {
         throw new Error(
-            `Survival event "${eventName}" references rewardProgressId "${rewardProgressId}", which was not found in loot.tieredProgressRewards`
+            `Survival event "${eventName}" references rewardProgressId "${config.rewardProgressId}", which was not found in loot.tieredProgressRewards`
         );
     }
+    const milestoneRewards = resolveTieredProgressRewards(data, config.rewardProgressId);
 
     const offersById = new Map<string, any>(data.clientGameConfig.shop.offers.map((o: any) => [o.offerId, o]));
     const offers = resolveOffers(config, offersById, data.clientGameConfig.shop.realMoneyProducts);
 
-    const quests = { regular: [] as SurvivalEventQuest[], premium: [] as SurvivalEventQuest[] };
-    for (const { groupName } of config.questGroups ?? []) {
-        const group = data.clientGameConfig.quests.groups[groupName];
-        if (!group) continue;
-        const parsed = parseQuestGroup(group);
-        if (group.questType === 'premium') quests.premium.push(...parsed);
-        else quests.regular.push(...parsed);
-    }
+    const prefix = deriveEventPrefix(config.theme, deriveSurvivalEventWeek(config.eventName));
+    const missions = extractSeasonalMissions(data, prefix, config.questGroups ?? []);
 
     const descriptions = terms
         ? [config.previewTitleLocaKey, config.previewSubtitleLocaKey, config.shortDescriptionLocaKey, config.longDescriptionLocaKey]
@@ -230,9 +252,10 @@ function extractSurvivalEventData(data: any, eventName: string, terms: Map<strin
         survival: config.survival,
         battle: battleSet[0],
         milestoneRewards,
+        survivalPoints: extractSurvivalPoints(config.survival),
         chests: extractChests(data, config.theme),
         offers: Object.keys(offers).length > 0 ? offers : undefined,
-        quests,
+        missions,
         chestId: config.chestId,
         ohSoCloseOffer: config.ohSoCloseOffer,
         descriptions,
