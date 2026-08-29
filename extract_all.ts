@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { createCanvas, loadImage } from 'canvas';
+
 import { extractAbilities } from './extract_abilities';
 import { extractAbilityIcons } from './extract_ability_icons';
 import { extractArmageddon, formatArmageddonCsv } from './extract_armageddon';
@@ -280,17 +282,74 @@ function findAssetRefs(text: string, assetsDir: string): AssetRef[] {
     return refs;
 }
 
-type AssetCopyStatus = 'copied' | 'unchanged' | 'skipped-existing' | 'missing-source';
+type AssetCopyStatus = 'copied' | 'unchanged' | 'unchanged-perceptual' | 'skipped-existing' | 'missing-source';
+
+const DHASH_SIZE = 8; // 8x8 -> 64-bit hash
+// Hamming-distance cutoff for "same image" on a 64-bit dHash. Calibrated against a real
+// extraction-drift incident (a 141 -> 142 sprite re-dump where every icon came out bytewise
+// different from what was committed, purely from texture-decode rounding, not a redraw): true
+// near-duplicates landed at distance 0-2 out of 64 on a 300-file sample, max observed was 6. 8
+// leaves a little headroom above that noise floor without being loose enough to wave through a
+// real content change (which should read far higher - dHash is a coarse structural fingerprint,
+// so genuine edits move it a lot).
+const DHASH_THRESHOLD = 8;
+
+// Perceptual hash (dHash): downscale to grayscale 9x8, compare each pixel to its right neighbor,
+// pack the 64 comparison bits into a hash. Invariant to resizing, recompression, and small
+// color/gamma shifts - sensitive to actual structural changes. Used to tell "decoder produced
+// slightly different bytes for the same art" apart from "the art actually changed."
+async function computeDHash(filePath: string): Promise<bigint> {
+    const w = DHASH_SIZE + 1;
+    const image = await loadImage(filePath);
+    const canvas = createCanvas(w, DHASH_SIZE);
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(image as any, 0, 0, w, DHASH_SIZE);
+    const { data } = ctx.getImageData(0, 0, w, DHASH_SIZE);
+
+    const luminance = (i: number) => 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+
+    let hash = 0n;
+    for (let row = 0; row < DHASH_SIZE; row++) {
+        for (let col = 0; col < DHASH_SIZE; col++) {
+            const left = luminance((row * w + col) * 4);
+            const right = luminance((row * w + col + 1) * 4);
+            hash = (hash << 1n) | (left > right ? 1n : 0n);
+        }
+    }
+    return hash;
+}
+
+function hammingDistance(a: bigint, b: bigint): number {
+    let x = a ^ b;
+    let count = 0;
+    while (x !== 0n) {
+        count += Number(x & 1n);
+        x >>= 1n;
+    }
+    return count;
+}
 
 // Default is fill-gaps-only: never touch a file that's already there, even if the source dump has
 // a byte-different version (checked-in art can legitimately lag the latest data-mine without that
 // being a bug this tool should silently "fix" on every run). Pass `refreshAssets: true` (the
-// `--refresh-assets` flag) to instead overwrite whenever content actually differs.
-function copyAssetIfNeeded(sourceAbsPath: string | undefined, destAbsPath: string, refreshAssets: boolean): AssetCopyStatus {
+// `--refresh-assets` flag) to instead overwrite whenever content actually differs - "differs"
+// meaning perceptually, per computeDHash/DHASH_THRESHOLD above, not just bytewise, since a
+// texture-decode pipeline drift can make bytewise-identical art come out bytewise different.
+async function copyAssetIfNeeded(
+    sourceAbsPath: string | undefined,
+    destAbsPath: string,
+    refreshAssets: boolean
+): Promise<AssetCopyStatus> {
     if (!sourceAbsPath || !fs.existsSync(sourceAbsPath)) return 'missing-source';
     if (fs.existsSync(destAbsPath)) {
         if (!refreshAssets) return 'skipped-existing';
         if (fs.readFileSync(destAbsPath).equals(fs.readFileSync(sourceAbsPath))) return 'unchanged';
+        try {
+            const distance = hammingDistance(await computeDHash(destAbsPath), await computeDHash(sourceAbsPath));
+            if (distance <= DHASH_THRESHOLD) return 'unchanged-perceptual';
+        } catch {
+            // Decode failure (corrupt/non-PNG/etc.) - fall through and copy from source like before.
+        }
     }
     fs.mkdirSync(path.dirname(destAbsPath), { recursive: true });
     fs.copyFileSync(sourceAbsPath, destAbsPath);
@@ -308,7 +367,7 @@ function runJob(results: JobResult[], name: string, fn: () => string): void {
     }
 }
 
-function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: string, refreshAssets = false): void {
+async function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: string, refreshAssets = false): Promise<void> {
     const gameconfigPath = requireResolved(paths.gameconfigPath, 'gameconfig', '"all" mode requires --gameconfig or --assets-dir');
     const i2Path = requireResolved(paths.i2Path, 'i2', '"all" mode requires --i2 or --assets-dir');
     const globalConfigPath = paths.globalConfigPath;
@@ -571,23 +630,27 @@ function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: string, re
         }
 
         const dedupedRefs = [...new Map(assetRefs.map((r) => [r.destRelPath, r])).values()];
-        const assetResults = dedupedRefs.map((r) => ({
-            ...r,
-            status: copyAssetIfNeeded(
+        const assetResults: Array<AssetRef & { status: AssetCopyStatus }> = [];
+        for (const r of dedupedRefs) {
+            const status = await copyAssetIfNeeded(
                 r.sourceAbsPath,
                 path.join(plannerDir, 'src/assets/images/snowprint_assets', r.destRelPath),
                 refreshAssets
-            ),
-        }));
+            );
+            assetResults.push({ ...r, status });
+        }
 
         console.log('');
-        console.log('=== Assets ===' + (refreshAssets ? ' (--refresh-assets)' : ''));
+        console.log('=== Assets ===' + (refreshAssets ? ` (--refresh-assets, dhash threshold ${DHASH_THRESHOLD})` : ''));
         const copied = assetResults.filter((r) => r.status === 'copied');
-        const unchanged = assetResults.filter((r) => r.status === 'unchanged');
+        const unchangedExact = assetResults.filter((r) => r.status === 'unchanged');
+        const unchangedPerceptual = assetResults.filter((r) => r.status === 'unchanged-perceptual');
         const skipped = assetResults.filter((r) => r.status === 'skipped-existing');
         const missing = assetResults.filter((r) => r.status === 'missing-source');
         console.log(
-            `${copied.length} copied, ${unchanged.length} unchanged, ${skipped.length} already present (skipped), ${missing.length} missing source`
+            `${copied.length} copied, ${unchangedExact.length + unchangedPerceptual.length} unchanged ` +
+            `(${unchangedExact.length} exact, ${unchangedPerceptual.length} perceptual match), ` +
+            `${skipped.length} already present (skipped), ${missing.length} missing source`
         );
         for (const r of copied) console.log(`  COPIED  ${r.destRelPath}`);
         for (const r of missing) console.log(`  MISSING ${r.destRelPath}`);
@@ -988,7 +1051,7 @@ async function main() {
             const outputDir = flags['output-dir'] ?? '/tmp/mined';
             const plannerDir = flags['planner-dir'];
             const refreshAssets = flags['refresh-assets'] === 'true';
-            runAll(paths, outputDir, plannerDir, refreshAssets);
+            await runAll(paths, outputDir, plannerDir, refreshAssets);
         } else {
             runOne(positional, flags, paths);
         }
