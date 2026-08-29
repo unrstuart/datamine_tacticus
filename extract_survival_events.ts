@@ -113,15 +113,46 @@ export interface SurvivalEventChest {
     rewards: string[];
 }
 
+// Different event families use different product-key templates for their progress-chest ladder
+// (all still "product_<...>_progress_chest_NN", just with theme worked in differently):
+//   - monthly seasonal events:  product_seasonal_event_<theme>_progress_chest_NN   (theme="may_2026")
+//   - Crescendo (a numbered, non-monthly event line): product_crescendo_event_01_progress_chest_NN
+//     (theme="crescendo_01" - the trailing _01 iteration number moves in front of "_event_", and
+//     "seasonal_" is dropped entirely)
+// A hardcoded template broke silently (empty chests, no error) the moment a second convention
+// showed up, and shop.products also carries unrelated progress-chest ladders for other event
+// families entirely (product_hre_*, product_leg_event_<N>_* for legendary events - the latter has
+// its own separate extractChests() in extract_le_metadata.ts). Rather than hardcode a second exact
+// template and risk the same silent breakage on the next new naming scheme, this matches on the
+// theme's own tokens appearing in the product-key prefix, whatever the surrounding template is.
+function findChestProductPrefix(products: Record<string, any>, theme: string): string | undefined {
+    const themeTokens = theme.split('_');
+    const prefixes = new Set(
+        Object.keys(products)
+            .filter((key) => /_progress_chest_\d+$/.test(key))
+            .map((key) => key.replace(/_progress_chest_\d+$/, ''))
+    );
+    const matches = [...prefixes].filter((prefix) => themeTokens.every((t) => prefix.split('_').includes(t)));
+    if (matches.length !== 1) {
+        console.error(
+            `Couldn't uniquely resolve a progress-chest product prefix for theme "${theme}" (${matches.length} candidates: ${matches.join(', ') || 'none'}).`
+        );
+        return undefined;
+    }
+    return matches[0];
+}
+
 function extractChests(data: any, theme: string): SurvivalEventChest[] {
     const products = data.clientGameConfig.shop.products;
     const chestDefs = data.clientGameConfig.loot.chests;
-    const prefix = `product_seasonal_event_${theme}_progress_chest_`;
+    const prefix = findChestProductPrefix(products, theme);
+    if (!prefix) return [];
+    const fullPrefix = `${prefix}_progress_chest_`;
 
     return Object.keys(products)
-        .filter((key) => key.startsWith(prefix))
+        .filter((key) => key.startsWith(fullPrefix))
         .map((key) => {
-            const level = parseInt(key.slice(prefix.length), 10);
+            const level = parseInt(key.slice(fullPrefix.length), 10);
             const product = products[key];
             const chestDef: any[] = chestDefs[product.chestId] ?? [];
             const rewards = chestDef.flatMap((entry) => entry.rewards ?? []);
