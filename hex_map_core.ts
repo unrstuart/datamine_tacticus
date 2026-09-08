@@ -25,6 +25,7 @@ import { CanvasRenderingContext2D, createCanvas } from 'canvas';
 export interface SpawnPoint {
     Column: number;
     Row: number;
+    SpawnPointType: number;
 }
 
 export interface SpawnGroup {
@@ -135,7 +136,17 @@ export const SPAWN_FILL      = 'rgba(255, 210,   0, 0.35)';
 export const SPAWN_STROKE    = 'rgba(255, 210,   0, 0.90)';
 export const DEPLOY_FILL     = 'rgba(  0, 200, 255, 0.35)';
 export const DEPLOY_STROKE   = 'rgba(  0, 200, 255, 0.90)';
+export const POWERUP_FILL    = 'rgba(  0, 220,   0, 0.35)';
+export const POWERUP_STROKE  = 'rgba(  0, 220,   0, 0.90)';
 export const HIGHLIGHT_WIDTH = 3;
+
+// Within a TeamWithPlayerIndex=1 (enemy) SpawnPointGroup, SpawnPointType distinguishes actual
+// enemy entry points (11 - small count, 2-4, at board corners, present on every board incl. LE)
+// from power-up pickup spots (10 - larger count, ~9, clustered centrally, only seen on survival
+// boards). Empirically confirmed across survival_13/survival_14 (both {11: 4, 10: 9}) vs several
+// LE boards (11 only, no 10 at all - LE has no power-up mechanic). No named enum available in the
+// extracted data to confirm this by name, just by structure.
+const POWERUP_SPAWN_POINT_TYPE = 10;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HEX METRICS
@@ -298,12 +309,23 @@ export function classify(
 // MAIN ENTRY POINT
 // ─────────────────────────────────────────────────────────────────────────────
 
+export interface AddHexesToMapOptions {
+    /** Crop to the drawn hex bounds (+40px margin) before downsampling. Default true (existing behavior). */
+    crop?: boolean;
+    /** Scale factor applied after cropping (or to the full canvas when crop=false). Default 0.25 (existing behavior). */
+    downsampleFactor?: number;
+    /** Color power-up spawn points (SpawnPointType 10) green instead of lumping them in with enemy-spawn yellow. Default false (existing behavior). */
+    distinguishPowerups?: boolean;
+}
+
 export function addHexesToMap(
     canvas: ReturnType<typeof createCanvas>,
     level:  LevelJson,
     config: ConfigVisualJson,
     image:  { width: number; height: number },
+    options: AddHexesToMapOptions = {},
 ): void {
+    const { crop = true, downsampleFactor = 0.25, distinguishPowerups = false } = options;
     const m    = deriveMetrics(level.Width, level.Height);
     const bbox: BoundingBox = { minX: IMG_SIZE, maxX: 0, minY: IMG_SIZE, maxY: 0 };
 
@@ -311,12 +333,24 @@ export function addHexesToMap(
     ctx.drawImage(image as any, 0, 0, IMG_SIZE, IMG_SIZE);
 
     // TeamWithPlayerIndex 0 = attacker, deploys from south = CYAN
-    // TeamWithPlayerIndex 1 = defender, spawns in north   = GOLD
-    const deploySet = new Set<string>();
-    const spawnSet  = new Set<string>();
+    // TeamWithPlayerIndex 1 = defender, spawns in north   = GOLD (or GREEN for power-ups, see
+    // POWERUP_SPAWN_POINT_TYPE, when distinguishPowerups is on)
+    const deploySet  = new Set<string>();
+    const spawnSet   = new Set<string>();
+    const powerupSet = new Set<string>();
     for (const group of level.SpawnPointSets[0].SpawnPointGroups) {
-        const target = group.TeamWithPlayerIndex === 0 ? deploySet : spawnSet;
-        for (const sp of group.SpawnPoints) target.add(`${sp.Column},${sp.Row}`);
+        if (group.TeamWithPlayerIndex === 0) {
+            for (const sp of group.SpawnPoints) deploySet.add(`${sp.Column},${sp.Row}`);
+            continue;
+        }
+        for (const sp of group.SpawnPoints) {
+            const key = `${sp.Column},${sp.Row}`;
+            if (distinguishPowerups && sp.SpawnPointType === POWERUP_SPAWN_POINT_TYPE) {
+                powerupSet.add(key);
+            } else {
+                spawnSet.add(key);
+            }
+        }
     }
 
     // Pass 1: grey outlines for all drawable tiles
@@ -345,30 +379,34 @@ export function addHexesToMap(
             if (!lvlTile) continue;
             const result = classify(visTile, lvlTile);
             if (!result.draw) continue;
-            const key      = `${visTile.LogicalColumn},${visTile.LogicalRow}`;
-            const isSpawn  = spawnSet.has(key);
-            const isDeploy = deploySet.has(key);
-            if (!isSpawn && !isDeploy) continue;
+            const key       = `${visTile.LogicalColumn},${visTile.LogicalRow}`;
+            const isSpawn   = spawnSet.has(key);
+            const isDeploy  = deploySet.has(key);
+            const isPowerup = powerupSet.has(key);
+            if (!isSpawn && !isDeploy && !isPowerup) continue;
             const { x, y } = tileCenter(m, vCol, vRow, result.elevation);
-            if (isSpawn) {
-                drawHex(ctx, m, x, y, SPAWN_FILL,  SPAWN_STROKE,  HIGHLIGHT_WIDTH, bbox);
-            } else {
+            if (isDeploy) {
                 drawHex(ctx, m, x, y, DEPLOY_FILL, DEPLOY_STROKE, HIGHLIGHT_WIDTH, bbox);
+            } else if (isPowerup) {
+                drawHex(ctx, m, x, y, POWERUP_FILL, POWERUP_STROKE, HIGHLIGHT_WIDTH, bbox);
+            } else {
+                drawHex(ctx, m, x, y, SPAWN_FILL, SPAWN_STROKE, HIGHLIGHT_WIDTH, bbox);
             }
         }
     }
 
-    // Crop to drawn hex bounds (+40px margin), then downsample to 25%.
+    // Crop to drawn hex bounds (+40px margin) when crop=true, else keep the full canvas; then
+    // downsample by downsampleFactor (both default to the original always-crop-to-25% behavior).
     if (bbox.maxX <= bbox.minX || bbox.maxY <= bbox.minY) return;
 
     const margin = 40;
     const sourceW = canvas.width;
     const sourceH = canvas.height;
 
-    const cropLeft = Math.max(0, Math.floor(bbox.minX) - margin);
-    const cropTop = Math.max(0, Math.floor(bbox.minY) - margin);
-    const cropRight = Math.min(sourceW, Math.ceil(bbox.maxX) + margin);
-    const cropBottom = Math.min(sourceH, Math.ceil(bbox.maxY) + margin);
+    const cropLeft = crop ? Math.max(0, Math.floor(bbox.minX) - margin) : 0;
+    const cropTop = crop ? Math.max(0, Math.floor(bbox.minY) - margin) : 0;
+    const cropRight = crop ? Math.min(sourceW, Math.ceil(bbox.maxX) + margin) : sourceW;
+    const cropBottom = crop ? Math.min(sourceH, Math.ceil(bbox.maxY) + margin) : sourceH;
 
     const cropW = Math.max(1, cropRight - cropLeft);
     const cropH = Math.max(1, cropBottom - cropTop);
@@ -377,8 +415,8 @@ export function addHexesToMap(
     const croppedCtx = croppedCanvas.getContext('2d') as CanvasRenderingContext2D;
     croppedCtx.drawImage(canvas as any, cropLeft, cropTop, cropW, cropH, 0, 0, cropW, cropH);
 
-    const outW = Math.max(1, Math.round(cropW * 0.25));
-    const outH = Math.max(1, Math.round(cropH * 0.25));
+    const outW = Math.max(1, Math.round(cropW * downsampleFactor));
+    const outH = Math.max(1, Math.round(cropH * downsampleFactor));
 
     const downsampledCanvas = createCanvas(outW, outH);
     const downsampledCtx = downsampledCanvas.getContext('2d') as CanvasRenderingContext2D;

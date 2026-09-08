@@ -6,6 +6,8 @@ import { file } from 'zod';
 import { addHexesToMap, ConfigVisualJson, LevelJson } from './hex_map_core';
 import { createCanvas, loadImage } from 'canvas';
 
+const IMG_SIZE = 2048; // must match hex_map_core.ts's IMG_SIZE - the coordinate math is calibrated to it
+
 /**
  * Finds pairs of JSON files where both a base file and a
  * _Config_Visual.json file exist (case-insensitive).
@@ -60,12 +62,42 @@ function findJsonPairs(targetDir: string, texturesDir: string): string[] {
     return ret;
 }
 
+// --no-crop, --scale <factor>, --powerup-colors: opt-in flags for addHexesToMap's
+// AddHexesToMapOptions - can appear anywhere among the positional args. Defaults match the
+// original always-crop-to-25%-with-undifferentiated-spawn-colors behavior exactly.
+function parseArgs(argv: string[]): { positional: string[]; flags: Record<string, string | boolean> } {
+    const positional: string[] = [];
+    const flags: Record<string, string | boolean> = {};
+    for (let i = 0; i < argv.length; i++) {
+        const arg = argv[i];
+        if (arg.startsWith('--')) {
+            const key = arg.slice(2);
+            const next = argv[i + 1];
+            if (next !== undefined && !next.startsWith('--')) {
+                flags[key] = next;
+                i++;
+            } else {
+                flags[key] = true;
+            }
+        } else {
+            positional.push(arg);
+        }
+    }
+    return { positional, flags };
+}
+
 async function main() {
+    const { positional, flags } = parseArgs(process.argv.slice(2));
+
     // Run the script (defaults to current directory '.')
-    const targetPath = process.argv[2] || '.';
-    const texturesPath = process.argv[3] || '.';
-    const outputPath = process.argv[4] || '.';
-    const gameConfigPath = process.argv[5] || null;
+    const targetPath = positional[0] || '.';
+    const texturesPath = positional[1] || '.';
+    const outputPath = positional[2] || '.';
+    const gameConfigPath = positional[3] || null;
+
+    const crop = !flags['no-crop'];
+    const downsampleFactor = flags['scale'] ? parseFloat(flags['scale'] as string) : 0.25;
+    const distinguishPowerups = !!flags['powerup-colors'];
 
     const gameConfig = JSON.parse(gameConfigPath ? fs.readFileSync(gameConfigPath, 'utf8') : '{}');
     const battleSets = gameConfig.clientGameConfig?.battles?.battleSets ?? {};
@@ -99,9 +131,12 @@ async function main() {
         // Synchronous image loading workaround
         const image = await loadImage(imagePath);
 
-        const canvas = createCanvas(image.width, image.height);
+        // Canvas must be IMG_SIZE x IMG_SIZE regardless of the source texture's native
+        // resolution - addHexesToMap's internal drawImage always targets IMG_SIZExIMG_SIZE, so a
+        // smaller canvas (e.g. survival boards' 1024x1024 textures) would clip the render.
+        const canvas = createCanvas(IMG_SIZE, IMG_SIZE);
 
-        addHexesToMap(canvas, level, config, image);
+        addHexesToMap(canvas, level, config, image, { crop, downsampleFactor, distinguishPowerups });
 
         await new Promise<void>((resolve, reject) => {
             const out = fs.createWriteStream(imageOutputPath);
