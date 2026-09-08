@@ -140,6 +140,10 @@ export const POWERUP_FILL    = 'rgba(  0, 220,   0, 0.35)';
 export const POWERUP_STROKE  = 'rgba(  0, 220,   0, 0.90)';
 export const HIGHLIGHT_WIDTH = 3;
 
+export const ELEVATION_LABEL_FILL         = 'rgba(255, 220,   0, 1.00)';
+export const ELEVATION_LABEL_OUTLINE      = 'rgba(  0,   0,   0, 1.00)';
+export const ELEVATION_LABEL_OUTLINE_WIDTH = 4;
+
 // Within a TeamWithPlayerIndex=1 (enemy) SpawnPointGroup, SpawnPointType distinguishes actual
 // enemy entry points (11 - small count, 2-4, at board corners, present on every board incl. LE)
 // from power-up pickup spots (10 - larger count, ~9, clustered centrally, only seen on survival
@@ -316,6 +320,14 @@ export interface AddHexesToMapOptions {
     downsampleFactor?: number;
     /** Color power-up spawn points (SpawnPointType 10) green instead of lumping them in with enemy-spawn yellow. Default false (existing behavior). */
     distinguishPowerups?: boolean;
+    /** Draw the player deploy highlight (cyan). Default true (existing behavior). */
+    showDeployPoints?: boolean;
+    /** Draw the enemy-spawn highlight (yellow). Default true (existing behavior). */
+    showEnemySpawns?: boolean;
+    /** Draw the power-up-spawn highlight (green when distinguishPowerups is on). Default true (existing behavior). */
+    showPowerupSpawns?: boolean;
+    /** Draw each playable hex's elevation as a number, 0 = the board's lowest elevation. Default false (existing behavior). */
+    labelElevation?: boolean;
 }
 
 export function addHexesToMap(
@@ -325,7 +337,15 @@ export function addHexesToMap(
     image:  { width: number; height: number },
     options: AddHexesToMapOptions = {},
 ): void {
-    const { crop = true, downsampleFactor = 0.25, distinguishPowerups = false } = options;
+    const {
+        crop = true,
+        downsampleFactor = 0.25,
+        distinguishPowerups = false,
+        showDeployPoints = true,
+        showEnemySpawns = true,
+        showPowerupSpawns = true,
+        labelElevation = false,
+    } = options;
     const m    = deriveMetrics(level.Width, level.Height);
     const bbox: BoundingBox = { minX: IMG_SIZE, maxX: 0, minY: IMG_SIZE, maxY: 0 };
 
@@ -385,13 +405,45 @@ export function addHexesToMap(
             const isPowerup = powerupSet.has(key);
             if (!isSpawn && !isDeploy && !isPowerup) continue;
             const { x, y } = tileCenter(m, vCol, vRow, result.elevation);
-            if (isDeploy) {
+            if (isDeploy && showDeployPoints) {
                 drawHex(ctx, m, x, y, DEPLOY_FILL, DEPLOY_STROKE, HIGHLIGHT_WIDTH, bbox);
-            } else if (isPowerup) {
+            } else if (isPowerup && showPowerupSpawns) {
                 drawHex(ctx, m, x, y, POWERUP_FILL, POWERUP_STROKE, HIGHLIGHT_WIDTH, bbox);
-            } else {
+            } else if (isSpawn && showEnemySpawns) {
                 drawHex(ctx, m, x, y, SPAWN_FILL, SPAWN_STROKE, HIGHLIGHT_WIDTH, bbox);
             }
+        }
+    }
+
+    // Pass 3: elevation labels - 0 = the lowest elevation among drawn (playable) tiles.
+    if (labelElevation) {
+        const labels: Array<{ x: number; y: number; elevation: number }> = [];
+        let minElevation = Infinity;
+        for (let vCol = 0; vCol < config.VisualTiles.length; vCol++) {
+            for (let vRow = 0; vRow < config.VisualTiles[vCol].Tile.length; vRow++) {
+                const visTile = config.VisualTiles[vCol].Tile[vRow];
+                if (!visTile.IsPlayable) continue;
+                const lvlTile = level.Tiles[visTile.LogicalColumn]?.Tile[visTile.LogicalRow];
+                if (!lvlTile) continue;
+                const result = classify(visTile, lvlTile);
+                if (!result.draw) continue;
+                const { x, y } = tileCenter(m, vCol, vRow, result.elevation);
+                labels.push({ x, y, elevation: result.elevation });
+                if (result.elevation < minElevation) minElevation = result.elevation;
+            }
+        }
+
+        ctx.font = `bold ${Math.round(m.hexHeight / 3)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.lineJoin = 'round';
+        for (const label of labels) {
+            const text = String(label.elevation - minElevation);
+            ctx.lineWidth = ELEVATION_LABEL_OUTLINE_WIDTH;
+            ctx.strokeStyle = ELEVATION_LABEL_OUTLINE;
+            ctx.strokeText(text, label.x, label.y);
+            ctx.fillStyle = ELEVATION_LABEL_FILL;
+            ctx.fillText(text, label.x, label.y);
         }
     }
 

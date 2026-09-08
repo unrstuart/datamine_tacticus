@@ -62,9 +62,10 @@ function findJsonPairs(targetDir: string, texturesDir: string): string[] {
     return ret;
 }
 
-// --no-crop, --scale <factor>, --powerup-colors: opt-in flags for addHexesToMap's
-// AddHexesToMapOptions - can appear anywhere among the positional args. Defaults match the
-// original always-crop-to-25%-with-undifferentiated-spawn-colors behavior exactly.
+// --no-crop, --scale <factor>, --powerup-colors, --no-deploy, --no-enemy-spawns,
+// --no-powerup-spawns, --label-elevation: opt-in flags for addHexesToMap's AddHexesToMapOptions -
+// can appear anywhere among the positional args. Defaults match the original
+// always-crop-to-25%-with-undifferentiated-spawn-colors-and-no-elevation-labels behavior exactly.
 function parseArgs(argv: string[]): { positional: string[]; flags: Record<string, string | boolean> } {
     const positional: string[] = [];
     const flags: Record<string, string | boolean> = {};
@@ -98,6 +99,10 @@ async function main() {
     const crop = !flags['no-crop'];
     const downsampleFactor = flags['scale'] ? parseFloat(flags['scale'] as string) : 0.25;
     const distinguishPowerups = !!flags['powerup-colors'];
+    const showDeployPoints = !flags['no-deploy'];
+    const showEnemySpawns = !flags['no-enemy-spawns'];
+    const showPowerupSpawns = !flags['no-powerup-spawns'];
+    const labelElevation = !!flags['label-elevation'];
 
     const gameConfig = JSON.parse(gameConfigPath ? fs.readFileSync(gameConfigPath, 'utf8') : '{}');
     const battleSets = gameConfig.clientGameConfig?.battles?.battleSets ?? {};
@@ -136,7 +141,15 @@ async function main() {
         // smaller canvas (e.g. survival boards' 1024x1024 textures) would clip the render.
         const canvas = createCanvas(IMG_SIZE, IMG_SIZE);
 
-        addHexesToMap(canvas, level, config, image, { crop, downsampleFactor, distinguishPowerups });
+        addHexesToMap(canvas, level, config, image, {
+            crop,
+            downsampleFactor,
+            distinguishPowerups,
+            showDeployPoints,
+            showEnemySpawns,
+            showPowerupSpawns,
+            labelElevation,
+        });
 
         await new Promise<void>((resolve, reject) => {
             const out = fs.createWriteStream(imageOutputPath);
