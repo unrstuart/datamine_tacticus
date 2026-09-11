@@ -10,6 +10,7 @@ import { discoverBlessedReqBanners, extractBlessedReqBanner, formatBlessedReqBan
 import { extractCampaignData } from './extract_campaign_data';
 import { extractCeGoldMedalRewards } from './extract_ce_gold_medal_rewards';
 import { extractCharacterData } from './extract_character_data';
+import { extractCharacterPower } from './extract_character_power';
 import { getCrusadeShopData, formatCrusadeShopCsv, parsePlayerLevel, parseHasMythic, parseTier } from './extract_crusade_shop';
 import { extractEquipmentData, collectEquipmentIconAssets } from './extract_equipment_data';
 import { getGuildBossData, summarizeActiveGuildBossSeason } from './extract_guild_boss';
@@ -419,6 +420,27 @@ async function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: stri
 
     runJob(results, 'mows', () => writeJson(resolvePath('mows', 'new-mows-data2.json'), extractMows({ gameconfigPath })));
 
+    // character_power emits 3 files from one extraction, so - like le_metadata/shop_event/etc.
+    // below - it inlines its planner path instead of using PLANNER_DESTINATIONS (one dest per
+    // job name), and each file gets its own runJob call so a per-file failure is reported (and
+    // the summary line) on its own instead of being folded into one job.
+    let characterPowerData: ReturnType<typeof extractCharacterPower> | undefined;
+    const characterPowerDest = (filename: string): string =>
+        plannerDir
+            ? path.join(plannerDir, 'src/fsd/4-entities/unit/character-power/data', filename)
+            : path.join(outputDir, filename);
+
+    runJob(results, 'character_power:units', () => {
+        characterPowerData = extractCharacterPower({ gameconfigPath });
+        return writeJson(characterPowerDest('character-power-units.json'), characterPowerData.units);
+    });
+    runJob(results, 'character_power:items', () =>
+        writeJson(characterPowerDest('character-power-items.json'), characterPowerData!.items)
+    );
+    runJob(results, 'character_power:upgrades', () =>
+        writeJson(characterPowerDest('character-power-upgrades.json'), characterPowerData!.upgrades)
+    );
+
     runJob(results, 'operations', () =>
         writeJson(resolvePath('operations', 'new-operations-data.json'), extractOperations({ gameconfigPath, i2Path }))
     );
@@ -678,7 +700,7 @@ function printJson(value: unknown): void {
 
 const EXTRACTOR_NAMES = [
     'abilities', 'ability_icons', 'armageddon', 'campaign_data', 'ce_gold_medal_rewards', 'character_data',
-    'crusade_shop', 'equipment_data', 'guild_boss', 'guild_shop', 'hero_quests', 'heroes', 'homescreen_event',
+    'character_power', 'crusade_shop', 'equipment_data', 'guild_boss', 'guild_shop', 'hero_quests', 'heroes', 'homescreen_event',
     'incursion_enemies', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'operations', 'pierce',
     'planet_data', 'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'season_lineups',
     'shop_event', 'survival_events', 'survival_offers', 'traits', 'war_shop',
@@ -740,6 +762,17 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
             const assetsDir = requireResolved(paths.assetsDir, 'assets-dir', 'Usage: extract_all.ts character_data --gameconfig <p> --i2 <p> --assets-dir <p> [--visuals-file <p>]');
             const visualsFilePath = requireResolved(paths.visualsFilePath, 'visuals-file', 'Usage: extract_all.ts character_data --gameconfig <p> --i2 <p> --assets-dir <p> [--visuals-file <p>]');
             printJson(extractCharacterData({ gameconfigPath: gc, i2Path: i2, assetsDir, visualsFilePath }));
+            return;
+        }
+        case 'character_power': {
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts character_power --gameconfig <p> [--dataset units|items|upgrades] (or --assets-dir)');
+            const data = extractCharacterPower({ gameconfigPath: gc });
+            const dataset = flags.dataset;
+            if (dataset === 'units' || dataset === 'items' || dataset === 'upgrades') {
+                printJson(data[dataset]);
+            } else {
+                printJson(data);
+            }
             return;
         }
         case 'crusade_shop': {
