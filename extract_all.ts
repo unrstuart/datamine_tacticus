@@ -369,7 +369,13 @@ function runJob(results: JobResult[], name: string, fn: () => string): void {
     }
 }
 
-async function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: string, refreshAssets = false): Promise<void> {
+async function runAll(
+    paths: ResolvedPaths,
+    outputDir: string,
+    plannerDir?: string,
+    refreshAssets = false,
+    listMissingResources = false
+): Promise<void> {
     const gameconfigPath = requireResolved(paths.gameconfigPath, 'gameconfig', '"all" mode requires --gameconfig or --assets-dir');
     const i2Path = requireResolved(paths.i2Path, 'i2', '"all" mode requires --i2 or --assets-dir');
     const globalConfigPath = paths.globalConfigPath;
@@ -454,7 +460,7 @@ async function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: stri
 
     try {
         if (!assetsDir) throw new Error('--assets-dir is required for l10n');
-        const l10nBundles = extractL10n({ gameconfigPath, assetsDir });
+        const l10nBundles = extractL10n({ gameconfigPath, assetsDir, listMissingResources });
         for (const [lang, bundle] of Object.entries(l10nBundles)) {
             for (const [file, value] of Object.entries(bundle)) {
                 runJob(results, `l10n:${lang}:${file}`, () => writeJson(l10nDest(lang, `${file}.json`), value));
@@ -867,9 +873,11 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
             return;
         }
         case 'l10n': {
-            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts l10n --gameconfig <p> --assets-dir <p> [--lang <code>] [--dataset <file>]');
-            const assetsDir = requireResolved(paths.assetsDir, 'assets-dir', 'Usage: extract_all.ts l10n --gameconfig <p> --assets-dir <p> [--lang <code>] [--dataset <file>]');
-            const bundles = extractL10n({ gameconfigPath: gc, assetsDir });
+            const usage = 'Usage: extract_all.ts l10n --gameconfig <p> --assets-dir <p> [--lang <code>] [--dataset <file>] [--list-missing-resources]';
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', usage);
+            const assetsDir = requireResolved(paths.assetsDir, 'assets-dir', usage);
+            const listMissingResources = 'list-missing-resources' in flags;
+            const bundles = extractL10n({ gameconfigPath: gc, assetsDir, listMissingResources });
             const lang = flags.lang;
             const dataset = flags.dataset;
             if (lang && !(lang in bundles)) {
@@ -1127,7 +1135,8 @@ async function main() {
             const outputDir = flags['output-dir'] ?? '/tmp/mined';
             const plannerDir = flags['planner-dir'];
             const refreshAssets = flags['refresh-assets'] === 'true';
-            await runAll(paths, outputDir, plannerDir, refreshAssets);
+            const listMissingResources = 'list-missing-resources' in flags;
+            await runAll(paths, outputDir, plannerDir, refreshAssets, listMissingResources);
         } else {
             runOne(positional, flags, paths);
         }

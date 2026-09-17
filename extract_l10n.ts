@@ -31,6 +31,9 @@ export interface L10nBundle {
 export interface ExtractL10nParams {
     gameconfigPath: string;
     assetsDir: string;
+    // Prints each unresolved resource key (deduped, sorted) alongside the one-line summary,
+    // instead of just the count. Off by default to keep normal runs quiet.
+    listMissingResources?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -221,13 +224,18 @@ function resolveShardName(
     return template.replace('{[UNIT]}', unitName);
 }
 
+// Missing resources are collected into `missingKeys` (deduped across every language by the
+// caller) rather than printed per-key-per-language here - with 12 languages x a couple hundred
+// keys that's an unreadable wall of near-duplicate lines. extractL10n prints one summary (and,
+// with listMissingResources, the deduped key list) once, after every language has run.
 function buildResources(
     resourceKeys: Set<string>,
     i2Terms: Map<string, string>,
     characters: Record<string, UnitNames>,
     mows: Record<string, UnitNames>,
     upgradeMaterials: Record<string, string>,
-    equipment: Record<string, string>
+    equipment: Record<string, string>,
+    missingKeys: Set<string>
 ): Record<string, string> {
     const ret: Record<string, string> = {};
     for (const key of resourceKeys) {
@@ -240,7 +248,7 @@ function buildResources(
             i2Terms.get(`Resources/${key}_One`) ||
             resolveShardName(key, i2Terms, characters, mows);
         if (!name) {
-            console.error(`WARNING: no name resolved for resource key "${key}"`);
+            missingKeys.add(key);
             name = '';
         }
         ret[key] = name;
@@ -250,7 +258,7 @@ function buildResources(
 
 // ---------------------------------------------------------------------------
 
-export function extractL10n({ gameconfigPath, assetsDir }: ExtractL10nParams): Record<string, L10nBundle> {
+export function extractL10n({ gameconfigPath, assetsDir, listMissingResources }: ExtractL10nParams): Record<string, L10nBundle> {
     const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
     const gameConfig = data.clientGameConfig;
     const lineup: Record<string, any> = gameConfig.units.lineup;
@@ -264,6 +272,7 @@ export function extractL10n({ gameconfigPath, assetsDir }: ExtractL10nParams): R
     }
 
     const resourceKeys = discoverResourceKeys(gameconfigPath, data, locales[0].path);
+    const missingResourceKeys = new Set<string>();
 
     const bundles: Record<string, L10nBundle> = {};
     for (const locale of locales) {
@@ -272,7 +281,7 @@ export function extractL10n({ gameconfigPath, assetsDir }: ExtractL10nParams): R
         const upgradeMaterials = buildUpgradeMaterials(upgrades, i2Terms);
         const { names: abilityNames, descriptions: abilityDescriptions } = buildAbilityText(abilities, i2Terms);
         const equipment = buildEquipment(items, i2Terms);
-        const resources = buildResources(resourceKeys, i2Terms, characters, mows, upgradeMaterials, equipment);
+        const resources = buildResources(resourceKeys, i2Terms, characters, mows, upgradeMaterials, equipment, missingResourceKeys);
 
         bundles[locale.code] = {
             character_names: characters,
@@ -283,6 +292,19 @@ export function extractL10n({ gameconfigPath, assetsDir }: ExtractL10nParams): R
             equipment,
             resources,
         };
+    }
+
+    if (missingResourceKeys.size > 0) {
+        const sorted = [...missingResourceKeys].sort();
+        if (listMissingResources) {
+            console.error(`WARNING: ${sorted.length} resource key(s) have no localized name in at least one language:`);
+            for (const key of sorted) console.error(`  - ${key}`);
+        } else {
+            console.error(
+                `WARNING: ${sorted.length} resource key(s) have no localized name in at least one language ` +
+                    `(pass --list-missing-resources to print them).`
+            );
+        }
     }
 
     return bundles;
