@@ -1300,6 +1300,12 @@ class UnityAssetExtractor:
             print(f"❌ Failed to extract TextAsset: {e}")
 
     BOARD_ID_RE = re.compile(r'^[A-Za-z][A-Za-z0-9]*(_[A-Za-z0-9]+)+$')
+    # I2Languages_<code> MonoBehaviours already ride along on BOARD_ID_RE when <code> is plain
+    # letters/digits (e.g. "de", "en") - but hyphenated regional variants like "es-us"/"pt-br"/
+    # "zh-cn" don't match it (hyphens aren't in [A-Za-z0-9]) and were silently dropped. This is a
+    # separate, explicit check for the whole family rather than loosening BOARD_ID_RE, so board-id
+    # matching keeps its original, narrower shape.
+    I2LANGUAGES_RE = re.compile(r'^i2languages_[a-z0-9-]+$', re.IGNORECASE)
 
     def _is_board_monobehaviour(self, data, obj) -> bool:
         container = (getattr(obj, 'container', '') or '').lower()
@@ -1309,6 +1315,13 @@ class UnityAssetExtractor:
         if self.BOARD_ID_RE.match(name):
             return True
         return False
+
+    def _is_i2languages_monobehaviour(self, data, obj) -> bool:
+        container = (getattr(obj, 'container', '') or '').lower()
+        if 'i2languages_' in container:
+            return True
+        name = str(getattr(data, 'm_Name', '') or '').strip()
+        return bool(self.I2LANGUAGES_RE.match(name))
 
     def _collect_board_ids_from_gameconfig(self, text: str, source_name: str):
         found = re.findall(r'"boardId"\s*:\s*"([^"]+)"', text)
@@ -1375,7 +1388,7 @@ class UnityAssetExtractor:
                     json.dump(serialized, f, indent=2, ensure_ascii=False, default=str)
                 return
 
-            if not self._is_board_monobehaviour(data, obj):
+            if not (self._is_board_monobehaviour(data, obj) or self._is_i2languages_monobehaviour(data, obj)):
                 return
 
             serialized = self._serialize_unknown(data)
