@@ -19,6 +19,7 @@ import { extractHeroQuests } from './extract_hero_quests';
 import { extractHeroes } from './extract_heroes';
 import { discoverHomescreenEvents, extractHomescreenEvent, formatHomescreenEventFindResults } from './extract_homescreen_events';
 import { extractIncursionEnemies } from './extract_incursion_enemies';
+import { extractL10n } from './extract_l10n';
 import { extractLeData } from './extract_le_data';
 import { discoverLegendaryEvents, extractLegendaryEventMetadata, formatLegendaryEventFindResults } from './extract_le_metadata';
 import { extractMowData } from './extract_mow_data';
@@ -441,6 +442,29 @@ async function runAll(paths: ResolvedPaths, outputDir: string, plannerDir?: stri
         writeJson(characterPowerDest('character-power-upgrades.json'), characterPowerData!.upgrades)
     );
 
+    // l10n runs once per available I2Languages_*.json (needs assetsDir to enumerate them - there's
+    // no single --i2 equivalent for "every language") and emits 7 files per language, so - like
+    // character_power above - it inlines its planner path instead of using PLANNER_DESTINATIONS.
+    // A missing assetsDir (or any other discovery failure) is reported as one l10n:discover
+    // failure rather than aborting runAll, matching the find-then-loop :discover blocks below.
+    const l10nDest = (lang: string, filename: string): string =>
+        plannerDir
+            ? path.join(plannerDir, 'src/fsd/5-shared/l10n/data', lang, filename)
+            : path.join(outputDir, lang, filename);
+
+    try {
+        if (!assetsDir) throw new Error('--assets-dir is required for l10n');
+        const l10nBundles = extractL10n({ gameconfigPath, assetsDir });
+        for (const [lang, bundle] of Object.entries(l10nBundles)) {
+            for (const [file, value] of Object.entries(bundle)) {
+                runJob(results, `l10n:${lang}:${file}`, () => writeJson(l10nDest(lang, `${file}.json`), value));
+            }
+        }
+    } catch (error: any) {
+        results.push({ name: 'l10n:discover', ok: false, error: error.message });
+        console.error(`FAIL l10n:discover: ${error.message}`);
+    }
+
     runJob(results, 'operations', () =>
         writeJson(resolvePath('operations', 'new-operations-data.json'), extractOperations({ gameconfigPath, i2Path }))
     );
@@ -701,7 +725,7 @@ function printJson(value: unknown): void {
 const EXTRACTOR_NAMES = [
     'abilities', 'ability_icons', 'armageddon', 'campaign_data', 'ce_gold_medal_rewards', 'character_data',
     'character_power', 'crusade_shop', 'equipment_data', 'guild_boss', 'guild_shop', 'hero_quests', 'heroes', 'homescreen_event',
-    'incursion_enemies', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'operations', 'pierce',
+    'incursion_enemies', 'l10n', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'operations', 'pierce',
     'planet_data', 'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'season_lineups',
     'shop_event', 'survival_events', 'survival_offers', 'traits', 'war_shop',
 ];
@@ -840,6 +864,25 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
         case 'incursion_enemies': {
             const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts incursion_enemies --gameconfig <p> (or --assets-dir)');
             printJson(extractIncursionEnemies({ gameconfigPath: gc }));
+            return;
+        }
+        case 'l10n': {
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts l10n --gameconfig <p> --assets-dir <p> [--lang <code>] [--dataset <file>]');
+            const assetsDir = requireResolved(paths.assetsDir, 'assets-dir', 'Usage: extract_all.ts l10n --gameconfig <p> --assets-dir <p> [--lang <code>] [--dataset <file>]');
+            const bundles = extractL10n({ gameconfigPath: gc, assetsDir });
+            const lang = flags.lang;
+            const dataset = flags.dataset;
+            if (lang && !(lang in bundles)) {
+                throw new Error(`Unknown --lang "${lang}". Available: ${Object.keys(bundles).sort().join(', ')}`);
+            }
+            const selected: Record<string, any> = lang ? { [lang]: bundles[lang] } : bundles;
+            if (dataset) {
+                const narrowed: Record<string, any> = {};
+                for (const [code, bundle] of Object.entries(selected)) narrowed[code] = (bundle as any)[dataset];
+                printJson(narrowed);
+            } else {
+                printJson(selected);
+            }
             return;
         }
         case 'le_data': {

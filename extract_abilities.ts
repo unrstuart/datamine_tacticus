@@ -35,7 +35,7 @@ function loadI2Terms(i2Path: string): Map<string, string> {
     return map;
 }
 
-function fixMalformedStyle(text: string | undefined): string | undefined {
+export function fixMalformedStyle(text: string | undefined): string | undefined {
     if (!text) return text;
     text = text.split('<style=Buff_Infiltrate">').join('<style="Buff_Infiltrate">');
     text = text.split('<Style="Faction_Genestealers">').join('<style="Faction_Genestealers">');
