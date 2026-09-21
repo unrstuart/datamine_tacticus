@@ -460,7 +460,7 @@ async function runAll(
 
     try {
         if (!assetsDir) throw new Error('--assets-dir is required for l10n');
-        const l10nBundles = extractL10n({ gameconfigPath, assetsDir, listMissingResources });
+        const l10nBundles = extractL10n({ gameconfigPath, assetsDir, globalConfigPath, listMissingResources });
         for (const [lang, bundle] of Object.entries(l10nBundles)) {
             for (const [file, value] of Object.entries(bundle)) {
                 runJob(results, `l10n:${lang}:${file}`, () => writeJson(l10nDest(lang, `${file}.json`), value));
@@ -873,11 +873,11 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
             return;
         }
         case 'l10n': {
-            const usage = 'Usage: extract_all.ts l10n --gameconfig <p> --assets-dir <p> [--lang <code>] [--dataset <file>] [--list-missing-resources]';
+            const usage = 'Usage: extract_all.ts l10n --gameconfig <p> --assets-dir <p> [--global-config <p>] [--lang <code>] [--dataset <file>] [--list-missing-resources]';
             const gc = requireResolved(paths.gameconfigPath, 'gameconfig', usage);
             const assetsDir = requireResolved(paths.assetsDir, 'assets-dir', usage);
             const listMissingResources = 'list-missing-resources' in flags;
-            const bundles = extractL10n({ gameconfigPath: gc, assetsDir, listMissingResources });
+            const bundles = extractL10n({ gameconfigPath: gc, assetsDir, globalConfigPath: paths.globalConfigPath, listMissingResources });
             const lang = flags.lang;
             const dataset = flags.dataset;
             if (lang && !(lang in bundles)) {

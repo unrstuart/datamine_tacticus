@@ -5,6 +5,9 @@ import { fixMalformedStyle } from './extract_abilities';
 import { discoverSurvivalEvents, extractSurvivalEvent } from './extract_survival_events';
 import { discoverShopEvents, extractShopEvent } from './extract_shop_event';
 import { discoverCalendars, extractCalendar } from './extract_product_calendars';
+import { extractTraits } from './extract_traits';
+import { flattenUnitSets } from './extract_guild_boss';
+import { CAMPAIGN_NAMES } from './extract_campaign_data';
 
 // Localized name/description dumps for the planner, one bundle per available I2Languages file.
 // Everything here mirrors an existing extractor's id scheme + i2 term-key convention (see each
@@ -18,6 +21,11 @@ export interface UnitNames {
     title: string;
 }
 
+export interface ProgressionNames {
+    ranks: Record<string, string>;
+    rarities: Record<string, string>;
+}
+
 export interface L10nBundle {
     character_names: Record<string, UnitNames>;
     mow_names: Record<string, UnitNames>;
@@ -26,11 +34,22 @@ export interface L10nBundle {
     ability_descriptions: Record<string, string>;
     equipment: Record<string, string>;
     resources: Record<string, string>;
+    trait_names: Record<string, string>;
+    faction_names: Record<string, string>;
+    damage_type_names: Record<string, string>;
+    campaign_names: Record<string, string>;
+    progression_names: ProgressionNames;
+    guild_boss_names: Record<string, UnitNames>;
+    npc_names: Record<string, UnitNames>;
 }
 
 export interface ExtractL10nParams {
     gameconfigPath: string;
     assetsDir: string;
+    // Guild boss unit ids/stats live in GlobalGameConfig, not gameconfigPath's
+    // clientGameConfig - without this, guild_boss_names comes out empty (with one warning)
+    // rather than failing the whole l10n run, same as a missing resource key.
+    globalConfigPath?: string;
     // Prints each unresolved resource key (deduped, sorted) alongside the one-line summary,
     // instead of just the count. Off by default to keep normal runs quiet.
     listMissingResources?: boolean;
@@ -103,6 +122,196 @@ function buildEquipment(items: Record<string, any>, i2Terms: Map<string, string>
     const ret: Record<string, string> = {};
     for (const [id, item] of Object.entries<any>(items)) {
         ret[id] = i2Terms.get(`Items/${id}_name`) ?? item.name ?? '';
+    }
+    return ret;
+}
+
+// ---------------------------------------------------------------------------
+// Traits - extractTraits (extract_traits.ts) already does its own self-contained parsing of
+// Traits/<id>_Name / _StyledName / _Description per locale; only the name is needed here, so
+// just take .id/.name from its output instead of re-deriving the Traits/ grouping logic.
+// ---------------------------------------------------------------------------
+
+function buildTraitNames(i2Path: string): Record<string, string> {
+    const ret: Record<string, string> = {};
+    for (const trait of extractTraits({ i2Path })) {
+        ret[trait.id] = trait.name;
+    }
+    return ret;
+}
+
+// ---------------------------------------------------------------------------
+// Factions - self-contained like traits: the FactionId string enum (read by
+// extract_character_data.ts / extract_npc_data.ts / extract_mow_data.ts, etc.) has a matching
+// plain-name i2 key, UnitDetails/Faction_<id> - distinct from the styled
+// UnitDetails/Faction_AllianceInfo_<id> variant, which this excludes.
+// ---------------------------------------------------------------------------
+
+const FACTION_NAME_RE = /^UnitDetails\/Faction_(?!AllianceInfo_)([A-Za-z0-9]+)$/;
+
+function buildFactionNames(i2Terms: Map<string, string>): Record<string, string> {
+    const ret: Record<string, string> = {};
+    for (const [term, value] of i2Terms) {
+        const match = term.match(FACTION_NAME_RE);
+        if (match) ret[match[1]] = value;
+    }
+    return ret;
+}
+
+// ---------------------------------------------------------------------------
+// Damage types - the id set is language-independent (scanned straight out of gameconfig, once,
+// same as discoverResourceKeys below), same damageProfile* constants convention
+// getAbilityDamageTypes() in extract_character_data.ts/extract_npc_data.ts already reads
+// per-unit, just run over every ability instead of one unit's list for full coverage. The
+// matching i2 key, S/DMG_<id>, is always wrapped in a <style=...>...</style> span with no
+// unstyled variant anywhere in i2 - stripOuterStyleTag peels that back off (fixMalformedStyle,
+// imported above for ability descriptions, only fixes malformed quoting, it doesn't strip tags,
+// so it's the wrong tool here).
+// ---------------------------------------------------------------------------
+
+function stripOuterStyleTag(text: string): string {
+    const match = text.match(/^<style=["']?[^>]*>(.*)<\/style>$/);
+    return match ? match[1] : text;
+}
+
+function discoverDamageTypeIds(abilities: Record<string, any>): Set<string> {
+    const ids = new Set<string>();
+    for (const ability of Object.values<any>(abilities)) {
+        const constants = ability?.constants;
+        if (!constants) continue;
+        for (const [key, value] of Object.entries<any>(constants)) {
+            if (key.startsWith('damageProfile') && typeof value === 'string' && value !== '') {
+                ids.add(value);
+            }
+        }
+    }
+    return ids;
+}
+
+function buildDamageTypeNames(
+    damageTypeIds: Set<string>,
+    i2Terms: Map<string, string>,
+    missingKeys: Set<string>
+): Record<string, string> {
+    const ret: Record<string, string> = {};
+    for (const id of damageTypeIds) {
+        const name = i2Terms.get(`S/DMG_${id}`);
+        if (!name) {
+            missingKeys.add(id);
+            ret[id] = '';
+        } else {
+            ret[id] = stripOuterStyleTag(name);
+        }
+    }
+    return ret;
+}
+
+// ---------------------------------------------------------------------------
+// Campaigns - covers every id extract_campaign_data.ts's CAMPAIGN_NAMES already has a hardcoded
+// English name for:
+//   - campaign/mirror/elite/eliteMirror<N> (16 ids): direct i2 hit at
+//     Campaigns/<Type>_<id>_name, Type derived from the id's alpha prefix.
+//   - eventStandard/eventExtremis<N> (12 ids): no dedicated i2 key of their own - built by
+//     joining CampaignEvents/Ce_Campaign_Title_eventCampaign<N> (the faction name, confirmed 1:1
+//     against CAMPAIGN_NAMES' faction half for every N) with
+//     CampaignEvents/Ce_Difficulty_Mode_Standard|Extremis (the mode word), same space-joined
+//     order CAMPAIGN_NAMES already hardcodes in English. No template term pairs the two, so the
+//     join order is inferred from that existing convention, same way resolveShardName below
+//     infers its own template's placement.
+// ---------------------------------------------------------------------------
+
+const CAMPAIGN_TYPE_PREFIXES: Record<string, string> = {
+    campaign: 'Standard',
+    mirror: 'Mirror',
+    elite: 'Elite',
+    eliteMirror: 'EliteMirror',
+};
+
+const CAMPAIGN_ID_RE = /^(campaign|eliteMirror|mirror|elite)(\d+)$/;
+const EVENT_ID_RE = /^(eventStandard|eventExtremis)(\d+)$/;
+
+function buildCampaignNames(i2Terms: Map<string, string>): Record<string, string> {
+    const ret: Record<string, string> = {};
+
+    for (const id of Object.keys(CAMPAIGN_NAMES)) {
+        const campaignMatch = id.match(CAMPAIGN_ID_RE);
+        if (campaignMatch) {
+            const type = CAMPAIGN_TYPE_PREFIXES[campaignMatch[1]];
+            ret[id] = i2Terms.get(`Campaigns/${type}_${id}_name`) ?? '';
+            continue;
+        }
+
+        const eventMatch = id.match(EVENT_ID_RE);
+        if (eventMatch) {
+            const [, kind, n] = eventMatch;
+            const faction = i2Terms.get(`CampaignEvents/Ce_Campaign_Title_eventCampaign${n}`);
+            const mode = i2Terms.get(`CampaignEvents/Ce_Difficulty_Mode_${kind === 'eventStandard' ? 'Standard' : 'Extremis'}`);
+            ret[id] = faction && mode ? `${faction} ${mode}` : '';
+            continue;
+        }
+
+        console.error(`WARNING: unrecognized campaign id "${id}" - no l10n convention known for it`);
+    }
+
+    return ret;
+}
+
+// ---------------------------------------------------------------------------
+// Progression - ranks (positional index 0-20, matching extract_rank_up_data.ts's RANKS array)
+// and rarities (the BaseRarity enum extract_character_data.ts reads). Deliberately no "stars"
+// field - the game has no per-star-count i2 name table anywhere, only the generic word "Star" in
+// unrelated tooltip copy.
+// ---------------------------------------------------------------------------
+
+const RANK_COUNT = 21;
+const RARITIES = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic'];
+
+function buildProgressionNames(i2Terms: Map<string, string>): ProgressionNames {
+    const ranks: Record<string, string> = {};
+    for (let i = 0; i < RANK_COUNT; ++i) {
+        ranks[String(i)] = i2Terms.get(`UnitDetails/Rank_${i}`) ?? '';
+    }
+
+    const rarities: Record<string, string> = {};
+    for (const rarity of RARITIES) {
+        rarities[rarity] = i2Terms.get(`Upgrades/RarityName_Raw_${rarity}`) ?? '';
+    }
+
+    return { ranks, rarities };
+}
+
+// ---------------------------------------------------------------------------
+// Guild boss units - boss unit ids are Object.keys(flattenUnitSets(guildBoss.unitSets))
+// (extract_guild_boss.ts's own resolveBossUnit looks bosses up the same way), run through the
+// same buildUnitNames convention as characters/MoWs/NPCs - boss units live in the identical
+// Units/<id>_Name i2 namespace.
+// ---------------------------------------------------------------------------
+
+function buildGuildBossNames(globalConfigPath: string | undefined, i2Terms: Map<string, string>): Record<string, UnitNames> {
+    const ret: Record<string, UnitNames> = {};
+    if (!globalConfigPath) return ret;
+
+    const data = JSON.parse(fs.readFileSync(globalConfigPath, 'utf-8'));
+    const guildBoss = data.guildBoss;
+    if (!guildBoss?.unitSets) return ret;
+
+    const units = flattenUnitSets(guildBoss.unitSets);
+    for (const id of Object.keys(units)) {
+        ret[id] = buildUnitNames(id, i2Terms);
+    }
+    return ret;
+}
+
+// ---------------------------------------------------------------------------
+// NPCs - units.npc keys, the same table extract_npc_data.ts reads (currently only via the raw
+// English npc.name field), run through the same buildUnitNames convention as characters/MoWs -
+// NPCs live in the identical Units/<id>_Name i2 namespace.
+// ---------------------------------------------------------------------------
+
+function buildNpcNames(npcs: Record<string, any>, i2Terms: Map<string, string>): Record<string, UnitNames> {
+    const ret: Record<string, UnitNames> = {};
+    for (const id of Object.keys(npcs)) {
+        ret[id] = buildUnitNames(id, i2Terms);
     }
     return ret;
 }
@@ -258,13 +467,19 @@ function buildResources(
 
 // ---------------------------------------------------------------------------
 
-export function extractL10n({ gameconfigPath, assetsDir, listMissingResources }: ExtractL10nParams): Record<string, L10nBundle> {
+export function extractL10n({
+    gameconfigPath,
+    assetsDir,
+    globalConfigPath,
+    listMissingResources,
+}: ExtractL10nParams): Record<string, L10nBundle> {
     const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
     const gameConfig = data.clientGameConfig;
     const lineup: Record<string, any> = gameConfig.units.lineup;
     const upgrades: Record<string, any> = gameConfig.upgrades;
     const abilities: Record<string, any> = gameConfig.units.abilities;
     const items: Record<string, any> = gameConfig.items;
+    const npcs: Record<string, any> = gameConfig.units.npc;
 
     const locales = listAvailableLocales(assetsDir);
     if (locales.length === 0) {
@@ -272,7 +487,13 @@ export function extractL10n({ gameconfigPath, assetsDir, listMissingResources }:
     }
 
     const resourceKeys = discoverResourceKeys(gameconfigPath, data, locales[0].path);
+    const damageTypeIds = discoverDamageTypeIds(abilities);
     const missingResourceKeys = new Set<string>();
+    const missingDamageTypeKeys = new Set<string>();
+
+    if (!globalConfigPath) {
+        console.error('WARNING: no --global-config given - guild_boss_names will be empty for every language.');
+    }
 
     const bundles: Record<string, L10nBundle> = {};
     for (const locale of locales) {
@@ -291,6 +512,13 @@ export function extractL10n({ gameconfigPath, assetsDir, listMissingResources }:
             ability_descriptions: abilityDescriptions,
             equipment,
             resources,
+            trait_names: buildTraitNames(locale.path),
+            faction_names: buildFactionNames(i2Terms),
+            damage_type_names: buildDamageTypeNames(damageTypeIds, i2Terms, missingDamageTypeKeys),
+            campaign_names: buildCampaignNames(i2Terms),
+            progression_names: buildProgressionNames(i2Terms),
+            guild_boss_names: buildGuildBossNames(globalConfigPath, i2Terms),
+            npc_names: buildNpcNames(npcs, i2Terms),
         };
     }
 
@@ -305,6 +533,13 @@ export function extractL10n({ gameconfigPath, assetsDir, listMissingResources }:
                     `(pass --list-missing-resources to print them).`
             );
         }
+    }
+
+    if (missingDamageTypeKeys.size > 0) {
+        const sorted = [...missingDamageTypeKeys].sort();
+        console.error(
+            `WARNING: ${sorted.length} damage type(s) have no localized name in at least one language: ${sorted.join(', ')}`
+        );
     }
 
     return bundles;
