@@ -211,7 +211,7 @@ function buildDamageTypeNames(
 // English name for:
 //   - campaign/mirror/elite/eliteMirror<N> (16 ids): direct i2 hit at
 //     Campaigns/<Type>_<id>_name, Type derived from the id's alpha prefix.
-//   - eventStandard/eventExtremis<N> (12 ids): no dedicated i2 key of their own - built by
+//   - eventStandard/eventExtremis<N> (14 ids): no dedicated i2 key of their own - built by
 //     joining CampaignEvents/Ce_Campaign_Title_eventCampaign<N> (the faction name, confirmed 1:1
 //     against CAMPAIGN_NAMES' faction half for every N) with
 //     CampaignEvents/Ce_Difficulty_Mode_Standard|Extremis (the mode word), same space-joined
