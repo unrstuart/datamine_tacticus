@@ -342,6 +342,11 @@ function extractShopEventData(
             if (seasonalConfig.questGroups) {
                 const prefix = deriveEventPrefix(seasonalConfig.theme, week);
                 missions = extractSeasonalMissions(data, prefix, seasonalConfig.questGroups);
+                const isEmpty = (m: SeasonalMissions) => !m.daily.length && !m.free.length && !m.premium.length && !m.battlePass.length;
+                // Single-week shop events (e.g. October 2026) name their quests without a "_week{N}" suffix.
+                if (isEmpty(missions) && summary.weeks.length === 1) {
+                    missions = extractSeasonalMissions(data, deriveEventPrefix(seasonalConfig.theme), seasonalConfig.questGroups);
+                }
             }
         }
 
