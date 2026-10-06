@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Powerups</title>
+<style>
+  :root{--blur:20px;--fade:1s}
+  html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:system-ui,sans-serif}
+  /* Blurred map: square, sized so its smallest page dimension is filled (cover), then overscanned a bit so the blur's soft edges are off-screen. */
+  #bg{position:fixed;left:50%;top:50%;width:max(100vw,100vh);height:max(100vw,100vh);
+      transform:translate(-50%,-50%) scale(1.15);background:url(powerups_img/map.png) center/cover;filter:blur(var(--blur))}
+  #grid{position:relative;height:100%;box-sizing:border-box;padding:3vh 3vw;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:2.2vh 2vw}
+  .card{display:flex;overflow:hidden;border-radius:2vh;background:#efe7d6;box-shadow:0 1vh 3vh rgba(0,0,0,.55);
+        opacity:.1;transition:opacity var(--fade) ease}
+  .card.on{opacity:1}
+  .icon{flex:0 0 16%;background:#fff;display:flex;align-items:center;justify-content:center}
+  .icon img{width:72%;max-height:72%;object-fit:contain}
+  .text{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.5vh;padding:1vh 1.5vw;color:#2b2620;text-align:left;font-size:2.4vh;line-height:1.3}
+  /* white fill with a thick black outline; paint-order puts the stroke behind the fill so it's a clean 3px outside edge */
+  .text span{color:#fff;font-weight:800;letter-spacing:.02em;word-spacing:.2em;-webkit-text-stroke:6px #000;paint-order:stroke fill;stroke-linejoin:round}
+  .text b{font-size:3.1vh;font-weight:800;color:#ffd21a;-webkit-text-stroke:7px #000;paint-order:stroke fill;stroke-linejoin:round;letter-spacing:.04em;word-spacing:.25em}
+</style></head><body>
+<div id="bg"></div>
+<div id="grid"></div>
+<script>
+const POWERUPS = [
+  ['healing','Healing','Restores a unit to full health.'],
+  ['melee','+Melee Hits','Adds four hits to all melee attacks.'],
+  ['hit','+Hits','Adds two hits to all attacks.'],
+  ['damage','+Damage','Increases the unit’s damage stat by 100% of their base damage.'],
+  ['health','+Health','Increases the unit’s health by 200% of their base health stat.'],
+  ['armor','+Armor','Increases the unit’s armor by 100% of the unit’s max health.'],
+  ['reinforcement','Reinforcement','Lets you deploy a new character once you have fewer than five. It spawns on a character spawn point and can attack but cannot move.'],
+  ['resurrect','Resurrection','Brings a fallen character back at full health, but without their active ability. They cannot move, but they can attack.'],
+  ['reactivateability','Reactivate Ability','Lets a character use their active ability again and removes any cooldown on it.'],
+  ['bomb','Bomb','Deals 4x blast damage in a large radius. Damage increases with the rarity cap but falls off at higher levels.'],
+];
+const grid = document.getElementById('grid'), items = [];
+for (const [img, name, desc] of POWERUPS) {
+  const c = document.createElement('div'); c.className = 'card';
+  c.innerHTML = `<div class="icon"><img src="powerups_img/${img}.png" alt=""></div><div class="text"><b>${name}</b><span>${desc}</span></div>`;
+  grid.appendChild(c); items.push(c);
+}
+let n = 0;
+const show = () => items.forEach((e, i) => e.classList.toggle('on', i < n));
+addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') n = Math.min(items.length, n + 1);
+  else if (e.key === 'ArrowLeft') n = Math.max(0, n - 1);
+  else if (e.key === 'PageDown') n = items.length;  // single page: skip the remaining animations
+  else return;
+  e.preventDefault(); show();
+});
+show();
+</script></body></html>

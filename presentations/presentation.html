@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tier List</title>
+<style>
+  :root{--blur:20px;--fade:1s}
+  html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:system-ui,sans-serif}
+  /* Blurred map: square, sized so its smallest page dimension is filled (cover), then overscanned a bit so the blur's soft edges are off-screen. */
+  #bg{position:fixed;left:50%;top:50%;width:max(100vw,100vh);height:max(100vw,100vh);
+      transform:translate(-50%,-50%) scale(1.15);background:url(presentation_img/map.png) center/cover;filter:blur(var(--blur))}
+  #list{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;gap:2.5vh;padding:3vh 3vw;box-sizing:border-box}
+  .row{display:flex;align-items:stretch;background:rgba(0,0,0,.45);border-radius:12px;overflow:hidden;min-height:24vh}
+  .label{flex:0 0 12vh;display:flex;align-items:center;justify-content:center;font-size:7vh;font-weight:800;color:#111}
+  .S .label{background:#ff5a5a}.A .label{background:#ffae3d}.B .label{background:#f2e24a}
+  .chars{display:flex;flex-wrap:wrap;align-items:center;gap:1.5vh 2vw;padding:1.5vh 2vw}
+  .char{display:flex;flex-direction:column;align-items:center;width:15vh;opacity:.1;transition:opacity var(--fade) ease}
+  .char.on{opacity:1}
+  .char img{width:15vh;height:15vh;border-radius:50%;object-fit:cover;filter:drop-shadow(0 .5vh 1vh #000a)}
+  .char span{margin-top:.6vh;color:#fff;font-weight:700;font-size:2.4vh;text-shadow:0 0 .6vh #000,0 0 .6vh #000;text-align:center}
+  .page{display:none}.page.active{display:flex}
+  #list.page{flex-direction:column}
+  .text{position:relative;height:100%;flex-direction:column;justify-content:center;align-items:center;gap:4.5vh;padding:4vh 6vw;box-sizing:border-box;text-align:center}
+  .item{color:#fff;font-weight:800;font-size:6.5vh;opacity:.1;transition:opacity var(--fade) ease;text-shadow:0 0 1.5vh #000,0 0 1.5vh #000,0 .4vh .8vh #000}
+  .item.on{opacity:1}
+  .text.left{align-items:flex-start;text-align:left;padding-left:10vw}
+  .text.left .item.sub{margin-left:4vw}
+  .item.sub{font-size:5vh;font-weight:700;margin-top:-1.5vh}
+</style></head><body>
+<div id="bg"></div>
+<div class="text page left"></div>
+<div class="text page"></div>
+<div class="text page"></div>
+<div class="text page"></div>
+<div id="list" class="page"></div>
+<script>
+const TEXT_PAGES = [
+  ['Positives',' Useful Hero',' Event Is Enjoyable','Negatives',' Forces Feel Necessary',' Fewer Books',' No Shards',' Reward Nerfs'],
+  ['Summoner','Multi-Killer','Buffer','Tanky','Healer/Mechanic','Solid Active Ability'],
+  ['Full Kit - Stats, Abilities, no relics','Subjective - Only my opinion','Did I miss someone?','S tier characters are special'],
+  ['Clear Waves  →  Crusade Points','Token Score  →  Crusade Points (2K : 1)','From Crate 15  –  1K+ Crusade Points','Delay Opening Crates  →  Maximize Credits'],
+];
+const TIERS = [
+  {t:'S', chars:[['adept_hospitaller','Isabella'],['custo_bladechampion','Kariyan']]},
+  {t:'A', chars:[['ultra_apothecary','Incisus'],['custo_vexilus','Aesoth'],['adept_retributor','Vindicta'],['admec_marshall',"Tan Gi'da"],['admec_manipulus','Actus']]},
+  {t:'B', chars:[['admec_dominus','Vitruvius'],['astra_yarrick','Yarrick'],['ultra_inceptor','Bellator']]},
+];
+const pages = [];  // each: {el, items: [element, ...]} - items are revealed one per right-arrow press
+document.querySelectorAll('.text.page').forEach((el, i) => {
+  const items = TEXT_PAGES[i].map(t => { const d = document.createElement('div'); const sub = t.startsWith(' '); d.className = sub ? 'item sub' : 'item'; d.textContent = t.trim(); el.appendChild(d); return d; });
+  pages.push({ el, items });
+});
+const list = document.getElementById('list'), chars = [];
+for (const tier of TIERS) {
+  const row = document.createElement('div'); row.className = 'row ' + tier.t;
+  row.innerHTML = `<div class="label">${tier.t}</div><div class="chars"></div>`;
+  for (const [img, name] of tier.chars) {
+    const c = document.createElement('div'); c.className = 'char';
+    c.innerHTML = `<img src="presentation_img/${img}.png" alt=""><span>${name}</span>`;
+    row.querySelector('.chars').appendChild(c); chars.push(c);
+  }
+  list.appendChild(row);
+}
+pages.push({ el: list, items: chars });
+let p = 0, n = 0;
+const show = () => pages.forEach((pg, i) => {
+  pg.el.classList.toggle('active', i === p);
+  pg.items.forEach((e, j) => e.classList.toggle('on', i < p || (i === p && j < n)));
+});
+addEventListener('keydown', e => {
+  if (e.key === 'PageDown') {
+    // Skip the rest of this page's animations and jump to the next page, then play its first one.
+    if (p < pages.length - 1) {
+      p++; n = 0; show();
+      void pages[p].el.offsetWidth;  // flush styles so the first item fades in from 10% instead of appearing instantly
+      n = Math.min(1, pages[p].items.length);
+    } else n = pages[p].items.length;
+  } else if (e.key === 'ArrowRight' || e.key === ' ') {
+    if (n < pages[p].items.length) n++;
+    else if (p < pages.length - 1) { p++; n = 0; }
+  } else if (e.key === 'ArrowLeft') {
+    if (n > 0) n--;
+    else if (p > 0) { p--; n = pages[p].items.length; }
+  } else return;
+  e.preventDefault(); show();
+});
+show();
+</script></body></html>

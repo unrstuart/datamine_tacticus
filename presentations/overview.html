@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terminus Overview</title>
+<style>
+  :root{--blur:20px}
+  html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:system-ui,sans-serif}
+  /* Blurred map: square, sized so its smallest page dimension is filled (cover), then overscanned a bit so the blur's soft edges are off-screen. */
+  #bg{position:fixed;left:50%;top:50%;width:max(100vw,100vh);height:max(100vw,100vh);
+      transform:translate(-50%,-50%) scale(1.15);background:url(overview_img/map.png) center/cover;filter:blur(var(--blur))}
+  /* Featured character on the right, bottom-aligned, as tall as the page allows */
+  #dreir{position:fixed;right:1vw;bottom:0;height:96vh;max-width:40vw;object-fit:contain;object-position:bottom right;filter:drop-shadow(0 1vh 3vh rgba(0,0,0,.6))}
+  #main{position:relative;box-sizing:border-box;height:100%;width:62vw;padding:3vh 0 3vh 3vw;display:grid;gap:1.8vh;
+        grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto auto auto auto;align-content:center;gap:2.2vh 1.8vw}
+  .span{grid-column:1/-1}
+  .card{background:#efe7d6;border-radius:2vh;box-shadow:0 1vh 3vh rgba(0,0,0,.55);padding:1.3vh 1.4vw;box-sizing:border-box;display:flex;flex-direction:column;gap:.8vh}
+  /* shared text treatment: white with a 3px outside black outline; headings yellow, 3.5px */
+  .t,.h,.title{-webkit-text-stroke:6px #000;paint-order:stroke fill;stroke-linejoin:round;letter-spacing:.02em;word-spacing:.2em}
+  .t{color:#fff;font-weight:800;font-size:2.7vh;line-height:1.25}
+  .h{color:#ffd21a;font-weight:800;font-size:3.1vh;-webkit-text-stroke-width:7px}
+  .title{color:#ffd21a;font-weight:900;font-size:6vh;line-height:1.05;-webkit-text-stroke-width:10px;margin:0}
+  .sub{color:#fff;font-weight:800;font-size:3vh;-webkit-text-stroke:6px #000;paint-order:stroke fill;stroke-linejoin:round;letter-spacing:.02em;word-spacing:.2em}
+  .row{display:flex;align-items:center;gap:1vw}
+  .icons{display:flex;align-items:center;gap:.6vw;flex-wrap:nowrap}
+  .icons img{height:8.5vh;width:auto;filter:drop-shadow(0 .4vh .6vh rgba(0,0,0,.5))}
+  .icons img.sm{height:7vh}
+  .ban{position:relative;display:inline-flex}
+  .ban img{opacity:.55}
+  .ban::after{content:"";position:absolute;left:-8%;right:-8%;top:50%;height:.9vh;background:#d8261c;border:.25vh solid #000;border-radius:1vh;transform:rotate(-35deg);box-shadow:0 .3vh .6vh rgba(0,0,0,.5)}
+  .ban.up5::after{top:45%}
+  .ban.up10::after{top:40%}
+  .arrow{font-size:4vh;color:#ffd21a;-webkit-text-stroke:6px #000;paint-order:stroke fill;font-weight:900}
+  .twists{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:2.5vw}
+  .twists .icons img{height:7vh}
+  .twists .twist{min-width:0}
+  .twist{display:flex;flex-direction:column;gap:1vh;align-items:flex-start}
+  .stats{display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;align-items:center;gap:1vw}
+  .stat{display:flex;align-items:center;gap:.8vw}
+  .stat img{height:7vh;width:auto}
+</style></head><body>
+<div id="bg"></div>
+<img id="dreir" src="overview_img/dreir.png" alt="Dreir">
+<div id="main">
+  <div class="span"><h1 class="title">Terminus</h1><div class="sub">Survival event &nbsp;·&nbsp; Featuring Dreir</div></div>
+
+  <div class="card span">
+    <div class="stats">
+      <div class="stat"><span class="t">Starts Oct 10</span></div>
+      <div class="stat"><span class="t">Runs 7 days</span></div>
+      <div class="stat"><img src="overview_img/token.png" alt=""><span class="t">Start with 2<br>+1 per 12h &rarr; 15 total (F2P)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="h">Allies</div>
+    <div class="icons">
+      <img src="overview_img/custodes.png" alt=""><img src="overview_img/admech.png" alt=""><img src="overview_img/ultras.png" alt="">
+      <img src="overview_img/sisters.png" alt=""><img src="overview_img/guard.png" alt="">
+      <span class="ban up5"><img class="sm" src="overview_img/mow.png" alt=""></span>
+    </div>
+    <div class="t">No Machines of War</div>
+  </div>
+  <div class="card">
+    <div class="h">Enemies</div>
+    <div class="icons"><img src="overview_img/black_legion.png" alt=""><img src="overview_img/thousand_sons.png" alt=""><img src="overview_img/death_guard.png" alt=""></div>
+    <div class="t">Faction depends on wave</div>
+  </div>
+
+  <div class="card span">
+    <div class="h">Twists</div>
+    <div class="twists">
+      <div class="twist">
+        <div class="icons"><img src="overview_img/forces.png" alt=""><span class="arrow">&rarr;</span><img src="overview_img/guardsman.png" alt=""></div>
+        <div class="t">Spend Forces to deploy Cadian Guardsmen</div>
+      </div>
+      <div class="twist">
+        <div class="icons"><span class="ban"><img src="overview_img/shard.png" alt=""></span><span class="arrow">&rarr;</span><img src="overview_img/xpbook.png" alt=""><img src="overview_img/gold.png" alt=""><img src="overview_img/cp.png" alt=""></div>
+        <div class="t">No shards in crates: XP books, gold, Crusade Points</div>
+      </div>
+      <div class="twist">
+        <div class="icons"><img src="overview_img/wave.png" alt=""><span class="arrow">&rarr;</span><span class="ban up10"><img src="overview_img/xpbook.png" alt=""></span></div>
+        <div class="t">No XP books for clearing waves</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card span">
+    <div class="h">Good to know</div>
+    <div class="row">
+      <img src="overview_img/wave.png" style="height:5vh" alt=""><span class="t">Waves up to 16 award</span><img src="overview_img/cp.png" style="height:6vh" alt="">
+      <span class="t" style="margin-left:2vw">Score converts at 2K : 1</span><span class="arrow">&rarr;</span><img src="overview_img/cp.png" style="height:6vh" alt="">
+    </div>
+    <div class="row">
+      <img src="overview_img/xpbook.png" style="height:5vh" alt=""><span class="t">XP books: F2P ~20</span>
+      <span class="t" style="margin-left:2vw">Bonus Shipment 30</span>
+    </div>
+  </div>
+</div>
+</body></html>
