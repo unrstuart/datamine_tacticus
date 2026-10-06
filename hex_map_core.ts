@@ -143,6 +143,18 @@ export const HIGHLIGHT_WIDTH = 3;
 export const ELEVATION_LABEL_FILL         = 'rgba(255, 220,   0, 1.00)';
 export const ELEVATION_LABEL_OUTLINE      = 'rgba(  0,   0,   0, 1.00)';
 export const ELEVATION_LABEL_OUTLINE_WIDTH = 4;
+// Used by colorElevations: lowest -> highest elevation (0, 1, 2, ...). Levels past the end reuse the last color.
+export const ELEVATION_RAMP = [
+    'rgb(255,  50,  50)', // red
+    'rgb(255, 150,   0)', // orange
+    'rgb(255, 235,   0)', // yellow
+    'rgb(  0, 230, 255)', // cyan
+    'rgb( 60, 110, 255)', // blue
+    'rgb( 40, 220,  60)', // green
+];
+// Used by blueDeploy: a true blue, distinct from the default cyan deploy highlight.
+export const DEPLOY_BLUE_FILL   = 'rgba( 30,  70, 255, 0.45)';
+export const DEPLOY_BLUE_STROKE = 'rgba( 30,  70, 255, 1.00)';
 
 // Within a TeamWithPlayerIndex=1 (enemy) SpawnPointGroup, SpawnPointType distinguishes actual
 // enemy entry points (11 - small count, 2-4, at board corners, present on every board incl. LE)
@@ -328,6 +340,10 @@ export interface AddHexesToMapOptions {
     showPowerupSpawns?: boolean;
     /** Draw each playable hex's elevation as a number, 0 = the board's lowest elevation. Default false (existing behavior). */
     labelElevation?: boolean;
+    /** Color each elevation label by its level (red, orange, yellow, cyan, blue, green from lowest up). Only with labelElevation. Default false (single-color labels). */
+    colorElevations?: boolean;
+    /** Draw the player deploy highlight in true blue instead of cyan. Default false (existing behavior). */
+    blueDeploy?: boolean;
 }
 
 export function addHexesToMap(
@@ -345,6 +361,8 @@ export function addHexesToMap(
         showEnemySpawns = true,
         showPowerupSpawns = true,
         labelElevation = false,
+        colorElevations = false,
+        blueDeploy = false,
     } = options;
     const m    = deriveMetrics(level.Width, level.Height);
     const bbox: BoundingBox = { minX: IMG_SIZE, maxX: 0, minY: IMG_SIZE, maxY: 0 };
@@ -406,7 +424,7 @@ export function addHexesToMap(
             if (!isSpawn && !isDeploy && !isPowerup) continue;
             const { x, y } = tileCenter(m, vCol, vRow, result.elevation);
             if (isDeploy && showDeployPoints) {
-                drawHex(ctx, m, x, y, DEPLOY_FILL, DEPLOY_STROKE, HIGHLIGHT_WIDTH, bbox);
+                drawHex(ctx, m, x, y, blueDeploy ? DEPLOY_BLUE_FILL : DEPLOY_FILL, blueDeploy ? DEPLOY_BLUE_STROKE : DEPLOY_STROKE, HIGHLIGHT_WIDTH, bbox);
             } else if (isPowerup && showPowerupSpawns) {
                 drawHex(ctx, m, x, y, POWERUP_FILL, POWERUP_STROKE, HIGHLIGHT_WIDTH, bbox);
             } else if (isSpawn && showEnemySpawns) {
@@ -438,11 +456,12 @@ export function addHexesToMap(
         ctx.textBaseline = 'middle';
         ctx.lineJoin = 'round';
         for (const label of labels) {
-            const text = String(label.elevation - minElevation);
+            const level = label.elevation - minElevation;
+            const text = String(level);
             ctx.lineWidth = ELEVATION_LABEL_OUTLINE_WIDTH;
             ctx.strokeStyle = ELEVATION_LABEL_OUTLINE;
             ctx.strokeText(text, label.x, label.y);
-            ctx.fillStyle = ELEVATION_LABEL_FILL;
+            ctx.fillStyle = colorElevations ? ELEVATION_RAMP[Math.min(level, ELEVATION_RAMP.length - 1)] : ELEVATION_LABEL_FILL;
             ctx.fillText(text, label.x, label.y);
         }
     }

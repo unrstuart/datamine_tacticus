@@ -63,7 +63,7 @@ function findJsonPairs(targetDir: string, texturesDir: string): string[] {
 }
 
 // --no-crop, --scale <factor>, --powerup-colors, --no-deploy, --no-enemy-spawns,
-// --no-powerup-spawns, --label-elevation: opt-in flags for addHexesToMap's AddHexesToMapOptions -
+// --no-powerup-spawns, --label-elevation, --color-elevations, --blue-deploy, --board <ids>: opt-in flags for addHexesToMap's AddHexesToMapOptions -
 // can appear anywhere among the positional args. Defaults match the original
 // always-crop-to-25%-with-undifferentiated-spawn-colors-and-no-elevation-labels behavior exactly.
 function parseArgs(argv: string[]): { positional: string[]; flags: Record<string, string | boolean> } {
@@ -103,6 +103,8 @@ async function main() {
     const showEnemySpawns = !flags['no-enemy-spawns'];
     const showPowerupSpawns = !flags['no-powerup-spawns'];
     const labelElevation = !!flags['label-elevation'];
+    const colorElevations = !!flags['color-elevations'];
+    const blueDeploy = !!flags['blue-deploy'];
 
     const gameConfig = JSON.parse(gameConfigPath ? fs.readFileSync(gameConfigPath, 'utf8') : '{}');
     const battleSets = gameConfig.clientGameConfig?.battles?.battleSets ?? {};
@@ -119,6 +121,10 @@ async function main() {
             const boardId = file.substring(0, file.length - '_Visual.png'.length);
             boardIds.add(boardId);
         }
+    }
+    // --board <id[,id...]>: render extra boards (e.g. survival boards) not picked up by the LE / GB_ discovery above.
+    if (typeof flags['board'] === 'string') {
+        for (const id of (flags['board'] as string).split(',')) boardIds.add(id);
     }
     console.log('boardIds: ', boardIds);
     const jsonPairs = findJsonPairs(targetPath, texturesPath);
@@ -149,6 +155,8 @@ async function main() {
             showEnemySpawns,
             showPowerupSpawns,
             labelElevation,
+            colorElevations,
+            blueDeploy,
         });
 
         await new Promise<void>((resolve, reject) => {
