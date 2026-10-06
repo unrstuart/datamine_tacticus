@@ -967,7 +967,7 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
         case 'planet_data': {
             const gcfg = requireResolved(paths.globalConfigPath, 'global-config', 'Usage: extract_all.ts planet_data --global-config <p> --i2 <p> (or --assets-dir)');
             const i2 = requireResolved(paths.i2Path, 'i2', 'Usage: extract_all.ts planet_data --global-config <p> --i2 <p> (or --assets-dir)');
-            printJson(extractPlanetData({ globalConfigPath: gcfg, i2Path: i2 }));
+            printJson(extractPlanetData({ globalConfigPath: gcfg, i2Path: i2, planetSetId: flags['planet-set'] }));
             return;
         }
         case 'product_calendars': {
