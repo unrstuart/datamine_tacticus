@@ -14,8 +14,7 @@ Paths below are relative to that folder.
 - `img/map.png` - background: the Terminus (`crescendo_01`) map texture, **no hex overlay**.
 - `img/<name>.png` - character portraits (copied from the datamine's `sprites/`, files named
   `ui_image_RoundPortrait_<id>_01.png`; copied to a short name like `adept_hospitaller.png`).
-- Opened locally as a `file://` URL in Chrome. Do not publish it anywhere: the portraits and map
-  are datamined game assets.
+- Opened locally as a `file://` URL in Chrome.
 
 ## Look
 - **Background (always visible, behind every page):** `#bg`, a fixed square image
