@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Armageddon Mini Mythic</title>
+<style>
+  :root{--blur:20px}
+  html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:system-ui,sans-serif}
+  /* Fixed 16:9 frame (DaVinci Resolve's standard 1920x1080) scaled to fit the window, letterboxed in black.
+     Everything inside is sized in cqw/cqh (percent of this frame), so a 1920x1080 window is pixel-exact for screen capture. */
+  #frame{position:absolute;left:50%;top:50%;width:min(100vw,calc(100vh*16/9));height:min(100vh,calc(100vw*9/16));
+         transform:translate(-50%,-50%);container-type:size;overflow:hidden;background:#000}
+  #stage{position:absolute;inset:0}
+  /* Blurred map: square, sized so its smallest page dimension is filled (cover), then overscanned a bit so the blur's soft edges are off-screen. */
+  #bg{position:absolute;left:50%;top:50%;width:max(100cqw,100cqh);height:max(100cqw,100cqh);
+      transform:translate(-50%,-50%) scale(1.15);background:url(october_img/map.png) center/cover;filter:blur(var(--blur))}
+  .page{display:none;position:relative;height:100%;box-sizing:border-box;flex-direction:column;justify-content:center;align-items:center;gap:3.5cqh;padding:4cqh 6cqw;text-align:center}
+  .page.active{display:flex}
+  /* shared text treatment: white, heavy black shadow so it reads over the busy map */
+  .shadow{text-shadow:0 0 1.5cqh #000,0 0 1.5cqh #000,0 .4cqh .8cqh #000}
+  .head{color:#ffd21a;font-weight:900;font-size:7cqh;margin:0 0 1cqh;text-shadow:0 0 1.5cqh #000,0 0 1.5cqh #000,0 .4cqh .8cqh #000}
+  .page.title .head{font-size:11cqh}
+  .line{color:#fff;font-weight:800;font-size:5.8cqh;text-shadow:0 0 1.5cqh #000,0 0 1.5cqh #000,0 .4cqh .8cqh #000}
+  .line.sub{font-size:4.6cqh;font-weight:700;margin-top:-1.5cqh}
+  .page.left{align-items:flex-start;text-align:left;padding-left:10cqw}
+  .page.left .line.sub{margin-left:4cqw}
+  /* icon / portrait rows */
+  .tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:3cqh 2.5cqw;max-width:90cqw}
+  .tile{display:flex;flex-direction:column;align-items:center;width:17cqh}
+  .tile img{height:14cqh;width:14cqh;object-fit:contain;filter:drop-shadow(0 .5cqh 1cqh #000a)}
+  .tile.round img{border-radius:50%;object-fit:cover}
+  .tile span{margin-top:.8cqh;color:#fff;font-weight:700;font-size:2.6cqh;text-shadow:0 0 .6cqh #000,0 0 .6cqh #000;text-align:center;line-height:1.15}
+  .tile.big{width:22cqh}.tile.big img{height:18cqh;width:18cqh}
+  /* stat tiles */
+  .stats{display:flex;flex-wrap:wrap;justify-content:center;gap:3cqh 4cqw}
+  .stat{background:rgba(0,0,0,.5);border-radius:12px;padding:2.5cqh 3cqw;min-width:20cqw}
+  .stat b{display:block;color:#ffd21a;font-size:9cqh;font-weight:900}
+  .stat span{color:#fff;font-weight:700;font-size:3cqh}
+  /* placeholder for artwork we don't have yet (or screenshots to paste in) */
+  .missing,.shot{border:.5cqh dashed #ffd21a;border-radius:12px;background:rgba(0,0,0,.45);color:#ffd21a;font-weight:800;display:flex;align-items:center;justify-content:center;text-align:center;box-sizing:border-box}
+  .tile .missing{height:14cqh;width:14cqh;font-size:2cqh;padding:.5cqh}
+  .shot{width:80cqw;height:62cqh;font-size:4cqh;padding:2cqh}
+  .shotimg{max-width:80cqw;max-height:62cqh;border-radius:12px;box-shadow:0 1cqh 3cqh rgba(0,0,0,.6)}
+  .cap{color:#fff;font-weight:700;font-size:3.2cqh;text-shadow:0 0 1cqh #000,0 0 1cqh #000}
+  /* character pose on the right; pages that have one reserve room for it */
+  .pose{position:absolute;right:0;bottom:0;height:100cqh;width:44cqw;object-fit:contain;object-position:bottom right;pointer-events:none;filter:drop-shadow(0 1cqh 3cqh rgba(0,0,0,.6))}
+  .page.hasPose{padding-right:42cqw}
+  .page.hasPose.left{padding-left:6cqw}
+  /* compact pages: several rows on one page (Overview) */
+  .page.compact{gap:1.6cqh;padding:2cqh 4cqw}
+  .page.compact .head{font-size:5.5cqh;margin:0}
+  .page.compact .tiles{gap:1.2cqh .6cqw}
+  .page.compact .tile,.page.compact .tile.big{width:11cqh}
+  .page.compact .tile img,.page.compact .tile.big img{height:8.5cqh;width:8.5cqh}
+  .page.compact .tile span{font-size:1.9cqh;margin-top:.3cqh}
+  .page.compact .tile .missing{height:8.5cqh;width:8.5cqh;font-size:1.4cqh}
+  .page.compact .line{font-size:3.2cqh}
+  .page.compact .stats{gap:1.4cqh 1.2cqw;width:100%}
+  .page.compact .stat{padding:1.2cqh 1cqw;min-width:0;flex:1 1 0;box-sizing:border-box}
+  .page.compact.hasPose{padding-right:42cqw}
+  .page.compact .stat b{font-size:4.6cqh;white-space:nowrap}
+  .page.compact .stat span{font-size:2.1cqh}
+  /* roomy: compact layout with bigger type, for pages that only have a few things on them */
+  .page.compact.roomy{gap:3cqh}
+  .page.compact.roomy .head{font-size:7cqh}
+  .page.compact.roomy .tile,.page.compact.roomy .tile.big{width:17cqh}
+  .page.compact.roomy .tile img,.page.compact.roomy .tile.big img{height:13cqh;width:13cqh}
+  .page.compact.roomy .tile span{font-size:2.5cqh}
+  .page.compact.roomy .tile .missing{height:13cqh;width:13cqh;font-size:2cqh}
+  .page.compact.roomy .line{font-size:4.4cqh}
+  .page.compact.roomy .stat{padding:2cqh 1.4cqw}
+  .page.compact.roomy .stat b{font-size:7.5cqh}
+  .page.compact.roomy .stat span{font-size:2.8cqh}
+  .tiles.nowrap{flex-wrap:nowrap;gap:.5cqw}
+  .tiles.nowrap .tile,.page.compact .tiles.nowrap .tile{width:auto}
+  .tiles.nowrap .tile img,.page.compact .tiles.nowrap .tile img{height:8cqh;width:8cqh}
+  .tiles.nowrap .glyph{font-size:3.4cqh}
+  /* glyphs between/alongside icons (arrows, +, 'Skip:'), inline rows, small cost icon */
+  .glyph{color:#ffd21a;font-weight:900;font-size:7cqh;line-height:1;align-self:center;text-shadow:0 0 1cqh #000,0 0 1cqh #000,0 .4cqh .8cqh #000}
+  .page.compact .glyph{font-size:4.5cqh}
+  .row{display:flex;align-items:center;justify-content:center;gap:1.6cqw}
+  .page.left .row{justify-content:flex-start}
+  .rowimg img{height:10cqh;width:auto;display:block;filter:drop-shadow(0 .5cqh 1cqh #000a)}
+  .page.compact .rowimg img{height:7cqh}
+  .emoji{font-size:5.8cqh}
+  .tile span img.ec{height:1em;width:auto;object-fit:contain;vertical-align:-.15em;margin-right:.25em;filter:none}
+  .page.top{justify-content:flex-start;padding-top:3cqh}
+  .page.top .shotwrap{flex:1 1 0;min-height:0;width:100%;display:flex;align-items:flex-start;justify-content:center}
+  .page.top .shotimg{max-height:100%;max-width:100%;object-fit:contain;border-radius:12px;box-shadow:0 1cqh 3cqh rgba(0,0,0,.6)}
+  .page.top .shot{width:40cqw;height:50cqh;font-size:3cqh}
+  .tile.wide{width:25cqh}
+  .stat.small b{font-size:2.8cqh}
+  /* tiny section marker so it's easy to find your place while iterating */
+  #pos{display:none;position:fixed;right:1cqw;bottom:1cqh;color:#fff;opacity:.35;font:700 1.8cqh system-ui;z-index:9}
+</style></head><body>
+<div id="frame">
+<div id="bg"></div>
+<div id="stage"></div>
+</div>
+<div id="pos"></div>
+<script>
+// ---------------------------------------------------------------------------
+// Page types - every page is one entry in PAGES and is shown whole.
+//   text:      {t:'text', head, lines:[...], left?}   a leading space on a line makes it a sub-point
+//   icons:     {t:'icons', head, tiles:[{img,label}], lines?}   img:null draws a "MISSING" placeholder
+//   portraits: {t:'portraits', head, tiles:[{img,label}]}       round character portraits
+//   stats:     {t:'stats', head, stats:[{big,label}]}
+//   shot:      {t:'shot', head, shot, caption}  a screenshot you paste in as october_img/shots/<shot>.png
+//   title:     {t:'title', head, lines}
+//   any page may add pose:'<name>' - draws october_img/pose_<name>.png on the right, content shifts left
+//   multi:     {t:'multi', head, compact?, parts:[icons|stats parts...]}  several rows on one page
+// ---------------------------------------------------------------------------
+const PAGES = [
+  // ===== 1. intro =====
+  {t:'title', pose:'helbrecht', head:'Armageddon Mini Mythic', lines:['Single-week shop event','Starts October 26']},
+
+  // ===== 2. overview =====
+  {t:'multi', pose:'yarrick', head:'Overview', compact:true, parts:[
+    {t:'icons', tiles:[{img:'astra_militarum',label:'Astra Militarum'},{img:'black_templars',label:'Black Templars'},{img:'space_wolves',label:'Space Wolves'}],
+      lines:['Up to 250 shards per character  ·  Oct 26  ·  6 days + cooldown']},
+    {t:'stats', stats:[
+      {big:'835',label:'F2P event currency'},{big:'<2,000',label:'with Bonus Shipment'},
+      {big:'13 / 20',label:'crates F2P (≈85K gold, 65 shards)'},{big:'20 / 20',label:'with Bonus Shipment (≈300K gold, 150 shards)'}]},
+    {t:'icons', tiles:[
+      {img:'shard',label:'Shards'},{img:'orb_mythic',label:'Orbs'},{img:'xpbook_mythic',label:'Books'},{img:'req',label:'Reqs'},{img:'blessed_req',label:'Blessed Reqs'},
+      {img:'mythic_salvage',label:'Mythic Salvage'},{img:'salvage',label:'Salvage'},{img:'badge_uncommon',label:'Uncommon Badges'},
+      {img:'bolt_pistol',label:'2× Relic Bolt Pistol'},{img:'mythic_equipment',label:'Mythic equipment'},{img:'gold',label:'Gold'},{img:'mythic_upgrade',label:'Upgrade materials'}]},
+  ]},
+
+  // ===== 3. mechanics =====
+  {t:'icons', pose:'njal', head:'Mechanics', tiles:[
+    {img:'event_currency',label:'Earn currency'},{arrow:true},{img:'space_wolves',label:'Spend in shop'},{arrow:true},{img:'crate',label:'Crates at milestones'}]},
+
+  // ===== 4. milestones and event points =====
+  {t:'multi', pose:'thaddeus', head:'Milestones & points', compact:true, top:true, parts:[
+    {t:'icons', tiles:[{img:'event_points',label:'Daily'},{img:'bp_points',label:'Battle Pass daily'},{img:'free_chain',label:'Free chain'},{img:'bonus_shipment',label:'Premium chain'}]},
+    {t:'stats', stats:[{big:'50/65/85',label:'Battle Pass points',small:true},{big:'20×90',label:'free chain: damage'},{big:'10×90',label:'premium: +50 EC each'},{big:'450',label:'EC from milestones'}]},
+    {t:'text', lines:['Last two milestones: Blessed Req, Energy']},
+    {t:'shot', shot:'milestones'},
+  ]},
+
+  // ===== 5. faction focus =====
+  {t:'multi', pose:'ragnar', head:'Currency: Faction Focus', compact:true, roomy:true, top:true, parts:[
+    {t:'stats', stats:[{big:'260',label:'event currency'},{big:'1,220',label:'points needed'},{big:'1,292',label:'points possible'}]},
+    {t:'icons', tiles:[
+      {img:'token_onslaught',label:'Points: 220'},{img:'token_salvage_run',label:'Points: 260'},
+      {img:'token_arena',label:'Points: 518'},{img:'token_tournament_arena',label:'Points: 294'}]},
+    {t:'shot', shot:'faction-focus'},
+  ]},
+
+  // ===== 6. global hse =====
+  {t:'multi', pose:'thoread', head:'Currency: Imperator', compact:true, roomy:true, parts:[
+    {t:'icons', tiles:[{img:'event_currency',label:'50 EC'}]},
+    {t:'icons', tiles:[{img:'space_wolves',label:'Space Wolves'},{img:'black_templars',label:'Black Templars'},{img:'astra_militarum',label:'Imperial Guard'}]},
+    {t:'text', lines:['Needs the community']},
+  ]},
+
+  // ===== 7. tournament arena =====
+  {t:'multi', pose:'ulf', head:'Currency: TA chests', compact:true, roomy:true, parts:[
+    {t:'icons', tiles:[{img:'token_tournament_arena',label:'Tournament Arena'}]},
+    {t:'stats', stats:[{big:'4',label:'chest payouts'},{big:'40',label:'event currency'}]},
+    {t:'text', lines:['Play the factions  ·  win']},
+  ]},
+
+  // ===== 8. daily shop =====
+  {t:'multi', pose:'godswyl', head:'Currency: Daily shop', compact:true, roomy:true, parts:[
+    {t:'icons', tiles:[{img:'event_currency',label:'Free daily'}]},
+    {t:'stats', stats:[{big:'5',label:'per day'},{big:'7 days',label:'→ 35 EC'}]},
+  ]},
+
+  // ===== 9. total and bonus shipment =====
+  {t:'multi', pose:'burchard', head:'Totals', compact:true, roomy:true, parts:[
+    {t:'stats', stats:[{big:'835',label:'Free to play'},{big:'1,951',label:'With Bonus Shipment'}]},
+    {t:'icons', tiles:[{img:'bonus_shipment',label:'Bonus Shipment'}], lines:['Typically Extra Free Currency']},
+  ]},
+
+  // ===== 10. character shards =====
+  {t:'multi', pose:'jaeger', head:'Character shards', compact:true, parts:[
+    {t:'portraits', tiles:[
+      {img:'yarrick',label:'Yarrick'},{img:'creed',label:'Creed'},{img:'dreir',label:'Dreir'},{img:'thaddeus',label:'Thaddeus'},{img:'kut',label:'Kut'},{img:'sibyll',label:'Sibyll'}]},
+    {t:'portraits', tiles:[
+      {img:'helbrecht',label:'Helbrecht'},{img:'thoread',label:'Thoread'},{img:'burchard',label:'Burchard'},{img:'godswyl',label:'Godswyl'},{img:'jaeger',label:'Jaeger'}]},
+    {t:'portraits', tiles:[
+      {img:'ragnar',label:'Ragnar'},{img:'baldr',label:'Baldr'},{img:'arjac',label:'Arjac'},{img:'ulf',label:'Ulf'},{img:'tjark',label:'Tjark'},{img:'njal',label:'Njal'}]},
+    {t:'stats', stats:[{big:'25 for 45',label:'regular shards'},{big:'5 for 45',label:'mythic (blue star)'},{big:'2 Days',label:'(Yarrick 3)'}]},
+  ]},
+
+  // ===== 11. orbs, books, coins, salvage, mythic upgrades =====
+  {t:'icons', pose:'baldr', head:'Orbs, books, coins, upgrades', wide:true, tiles:[
+    {img:'xpbook_mythic',qty:'1×',cost:25},{img:'orb_mythic',qty:'5×',cost:225},{img:'orb_legendary',qty:'10×',cost:200},
+    {img:'gold',qty:'100,000',cost:40},{img:'mythic_salvage',qty:'250×',cost:100},{img:'badge_uncommon',qty:'10×',cost:15},{img:'mythic_upgrade',qty:'1×',cost:15}],
+    lines:['Last day: 2K gold for 1']},
+
+  // ===== 12. other items =====
+  {t:'icons', pose:'tjark', head:'Other items', tiles:[
+    {img:'req',label:'Reqs'},{img:'blessed_req',label:'Blessed Reqs'},{img:'salvage',label:'Salvage'},
+    {img:'upgrade_craftable',label:'Epic & legendary crafted'},{img:'legendary_upgrade',label:'Legendary uncrafted'}]},
+
+  // ===== 13. relics =====
+  {t:'icons', pose:'dreir', head:'Relics', tiles:[
+    {img:'relic_dreir',label:"Dreir's: not offered"},{img:'relic_cadia',label:'Lost Cadia: not offered'},{img:'relic_baldr',label:"Baldr's: not offered"},{img:'bolt_pistol',label:'Bolt Pistol: offered'}]},
+
+  // ===== 14. relative cost =====
+  {t:'text', pose:'creed', head:'Relative cost', lines:['Roughly equal','Last-day coins: pricier','Still beats auto-convert']},
+
+  // ===== 15. general recommendations =====
+  {t:'multi', pose:'kut', head:'Recommendations', left:true, parts:[
+    {t:'text', lines:['Buy your bottleneck','Think ahead']},
+    {t:'row', items:[{img:'shard'},{glyph:'+'},{img:'orb_mythic'},'together']},
+    {t:'row', items:[{glyph:'Skip:'},{img:'upgrade_craftable'},{img:'legendary_upgrade'},{img:'salvage'},{img:'req'},{img:'blessed_req'}]},
+  ]},
+
+  // ===== 16. new player =====
+  {t:'multi', pose:'sibyll', head:'New player', compact:true, parts:[
+    {t:'portraits', nowrap:true, tiles:[
+      {img:'thaddeus'},{arrow:true},{img:'thoread'},{arrow:true},{img:'sibyll'},{arrow:true},
+      {img:'godswyl'},{arrow:true},{img:'burchard'},{arrow:true},{img:'kut'}]},
+    {t:'stats', stats:[{big:'FoC',label:'Thaddeus · Sibyll · Kut'},{big:'OM',label:'Thoread · Godswyl · Burchard'},{big:'1,080',label:'EC for all six'}]},
+    {t:'row', items:['Leftovers:',{img:'xpbook_mythic'},{glyph:'→'},{img:'gold'}]},
+  ]},
+
+  // ===== 17. mid player =====
+  {t:'portraits', pose:'ragnar', head:'Mid-game player', tiles:[{img:'ragnar',label:'Ragnar: arena, raids'},{img:'helbrecht',label:'Helbrecht: Mortarion'}], lines:['With the Bonus Shipment']},
+
+  // ===== 18. late player =====
+  {t:'icons', pose:'helbrecht', head:'Late-game player', tiles:[
+    {img:'xpbook_mythic',label:'Books'},{img:'mythic_upgrade',label:'Mythic upgrades'},{img:'orb_mythic',label:'Orbs'},{img:'gold',label:'Coins'},{img:'helbrecht',label:'Helbrecht'}],
+    lines:['Buy orbs for your shards']},
+
+  // ===== 19. general thoughts =====
+  {t:'multi', pose:'njal', head:'General thoughts', left:true, parts:[
+    {t:'row', items:['Shop events',{emoji:'👍'}]},
+    {t:'row', items:['Lacking good relics',{emoji:'👎'}]},
+    {t:'row', items:['Imperial again',{emoji:'👎'}]},
+    {t:'row', items:['Bonus Shipment',{emoji:'👍'}]},
+    {t:'row', items:['My plan:',{img:'mythic_upgrade_2'},{img:'mythic_upgrade_3'},{img:'mythic_upgrade_4'},{img:'xpbook_mythic'}]},
+  ]},
+
+  // ===== 20. outro =====
+  {t:'title', pose:'arjac', head:'Thanks for watching', lines:['Questions? Comment or Discord','Happy shopping']},
+];
+
+// ---------------------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------------------
+const stage = document.getElementById('stage');
+// Per-pose nudges. MOVE: x/y as a fraction of the pose's displayed width/height (+x right, +y down; overflow such as a
+// shadow is clipped by the frame). SCALE: size multiplier, anchored at the bottom right.
+const POSE_MOVE = { thaddeus: {x: 0.25}, ulf: {x: 0.25}, burchard: {x: -0.15}, creed: {x: -0.25, y: -0.10}, kut: {x: 0.25}, sibyll: {x: 0.25} };
+const POSE_SCALE = { godswyl: 0.7, creed: 0.7 };
+const pages = [];   // each: {el, items:[element,...]}
+const mk = (cls, html) => { const d = document.createElement('div'); d.className = cls; if (html !== undefined) d.innerHTML = html; return d; };
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const tile = (t, extra='') => {
+  if (t.arrow || t.glyph) return mk('item glyph', esc(t.glyph || '→'));
+  const img = t.img ? `<img src="october_img/${t.img}.png" alt="" onerror="this.outerHTML='<div class=missing>MISSING: ${esc(t.img)}</div>'">` : `<div class="missing">MISSING ICON</div>`;
+  const label = t.cost !== undefined ? `<span>${t.qty ? esc(t.qty) + ' = ' : ''}<img class="ec" src="october_img/event_currency.png" alt="">${esc(t.cost)}</span>` : (t.label ? `<span>${esc(t.label)}</span>` : '');
+  return mk('item tile ' + extra, img + label);
+};
+
+// Renders one icons/portraits/stats part into `el`, appending its elements to `items`.
+function renderPart(el, part, items, compact) {
+  if (part.t === 'icons' || part.t === 'portraits') {
+    const row = mk('tiles' + (part.nowrap ? ' nowrap' : '')); el.appendChild(row);
+    const big = (part.tiles.length <= 4 && !compact) ? 'big' : '';
+    part.tiles.forEach(t => { const d = tile(t, (part.t === 'portraits' ? 'round ' : '') + big + (part.wide ? ' wide' : '')); row.appendChild(d); items.push(d); });
+    (part.lines || []).forEach(l => { const d = mk('item line', esc(l)); el.appendChild(d); items.push(d); });
+  } else if (part.t === 'shot') {
+    const d = mk('item shotwrap');
+    d.innerHTML = `<img class="shotimg" src="october_img/shots/${part.shot}.png" alt="" onerror="this.outerHTML='<div class=shot>SCREENSHOT<br>(october_img/shots/${esc(part.shot)}.png)</div>'">`;
+    el.appendChild(d); items.push(d);
+  } else if (part.t === 'row') {
+    const row = mk('row'); el.appendChild(row);
+    part.items.forEach(it => {
+      const d = typeof it === 'string' ? mk('item line', esc(it))
+        : it.img ? mk('item rowimg', `<img src="october_img/${it.img}.png" alt="">`)
+        : it.emoji ? mk('item line emoji', it.emoji) : mk('item glyph', esc(it.glyph));
+      row.appendChild(d); items.push(d);
+    });
+  } else if (part.t === 'text') {
+    (part.lines || []).forEach(l => { const d = mk('item line', esc(l)); el.appendChild(d); items.push(d); });
+  } else if (part.t === 'stats') {
+    const row = mk('stats'); el.appendChild(row);
+    part.stats.forEach(s => { const d = mk('item stat' + (s.small ? ' small' : ''), `<b>${esc(s.big)}</b><span>${esc(s.label)}</span>`); row.appendChild(d); items.push(d); });
+  }
+}
+
+for (const p of PAGES) {
+  const el = mk('page ' + (p.t === 'title' ? 'title ' : '') + (p.left ? 'left ' : '') + (p.compact ? 'compact ' : '') + (p.roomy ? 'roomy ' : '') + (p.top ? 'top' : ''));
+  if (p.pose) {
+    el.classList.add('hasPose');
+    // A nudged pose is sized by its own pixels (not the fixed box) so translateX(%) is a fraction of the image's width.
+    const mv = POSE_MOVE[p.pose], scale = POSE_SCALE[p.pose];
+    const k = scale || 1;   // translate % is of the unscaled box, so convert "of the displayed size" by the scale
+    const tf = [mv ? `translate(${(mv.x || 0) * k * 100}%, ${(mv.y || 0) * k * 100}%)` : '', scale ? `scale(${scale})` : ''].filter(Boolean).join(' ');
+    const style = tf ? ` style="width:auto;height:auto;max-width:44cqw;max-height:100cqh;transform:${tf};transform-origin:bottom right"` : '';
+    el.insertAdjacentHTML('beforeend', `<img class="pose" src="october_img/pose_${p.pose}.png" alt=""${style}>`);
+  }
+  el.appendChild(mk('head', esc(p.head)));
+  const items = [];
+  if (p.t === 'text' || p.t === 'title') {
+    (p.lines || []).forEach(l => { const d = mk('item line' + (l.startsWith(' ') ? ' sub' : ''), esc(l.trim())); el.appendChild(d); items.push(d); });
+  } else if (p.t === 'multi') {
+    p.parts.forEach(part => renderPart(el, part, items, p.compact));
+  } else if (p.t === 'shot') {
+    // Drop a screenshot at october_img/shots/<shot>.png and this swaps the placeholder for it.
+    const d = mk('item');
+    d.innerHTML = `<img class="shotimg" src="october_img/shots/${p.shot}.png" alt="" onerror="this.outerHTML='<div class=shot>SCREENSHOT: ${esc(p.caption || p.shot)}<br>(october_img/shots/${esc(p.shot)}.png)</div>'">`;
+    el.appendChild(d); items.push(d);
+    if (p.caption) { const c = mk('item cap', esc(p.caption)); el.appendChild(c); items.push(c); }
+  } else renderPart(el, p, items, false);
+  stage.appendChild(el);
+  pages.push({ el, items, head: p.head });
+}
+
+let p = 0;
+const show = () => {
+  pages.forEach((pg, i) => pg.el.classList.toggle('active', i === p));
+  document.getElementById('pos').textContent = `${p + 1}/${pages.length}`;
+};
+addEventListener('keydown', e => {
+  // Every page shows all of its content at once: right/space/PageDown = next page, left/PageUp = previous page.
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') p = Math.min(pages.length - 1, p + 1);
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') p = Math.max(0, p - 1);
+  else if (e.key === 'c') {
+    // Toggle the page counter (hidden by default so it never ends up in a screen capture).
+    const pos = document.getElementById('pos'); pos.style.display = pos.style.display === 'block' ? 'none' : 'block'; return;
+  } else return;
+  e.preventDefault(); show();
+});
+show();
+</script></body></html>
