@@ -26,10 +26,16 @@ export interface SpawnPoint {
     Column: number;
     Row: number;
     SpawnPointType: number;
+    // Present in the extracted board JSON but not needed to draw highlights; extract_boards.ts exports them.
+    Direction?: number;
+    Room?: number;
+    Tag?: string;
+    SecondarySpawn?: number;
 }
 
 export interface SpawnGroup {
     TeamWithPlayerIndex: number;
+    MachineOfWarPosition?: number;
     SpawnPoints: SpawnPoint[];
 }
 
@@ -65,7 +71,7 @@ export interface ConfigVisualJson {
     VisualTiles: Array<{ Tile: VisualTile[] }>;
 }
 
-interface BoundingBox {
+export interface BoundingBox {
     minX: number;
     maxX: number;
     minY: number;
@@ -98,6 +104,14 @@ const BOARD_PARAMS: Record<string, BoardCameraParams> = {
     '7x9':  { projOrtho: 20.0,  camY: 275.5, camZ: -115.0, visRows: 14, hexHMult: 0.9659, globalOffY:  63.92 }, // confirmed ✓
     '7x10': { projOrtho: 22.2,  camY: 273.0, camZ: -113.4, visRows: 15, hexHMult: 0.9608, globalOffY:  27.34 }, // confirmed ✓
 };
+
+/** Board sizes whose BOARD_PARAMS entry is still a placeholder (see the TODO above) - positions on them are approximate. */
+export const UNCALIBRATED_BOARD_SIZES: readonly string[] = ['5x7'];
+
+/** Board sizes BOARD_PARAMS knows about. */
+export function knownBoardSizes(): string[] {
+    return Object.keys(BOARD_PARAMS);
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UNIVERSAL CONSTANTS
@@ -177,11 +191,20 @@ export interface HexMetrics {
     globalOffY: number;
 }
 
+/** The visual grid's column / row counts, from a board's Config_Visual JSON - what deriveMetrics should centre on. */
+export function visualDims(config: ConfigVisualJson): { cols: number; rows: number } {
+    return { cols: config.VisualTiles.length, rows: config.VisualTiles[0]?.Tile.length ?? 0 };
+}
+
 /**
  * Derive hex pixel dimensions from the board's camera parameters.
  * playWidth / playHeight come from the gameplay JSON (Width / Height fields).
  */
-export function deriveMetrics(playWidth: number, playHeight: number): HexMetrics {
+export function deriveMetrics(
+    playWidth:  number,
+    playHeight: number,
+    visual?:    { cols: number; rows: number },
+): HexMetrics {
     const key = `${playWidth}x${playHeight}`;
     const p   = BOARD_PARAMS[key];
     if (!p) {
@@ -202,8 +225,13 @@ export function deriveMetrics(playWidth: number, playHeight: number): HexMetrics
     const colSpacing = hexWidth * 0.75;
     const hexHeight  = HEX_R * Math.sqrt(3) * cosT * ppu * p.hexHMult;
 
-    const nRows  = p.visRows;
-    const gridW  = (VIS_COLS - 1) * colSpacing + hexWidth;
+    // The visual grid is centred on the texture, so its real column/row counts matter. 7x9 / 7x10
+    // boards always have 13 columns x 14 / 15 rows (the constants below); 5x7 boards have 11 x 12,
+    // which centring a 13 x 14 grid would shift by a column and a row. Callers pass the board's
+    // Config_Visual dimensions (visualDims) so every board centres on what it actually has.
+    const nCols  = visual?.cols ?? VIS_COLS;
+    const nRows  = visual?.rows ?? p.visRows;
+    const gridW  = (nCols - 1) * colSpacing + hexWidth;
     const gridH  = (nRows - 0.5) * hexHeight;
     const leftM  = (IMG_SIZE - gridW) / 2;
     const topM   = (IMG_SIZE - gridH) / 2;
@@ -322,6 +350,112 @@ export function classify(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// SHARED GEOMETRY HELPERS  (addHexesToMap, and extract_boards.ts's overlay-free export)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * One drawable tile (playable, and not ForceUnplayable / Block / un-bridged Water): its cell in
+ * the visual grid, the logical cell it maps to (what spawn points are addressed in), and the
+ * elevation `tileCenter` needs.
+ */
+export interface DrawableTile {
+    vCol:      number;
+    vRow:      number;
+    column:    number;
+    row:       number;
+    elevation: number;
+}
+
+/** Every drawable tile in visual-grid order (vCol outer, vRow inner) - the order addHexesToMap draws in. */
+export function drawableTiles(level: LevelJson, config: ConfigVisualJson): DrawableTile[] {
+    const tiles: DrawableTile[] = [];
+    for (let vCol = 0; vCol < config.VisualTiles.length; vCol++) {
+        for (let vRow = 0; vRow < config.VisualTiles[vCol].Tile.length; vRow++) {
+            const visTile = config.VisualTiles[vCol].Tile[vRow];
+            if (!visTile.IsPlayable) continue;
+            const lvlTile = level.Tiles[visTile.LogicalColumn]?.Tile[visTile.LogicalRow];
+            if (!lvlTile) continue;
+            const result = classify(visTile, lvlTile);
+            if (!result.draw) continue;
+            tiles.push({
+                vCol,
+                vRow,
+                column: visTile.LogicalColumn,
+                row: visTile.LogicalRow,
+                elevation: result.elevation,
+            });
+        }
+    }
+    return tiles;
+}
+
+/** Pixel bounds (at IMG_SIZE) of every drawable hex outline, exactly what addHexesToMap's tracing accumulates. */
+export function drawnBounds(m: HexMetrics, tiles: DrawableTile[]): BoundingBox {
+    const bbox: BoundingBox = { minX: IMG_SIZE, maxX: 0, minY: IMG_SIZE, maxY: 0 };
+    for (const t of tiles) {
+        const { x, y } = tileCenter(m, t.vCol, t.vRow, t.elevation);
+        updateBoundingBox(hexVerts(m, x, y, HEX_DRAW_SCALE), bbox);
+    }
+    return bbox;
+}
+
+/** Where a crop-then-downsample lands, in IMG_SIZE source pixels (crop*) and output pixels (out*). */
+export interface CropRect {
+    cropLeft: number;
+    cropTop:  number;
+    cropW:    number;
+    cropH:    number;
+    outW:     number;
+    outH:     number;
+}
+
+/**
+ * Crop to the drawn hex bounds (+40px margin) when crop=true, else keep the full canvas; then
+ * downsample by downsampleFactor. undefined when there's nothing drawable to bound.
+ */
+export function computeCropRect(
+    bbox:             BoundingBox,
+    sourceW:          number,
+    sourceH:          number,
+    crop:             boolean,
+    downsampleFactor: number,
+): CropRect | undefined {
+    if (bbox.maxX <= bbox.minX || bbox.maxY <= bbox.minY) return undefined;
+
+    const margin = 40;
+    const cropLeft = crop ? Math.max(0, Math.floor(bbox.minX) - margin) : 0;
+    const cropTop = crop ? Math.max(0, Math.floor(bbox.minY) - margin) : 0;
+    const cropRight = crop ? Math.min(sourceW, Math.ceil(bbox.maxX) + margin) : sourceW;
+    const cropBottom = crop ? Math.min(sourceH, Math.ceil(bbox.maxY) + margin) : sourceH;
+
+    const cropW = Math.max(1, cropRight - cropLeft);
+    const cropH = Math.max(1, cropBottom - cropTop);
+    const outW = Math.max(1, Math.round(cropW * downsampleFactor));
+    const outH = Math.max(1, Math.round(cropH * downsampleFactor));
+    return { cropLeft, cropTop, cropW, cropH, outW, outH };
+}
+
+/** Replace `canvas`'s contents with its `rect` crop, downsampled to rect.outW x rect.outH. */
+export function cropAndDownsample(canvas: ReturnType<typeof createCanvas>, rect: CropRect): void {
+    const { cropLeft, cropTop, cropW, cropH, outW, outH } = rect;
+
+    const croppedCanvas = createCanvas(cropW, cropH);
+    const croppedCtx = croppedCanvas.getContext('2d') as CanvasRenderingContext2D;
+    croppedCtx.drawImage(canvas as any, cropLeft, cropTop, cropW, cropH, 0, 0, cropW, cropH);
+
+    const downsampledCanvas = createCanvas(outW, outH);
+    const downsampledCtx = downsampledCanvas.getContext('2d') as CanvasRenderingContext2D;
+    downsampledCtx.imageSmoothingEnabled = true;
+    downsampledCtx.drawImage(croppedCanvas as any, 0, 0, cropW, cropH, 0, 0, outW, outH);
+
+    // Replace original output canvas contents with final processed result.
+    canvas.width = outW;
+    canvas.height = outH;
+    const outCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    outCtx.drawImage(downsampledCanvas as any, 0, 0);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // MAIN ENTRY POINT
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -344,6 +478,16 @@ export interface AddHexesToMapOptions {
     colorElevations?: boolean;
     /** Draw the player deploy highlight in true blue instead of cyan. Default false (existing behavior). */
     blueDeploy?: boolean;
+    /** Draw the grey hex outlines of every playable tile (they always count toward the crop bounds). Default true (existing behavior). */
+    showGrid?: boolean;
+    /** Which SpawnPointSets[i] supplies the highlights. Default 0 (existing behavior). */
+    spawnPointsSetIndex?: number;
+    /**
+     * Only highlight the spawn points a PVP lineup actually uses: the first N points (array order) of the
+     * set's first player group (TeamWithPlayerIndex 0) and first enemy group (1) - ignoring extra points
+     * boards carry for other modes and any other teams. Default undefined = every group (existing behavior).
+     */
+    lineupSpawnsOnly?: number;
 }
 
 export function addHexesToMap(
@@ -363,8 +507,11 @@ export function addHexesToMap(
         labelElevation = false,
         colorElevations = false,
         blueDeploy = false,
+        showGrid = true,
+        spawnPointsSetIndex = 0,
+        lineupSpawnsOnly,
     } = options;
-    const m    = deriveMetrics(level.Width, level.Height);
+    const m    = deriveMetrics(level.Width, level.Height, visualDims(config));
     const bbox: BoundingBox = { minX: IMG_SIZE, maxX: 0, minY: IMG_SIZE, maxY: 0 };
 
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -376,7 +523,14 @@ export function addHexesToMap(
     const deploySet  = new Set<string>();
     const spawnSet   = new Set<string>();
     const powerupSet = new Set<string>();
-    for (const group of level.SpawnPointSets[0].SpawnPointGroups) {
+    const allGroups = level.SpawnPointSets[spawnPointsSetIndex].SpawnPointGroups;
+    const groups = lineupSpawnsOnly === undefined
+        ? allGroups
+        : [0, 1]
+            .map((team) => allGroups.find((g) => g.TeamWithPlayerIndex === team))
+            .filter((g): g is SpawnGroup => g !== undefined)
+            .map((g) => ({ ...g, SpawnPoints: g.SpawnPoints.slice(0, lineupSpawnsOnly) }));
+    for (const group of groups) {
         if (group.TeamWithPlayerIndex === 0) {
             for (const sp of group.SpawnPoints) deploySet.add(`${sp.Column},${sp.Row}`);
             continue;
@@ -391,45 +545,31 @@ export function addHexesToMap(
         }
     }
 
+    const tiles = drawableTiles(level, config);
+
     // Pass 1: grey outlines for all drawable tiles
     ctx.strokeStyle = EDGE_COLOR;
     ctx.lineWidth   = EDGE_WIDTH;
-    for (let vCol = 0; vCol < config.VisualTiles.length; vCol++) {
-        for (let vRow = 0; vRow < config.VisualTiles[vCol].Tile.length; vRow++) {
-            const visTile = config.VisualTiles[vCol].Tile[vRow];
-            if (!visTile.IsPlayable) continue;
-            const lvlTile = level.Tiles[visTile.LogicalColumn]?.Tile[visTile.LogicalRow];
-            if (!lvlTile) continue;
-            const result = classify(visTile, lvlTile);
-            if (!result.draw) continue;
-            const { x, y } = tileCenter(m, vCol, vRow, result.elevation);
-            tracePath(ctx, hexVerts(m, x, y, HEX_DRAW_SCALE), bbox);
-            ctx.stroke();
-        }
+    for (const tile of tiles) {
+        const { x, y } = tileCenter(m, tile.vCol, tile.vRow, tile.elevation);
+        tracePath(ctx, hexVerts(m, x, y, HEX_DRAW_SCALE), bbox);
+        if (showGrid) ctx.stroke();
     }
 
     // Pass 2: coloured highlights for spawn / deploy tiles
-    for (let vCol = 0; vCol < config.VisualTiles.length; vCol++) {
-        for (let vRow = 0; vRow < config.VisualTiles[vCol].Tile.length; vRow++) {
-            const visTile = config.VisualTiles[vCol].Tile[vRow];
-            if (!visTile.IsPlayable) continue;
-            const lvlTile = level.Tiles[visTile.LogicalColumn]?.Tile[visTile.LogicalRow];
-            if (!lvlTile) continue;
-            const result = classify(visTile, lvlTile);
-            if (!result.draw) continue;
-            const key       = `${visTile.LogicalColumn},${visTile.LogicalRow}`;
-            const isSpawn   = spawnSet.has(key);
-            const isDeploy  = deploySet.has(key);
-            const isPowerup = powerupSet.has(key);
-            if (!isSpawn && !isDeploy && !isPowerup) continue;
-            const { x, y } = tileCenter(m, vCol, vRow, result.elevation);
-            if (isDeploy && showDeployPoints) {
-                drawHex(ctx, m, x, y, blueDeploy ? DEPLOY_BLUE_FILL : DEPLOY_FILL, blueDeploy ? DEPLOY_BLUE_STROKE : DEPLOY_STROKE, HIGHLIGHT_WIDTH, bbox);
-            } else if (isPowerup && showPowerupSpawns) {
-                drawHex(ctx, m, x, y, POWERUP_FILL, POWERUP_STROKE, HIGHLIGHT_WIDTH, bbox);
-            } else if (isSpawn && showEnemySpawns) {
-                drawHex(ctx, m, x, y, SPAWN_FILL, SPAWN_STROKE, HIGHLIGHT_WIDTH, bbox);
-            }
+    for (const tile of tiles) {
+        const key       = `${tile.column},${tile.row}`;
+        const isSpawn   = spawnSet.has(key);
+        const isDeploy  = deploySet.has(key);
+        const isPowerup = powerupSet.has(key);
+        if (!isSpawn && !isDeploy && !isPowerup) continue;
+        const { x, y } = tileCenter(m, tile.vCol, tile.vRow, tile.elevation);
+        if (isDeploy && showDeployPoints) {
+            drawHex(ctx, m, x, y, blueDeploy ? DEPLOY_BLUE_FILL : DEPLOY_FILL, blueDeploy ? DEPLOY_BLUE_STROKE : DEPLOY_STROKE, HIGHLIGHT_WIDTH, bbox);
+        } else if (isPowerup && showPowerupSpawns) {
+            drawHex(ctx, m, x, y, POWERUP_FILL, POWERUP_STROKE, HIGHLIGHT_WIDTH, bbox);
+        } else if (isSpawn && showEnemySpawns) {
+            drawHex(ctx, m, x, y, SPAWN_FILL, SPAWN_STROKE, HIGHLIGHT_WIDTH, bbox);
         }
     }
 
@@ -437,18 +577,10 @@ export function addHexesToMap(
     if (labelElevation) {
         const labels: Array<{ x: number; y: number; elevation: number }> = [];
         let minElevation = Infinity;
-        for (let vCol = 0; vCol < config.VisualTiles.length; vCol++) {
-            for (let vRow = 0; vRow < config.VisualTiles[vCol].Tile.length; vRow++) {
-                const visTile = config.VisualTiles[vCol].Tile[vRow];
-                if (!visTile.IsPlayable) continue;
-                const lvlTile = level.Tiles[visTile.LogicalColumn]?.Tile[visTile.LogicalRow];
-                if (!lvlTile) continue;
-                const result = classify(visTile, lvlTile);
-                if (!result.draw) continue;
-                const { x, y } = tileCenter(m, vCol, vRow, result.elevation);
-                labels.push({ x, y, elevation: result.elevation });
-                if (result.elevation < minElevation) minElevation = result.elevation;
-            }
+        for (const tile of tiles) {
+            const { x, y } = tileCenter(m, tile.vCol, tile.vRow, tile.elevation);
+            labels.push({ x, y, elevation: tile.elevation });
+            if (tile.elevation < minElevation) minElevation = tile.elevation;
         }
 
         ctx.font = `bold ${Math.round(m.hexHeight / 3)}px sans-serif`;
@@ -468,35 +600,54 @@ export function addHexesToMap(
 
     // Crop to drawn hex bounds (+40px margin) when crop=true, else keep the full canvas; then
     // downsample by downsampleFactor (both default to the original always-crop-to-25% behavior).
-    if (bbox.maxX <= bbox.minX || bbox.maxY <= bbox.minY) return;
-
-    const margin = 40;
-    const sourceW = canvas.width;
-    const sourceH = canvas.height;
-
-    const cropLeft = crop ? Math.max(0, Math.floor(bbox.minX) - margin) : 0;
-    const cropTop = crop ? Math.max(0, Math.floor(bbox.minY) - margin) : 0;
-    const cropRight = crop ? Math.min(sourceW, Math.ceil(bbox.maxX) + margin) : sourceW;
-    const cropBottom = crop ? Math.min(sourceH, Math.ceil(bbox.maxY) + margin) : sourceH;
-
-    const cropW = Math.max(1, cropRight - cropLeft);
-    const cropH = Math.max(1, cropBottom - cropTop);
-
-    const croppedCanvas = createCanvas(cropW, cropH);
-    const croppedCtx = croppedCanvas.getContext('2d') as CanvasRenderingContext2D;
-    croppedCtx.drawImage(canvas as any, cropLeft, cropTop, cropW, cropH, 0, 0, cropW, cropH);
-
-    const outW = Math.max(1, Math.round(cropW * downsampleFactor));
-    const outH = Math.max(1, Math.round(cropH * downsampleFactor));
-
-    const downsampledCanvas = createCanvas(outW, outH);
-    const downsampledCtx = downsampledCanvas.getContext('2d') as CanvasRenderingContext2D;
-    downsampledCtx.imageSmoothingEnabled = true;
-    downsampledCtx.drawImage(croppedCanvas as any, 0, 0, cropW, cropH, 0, 0, outW, outH);
-
-    // Replace original output canvas contents with final processed result.
-    canvas.width = outW;
-    canvas.height = outH;
-    const outCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    outCtx.drawImage(downsampledCanvas as any, 0, 0);
+    const rect = computeCropRect(bbox, canvas.width, canvas.height, crop, downsampleFactor);
+    if (!rect) return;
+    cropAndDownsample(canvas, rect);
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// OVERLAY-FREE RENDER  (the board background only, same crop/downsample as addHexesToMap)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface BareBoardRender {
+    /** Crop box (IMG_SIZE px) and output size - map a point with toOutputPixels. */
+    rect:    CropRect;
+    metrics: HexMetrics;
+    tiles:   DrawableTile[];
+}
+
+/**
+ * Draws just the board texture (no hex outlines or highlights) onto `canvas` (an IMG_SIZE x
+ * IMG_SIZE canvas), then crops and downsamples it exactly the way addHexesToMap does - so a
+ * position computed with tileCenter lands on the same board feature in both. undefined when the
+ * board has nothing drawable to crop to (canvas is left holding the uncropped texture).
+ */
+export function renderBareBoard(
+    canvas:  ReturnType<typeof createCanvas>,
+    level:   LevelJson,
+    config:  ConfigVisualJson,
+    image:   { width: number; height: number },
+    options: { crop?: boolean; downsampleFactor?: number } = {},
+): BareBoardRender | undefined {
+    const { crop = true, downsampleFactor = 0.25 } = options;
+    const m     = deriveMetrics(level.Width, level.Height, visualDims(config));
+    const tiles = drawableTiles(level, config);
+
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.drawImage(image as any, 0, 0, IMG_SIZE, IMG_SIZE);
+
+    const rect = computeCropRect(drawnBounds(m, tiles), canvas.width, canvas.height, crop, downsampleFactor);
+    if (!rect) return undefined;
+    cropAndDownsample(canvas, rect);
+    return { rect, metrics: m, tiles };
+}
+
+/** A tileCenter position (IMG_SIZE px) -> its pixel in the cropped, downsampled output image. */
+export function toOutputPixels(rect: CropRect, p: { x: number; y: number }): { x: number; y: number } {
+    return {
+        x: (p.x - rect.cropLeft) * (rect.outW / rect.cropW),
+        y: (p.y - rect.cropTop) * (rect.outH / rect.cropH),
+    };
+}
+
+export { IMG_SIZE };

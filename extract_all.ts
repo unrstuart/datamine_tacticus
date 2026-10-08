@@ -12,7 +12,15 @@ import { extractCeGoldMedalRewards } from './extract_ce_gold_medal_rewards';
 import { extractCharacterData } from './extract_character_data';
 import { extractCharacterPower } from './extract_character_power';
 import { getCrusadeShopData, formatCrusadeShopCsv, parsePlayerLevel, parseHasMythic, parseTier } from './extract_crusade_shop';
-import { extractEquipmentData, collectEquipmentIconAssets } from './extract_equipment_data';
+import { buildAvatarFrameIndex, collectAvatarAssets } from './extract_avatars';
+import { extractBoards } from './extract_boards';
+import {
+    extractEquipmentData,
+    collectEquipmentIconAssets,
+    collectAllItemIconAssets,
+    collectItemFrameAssets,
+    findItemIconGaps,
+} from './extract_equipment_data';
 import { getGuildBossData, summarizeActiveGuildBossSeason } from './extract_guild_boss';
 import { getGuildShopData, formatGuildShopCsv } from './extract_guild_shop';
 import { extractHeroQuests } from './extract_hero_quests';
@@ -41,6 +49,7 @@ import { extractSurvivalOffers } from './extract_survival_offers';
 import { extractTraits } from './extract_traits';
 import { getWarShopData, formatWarShopCsv } from './extract_war_shop';
 import { mergeSeasonLineups, formatMergeSummary } from './merge_season_lineups';
+import type { SpriteCopy } from './sprite_lookup';
 import { fetchLatestGlobalConfigText, readLokiUserId } from './query_loki';
 
 // ---------------------------------------------------------------------------
@@ -356,6 +365,31 @@ async function copyAssetIfNeeded(
     fs.mkdirSync(path.dirname(destAbsPath), { recursive: true });
     fs.copyFileSync(sourceAbsPath, destAbsPath);
     return 'copied';
+}
+
+// Prints the "=== Assets ===" block both --planner-dir and --tacops-dir runs end with: counts by
+// outcome, then each file that was copied / had no source. `maxListed` caps the per-file lists
+// (a tacops run copies hundreds of sprites on a first run); the default prints every file.
+function printAssetSummary(
+    assetResults: Array<{ destRelPath: string; status: AssetCopyStatus }>,
+    refreshAssets: boolean,
+    maxListed = Infinity
+): void {
+    console.log('');
+    console.log('=== Assets ===' + (refreshAssets ? ` (--refresh-assets, dhash threshold ${DHASH_THRESHOLD})` : ''));
+    const copied = assetResults.filter((r) => r.status === 'copied');
+    const unchangedExact = assetResults.filter((r) => r.status === 'unchanged');
+    const unchangedPerceptual = assetResults.filter((r) => r.status === 'unchanged-perceptual');
+    const skipped = assetResults.filter((r) => r.status === 'skipped-existing');
+    const missing = assetResults.filter((r) => r.status === 'missing-source');
+    console.log(
+        `${copied.length} copied, ${unchangedExact.length + unchangedPerceptual.length} unchanged ` +
+        `(${unchangedExact.length} exact, ${unchangedPerceptual.length} perceptual match), ` +
+        `${skipped.length} already present (skipped), ${missing.length} missing source`
+    );
+    for (const r of copied.slice(0, maxListed)) console.log(`  COPIED  ${r.destRelPath}`);
+    if (copied.length > maxListed) console.log(`  ... and ${copied.length - maxListed} more copied (--verbose lists them all)`);
+    for (const r of missing) console.log(`  MISSING ${r.destRelPath}`);
 }
 
 function runJob(results: JobResult[], name: string, fn: () => string): void {
@@ -692,20 +726,7 @@ async function runAll(
             assetResults.push({ ...r, status });
         }
 
-        console.log('');
-        console.log('=== Assets ===' + (refreshAssets ? ` (--refresh-assets, dhash threshold ${DHASH_THRESHOLD})` : ''));
-        const copied = assetResults.filter((r) => r.status === 'copied');
-        const unchangedExact = assetResults.filter((r) => r.status === 'unchanged');
-        const unchangedPerceptual = assetResults.filter((r) => r.status === 'unchanged-perceptual');
-        const skipped = assetResults.filter((r) => r.status === 'skipped-existing');
-        const missing = assetResults.filter((r) => r.status === 'missing-source');
-        console.log(
-            `${copied.length} copied, ${unchangedExact.length + unchangedPerceptual.length} unchanged ` +
-            `(${unchangedExact.length} exact, ${unchangedPerceptual.length} perceptual match), ` +
-            `${skipped.length} already present (skipped), ${missing.length} missing source`
-        );
-        for (const r of copied) console.log(`  COPIED  ${r.destRelPath}`);
-        for (const r of missing) console.log(`  MISSING ${r.destRelPath}`);
+        printAssetSummary(assetResults, refreshAssets);
     }
 
     console.log('');
@@ -720,6 +741,167 @@ async function runAll(
 }
 
 // ---------------------------------------------------------------------------
+// "tacops" mode - `all --tacops-dir <tacops checkout>`. The counterpart of --planner-dir for the
+// TacOps app: writes the asset categories it consumes straight into that checkout
+// (src/assets/<category>/ for bundled assets, board-assets/ for the board backgrounds and spawn
+// points that are fetched at runtime instead of bundled). Only the jobs named by --tacops-jobs
+// run; the default skips character_power because it overwrites tracked JSON and, like every
+// other GameConfig-derived file there, must only come from the live/public GameConfig.
+// ---------------------------------------------------------------------------
+
+const TACOPS_JOBS = ['avatars', 'items', 'boards', 'character_power'];
+const TACOPS_DEFAULT_JOBS = ['avatars', 'items', 'boards'];
+
+const BOARD_SOURCE_HINT =
+    'run asset_extract.py on a build that has them - ~/Downloads/Tacticus 2.app (1.43.94, the marketing build, has all 69 PVP boards) ' +
+    'or the bundles under ~/Library/Application Support/com.snowprintstudios.loki.qa - then pass that extraction as --boards-assets-dir';
+
+// Older GameConfig snapshots in the datamine checkout: expired events (e.g. frameHolidays2025) fall out of the
+// live config, but their frame sprites stay in the dump.
+function findHistoricalGameconfigs(dir: string, mainPath: string): string[] {
+    const main = fs.realpathSync(mainPath);
+    return fs
+        .readdirSync(dir)
+        .filter((f) => /^gameconfig[._].*\.json$/i.test(f))
+        .map((f) => path.join(dir, f))
+        .filter((f) => fs.realpathSync(f) !== main)
+        .sort();
+}
+
+async function copySpriteCopies(
+    copies: SpriteCopy[],
+    tacopsDir: string,
+    refreshAssets: boolean
+): Promise<Array<SpriteCopy & { status: AssetCopyStatus }>> {
+    const results: Array<SpriteCopy & { status: AssetCopyStatus }> = [];
+    for (const copy of copies) {
+        const status = await copyAssetIfNeeded(copy.sourceAbsPath, path.join(tacopsDir, copy.destRelPath), refreshAssets);
+        results.push({ ...copy, status });
+    }
+    return results;
+}
+
+async function runTacops(
+    paths: ResolvedPaths,
+    tacopsDir: string,
+    boardsAssetsDir: string | undefined,
+    jobs: string[],
+    refreshAssets: boolean,
+    historyDir: string,
+    verbose: boolean,
+    plainBoards: boolean,
+    boardSpawnSet: number | undefined
+): Promise<void> {
+    if (!fs.existsSync(tacopsDir) || !fs.statSync(tacopsDir).isDirectory()) {
+        throw new Error(`--tacops-dir "${tacopsDir}" is not a directory (expected a tacops checkout)`);
+    }
+    for (const job of jobs) {
+        if (!TACOPS_JOBS.includes(job)) throw new Error(`Unknown --tacops-jobs entry "${job}" - one of: ${TACOPS_JOBS.join(', ')}`);
+    }
+    const gameconfigPath = requireResolved(paths.gameconfigPath, 'gameconfig', '--tacops-dir needs --gameconfig or --assets-dir');
+    const assetsDir = requireResolved(paths.assetsDir, 'assets-dir', '--tacops-dir needs --assets-dir (the sprites folder lives under it)');
+
+    const results: JobResult[] = [];
+    const assetResults: Array<{ destRelPath: string; status: AssetCopyStatus }> = [];
+    const notes: string[] = [];
+
+    if (jobs.includes('avatars')) {
+        const { avatars, frames } = collectAvatarAssets(assetsDir);
+        runJob(results, 'avatars', () => {
+            const index = buildAvatarFrameIndex([gameconfigPath, ...findHistoricalGameconfigs(historyDir, gameconfigPath)], frames);
+            notes.push(`avatars: ${avatars.length} avatar sprites, ${frames.length} frame sprites`);
+            notes.push(`avatar-frames/index.json: ${Object.keys(index.index).length} frame ids resolved`);
+            if (index.unresolvedIds.length > 0) notes.push(`  frame ids with no (or an ambiguous) sprite, left out: ${index.unresolvedIds.join(', ')}`);
+            notes.push(`  frame sprites no frame id maps to, left out of index.json (${index.unmappedFrameFiles.length}): ${index.unmappedFrameFiles.join(', ')}`);
+            return writeJson(path.join(tacopsDir, 'src/assets/avatar-frames/index.json'), index.index);
+        });
+        assetResults.push(...(await copySpriteCopies([...avatars, ...frames], tacopsDir, refreshAssets)));
+    }
+
+    if (jobs.includes('items')) {
+        const icons = collectAllItemIconAssets(assetsDir);
+        const frames = collectItemFrameAssets(assetsDir);
+        const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
+        const gaps = findItemIconGaps(Object.keys(data.clientGameConfig.items), assetsDir);
+        notes.push(`items: ${icons.length} item icons, ${frames.copies.length} rarity frames`);
+        if (frames.missing.length > 0) notes.push(`  rarity frames not in the dump: ${frames.missing.join(', ')}`);
+        notes.push(`  item ids with no icon sprite (${gaps.idsWithoutSprite.length}): ${gaps.idsWithoutSprite.join(', ')}`);
+        notes.push(`  icon sprites no item id points at (${gaps.spritesWithoutId.length}): ${gaps.spritesWithoutId.join(', ')}`);
+        results.push({ name: 'items', ok: true, outputPath: path.join(tacopsDir, 'src/assets/item-icons') });
+        console.log(`OK   items -> ${path.join(tacopsDir, 'src/assets/{item-icons,item-frames}')}`);
+        assetResults.push(...(await copySpriteCopies([...icons, ...frames.copies], tacopsDir, refreshAssets)));
+    }
+
+    if (jobs.includes('character_power')) {
+        runJob(results, 'character_power', () => {
+            const data = extractCharacterPower({ gameconfigPath });
+            writeJson(path.join(tacopsDir, 'src/assets/character-power-units.json'), data.units);
+            writeJson(path.join(tacopsDir, 'src/assets/character-power-items.json'), data.items);
+            return writeJson(path.join(tacopsDir, 'src/assets/character-power-upgrades.json'), data.upgrades);
+        });
+    }
+
+    if (jobs.includes('boards')) {
+        try {
+            const boards = await extractBoards({ gameconfigPath, boardsAssetsDir: boardsAssetsDir ?? assetsDir,
+                drawOverlay: !plainBoards,
+                overlaySpawnSet: boardSpawnSet,
+            });
+            for (const image of boards.images) {
+                const dest = path.join(tacopsDir, 'board-assets/boards', `${image.boardId}_Visual.png`);
+                fs.mkdirSync(path.dirname(dest), { recursive: true });
+                fs.writeFileSync(dest, image.png);
+            }
+            // sorted keys (extractBoards builds them in sorted order) keep the file diff-friendly across runs
+            const spawnPath = writeJson(path.join(tacopsDir, 'board-assets/spawn-points.json'), boards.spawnPoints);
+            results.push({ name: 'boards', ok: true, outputPath: path.join(tacopsDir, 'board-assets') });
+            console.log(`OK   boards -> ${path.join(tacopsDir, 'board-assets')} (${boards.images.length} backgrounds, ${spawnPath})`);
+
+            const problems = boards.problems;
+            notes.push(
+                `boards: ${boards.images.length} backgrounds, cropped + downsampled 0.25, ` +
+                    (plainBoards ? 'plain (no grid or spawn points)' : `with the hex grid and ${boardSpawnSet === undefined ? "each board's own SpawnPointsSet" : `SpawnPointSets[${boardSpawnSet}]`} drawn on - the 5 player (blue) and 5 enemy (yellow) lineup spawns`) +
+                    '; spawn-point x/y are in that image\'s pixel space'
+            );
+            if (problems.missingSource.length > 0) {
+                notes.push(`  MISSING SOURCE for ${problems.missingSource.length} board(s): ${problems.missingSource.map((p) => p.boardId).join(', ')}`);
+                notes.push(`    -> ${BOARD_SOURCE_HINT}`);
+            }
+            if (problems.needsCalibration.length > 0) {
+                notes.push(`  NEEDS CALIBRATION (size not in hex_map_core BOARD_PARAMS, not exported): ${problems.needsCalibration.map((p) => `${p.boardId} (${p.size})`).join(', ')}`);
+            }
+            if (problems.uncalibratedBoards.length > 0) {
+                const sizes = [...new Set(problems.uncalibratedBoards.map((p) => p.size))].join(', ');
+                notes.push(`  CHECKED BY EYE ONLY: ${problems.uncalibratedBoards.length} board(s) use a size (${sizes}) whose camera constants are unconfirmed - their spawn pixels can be a few px off`);
+            }
+            if (problems.unresolvedSpawnPoints.length > 0) {
+                notes.push(`  ${problems.unresolvedSpawnPoints.length} spawn point(s) sit on no drawable tile and were left out, e.g. ${JSON.stringify(problems.unresolvedSpawnPoints[0])}`);
+            }
+            if (problems.ambiguousSpawnPoints > 0) {
+                notes.push(`  ${problems.ambiguousSpawnPoints} spawn point(s) map to more than one drawable tile (first used)`);
+            }
+        } catch (error: any) {
+            results.push({ name: 'boards', ok: false, error: error.message });
+            console.error(`FAIL boards: ${error.message}`);
+        }
+    }
+
+    if (assetResults.length > 0) printAssetSummary(assetResults, refreshAssets, verbose ? Infinity : 10);
+
+    console.log('');
+    console.log('=== Notes ===');
+    for (const note of notes) console.log(note);
+
+    console.log('');
+    console.log('=== Summary ===');
+    const failed = results.filter((r) => !r.ok);
+    console.log(`${results.length - failed.length} succeeded, ${failed.length} failed`);
+    for (const r of results.filter((r) => r.ok)) console.log(`  OK   ${r.name} -> ${r.outputPath}`);
+    for (const r of failed) console.log(`  FAIL ${r.name}: ${r.error}`);
+    if (failed.length > 0) process.exitCode = 1;
+}
+
+// ---------------------------------------------------------------------------
 // "run one" - interactive/manual use, passes through each extractor's own
 // options, prints the result to stdout instead of writing a file.
 // ---------------------------------------------------------------------------
@@ -729,14 +911,14 @@ function printJson(value: unknown): void {
 }
 
 const EXTRACTOR_NAMES = [
-    'abilities', 'ability_icons', 'armageddon', 'campaign_data', 'ce_gold_medal_rewards', 'character_data',
+    'abilities', 'ability_icons', 'armageddon', 'avatars', 'boards', 'campaign_data', 'ce_gold_medal_rewards', 'character_data',
     'character_power', 'crusade_shop', 'equipment_data', 'guild_boss', 'guild_shop', 'hero_quests', 'heroes', 'homescreen_event',
     'incursion_enemies', 'l10n', 'le_data', 'le_metadata', 'mow_data', 'mows', 'mythic_quests', 'npc_data', 'onslaught', 'operations', 'pierce',
     'planet_data', 'product_calendars', 'rank_up_data', 'real_money_products', 'recipe_data', 'rogue_trader', 'season_lineups',
     'shop_event', 'survival_events', 'survival_offers', 'traits', 'war_shop',
 ];
 
-function runOne(name: string, flags: Record<string, string>, paths: ResolvedPaths): void {
+async function runOne(name: string, flags: Record<string, string>, paths: ResolvedPaths): Promise<void> {
     const format = flags.format ?? 'text';
 
     switch (name) {
@@ -761,6 +943,26 @@ function runOne(name: string, flags: Record<string, string>, paths: ResolvedPath
                 const data = JSON.parse(fs.readFileSync(gc, 'utf-8'));
                 console.log(formatArmageddonCsv(data));
             }
+            return;
+        }
+        case 'avatars': {
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts avatars --gameconfig <p> --assets-dir <p> [--history-gameconfig-dir <p>]');
+            const assetsDir = requireResolved(paths.assetsDir, 'assets-dir', 'Usage: extract_all.ts avatars --gameconfig <p> --assets-dir <p> [--history-gameconfig-dir <p>]');
+            const { avatars, frames } = collectAvatarAssets(assetsDir);
+            const historyDir = flags['history-gameconfig-dir'] ?? process.cwd();
+            const index = buildAvatarFrameIndex([gc, ...findHistoricalGameconfigs(historyDir, gc)], frames);
+            printJson({ avatarSprites: avatars.length, frameSprites: frames.length, ...index });
+            return;
+        }
+        case 'boards': {
+            const gc = requireResolved(paths.gameconfigPath, 'gameconfig', 'Usage: extract_all.ts boards --gameconfig <p> [--boards-assets-dir <p>] [--board <id[,id...]>] (or --assets-dir)');
+            const boardsAssetsDir = requireResolved(flags['boards-assets-dir'] ?? paths.assetsDir, 'boards-assets-dir', 'Usage: extract_all.ts boards --gameconfig <p> --boards-assets-dir <p>');
+            const boardIds = flags.board && flags.board !== 'true' ? flags.board.split(',') : undefined;
+            const result = await extractBoards({ gameconfigPath: gc, boardsAssetsDir, boardIds });
+            // Spawn points to stdout like the other single-job extractors; the board PNGs only get written by `all --tacops-dir`.
+            printJson(result.spawnPoints);
+            console.error(`${result.images.length} board backgrounds rendered (not written in single-job mode); problems: ${JSON.stringify(result.problems)}`);
+            if (result.problems.missingSource.length > 0) console.error(`Missing board sources: ${BOARD_SOURCE_HINT}`);
             return;
         }
         case 'blessed_req_banner': {
@@ -1107,6 +1309,9 @@ async function main() {
         console.error(
             '       npx tsx extract_all.ts all --gameconfig <p> --i2 <p> [--global-config <p>] [--visuals-file <p>] [--output-dir /tmp/mined | --planner-dir <tacticusplanner-checkout>]'
         );
+        console.error(
+            '       npx tsx extract_all.ts all --assets-dir <extracted-assets-root> --tacops-dir <tacops-checkout> [--boards-assets-dir <root with all PVP boards>] [--tacops-jobs avatars,items,boards,character_power] [--plain-boards] [--board-spawn-set <n>] [--refresh-assets] [--verbose]'
+        );
         console.error('       npx tsx extract_all.ts <extractor-name> --assets-dir <p> [extractor-specific flags]');
         console.error(`       (extractor-name is one of: ${EXTRACTOR_NAMES.join(', ')})`);
         console.error(
@@ -1119,6 +1324,8 @@ async function main() {
             '       (--planner-dir also copies referenced portrait/round-portrait/ability/upgrade-material/equipment sprite PNGs into that checkout\'s src/assets/images/snowprint_assets/<subfolder>/ - this does not happen with --output-dir)'
         );
         console.error(
+            '       (--tacops-dir writes avatars, avatar frames + index.json, item icons, item rarity frames (src/assets/<category>/) and the PVP board backgrounds + spawn-points.json (board-assets/) into that tacops checkout; the default jobs are avatars,items,boards - character_power is opt-in because it overwrites tracked JSON)');
+        console.error(
             '       (asset copying only fills in files that don\'t exist yet by default; pass --refresh-assets to also overwrite existing files whose content has changed in the source dump)'
         );
         process.exit(1);
@@ -1126,19 +1333,36 @@ async function main() {
 
     try {
         const paths = resolveAllPaths(flags);
+        const tacopsDir = flags['tacops-dir'];
+        if (tacopsDir && flags['planner-dir']) throw new Error('--tacops-dir and --planner-dir are mutually exclusive');
+        if (tacopsDir && positional !== 'all') throw new Error('--tacops-dir only applies to "all" (it runs the tacops jobs)');
 
-        if (positional === 'all' || JOBS_NEEDING_GLOBAL_CONFIG.has(positional)) {
+        // tacops mode never touches GlobalConfig, so it skips the live fetch "all" otherwise does.
+        if ((positional === 'all' && !tacopsDir) || JOBS_NEEDING_GLOBAL_CONFIG.has(positional)) {
             await ensureGlobalConfigPath(paths, flags);
         }
 
-        if (positional === 'all') {
+        if (positional === 'all' && tacopsDir) {
+            const jobs = flags['tacops-jobs'] ? flags['tacops-jobs'].split(',') : TACOPS_DEFAULT_JOBS;
+            await runTacops(
+                paths,
+                tacopsDir,
+                flags['boards-assets-dir'],
+                jobs,
+                flags['refresh-assets'] === 'true',
+                flags['history-gameconfig-dir'] ?? process.cwd(),
+                flags.verbose === 'true',
+                flags['plain-boards'] === 'true',
+                flags['board-spawn-set'] ? parseInt(flags['board-spawn-set'], 10) : undefined
+            );
+        } else if (positional === 'all') {
             const outputDir = flags['output-dir'] ?? '/tmp/mined';
             const plannerDir = flags['planner-dir'];
             const refreshAssets = flags['refresh-assets'] === 'true';
             const listMissingResources = 'list-missing-resources' in flags;
             await runAll(paths, outputDir, plannerDir, refreshAssets, listMissingResources);
         } else {
-            runOne(positional, flags, paths);
+            await runOne(positional, flags, paths);
         }
     } catch (error: any) {
         console.error(`Error: ${error.message}`);

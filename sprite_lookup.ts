@@ -14,3 +14,19 @@ export function loadSpriteFilesByLowercaseName(spritesDir: string): Map<string, 
 export function resolveSpriteCaseInsensitive(spriteFiles: Map<string, string>, wantedFilename: string): string | undefined {
     return spriteFiles.get(wantedFilename.toLowerCase());
 }
+
+/** One sprite file to copy somewhere, e.g. into a tacops checkout (dest is relative to that checkout's root). */
+export interface SpriteCopy {
+    destRelPath: string;
+    sourceAbsPath: string;
+}
+
+/** Every .png in `<assetsDir>/sprites` whose name (case-insensitively) starts with `prefix`, in name order. */
+export function listSpritesWithPrefix(assetsDir: string, prefix: string): string[] {
+    const lower = prefix.toLowerCase();
+    return fs
+        .readdirSync(`${assetsDir}/sprites`)
+        .filter((f) => f.toLowerCase().startsWith(lower) && f.toLowerCase().endsWith('.png'))
+        .sort();
+}
+
