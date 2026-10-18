@@ -4,6 +4,9 @@ export interface PlanetZoneEntry {
     planetId: string;
     name: string;
     zone: number;
+    // Planet kind from the config ("Hive", "Feral", "Mining", "Sun", ...) - drives the per-type capture
+    // modifiers and rewards in crusade.planetModifiers / captureRewards.
+    type: string;
 }
 
 export interface ExtractPlanetDataParams {
@@ -53,7 +56,7 @@ export function extractPlanetData({ globalConfigPath, i2Path, planetSetId = DEFA
         .map((p): PlanetZoneEntry => {
             const name = i2Terms.get(p.locaKeyPlanetName);
             if (!name) console.error(`WARNING: missing name for planet "${p.planetId}" (key: ${p.locaKeyPlanetName})`);
-            return { planetId: p.planetId, name: name ?? '', zone: p.zone };
+            return { planetId: p.planetId, name: name ?? '', zone: p.zone, type: p.type };
         })
         .sort((a, b) => (a.planetId < b.planetId ? -1 : a.planetId > b.planetId ? 1 : 0));
 }

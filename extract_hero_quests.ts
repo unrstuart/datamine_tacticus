@@ -26,6 +26,8 @@ interface StructuredEnemy {
 
 interface Battle {
     battleNr?: string;
+    BoardId?: string;
+    SpawnPointsSet?: number;
     deployedUnit?: string;
     lightningVictory?: number;
     enemies?: Array<string | StructuredEnemy>;
@@ -92,6 +94,8 @@ export function extractHeroQuests({ gameconfigPath }: ExtractHeroQuestsParams) {
 
                     battles: (tier.battles || []).map(battle => ({
                         battleNr: battle.battleNr,
+                        boardId: battle.BoardId,
+                        spawnPointsSet: battle.SpawnPointsSet,
                         lightningVictory: battle.lightningVictory,
 
                         loot: {
