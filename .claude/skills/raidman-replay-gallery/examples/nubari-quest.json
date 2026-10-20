@@ -1,0 +1,32 @@
+{
+  "title": "Nubari Quest",
+  "promo_code": "KHARNBARI",
+  "promo_note": "Live from October 16th through October 22nd, 2026",
+  "intro": "This is for Nubari's quest in battlepass 1.43. It has a perfect score through the legendary tier. The mythic tier gives two results: one that gets you 300/500 with strong characters, and a perfect score with characters that most players could not afford to build so high.",
+  "replays_dir": "~/src/videos/nubari quest",
+  "csv": "~/src/videos/nubari quest/replays.csv",
+  "assets_dir": "~/src/datamine_tacticus/extracted_assets_143_94_marketing",
+  "i2_path": "~/src/datamine_tacticus/I2Languages_en.1.42.json",
+  "out_dir": "~/src/videos/nubari quest site",
+  "source": {
+    "type": "linear_hero_event",
+    "id": "linear_hero_event_4"
+  },
+  "battle_index_regex": "_(\\d+)$",
+  "battle_index_offset": -1,
+  "number_keys": [
+    "battleNr"
+  ],
+  "label": "{tier} {k}",
+  "tiers": "quest",
+  "variant_labels": {
+    "m1_300_out_of_500.txt": "300 out of 500",
+    "m1_superjuiced.txt": "Super juiced"
+  },
+  "roster_boost": {
+    "replays": [
+      "m1_superjuiced.txt"
+    ],
+    "label": "Super juiced"
+  }
+}
