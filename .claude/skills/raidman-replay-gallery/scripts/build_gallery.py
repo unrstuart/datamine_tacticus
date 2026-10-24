@@ -73,6 +73,7 @@ h1{margin:0;font-size:28px;font-weight:700;letter-spacing:.02em}
 h1 .by{font-size:16px;font-weight:500;color:var(--muted);letter-spacing:0}
 .roster{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:24px;
   display:flex;flex-direction:column;align-items:center;gap:14px}
+.roster.extra{margin-top:-8px}
 .roster .team{flex-wrap:wrap;row-gap:12px;align-items:flex-start}
 .pair{display:flex;align-items:flex-start;gap:4px}
 .arrow{align-self:flex-start;margin-top:36px;font-size:22px;line-height:1;color:var(--tier,#e8833a);font-weight:700}
@@ -455,6 +456,19 @@ def recorded_at(data):
     return min(stamps) if stamps else 0
 
 
+def player_turns(data):
+    """How many turns the recorded player took: their EndTurnMessages + 1, since the winning turn is never ended."""
+    me = set(data.get('RecordedPlayerIds') or [])
+    ended = 0
+    for message in data['Messages']:
+        raw = message['Message'].get('MessageJson')
+        if raw and '"EndTurnMessage"' in raw:
+            body = json.loads(raw)
+            if body.get('Name') == 'EndTurnMessage' and body.get('PlayerId') in me:
+                ended += 1
+    return ended + 1
+
+
 def player_units(data):
     """[(unit id, rank, star level, active ability level, passive ability level, rarity)] for the recording player's
     units, in the order they were added. Anything the replay doesn't record is None."""
@@ -586,6 +600,7 @@ def build_page(cfg, replays_dir, assets_dir, csv_path, out_dir):
     cards, missing, missing_ranks = [], set(), set()
     roster_seen = {}   # unit id -> [[rank, stars, active, passive, rarity], ...] over the replays shown
     boost = cfg.get('roster_boost') or {}
+    lightning_warnings = []
     boost_seen = {}    # same, over the replays named in cfg['roster_boost']['replays'] (kept out of roster_seen)
     with open(csv_path, newline='') as f:
         rows = list(csv.DictReader(f))
@@ -625,6 +640,16 @@ def build_page(cfg, replays_dir, assets_dir, csv_path, out_dir):
             title=cfg['title'], n=number, tier=(tier[1].get('name') or '') if tier else '', k=(source_battle or {}).get('_pos', number))
         if row['filename'] in variants:
             label += f' ({variants[row["filename"]]})'
+        # A battle's `lightningVictory` is the most player turns a lightning victory allows (quests have it; assumed to count
+        # the player's own turns). Anything slower, or not a win, is reported at the end of the build.
+        result = replays[i].get('BattleResult', {}).get('EndReason')
+        if result != 'PlayerWon':
+            lightning_warnings.append(f'{row["filename"]}: {label} did not end in a win ({result})')
+        elif source_battle and source_battle.get('lightningVictory'):
+            turns = player_turns(replays[i])
+            if turns > int(source_battle['lightningVictory']):
+                lightning_warnings.append(f'{row["filename"]}: {label} took {turns} turns, lightning victory needs '
+                                          f'{source_battle["lightningVictory"]} or fewer')
         bonuses, warning = '', ''
         if source_battle and source_battle.get('Objectives'):
             items, unmet = [], []
@@ -676,30 +701,46 @@ def build_page(cfg, replays_dir, assets_dir, csv_path, out_dir):
     # for units that are better in the boosted replays, an arrow to that boosted version. Units that only appear boosted
     # are shown boosted (there is no normal version to point from); units whose stats don't differ get no arrow.
     boost_label = boost.get('label', 'Boosted')
+    # cfg["roster_extra"] = {"units": [...], "label": "..."}: those units leave the main roster for a box of their own with the
+    # label as its legend. cfg["roster_boost"]["arrows"] = false: no lower version or arrow; every unit shows its best across
+    # all replays, the boost replays included.
+    extra = cfg.get('roster_extra') or {}
+    extra_units = set(extra.get('units', []))
+    arrows = boost.get('arrows', True)
     slots = 0
     parts = []
+    extra_parts = []
+    def add(unit, html_, weight):
+        nonlocal slots
+        if unit in extra_units:
+            extra_parts.append(html_)
+        else:
+            parts.append(html_)
+            slots += weight
     for unit, records in roster_seen.items():
         normal = best_of(records)
         boosted = best_of(boost_seen[unit]) if unit in boost_seen else None
-        if boosted and boosted != normal:
-            parts.append(f'<div class="pair">{unit_html(unit, *normal)}<span class="arrow" title="{html.escape(boost_label)} version">\u2192</span>'
-                         f'<div class="boosted" title="{html.escape(boost_label)} version">{unit_html(unit, *boosted)}</div></div>')
-            slots += 2.4
+        if boosted and not arrows:
+            add(unit, unit_html(unit, *best_of(records + boost_seen[unit])), 1)
+        elif boosted and boosted != normal:
+            add(unit, f'<div class="pair">{unit_html(unit, *normal)}<span class="arrow" title="{html.escape(boost_label)} version">\u2192</span>'
+                      f'<div class="boosted" title="{html.escape(boost_label)} version">{unit_html(unit, *boosted)}</div></div>', 2.4)
         else:
-            parts.append(unit_html(unit, *normal))
-            slots += 1
+            add(unit, unit_html(unit, *normal), 1)
     for unit, records in boost_seen.items():
         if unit not in roster_seen:
-            parts.append(f'<div class="boosted" title="{html.escape(boost_label)} version only">{unit_html(unit, *best_of(records))}</div>')
-            slots += 1
+            add(unit, unit_html(unit, *best_of(records)) if not arrows else
+                f'<div class="boosted" title="{html.escape(boost_label)} version only">{unit_html(unit, *best_of(records))}</div>', 1)
     roster_html = ''.join(parts)
     # Wrap a long roster into evenly filled rows (12 units -> 6 + 6, not 11 + 1): each unit column is ~90px with its gap.
     rows_needed = max(1, -(-int(slots + .5) // 8))
     # (one unit of slack: arrow pairs are atomic and wouldn't pack into a width of exactly slots / rows)
     roster_style = f' style="max-width:{(-(-int(slots + .5) // rows_needed) + 1) * 90}px"' if rows_needed > 1 else ''
     roster_note = ''
-    if boost_seen:
+    if boost_seen and arrows:
         roster_note = f'<p class="roster-note">\u2192 points to the {html.escape(boost_label.lower())} version of a character</p>'
+    extra_section = (f'<section class="roster extra"><div class="team">{"".join(extra_parts)}</div>'
+                     f'<p class="roster-note">{html.escape(extra.get("label", ""))}</p></section>') if extra_parts else ''
     high_first = descending(cfg)
     layout = cfg.get('layout', 'rows' if high_first else 'grid')   # quests list one battle per row, like the in-game quest screen
     if tiers:
@@ -729,9 +770,12 @@ def build_page(cfg, replays_dir, assets_dir, csv_path, out_dir):
         f'<style>{PAGE_CSS}{tier_css}{halo_css}</style></head><body><main{" class=rows" if layout == "rows" else ""}>'
         f'<header><h1>{html.escape(cfg["title"])}{byline}</h1></header>'
         f'<section class="roster">{promo}<div class="team"{roster_style}>{roster_html}</div>{roster_note}{intro}</section>'
+        f'{extra_section}'
         f'{tier_sections}</main></body></html>'
     )
     print(f'{len(cards)} replays ({skipped} earlier attempts at the same battle left out)')
+    for warning_text in lightning_warnings:
+        print('WARNING not a lightning victory:', warning_text)
     if any(not row['url'] for row in rows):
         print('some replays have no URL yet: their cards link to "#" until the replays are uploaded and the CSV is filled in')
     if missing:
@@ -771,8 +815,10 @@ def image_bytes(path, folder):
     return out.getvalue(), 'image/png'
 
 
-def embedded_font_css():
-    """@font-face rules for the latin subset of Chakra Petch with the font files inlined, or None on any failure."""
+def embedded_font_css(site_dir=None):
+    """@font-face rules for the latin subset of Chakra Petch, or None on any failure. With site_dir the font files are
+    written to <site_dir>/assets/fonts/ and the rules to <site_dir>/assets/fonts.css (returned as that file's text);
+    otherwise the font files are inlined into the rules."""
     try:
         # A browser user agent makes Google serve woff2 files.
         fetch = lambda url: urllib.request.urlopen(urllib.request.Request(
@@ -781,17 +827,31 @@ def embedded_font_css():
         faces = []
         for block in re.findall(r'/\* latin \*/\s*@font-face\s*\{(.*?)\}', css, re.S):
             url = re.search(r'url\((https://[^)]+)\)', block).group(1)
-            data = base64.b64encode(fetch(url)).decode()
-            faces.append('@font-face{' + block.replace(url, f'data:font/woff2;base64,{data}').strip() + '}')
-        return ''.join(faces) or None
+            raw = fetch(url)
+            if site_dir:
+                name = hashlib.sha1(raw).hexdigest()[:16] + '.woff2'
+                os.makedirs(os.path.join(site_dir, 'assets', 'fonts'), exist_ok=True)
+                with open(os.path.join(site_dir, 'assets', 'fonts', name), 'wb') as f:
+                    f.write(raw)
+                source = f'fonts/{name}'   # relative to assets/fonts.css
+            else:
+                source = f'data:font/woff2;base64,{base64.b64encode(raw).decode()}'
+            faces.append('@font-face{' + block.replace(url, source).strip() + '}')
+        css_text = ''.join(faces) or None
+        if css_text and site_dir:
+            with open(os.path.join(site_dir, 'assets', 'fonts.css'), 'w') as f:
+                f.write(css_text)
+        return css_text
     except Exception as e:
         print('could not embed the font, linking Google Fonts instead:', e)
         return None
 
 
-def make_self_contained(page, work_dir):
+def make_self_contained(page, work_dir, site_dir=None):
     """Swap every <img> for an <i> drawn with a CSS background and put each distinct image in the stylesheet once
-    as a data URI (the same portraits and icons repeat on every card), then inline the font."""
+    as a data URI (the same portraits and icons repeat on every card), then inline the font.
+    With site_dir the images and the font go to <site_dir>/assets/ instead, named by content hash, so every page in the
+    site shares them (a portrait used by three pages is stored once); the page then needs those files next to it."""
     classes, rules = {}, []   # sha1 of image bytes -> css class
 
     def swap(match):
@@ -801,7 +861,14 @@ def make_self_contained(page, work_dir):
         key = hashlib.sha1(data).hexdigest()
         if key not in classes:
             classes[key] = f'img-{len(classes)}'
-            rules.append(f'.{classes[key]}{{background-image:url(data:{mime};base64,{base64.b64encode(data).decode()})}}')
+            if site_dir:
+                name = f'{key[:16]}.{"webp" if mime == "image/webp" else "png"}'
+                os.makedirs(os.path.join(site_dir, 'assets', 'img'), exist_ok=True)
+                with open(os.path.join(site_dir, 'assets', 'img', name), 'wb') as f:
+                    f.write(data)
+                rules.append(f'.{classes[key]}{{background-image:url(assets/img/{name})}}')
+            else:
+                rules.append(f'.{classes[key]}{{background-image:url(data:{mime};base64,{base64.b64encode(data).decode()})}}')
         out = f'<i class="{(attrs.get("class") + " " if attrs.get("class") else "")}{classes[key]}" role="img"'
         if 'alt' in attrs:
             out += f' aria-label="{attrs["alt"]}"'
@@ -812,10 +879,10 @@ def make_self_contained(page, work_dir):
         return out + '></i>'
 
     page = re.sub(r'<img\b([^>]*)>', swap, page)
-    font_css = embedded_font_css()
+    font_css = embedded_font_css(site_dir)
     if font_css:
-        page = page.replace(FONT_LINK_TAGS, '')
-    return page.replace('</style>', ''.join(rules) + (font_css or '') + '</style>', 1)
+        page = page.replace(FONT_LINK_TAGS, '<link rel="stylesheet" href="assets/fonts.css">' if site_dir else '')
+    return page.replace('</style>', ''.join(rules) + ('' if site_dir else font_css or '') + '</style>', 1)
 
 
 def main(config_path):
@@ -823,14 +890,19 @@ def main(config_path):
     cfg = json.load(open(config_path))
     base = os.path.dirname(os.path.abspath(config_path))
     path = lambda key: os.path.join(base, os.path.expanduser(cfg[key]))   # relative paths are relative to the config
+    # "site_dir" + "page": write <site_dir>/<page> (e.g. kimm-quest.html) and the shared <site_dir>/assets/, instead of a
+    # self-contained <out_dir>/index.html.
+    site_dir = path('site_dir') if cfg.get('site_dir') else None
+    if site_dir and not cfg.get('page'):
+        sys.exit('"site_dir" needs "page", the file name inside it (e.g. "kimm-quest.html")')
     with tempfile.TemporaryDirectory() as work_dir:
-        page = make_self_contained(build_page(cfg, path('replays_dir'), path('assets_dir'), path('csv'), work_dir), work_dir)
-    out_dir = path('out_dir')
+        page = make_self_contained(build_page(cfg, path('replays_dir'), path('assets_dir'), path('csv'), work_dir), work_dir, site_dir)
+    out_dir = site_dir or path('out_dir')
     os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, 'index.html')
+    out_path = os.path.join(out_dir, cfg['page'] if site_dir else 'index.html')
     with open(out_path, 'w') as f:
         f.write(page)
-    print(f'{len(page) / 1e6:.1f} MB -> {out_path}')
+    print(f'{len(page) / 1e6:.2f} MB -> {out_path}')
 
 
 if __name__ == '__main__':

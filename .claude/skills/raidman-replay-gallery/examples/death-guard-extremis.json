@@ -5,14 +5,32 @@
   "replays_dir": "~/src/videos/DG CE",
   "csv": "~/src/videos/DG CE/replays.csv",
   "assets_dir": "~/src/datamine_tacticus/extracted_assets_143_94_marketing",
-  "out_dir": "~/src/videos/DG CE site",
-  "source": {"type": "campaign", "id": "eventExtremis4"},
+  "source": {
+    "type": "campaign",
+    "id": "eventExtremis4"
+  },
   "battle_index_regex": "_(\\d+)$",
-  "number_keys": ["battleId"],
+  "number_keys": [
+    "battleId"
+  ],
   "label": "{title} Battle {n}",
   "tiers": [
-    {"label": "Epic Tier", "last": 11, "color": "#ffc107"},
-    {"label": "Legendary Tier", "last": 22, "color": "#00e5ff"},
-    {"label": "Mythic Tier", "last": 30, "color": "#e8833a"}
-  ]
+    {
+      "label": "Epic Tier",
+      "last": 11,
+      "color": "#ffc107"
+    },
+    {
+      "label": "Legendary Tier",
+      "last": 22,
+      "color": "#00e5ff"
+    },
+    {
+      "label": "Mythic Tier",
+      "last": 30,
+      "color": "#e8833a"
+    }
+  ],
+  "site_dir": "~/src/datamine_tacticus/kharnage_replays_site",
+  "page": "death-guard-extremis.html"
 }

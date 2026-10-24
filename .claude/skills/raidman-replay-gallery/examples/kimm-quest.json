@@ -1,0 +1,45 @@
+{
+  "title": "Kimm's Quest",
+  "intro": "Use these replays to score 100% on Kimm's quest. Be warned, this is against orks, so there is a lot of randomness from battle fatigue and crits. I have offered two solutions for L2 and M1: I have 100% replays for both, and also replays with rosters that more people are likely to have, albeit without a perfect score.",
+  "replays_dir": "~/src/videos/kimm quest",
+  "csv": "~/src/videos/kimm quest/replays.csv",
+  "assets_dir": "~/src/datamine_tacticus/extracted_assets_143_94_marketing",
+  "i2_path": "~/src/datamine_tacticus/I2Languages_en.1.42.json",
+  "source": {
+    "type": "linear_hero_event",
+    "id": "linear_hero_event_5"
+  },
+  "battle_index_regex": "_(\\d+)$",
+  "battle_index_offset": -1,
+  "number_keys": [
+    "battleNr"
+  ],
+  "label": "{tier} {k}",
+  "tiers": "quest",
+  "variant_labels": {
+    "l2.txt": "100%",
+    "l2_499_out_of_500.txt": "499 out of 500",
+    "m1_400_out_of_500.txt": "400 out of 500",
+    "m1_space_dwarves.txt": "100%, space dwarves"
+  },
+  "roster_boost": {
+    "replays": [
+      "l2.txt",
+      "l2_499_out_of_500.txt",
+      "m1_400_out_of_500.txt",
+      "m1_space_dwarves.txt"
+    ],
+    "label": "Legendary 2 / Mythic 1",
+    "arrows": false
+  },
+  "roster_extra": {
+    "units": [
+      "votanUthar",
+      "votanIronmaster",
+      "votanMemnyr"
+    ],
+    "label": "Necessary for 100% on L2 and M1"
+  },
+  "site_dir": "~/src/datamine_tacticus/kharnage_replays_site",
+  "page": "kimm-quest.html"
+}

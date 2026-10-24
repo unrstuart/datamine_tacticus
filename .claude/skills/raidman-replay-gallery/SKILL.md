@@ -1,6 +1,6 @@
 ---
 name: raidman-replay-gallery
-description: Turn a folder of Tacticus battle replay files into a published walkthrough page - upload the replays to tacticus-raidman.com, then build a single self-contained index.html showing, per battle, the player's characters (portrait, rarity halo, stars, rank, ability levels), the battle's repeatable reward, its bonus requirements (for quests, checked against the lineup) and a link to the replay, and deploy it to Netlify. Use this whenever the user has Tacticus replay files (.txt, often named *.replay.txt) and wants them uploaded to Raidman, listed in a "replaylist"/playlist, written up as a walkthrough or guide for an event (campaign events, Extremis, quests / linear hero events, legendary events, survival, etc.), or wants such a page posted to Netlify - even if they only mention one part (just the upload, just the page, just the deploy).
+description: Turn a folder of Tacticus battle replay files into a published walkthrough page - upload the replays to tacticus-raidman.com, then build a single HTML page showing, per battle, the player's characters (portrait, rarity halo, stars, rank, ability levels), the battle's repeatable reward, its bonus requirements (for quests, checked against the lineup) and a link to the replay, and deploy it to Cloudflare Pages. Use this whenever the user has Tacticus replay files (.txt, often named *.replay.txt) and wants them uploaded to Raidman, listed in a "replaylist"/playlist, written up as a walkthrough or guide for an event (campaign events, Extremis, quests / linear hero events, legendary events, survival, etc.), or wants such a page posted to Cloudflare Pages - even if they only mention one part (just the upload, just the page, just the deploy).
 ---
 
 # Raidman replay gallery
@@ -9,8 +9,8 @@ Takes replay files recorded in Tacticus and produces a shareable walkthrough pag
 
 1. **Inspect** the replays and find where their battles are defined in the game data.
 2. **Upload** them to tacticus-raidman.com and get a URL per replay (CSV out).
-3. **Build** one self-contained `index.html` from the replays, the CSV and the game data.
-4. **Deploy** it to Netlify (draft first, then production).
+3. **Build** one HTML page from the replays, the CSV and the game data (images and font shared in the site's `assets/` folder; a standalone `index.html` with everything embedded if no `site_dir` is set).
+4. **Deploy** it to Cloudflare Pages (preview first, then production).
 
 Tested end to end on two real jobs, both with example configs in `examples/`: the **Death Guard Extremis campaign event** (published) and the **Nubari quest** from battle pass 1.43 (a quest / linear hero event, built as a local draft). Legendary events and survival are supported by the config and finder only as far as `references/battle-sources.md` says - they have not been run with real replays, so read it before promising anything for those.
 
@@ -20,7 +20,7 @@ Steps 2 and 4 publish to public sites and can't be undone. Treat them as separat
 
 - **Check for an embargo.** This repo can hold datamined content from an unreleased patch. If `EMBARGO` exists in the repo root, do not upload replays or deploy; tell the user and ask them to remove it first. Also compare the replays' `MetaData.GameVersion` (and the version of the dump you build from) with the builds the user says are public.
 - **Dry-run, then confirm.** Show the user the file list (and the upload mode) and get a yes before `--upload`. Get a separate yes before a production deploy.
-- Never publish the raw replay files, the CSV, or the repo - only `index.html`.
+- Never publish the raw replay files, the CSV, or the repo - only the pages and assets in `kharnage_replays_site/`.
 
 ## Step 1 - Inspect the replays and find their source
 
@@ -53,7 +53,7 @@ Write a `gallery.json` (schema in `references/config.md`, examples in `examples/
 python3 -I scripts/build_gallery.py gallery.json
 ```
 
-It writes `<out_dir>/index.html`, a single file with every image and the font embedded (~2-3 MB). Ask the user for what only they know: title, author line (optional), intro text, tier groupings (campaigns), which replays are variants, and whether the roster should show a boosted version (below). Don't invent claims in the intro (clears, scores, which units were used) - use their wording and tell them any typo you fixed.
+It writes `<site_dir>/<page>` (~100 KB) plus any new images and the font into `<site_dir>/assets/`, or, without `site_dir`, a single `<out_dir>/index.html` with everything embedded (~2-3 MB). Ask the user for what only they know: title, author line (optional), intro text, tier groupings (campaigns), which replays are variants, and whether the roster should show a boosted version (below). Don't invent claims in the intro (clears, scores, which units were used) - use their wording and tell them any typo you fixed.
 
 What the page shows and why (`references/design.md` has the details and the sprite rules):
 - **Per unit:** stars, rarity-haloed portrait with the rank badge hanging off its bottom-left corner, then the active and passive ability icons with levels. Equipment isn't in replays, so it isn't shown.
@@ -65,17 +65,19 @@ What the page shows and why (`references/design.md` has the details and the spri
 
 ```bash
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu \
-  --screenshot=/tmp/gallery.png --window-size=1200,1400 "file://<out_dir>/index.html"
+  --screenshot=/tmp/gallery.png --window-size=1200,1400 "file://<site_dir>/<page>"
 ```
 
 Headless Chrome won't go below ~500px wide with `--window-size` (it silently clips instead), so check narrow layouts inside a ~380px `<iframe>` in a scratch page. The script prints every unit, ability, rank, reward or bonus icon it couldn't find - report those instead of leaving gaps.
 
-## Step 4 - Deploy to Netlify
+**Lightning check:** for sources whose battles have a `lightningVictory` (quests), the build counts the player's turns in each replay (their `EndTurnMessage`s + 1) and prints `WARNING not a lightning victory: ...` for any replay that took more turns, or didn't end in a win. Relay these warnings to the user. The limit is assumed to count the player's own turns; the page itself doesn't show it.
 
-Only `<out_dir>/index.html` goes up. Follow `references/netlify.md`: install and log in if needed, deploy a **draft** first (draft URLs may need a Netlify login to view), then production once the user approves. A production deploy replaces whatever the site serves now: look at what the target serves first, and give each playlist its own site rather than overwriting another page (`references/netlify.md`).
+## Step 4 - Deploy to Cloudflare Pages
+
+Every playlist is one HTML page on the single `kharnage-replays` Pages project, named `<name>-quest.html` for quests and `<enemy-faction>-extremis.html` for campaign-event Extremis playthroughs. The site lives in the repo, in `kharnage_replays_site/` (version controlled): one `.html` per playlist plus a shared `assets/` folder holding every image and the font. Build each playlist with `site_dir` and `page` set in its config (`references/config.md`) and the builder writes the page and its assets straight into that folder. A deploy replaces the whole site, so deploy the whole folder, never one page. Follow `references/cloudflare-pages.md`: deploy a **preview** first, then production once the user approves. Save the page's config as `examples/<name>.json` so it can be rebuilt.
 
 ## Changing the scripts
 
-The two example configs are the regression tests. Before editing `build_gallery.py`, build both examples to a scratch `out_dir`; after editing, compare the new output with the old (card titles, links, rewards, tier headings, image count) and look at a render. The Death Guard page must come out the same unless you meant to change it (its maps are the one addition since that example was published). Be careful with large find-and-replace edits on this file - one overreaching replacement once silently deleted the tier and intro code. If you extend it for a new source type, write down what you learned in `references/battle-sources.md` so the next run starts further along.
+The two example configs are the regression tests. Before editing `build_gallery.py`, build both examples to a scratch `site_dir` (copy the config and change `site_dir`; the examples write into the real site folder); after editing, compare the new output with the old (card titles, links, rewards, tier headings, image count) and look at a render. The Death Guard page must come out the same unless you meant to change it (its maps are the one addition since that example was published). Be careful with large find-and-replace edits on this file - one overreaching replacement once silently deleted the tier and intro code. If you extend it for a new source type, write down what you learned in `references/battle-sources.md` so the next run starts further along.
 
 For anything the scripts don't know, the pipeline degrades instead of failing: `"source": {"type": "none"}` builds the page without rewards, source-based numbering or bonus checks.

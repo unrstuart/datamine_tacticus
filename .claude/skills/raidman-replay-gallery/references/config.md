@@ -32,7 +32,8 @@ Read by `scripts/build_gallery.py`. Relative paths resolve against the config fi
 | `replays_dir` | Folder with the replay files named in the CSV (any `.txt` name; `c1.txt`, `x.replay.txt`, ...). |
 | `csv` | From `upload_replays.py`: `title,filename,url`. One card per distinct `title`; the latest recording wins (see `variant_labels`). A blank `url` is allowed for a draft before uploading: the card links to `#`. |
 | `assets_dir` | An `extracted_assets*` folder: `sprites/` for icons and `text_assets/GameConfig` for ability ids and the battle list. Must match the replays' build. |
-| `out_dir` | Gets `index.html` (nothing else). Keep it separate from the raw replays. |
+| `out_dir` | Gets `index.html` (nothing else), with every image and the font embedded (2-4 MB). Keep it separate from the raw replays. Not used when `site_dir` is set. |
+| `site_dir`, `page` | Shared-assets mode, used for everything published: the page is written to `<site_dir>/<page>` (e.g. `~/src/datamine_tacticus/kharnage_replays_site` and `kimm-quest.html`) and its images and font to `<site_dir>/assets/` (`img/<content-hash>.png\|webp`, `fonts/`, `fonts.css`), shared by every page in the site. Pages come out at ~100 KB, and an icon used by three pages is stored once. Rebuilding a page only adds files; it never deletes from `assets/` (see `cloudflare-pages.md`). |
 | `source` | `{"type":"campaign","id":...}`, `{"type":"battle_set","id":...}`, `{"type":"linear_hero_event","id":<eventName or unitId>}` (a quest) or `{"type":"none"}`. `find_battle_source.py` suggests one. |
 | `battle_index_regex` | First capture group of the replay title = index into the source's battle list (or, with source `none`, the battle number itself). |
 | `battle_index_offset` | Added to the number the regex captures to get the list index. `-1` for linear hero events (`LinearHeroEvent_N` is battle N-1). Default 0. |
@@ -49,4 +50,4 @@ Read by `scripts/build_gallery.py`. Relative paths resolve against the config fi
 
 **Rewards** come from the source battle's `loot.chanceOf` (campaigns and quests have it; legendary events and survival battles don't); a battle with no such field simply has no reward icon.
 
-The page needs network only at build time (to embed the Chakra Petch font). Pillow shrinks the images if present. If the font download fails the page links Google Fonts instead and the script says so.
+The page needs network only at build time (to fetch the Chakra Petch font, which is embedded or written to `assets/fonts/`). Pillow shrinks the images if present. If the font download fails the page links Google Fonts instead and the script says so.

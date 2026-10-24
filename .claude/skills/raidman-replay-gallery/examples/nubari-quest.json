@@ -7,7 +7,6 @@
   "csv": "~/src/videos/nubari quest/replays.csv",
   "assets_dir": "~/src/datamine_tacticus/extracted_assets_143_94_marketing",
   "i2_path": "~/src/datamine_tacticus/I2Languages_en.1.42.json",
-  "out_dir": "~/src/videos/nubari quest site",
   "source": {
     "type": "linear_hero_event",
     "id": "linear_hero_event_4"
@@ -28,5 +27,7 @@
       "m1_superjuiced.txt"
     ],
     "label": "Super juiced"
-  }
+  },
+  "site_dir": "~/src/datamine_tacticus/kharnage_replays_site",
+  "page": "nubari-quest.html"
 }
