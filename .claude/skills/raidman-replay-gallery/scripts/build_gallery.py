@@ -773,6 +773,7 @@ def build_page(cfg, replays_dir, assets_dir, csv_path, out_dir):
         f'{extra_section}'
         f'{tier_sections}</main></body></html>'
     )
+    cfg['_meta'] = {'replays': len(cards), 'recorded': max((recorded_at(replays[i]) for i in latest.values()), default=0)}
     print(f'{len(cards)} replays ({skipped} earlier attempts at the same battle left out)')
     for warning_text in lightning_warnings:
         print('WARNING not a lightning victory:', warning_text)
@@ -885,6 +886,62 @@ def make_self_contained(page, work_dir, site_dir=None):
     return page.replace('</style>', ''.join(rules) + ('' if site_dir else font_css or '') + '</style>', 1)
 
 
+INDEX_CATEGORIES = [('-quest', 'Quests'), ('-extremis', 'Extremis')]   # page-name suffix -> heading, in display order
+
+
+def page_category(entry):
+    """The heading a page is listed under: its config's "category", else from the page name's suffix (-quest, -extremis)."""
+    if entry.get('category'):
+        return entry['category']
+    for suffix, heading in INDEX_CATEGORIES:
+        if entry['page'].endswith(suffix + '.html'):
+            return heading
+    return 'Other'
+
+
+def update_site_index(site_dir, cfg):
+    """Record this page in <site_dir>/pages.json (title, author, replay count, when its newest replay was recorded) and
+    rewrite <site_dir>/index.html from every page recorded there."""
+    path = os.path.join(site_dir, 'pages.json')
+    pages = json.load(open(path)) if os.path.exists(path) else {}
+    meta = cfg.get('_meta', {})
+    pages[cfg['page']] = {'page': cfg['page'], 'title': cfg['title'], 'author': cfg.get('author', ''),
+                          'category': cfg.get('category', ''), 'replays': meta.get('replays', 0), 'recorded': meta.get('recorded', 0)}
+    with open(path, 'w') as f:
+        json.dump(pages, f, indent=1, sort_keys=True)
+    write_site_index(site_dir)
+
+
+def write_site_index(site_dir):
+    """<site_dir>/index.html: the pages in pages.json grouped by category (quests, then Extremis, then the rest, each
+    heading in INDEX_CATEGORIES order), newest first inside a category. "Newest" is the page's most recently recorded
+    replay; the recording clock is not trusted enough to show as a date."""
+    pages = list(json.load(open(os.path.join(site_dir, 'pages.json'))).values())
+    order = [heading for _, heading in INDEX_CATEGORIES]
+    headings = sorted({page_category(p) for p in pages}, key=lambda h: (order.index(h) if h in order else len(order), h))
+    sections = []
+    for heading in headings:
+        cards = ''.join(
+            f'<a class="entry" href="{html.escape(p["page"])}"><span class="name">{html.escape(p["title"])}</span>'
+            + (f'<span class="by">by {html.escape(p["author"])}</span>' if p.get('author') else '')
+            + f'<span class="count">{p["replays"]} replays</span></a>'
+            for p in sorted((p for p in pages if page_category(p) == heading), key=lambda p: p['recorded'], reverse=True))
+        sections.append(f'<section><h2>{html.escape(heading)}</h2><div class="list">{cards}</div></section>')
+    css = PAGE_CSS + (
+        'h2{margin:28px 0 12px;font-size:18px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}'
+        '.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}'
+        '.entry{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;background:var(--card);border:1px solid var(--border);'
+        'border-radius:var(--radius);padding:14px 18px;color:inherit;text-decoration:none;transition:border-color .15s}'
+        '.entry:hover{border-color:var(--accent)}.entry .name{font-size:17px;font-weight:600;flex:1 1 100%}'
+        '.entry .by,.entry .count{font-size:13px;color:var(--muted)}')
+    page = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width, initial-scale=1"><title>Tacticus replays</title>'
+            '<link rel="stylesheet" href="assets/fonts.css">'
+            f'<style>{css}</style></head><body><main><header><h1>Tacticus replays</h1></header>{"".join(sections)}</main></body></html>')
+    with open(os.path.join(site_dir, 'index.html'), 'w') as f:
+        f.write(page)
+
+
 def main(config_path):
     config_path = os.path.expanduser(config_path)
     cfg = json.load(open(config_path))
@@ -903,9 +960,15 @@ def main(config_path):
     with open(out_path, 'w') as f:
         f.write(page)
     print(f'{len(page) / 1e6:.2f} MB -> {out_path}')
+    if site_dir:
+        update_site_index(site_dir, cfg)
+        print(f'updated {os.path.join(site_dir, "index.html")}')
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
+    if len(sys.argv) == 3 and sys.argv[1] == '--index':   # rewrite <site_dir>/index.html from <site_dir>/pages.json
+        write_site_index(os.path.expanduser(sys.argv[2]))
+    elif len(sys.argv) != 2:
         sys.exit(__doc__)
-    main(sys.argv[1])
+    else:
+        main(sys.argv[1])

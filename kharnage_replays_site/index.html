@@ -1,0 +1,79 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tacticus replays</title><link rel="stylesheet" href="assets/fonts.css"><style>
+:root{--bg:oklch(14.1% .005 285.8);--card:oklch(21% .006 285.9);--border:oklch(100% 0 0/.1);--fg:oklch(98.5% 0 0);
+  --muted:oklch(70.5% .015 286);--accent:oklch(70% .17 255);--radius:.625rem}
+*{box-sizing:border-box}
+i{display:block;flex:none;background:center/contain no-repeat}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Chakra Petch',ui-sans-serif,system-ui,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:32px 20px 48px}
+header{margin-bottom:24px}
+h1{margin:0;font-size:28px;font-weight:700;letter-spacing:.02em}
+h1 .by{font-size:16px;font-weight:500;color:var(--muted);letter-spacing:0}
+.roster{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:24px;
+  display:flex;flex-direction:column;align-items:center;gap:14px}
+.roster.extra{margin-top:-8px}
+.roster .team{flex-wrap:wrap;row-gap:12px;align-items:flex-start}
+.pair{display:flex;align-items:flex-start;gap:4px}
+.arrow{align-self:flex-start;margin-top:36px;font-size:22px;line-height:1;color:var(--tier,#e8833a);font-weight:700}
+.promo{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:6px}
+.promo-label{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.promo-code{font-size:30px;font-weight:700;letter-spacing:.18em;color:#ffc107;padding:6px 22px;border:2px dashed #ffc107;border-radius:12px;
+  background:rgba(255,193,7,.08);box-shadow:0 0 18px -6px #ffc107;user-select:all;cursor:copy}
+.promo-note{margin-top:4px;font-size:14px;font-weight:500;color:var(--fg)}
+.roster-note{margin:-6px 0 0;font-size:12px;color:var(--muted)}
+.intro{margin:0;max-width:760px;text-align:center;line-height:1.55;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 20px 18px;
+  display:flex;flex-direction:column;gap:14px;transition:border-color .15s;color:inherit;text-decoration:none}
+.tier{margin-top:28px;--tier:var(--border)}
+.tier h2{margin:0 0 12px;font-size:18px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--tier)}
+
+.card.tiered{border:1.5px solid var(--tier);box-shadow:0 0 10px -3px var(--tier)}
+.card:hover{box-shadow:0 0 14px -2px var(--tier)}
+.card{position:relative}
+.card-title::after{content:'';position:absolute;inset:0;z-index:1}
+.map-open{position:absolute;opacity:0;pointer-events:none}
+.map-thumb{position:relative;z-index:2;flex:none;cursor:zoom-in;border:1px solid var(--border);border-radius:6px;overflow:hidden;line-height:0}
+.map-thumb:hover{border-color:var(--fg)}
+.map-thumb i{width:54px;aspect-ratio:var(--ar)}
+.lb{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.88);flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;cursor:zoom-out}
+.map-open:checked ~ .lb{display:flex}
+.lb i{height:min(84vh,calc((100vw - 32px) / var(--ar)));aspect-ratio:var(--ar);border-radius:8px;box-shadow:0 8px 40px #000}
+.lb-cap{color:#ddd;font-size:13px;text-align:center}
+.bonuses{margin:0;padding:10px 0 0;border-top:1px solid var(--border);list-style:none;font-size:13px;color:var(--muted);display:flex;flex-direction:row;flex-wrap:wrap;gap:6px 22px}
+.bonuses li{display:flex;align-items:center;gap:6px}
+.bonuses li.unmet .req{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#e53935;opacity:.7}
+.bonuses li.unmet b{text-decoration:line-through;text-decoration-color:#e53935;opacity:.7}
+.bonuses li.unmet .restrict{opacity:.5}
+.bonuses .why{color:#ff8a80;font-size:12px}
+.warn{display:inline-block;white-space:nowrap;font-size:12px;font-weight:600;color:#ffb4a9;background:#5a1d1a;border:1px solid #e53935;border-radius:999px;padding:1px 9px}
+.bonuses b{color:var(--tier,var(--fg))}
+.restrict{position:relative;flex:none;width:28px;height:28px}.restrict i{width:28px;height:28px}
+.restrict.no::after{content:'\00d7';position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:50%;background:#e53935;
+  border:1px solid #1a1a1a;color:#fff;font:700 12px/11px sans-serif;text-align:center}
+.card-head{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;min-height:56px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.card-head .head-left{grid-column:1;display:flex;align-items:center;gap:12px;min-width:0}.card-head .warn{grid-column:2;justify-self:center}.card-head .reward,.card-head .reward-text{grid-column:3;justify-self:end}
+.card-title{color:var(--fg);font-size:17px;font-weight:600;text-decoration:none}
+.reward{position:relative;flex:none}
+.reward i{position:absolute}
+.reward.shard{width:60px;height:53px}.reward.shard>i:first-child{inset:0;width:100%;height:100%}
+.reward .shard-portrait{width:36px;height:36px;left:12px;top:8.5px;border-radius:50%}
+.reward.upgrade{width:52px;height:52px}
+.reward .up-bg{inset:3px;width:46px;height:46px}
+.reward .up-icon{inset:8px;width:36px;height:36px}
+.reward .up-frame{inset:0;width:100%;height:100%}
+.reward-text{font-size:12px;color:var(--muted)}
+.card:hover .card-title{color:var(--accent)}
+.team{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 16px}
+.unit{display:flex;flex-direction:column;align-items:center;gap:3px}
+.unit i{width:64px;height:64px}
+.pic{position:relative;width:64px;height:64px}
+.unit i.rank{position:absolute;left:-12px;bottom:-5px;width:34px;height:31px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))}
+.abilities{margin-top:3px;display:flex;justify-content:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.ability{display:flex;flex-direction:column;align-items:center;width:34px}.ability i{width:32px;height:32px}
+.stars{display:flex;justify-content:center;width:100%;height:14px}.stars i{width:13px;height:13px}.stars i.wings{width:42px;height:15px}
+.missing{width:64px;font-size:10px;word-break:break-all;color:#e88}
+.body{display:flex;flex-direction:column;gap:14px}
+.rows .grid{grid-template-columns:minmax(0,1fr)}
+@media (max-width:640px){.card-head{grid-template-columns:minmax(0,1fr) auto}.card-head .warn{grid-column:1 / -1;grid-row:2;justify-self:center}.card-head .reward,.card-head .reward-text{grid-column:2;grid-row:1}}
+@media (max-width:540px){.grid{grid-template-columns:minmax(0,1fr)}.team{gap:12px 8px}.card{padding:12px 14px 14px}}
+h2{margin:28px 0 12px;font-size:18px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}.entry{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;color:inherit;text-decoration:none;transition:border-color .15s}.entry:hover{border-color:var(--accent)}.entry .name{font-size:17px;font-weight:600;flex:1 1 100%}.entry .by,.entry .count{font-size:13px;color:var(--muted)}</style></head><body><main><header><h1>Tacticus replays</h1></header><section><h2>Quests</h2><div class="list"><a class="entry" href="kimm-quest.html"><span class="name">Kimm&#x27;s Quest</span><span class="count">19 replays</span></a><a class="entry" href="nubari-quest.html"><span class="name">Nubari Quest</span><span class="count">18 replays</span></a></div></section><section><h2>Extremis</h2><div class="list"><a class="entry" href="death-guard-extremis.html"><span class="name">Death Guard Extremis</span><span class="by">by Kharnage</span><span class="count">24 replays</span></a></div></section></main></body></html>
