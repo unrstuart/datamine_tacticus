@@ -1,0 +1,77 @@
+:root {
+    color-scheme: dark;
+    --bg: #0e0f13;
+    --panel: #181a21;
+    --border: #2b2f3a;
+    --text: #e8e9ee;
+    --muted: #9aa0b0;
+    --accent: #5aa0ff;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.4 system-ui, sans-serif;
+}
+
+main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+h1 {
+    font-size: 22px;
+    margin: 0 0 12px;
+}
+
+.pickers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.pickers label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+select {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    min-width: 200px;
+}
+
+.board {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+
+.hex {
+    fill: rgba(255, 255, 255, 0.04);
+    stroke: rgba(220, 220, 220, 0.75);
+    stroke-width: 1.5;
+}
+
+.hex.blocked {
+    fill: rgba(255, 60, 60, 0.35);
+}
+
+.hex.platform {
+    fill: rgba(255, 210, 0, 0.3);
+}
+
+.loading {
+    padding: 16px;
+    color: var(--muted);
+}

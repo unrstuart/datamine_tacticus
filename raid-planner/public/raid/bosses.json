@@ -1,0 +1,570 @@
+[
+ {
+  "bossType": "AvatarOfKhaine",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_Khaine_01"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Khaine_05"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Khaine_02"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Khaine_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Khaine_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Khaine_support_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Khaine_support_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Khaine_support_06"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Khaine_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Khaine_support_04"
+   }
+  ]
+ },
+ {
+  "bossType": "BelisariusRW",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_Belisarius_02"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Belisarius_01"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Belisarius_04"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Belisarius_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Belisarius_support_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Belisarius_support_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Belisarius_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Belisarius_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Belisarius_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Belisarius_support_06"
+   }
+  ]
+ },
+ {
+  "bossType": "Ghazghkull",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_Dakka_04"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Dakka_01"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Dakka_02"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Dakka_03"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Dakka_05"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Dakka_03_1"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Dakka_support_05_1"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Dakka_support_06"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Dakka_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Dakka_support_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Dakka_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Dakka_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Dakka_support_05"
+   }
+  ]
+ },
+ {
+  "bossType": "HiveTyrantGorgon",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_04"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_09"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_11"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_06"
+   }
+  ]
+ },
+ {
+  "bossType": "HiveTyrantKronos",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_06"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_07"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_08"
+   }
+  ]
+ },
+ {
+  "bossType": "HiveTyrantLeviathan",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_02"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_02"
+   }
+  ]
+ },
+ {
+  "bossType": "Lion",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_Lion_02"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Lion_03"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Lion_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Lion_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Lion_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Lion_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Lion_support_02"
+   }
+  ]
+ },
+ {
+  "bossType": "Magnus",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_Magnus_03"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Magnus_02"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Magnus_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Magnus_support_06"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Magnus_support_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Magnus_support_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Magnus_support_01"
+   }
+  ]
+ },
+ {
+  "bossType": "Mortarion",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_Mortarion_03"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Mortarion_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Mortarion_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Mortarion_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Mortarion_support_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Mortarion_support_06"
+   }
+  ]
+ },
+ {
+  "bossType": "Riptide",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_Riptide_03"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Riptide_01"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Riptide_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Riptide_support_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Riptide_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Riptide_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Riptide_support_03"
+   }
+  ]
+ },
+ {
+  "bossType": "RogalDorn",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_RogalDorn_02"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_RogalDorn_06"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_RogalDorn_04"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_RogalDorn_05"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_RogalDorn_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_RogalDorn_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_RogalDorn_support_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_RogalDorn_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_RogalDorn_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_RogalDorn_support_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_RogalDorn_support_06"
+   }
+  ]
+ },
+ {
+  "bossType": "ScreamerKiller",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_Screamer_03"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Screamer_01"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_Screamer_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Screamer_support_07"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Screamer_support_08"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Screamer_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Screamer_support_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Screamer_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Screamer_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Screamer_support_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_Screamer_support_06"
+   }
+  ]
+ },
+ {
+  "bossType": "SilentKing",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_SK_04"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_SK_01"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_SK_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_SK_support_08"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_SK_support_07"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_SK_support_02"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_SK_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_SK_support_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_SK_support_03"
+   }
+  ]
+ },
+ {
+  "bossType": "TervigonGorgon",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_03"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_04"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_06"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_09"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_11"
+   }
+  ]
+ },
+ {
+  "bossType": "TervigonKronos",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_06"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_07"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_08"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_03"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_04"
+   }
+  ]
+ },
+ {
+  "bossType": "TervigonLeviathan",
+  "encounters": [
+   {
+    "type": "Boss",
+    "boardId": "GB_01"
+   },
+   {
+    "type": "Boss",
+    "boardId": "GB_05"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_01"
+   },
+   {
+    "type": "Crystal",
+    "boardId": "GB_support_02"
+   }
+  ]
+ }
+]
