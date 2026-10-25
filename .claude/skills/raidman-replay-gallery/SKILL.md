@@ -20,7 +20,11 @@ Steps 2 and 4 publish to public sites and can't be undone. Treat them as separat
 
 - **Check for an embargo.** This repo can hold datamined content from an unreleased patch. If `EMBARGO` exists in the repo root, do not upload replays or deploy; tell the user and ask them to remove it first. Also compare the replays' `MetaData.GameVersion` (and the version of the dump you build from) with the builds the user says are public.
 - **Dry-run, then confirm.** Show the user the file list (and the upload mode) and get a yes before `--upload`. Get a separate yes before a production deploy.
-- Never publish the raw replay files, the CSV, or the repo - only the pages and assets in `kharnage_replays_site/`.
+- Never publish the raw replay files, the CSV, or this repo from here - the pages and assets in the replays repo's `site/` folder are what gets deployed. The replays themselves live in their own public repo (below); committing and pushing there is its own decision, so get a yes before pushing.
+
+## Where replays live
+
+Replay folders (one per playlist, each with its `*.txt` replays, `replays.csv` and `gallery.json`) live in the separate repo `~/src/kharnage-replays` (github.com/unrstuart/kharnage-replays, public), not in `~/src/videos` or this repo. Put a new playlist's folder there (`replays_dir` / `csv` in its config point at it, e.g. `~/src/kharnage-replays/<name>`), then commit it there. Build output (`out_dir`) for scratch drafts still goes under `~/src/videos/`. This repo's `EMBARGO` check applies to the data-mine dump you build from, so it still gates uploading and deploying; check the replays' `GameVersion` before pushing the replays repo too.
 
 ## Step 1 - Inspect the replays and find their source
 
@@ -74,7 +78,7 @@ Headless Chrome won't go below ~500px wide with `--window-size` (it silently cli
 
 ## Step 4 - Deploy to Cloudflare Pages
 
-Every playlist is one HTML page on the single `kharnage-replays` Pages project, named `<name>-quest.html` for quests and `<enemy-faction>-extremis.html` for campaign-event Extremis playthroughs. The site lives in the repo, in `kharnage_replays_site/` (version controlled): one `.html` per playlist plus a shared `assets/` folder holding every image and the font. Build each playlist with `site_dir` and `page` set in its config (`references/config.md`) and the builder writes the page and its assets straight into that folder. A deploy replaces the whole site, so deploy the whole folder, never one page. Follow `references/cloudflare-pages.md`: deploy a **preview** first, then production once the user approves. Save the page's config as `examples/<name>.json` so it can be rebuilt.
+Every playlist is one HTML page on the single `kharnage-replays` Pages project, named `<name>-quest.html` for quests and `<enemy-faction>-extremis.html` for campaign-event Extremis playthroughs. The site lives in the replays repo (`~/src/kharnage-replays`), in `site/` (version controlled): one `.html` per playlist plus a shared `assets/` folder holding every image and the font. Build each playlist with `site_dir` and `page` set in its config (`references/config.md`) and the builder writes the page and its assets straight into that folder. A deploy replaces the whole site, so deploy the whole folder, never one page. Follow `references/cloudflare-pages.md`: deploy a **preview** first, then production once the user approves. Save the page's config as `examples/<name>.json` so it can be rebuilt.
 
 ## Changing the scripts
 

@@ -1,8 +1,8 @@
 {
   "title": "Kimm's Quest",
   "intro": "Use these replays to score 100% on Kimm's quest. Be warned, this is against orks, so there is a lot of randomness from battle fatigue and crits. I have offered two solutions for L2 and M1: I have 100% replays for both, and also replays with rosters that more people are likely to have, albeit without a perfect score.",
-  "replays_dir": "~/src/videos/kimm quest",
-  "csv": "~/src/videos/kimm quest/replays.csv",
+  "replays_dir": "~/src/kharnage-replays/kimm quest",
+  "csv": "~/src/kharnage-replays/kimm quest/replays.csv",
   "assets_dir": "~/src/datamine_tacticus/extracted_assets_143_94_marketing",
   "i2_path": "~/src/datamine_tacticus/I2Languages_en.1.42.json",
   "source": {
@@ -40,6 +40,6 @@
     ],
     "label": "Necessary for 100% on L2 and M1"
   },
-  "site_dir": "~/src/datamine_tacticus/kharnage_replays_site",
+  "site_dir": "~/src/kharnage-replays/site",
   "page": "kimm-quest.html"
 }

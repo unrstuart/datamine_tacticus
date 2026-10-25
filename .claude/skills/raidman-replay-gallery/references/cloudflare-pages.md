@@ -4,19 +4,19 @@ All playlists live on ONE Pages project, `kharnage-replays` (`https://kharnage-r
 
 ## The site folder is in the repo
 
-The whole site lives in `kharnage_replays_site/` at the repo root and is version controlled:
+The whole site lives in `site/` in the kharnage-replays repo (`~/src/kharnage-replays`) and is version controlled:
 
 ```
-kharnage_replays_site/
-  kimm-quest.html  nubari-quest.html  death-guard-extremis.html     (~100 KB each)
+site/
+  <name>-quest.html  <faction>-extremis.html  ...     (~100 KB each)
   assets/
     img/<content-hash>.png|webp    portraits, ranks, stars, ability and reward icons, maps
     fonts/<hash>.woff2, fonts.css  Chakra Petch
 ```
 
-Pages reference `assets/...` relatively and share the files: images are named by a hash of their bytes, so an icon used by several pages is one file. Build a page with `site_dir` and `page` in its config (`references/config.md`; configs are in `examples/`) and the builder writes the page and any new assets there. It only adds to `assets/`, so rebuilding or retiring a page can leave unreferenced files behind; if the folder gets bloated, delete `assets/img/` and rebuild every page from `examples/`. (The repo's `.gitignore` ignores `assets/` everywhere. The local copy has an exception for this folder, but `.gitignore` is not itself tracked, so on a fresh clone commit new assets with `git add -f kharnage_replays_site/assets`.)
+Pages reference `assets/...` relatively and share the files: images are named by a hash of their bytes, so an icon used by several pages is one file. Build a page with `site_dir` and `page` in its config (`references/config.md`; configs are in `examples/`) and the builder writes the page and any new assets there. It only adds to `assets/`, so rebuilding or retiring a page can leave unreferenced files behind; if the folder gets bloated, delete `assets/img/` and rebuild every page from `examples/`.
 
-**The home page is generated.** Every build with `site_dir` records the page in `kharnage_replays_site/pages.json` (title, author, replay count, when its newest replay was recorded) and rewrites `kharnage_replays_site/index.html`: pages grouped by category (Quests for `*-quest.html`, Extremis for `*-extremis.html`, else the config's `"category"` or "Other"), newest recorded replay first within a category. Don't edit `index.html` by hand; rebuild a page, or run `python3 -I scripts/build_gallery.py --index <site_dir>` to rewrite it from `pages.json` alone (e.g. after deleting a page's entry).
+**The home page is generated.** Every build with `site_dir` records the page in `site/pages.json` (title, author, replay count, when its newest replay was recorded) and rewrites `site/index.html`: pages grouped by category (Quests for `*-quest.html`, Extremis for `*-extremis.html`, else the config's `"category"` or "Other"), newest recorded replay first within a category. Don't edit `index.html` by hand; rebuild a page, or run `python3 -I scripts/build_gallery.py --index <site_dir>` to rewrite it from `pages.json` alone (e.g. after deleting a page's entry).
 
 A deploy replaces the whole site, so it always uploads the whole folder: never deploy one page on its own.
 
@@ -43,7 +43,7 @@ The project already exists. If it ever has to be recreated, the user does it (`n
 ## Deploy
 
 ```bash
-cd <repo>/kharnage_replays_site
+cd ~/src/kharnage-replays/site
 # preview: any branch other than main; production untouched
 npx wrangler pages deploy . --project-name kharnage-replays --branch preview --force
 # production: replaces the live site

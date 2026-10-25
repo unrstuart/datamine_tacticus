@@ -363,7 +363,11 @@ def load_source_battles(cfg, gameconfig_path):
     type "battle_set": clientGameConfig.battles.battleSets[source.id]
     type "linear_hero_event" (a quest): the battles of every tier of the clientGameConfig.liveEvents.idunLiveEventConfigs
         entry whose eventType is linearHeroEvent and whose eventName or unitId is source.id, in tier order; each battle
-        gets a `_tier` (the tier's index) and `_pos` (its 1-based position inside the tier)."""
+        gets a `_tier` (the tier's index) and `_pos` (its 1-based position inside the tier).
+    type "mow_event" (a Machines of War event): the battles of one tier (source.tier, a tier `index`) of the
+        mowEvent entry's mows[] item whose unitId is source.id. Replay titles are "MachinesOfWar nodeOrBattleIndex: N"
+        with N a node of the tier, not a list position: map them with battle_index_map. A replay doesn't say which
+        tier it was played on, so source.tier is something the user has to tell you."""
     source = cfg.get('source', {'type': 'none'})
     client = json.load(open(gameconfig_path))['clientGameConfig']
     if source['type'] == 'campaign':
@@ -382,6 +386,14 @@ def load_source_battles(cfg, gameconfig_path):
                 return [dict(battle, _tier=tier.get('index', t), _pos=k + 1)
                         for t, tier in enumerate(event['tiers']) for k, battle in enumerate(tier['battles'])]
         sys.exit(f"linear hero event {source['id']!r} (an eventName or unitId) not found in {gameconfig_path}")
+    if source['type'] == 'mow_event':
+        for event in client['liveEvents']['idunLiveEventConfigs']:
+            for mow in event.get('mows', []) if event.get('eventType') == 'mowEvent' else []:
+                if mow.get('unitId') == source['id']:
+                    for tier in mow['tiers']:
+                        if tier.get('index') == source['tier']:
+                            return [dict(battle, _tier=tier['index'], _pos=k + 1) for k, battle in enumerate(tier['battles'])]
+        sys.exit(f"mow event tier {source.get('tier')!r} of {source['id']!r} not found in {gameconfig_path}")
     return None
 
 

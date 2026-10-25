@@ -7,8 +7,8 @@ Read by `scripts/build_gallery.py`. Relative paths resolve against the config fi
   "title": "Death Guard Extremis",
   "author": "Kharnage",
   "intro": "Free text shown under the character summary.",
-  "replays_dir": "~/src/videos/DG CE",
-  "csv": "~/src/videos/DG CE/replays.csv",
+  "replays_dir": "~/src/kharnage-replays/DG CE",
+  "csv": "~/src/kharnage-replays/DG CE/replays.csv",
   "assets_dir": "~/src/datamine_tacticus/extracted_assets_143_94_marketing",
   "out_dir": "~/src/videos/DG CE site",
   "source": {"type": "campaign", "id": "eventExtremis4"},
@@ -33,7 +33,7 @@ Read by `scripts/build_gallery.py`. Relative paths resolve against the config fi
 | `csv` | From `upload_replays.py`: `title,filename,url`. One card per distinct `title`; the latest recording wins (see `variant_labels`). A blank `url` is allowed for a draft before uploading: the card links to `#`. |
 | `assets_dir` | An `extracted_assets*` folder: `sprites/` for icons and `text_assets/GameConfig` for ability ids and the battle list. Must match the replays' build. |
 | `out_dir` | Gets `index.html` (nothing else), with every image and the font embedded (2-4 MB). Keep it separate from the raw replays. Not used when `site_dir` is set. |
-| `site_dir`, `page` | Shared-assets mode, used for everything published: the page is written to `<site_dir>/<page>` (e.g. `~/src/datamine_tacticus/kharnage_replays_site` and `kimm-quest.html`) and its images and font to `<site_dir>/assets/` (`img/<content-hash>.png\|webp`, `fonts/`, `fonts.css`), shared by every page in the site. Pages come out at ~100 KB, and an icon used by three pages is stored once. `category` (optional) is the heading the page is listed under on the site's index (default: from the page name, `-quest` -> Quests, `-extremis` -> Extremis, else Other). Rebuilding a page only adds files; it never deletes from `assets/` (see `cloudflare-pages.md`). |
+| `site_dir`, `page` | Shared-assets mode, used for everything published: the page is written to `<site_dir>/<page>` (e.g. `~/src/kharnage-replays/site` and `kimm-quest.html`) and its images and font to `<site_dir>/assets/` (`img/<content-hash>.png\|webp`, `fonts/`, `fonts.css`), shared by every page in the site. Pages come out at ~100 KB, and an icon used by three pages is stored once. `category` (optional) is the heading the page is listed under on the site's index (default: from the page name, `-quest` -> Quests, `-extremis` -> Extremis, else Other). Rebuilding a page only adds files; it never deletes from `assets/` (see `cloudflare-pages.md`). |
 | `source` | `{"type":"campaign","id":...}`, `{"type":"battle_set","id":...}`, `{"type":"linear_hero_event","id":<eventName or unitId>}` (a quest) or `{"type":"none"}`. `find_battle_source.py` suggests one. |
 | `battle_index_regex` | First capture group of the replay title = index into the source's battle list (or, with source `none`, the battle number itself). |
 | `battle_index_offset` | Added to the number the regex captures to get the list index. `-1` for linear hero events (`LinearHeroEvent_N` is battle N-1). Default 0. |

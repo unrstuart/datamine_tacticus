@@ -1,0 +1,20 @@
+{
+  "title": "Ramus's Quest",
+  "replays_dir": "~/src/kharnage-replays/ramus quest",
+  "csv": "~/src/kharnage-replays/ramus quest/replays.csv",
+  "assets_dir": "~/src/datamine_tacticus/extracted_assets_143_94_marketing",
+  "i2_path": "~/src/datamine_tacticus/I2Languages_en.1.42.json",
+  "source": {
+    "type": "linear_hero_event",
+    "id": "linear_hero_event_3"
+  },
+  "battle_index_regex": "_(\\d+)$",
+  "battle_index_offset": -1,
+  "number_keys": [
+    "battleNr"
+  ],
+  "label": "{tier} {k}",
+  "tiers": "quest",
+  "site_dir": "~/src/kharnage-replays/site",
+  "page": "ramus-quest.html"
+}

@@ -2,8 +2,8 @@
   "title": "Death Guard Extremis",
   "author": "Kharnage",
   "intro": "This is a walkthrough of the Death Guard Extremis campaign event, using gold 1 35/35 Celestine and gold 1 48/35 Roswitha. This does not cover the challenge battles, nor does it give you a lightning victory in every battle. It does, however, give a 3-star clear in every battle, and it gives a lightning victory against Mortarion, netting you Typhus's relic. Also, the first six battles were simple enough that I did not bother copying the replays for them.",
-  "replays_dir": "~/src/videos/DG CE",
-  "csv": "~/src/videos/DG CE/replays.csv",
+  "replays_dir": "~/src/kharnage-replays/DG CE",
+  "csv": "~/src/kharnage-replays/DG CE/replays.csv",
   "assets_dir": "~/src/datamine_tacticus/extracted_assets_143_94_marketing",
   "source": {
     "type": "campaign",
@@ -31,6 +31,6 @@
       "color": "#e8833a"
     }
   ],
-  "site_dir": "~/src/datamine_tacticus/kharnage_replays_site",
+  "site_dir": "~/src/kharnage-replays/site",
   "page": "death-guard-extremis.html"
 }
