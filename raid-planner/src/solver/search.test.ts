@@ -6,10 +6,10 @@ import { COUNTER, makeCounters, readProgress, requestStop } from './counters';
 import { StoredPlan, insertPlan, search } from './search';
 import { DEFAULT_OPTIONS, EXHAUSTIVE } from './options';
 import { analyse, makeStatics } from './analysis';
-import { deployHexes, zkarInReach } from './actions';
+import { deployHexes, moveTier, zkarInReach } from './actions';
 import { UnitId } from '../core/setup';
 import { allDone, legalActions } from './actions';
-import { initialState } from '../engine/state';
+import { distanceBetween, initialState } from '../engine/state';
 
 // A tiny board with one character so the whole search finishes at once.
 const small = (o: Parameters<typeof scenario>[0] = {}) => scenario({ cols: 6, rows: 6, boss: [{ col: 3, row: 4 }], units: { abaddon: { col: 3, row: 2 } }, ...o });
@@ -284,6 +284,24 @@ describe('moves that could not matter are left out', () => {
         const { ctx, state } = scenario({ cols: 10, rows: 12, boss: [boss], units: { archimatos: { col: 3, row: 6 }, neurothrope: { col: 3, row: 2 } } });
         const moves = legalActionsWith(ctx, state, { ...EXHAUSTIVE, relevantMovesOnly: true }, makeStatics(ctx, state)).filter((a) => a.type === 'move' && a.unit === 'neurothrope');
         expect(moves.length).toBeGreaterThan(0);
+    });
+});
+
+describe('moves are tried in order', () => {
+    it('first those that keep the character in attacking range, then those that only reach a buff, then the rest, nearer the boss first', () => {
+        const boss = { col: 4, row: 5 };
+        const { ctx, state } = scenario({ cols: 9, rows: 10, boss: [boss], units: { archimatos: { col: 4, row: 3 } } });
+        const an = analyse(ctx, state);
+        const statics = makeStatics(ctx, state);
+        const moves = legalActionsWith(ctx, state, EXHAUSTIVE, statics, an).filter((a) => a.type === 'move');
+        const keys = moves.map((a) => (a.type === 'move' ? moveTier(ctx, state, an, statics, 'archimatos', a.to) : 9));
+        expect(keys[0]).toBe(0);
+        expect(keys).toEqual([...keys].sort((x, y) => x - y));
+        expect(new Set(keys).size).toBeGreaterThan(1);
+        const inRange = moves.filter((_, i) => keys[i] === 0).map((a) => (a.type === 'move' ? distanceBetween([a.to], [boss]) : 0));
+        expect(inRange).toEqual([...inRange].sort((x, y) => x - y));
+        // Ordering drops nothing: the exhaustive list is the same set as the unordered moves.
+        expect(moves.length).toBe((an.moves.archimatos ?? []).length);
     });
 });
 

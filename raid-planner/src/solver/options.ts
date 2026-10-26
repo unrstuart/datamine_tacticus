@@ -10,6 +10,11 @@ export interface SolverOptions {
     abaddonFirst: boolean;
     /** Only try a move if from the new hex the character could attack, or could give a buff to a friend who could still attack. */
     relevantMovesOnly: boolean;
+    /**
+     * Try the likelier actions first (see hints.ts): it only reorders the search, so what is found by the end is the same, but the
+     * good plans come sooner.
+     */
+    hints: boolean;
     /** Only deploy Z'kar where an enemy is within his reach (adjacent, or within range 2). */
     zkarInRangeOnly: boolean;
     /**
@@ -20,7 +25,7 @@ export interface SolverOptions {
     tableBits: number;
 }
 
-export const DEFAULT_OPTIONS: SolverOptions = { abaddonFirst: true, relevantMovesOnly: true, zkarInRangeOnly: true, tableBits: 21 };
+export const DEFAULT_OPTIONS: SolverOptions = { abaddonFirst: true, relevantMovesOnly: true, hints: true, zkarInRangeOnly: true, tableBits: 21 };
 
 /** Every rule off: the full search space. */
-export const EXHAUSTIVE: SolverOptions = { abaddonFirst: false, relevantMovesOnly: false, zkarInRangeOnly: false, tableBits: 0 };
+export const EXHAUSTIVE: SolverOptions = { abaddonFirst: false, relevantMovesOnly: false, hints: false, zkarInRangeOnly: false, tableBits: 0 };

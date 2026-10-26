@@ -69,6 +69,15 @@ export function relevantMove(ctx: Context, state: State, an: Analysis, statics: 
 }
 
 /**
+ * How early a move is explored: 0 if from the new hex the character can still attack, 1 if it can't but could give a buff
+ * (see relevantMove), 2 for the rest. Within a tier, hexes nearer the boss come first.
+ */
+export function moveTier(ctx: Context, state: State, an: Analysis, statics: Statics | undefined, unit: UnitId, to: Cell): 0 | 1 | 2 {
+    if (an.attackCells[unit]?.some((c) => c.col === to.col && c.row === to.row)) return 0;
+    return statics && relevantMove(ctx, state, an, statics, unit, to) ? 1 : 2;
+}
+
+/**
  * Every action that can be taken next, in a fixed order. A character that hasn't finished may move (once), attack, or
  * pass; Abaddon may use his active when the setup allows it; Z'kar may be deployed (once) on any hex where he fits. A plan
  * is complete when every character has finished; it may still deploy Z'kar after that, or stop.
@@ -82,8 +91,12 @@ export function legalActions(ctx: Context, state: State, options: SolverOptions 
         const u = state.units[unit]!;
         if (u.attacked) continue;
         if (!u.moved) {
-            for (const to of an.moves[unit] ?? []) {
-                if (options.relevantMovesOnly && statics && !relevantMove(ctx, state, an, statics, unit, to)) continue;
+            // Moves that keep the character in attacking range first, then those that only reach a buff, then the rest.
+            const boss = enemyCells(state, { kind: 'boss' });
+            const ranked = (an.moves[unit] ?? []).map((to) => ({ to, tier: moveTier(ctx, state, an, statics, unit, to), d: distanceBetween([to], boss) }));
+            ranked.sort((x, y) => x.tier - y.tier || x.d - y.d); // stable: ties keep the board's order
+            for (const { to, tier } of ranked) {
+                if (options.relevantMovesOnly && statics && tier === 2) continue;
                 actions.push({ type: 'move', unit, to });
             }
         }

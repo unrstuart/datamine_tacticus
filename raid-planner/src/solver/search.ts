@@ -3,8 +3,9 @@ import { MAX_ABADDON_STACKS } from '../core/setup';
 import { AttackReport, legalAttacks } from '../engine/attacks';
 import { legalMoves } from '../engine/movement';
 import { Action, PlanResult, applyAction, finishRound } from '../engine/plan';
-import { Context, State, initialState } from '../engine/state';
-import { allDone, legalActions, relevantMove } from './actions';
+import { Context, State, distanceBetween, enemyCells, initialState } from '../engine/state';
+import { allDone, legalActions, moveTier } from './actions';
+import { hintScore } from './hints';
 import { Analysis, analyse, makeStatics } from './analysis';
 import { COUNTER, Counters } from './counters';
 import { DEFAULT_OPTIONS, SolverOptions } from './options';
@@ -184,9 +185,9 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
         // Apply each action first, so the ones that score most go first.
         const children = actions.flatMap((action) => {
             const result = applyAction(ctx, state, action);
-            return result ? [{ action, result, gain: result.reports.reduce((s, r) => s + r.score, 0) }] : [];
+            return result ? [{ action, result, gain: result.reports.reduce((s, r) => s + r.score, 0), hint: rules.hints ? hintScore(ctx, state, an, action, result.state, result.reports) : 0 }] : [];
         });
-        children.sort((a, b) => b.gain - a.gain || ORDER[a.action.type] - ORDER[b.action.type]);
+        children.sort((a, b) => b.hint - a.hint || b.gain - a.gain || ORDER[a.action.type] - ORDER[b.action.type]);
         each(children, (child) => {
             path.push(child.action);
             const before = reports.length;
@@ -199,8 +200,14 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
 
     // ---- Abaddon first -----------------------------------------------------------------------------------------------
 
-    const abaddonMoves = (state: State, an: Analysis): Action[] =>
-        (an.moves.abaddon ?? []).filter((to) => !rules.relevantMovesOnly || relevantMove(ctx, state, an, statics, 'abaddon', to)).map((to) => ({ type: 'move', unit: 'abaddon', to }));
+    const abaddonMoves = (state: State, an: Analysis): Action[] => {
+        const boss = enemyCells(state, { kind: 'boss' });
+        return (an.moves.abaddon ?? [])
+            .map((to) => ({ to, tier: moveTier(ctx, state, an, statics, 'abaddon', to), d: distanceBetween([to], boss) }))
+            .filter(({ tier }) => !rules.relevantMovesOnly || tier < 2)
+            .sort((x, y) => x.tier - y.tier || x.d - y.d)
+            .map(({ to }): Action => ({ type: 'move', unit: 'abaddon', to }));
+    };
 
     const attackWith = (state: State, score: number, kind: 'melee' | 'ranged') => {
         const choices = legalAttacks(ctx, state, 'abaddon').filter((c) => c.kind === kind);
