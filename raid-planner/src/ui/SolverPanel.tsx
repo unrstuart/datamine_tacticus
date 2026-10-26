@@ -13,7 +13,7 @@ const seconds = (ms: number): string => `${(ms / 1000).toFixed(1)} s`;
 
 function PlanView({ plan, index, onReplay }: { plan: StoredPlan; index: number; onReplay: (plan: StoredPlan, index: number) => void }) {
     return (
-        <details className="plan" open={index === 0}>
+        <details className="plan">
             <summary>
                 Plan {index + 1}: {fmt(plan.total)} damage to the boss, {plan.actions.length} actions
                 {plan.undesirable > 0 ? `, ${plan.undesirable} on an undesirable hex` : ''}
