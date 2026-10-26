@@ -50,7 +50,7 @@ export function App() {
     const [drag, setDrag] = useState<{ drag: Drag; hover: Cell; point: Point }>();
     const [setup, setSetup] = useState<Setup>();
     const [tab, setTab] = useState<'board' | 'characters'>(() => (new URLSearchParams(location.search).get('tab') === 'characters' ? 'characters' : 'board'));
-    const { roster, setUnit, reset } = useRoster();
+    const { roster, setUnit, replace, reset } = useRoster();
     const painting = useRef<{ tool: Tool; mode: PaintMode } | undefined>(undefined);
 
     useEffect(() => {
@@ -147,7 +147,7 @@ export function App() {
                     Characters
                 </button>
             </nav>
-            {tab === 'characters' && <RosterPanel roster={roster} setUnit={setUnit} reset={reset} />}
+            {tab === 'characters' && <RosterPanel roster={roster} setUnit={setUnit} replace={replace} reset={reset} />}
             <div className="pickers" hidden={tab !== 'board'}>
                 <label>
                     Boss

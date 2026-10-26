@@ -1,0 +1,8 @@
+name = "raid-planner"
+main = "worker/index.ts"
+compatibility_date = "2026-08-12"
+
+# The built app (npm run build), served by the worker for everything except /api/player.
+[assets]
+directory = "./dist"
+binding = "ASSETS"

@@ -1,0 +1,301 @@
+{
+ "player": {
+  "details": {
+   "name": "Test Player",
+   "powerLevel": 70
+  },
+  "units": [
+   {
+    "id": "blackAbaddon",
+    "name": "Abaddon",
+    "progressionIndex": 16,
+    "xp": 5630432,
+    "xpLevel": 60,
+    "rank": 19,
+    "abilities": [
+     {
+      "id": "Drachnyen",
+      "level": 50
+     },
+     {
+      "id": "FirstAmongTraitors",
+      "level": 60
+     }
+    ],
+    "upgrades": [],
+    "shards": 0,
+    "mythicShards": 14,
+    "items": [
+     {
+      "slotId": "Slot2",
+      "level": 7,
+      "id": "I_Block_L003",
+      "name": "Optimal Force Field",
+      "rarity": "Legendary"
+     },
+     {
+      "slotId": "Slot1",
+      "level": 6,
+      "id": "R_Crit_TalonOfHorus",
+      "name": "Talon of Horus",
+      "rarity": "Mythic"
+     },
+     {
+      "slotId": "Slot3",
+      "level": 1,
+      "id": "I_Booster_Block_M002",
+      "name": "Perfected Force Field Amplifier",
+      "rarity": "Mythic"
+     }
+    ]
+   },
+   {
+    "id": "thousAhriman",
+    "name": "Ahriman",
+    "progressionIndex": 16,
+    "xp": 5627681,
+    "xpLevel": 60,
+    "rank": 19,
+    "abilities": [
+     {
+      "id": "Doombolt",
+      "level": 55
+     },
+     {
+      "id": "PsychicStalk",
+      "level": 55
+     }
+    ],
+    "upgrades": [],
+    "shards": 0,
+    "mythicShards": 16,
+    "items": [
+     {
+      "slotId": "Slot1",
+      "level": 1,
+      "id": "I_Crit_M006",
+      "name": "Daemonic Bolt Pistol",
+      "rarity": "Mythic"
+     },
+     {
+      "slotId": "Slot2",
+      "level": 6,
+      "id": "I_Block_L003",
+      "name": "Optimal Force Field",
+      "rarity": "Legendary"
+     },
+     {
+      "slotId": "Slot3",
+      "level": 1,
+      "id": "I_Booster_Crit_L003",
+      "name": "Warpforged Frag Grenades",
+      "rarity": "Legendary"
+     }
+    ]
+   },
+   {
+    "id": "thousInfernalMaster",
+    "name": "Abraxas",
+    "progressionIndex": 16,
+    "xp": 5645538,
+    "xpLevel": 60,
+    "rank": 19,
+    "abilities": [
+     {
+      "id": "MasterOfTheTutelaries",
+      "level": 60
+     },
+     {
+      "id": "InfernalPacts",
+      "level": 55
+     }
+    ],
+    "upgrades": [],
+    "shards": 0,
+    "mythicShards": 17,
+    "items": [
+     {
+      "slotId": "Slot3",
+      "level": 6,
+      "id": "R_Booster_Crit_BookOfFate",
+      "name": "Book of Fate",
+      "rarity": "Mythic"
+     },
+     {
+      "slotId": "Slot1",
+      "level": 1,
+      "id": "I_Crit_M006",
+      "name": "Daemonic Bolt Pistol",
+      "rarity": "Mythic"
+     },
+     {
+      "slotId": "Slot2",
+      "level": 1,
+      "id": "I_Block_L003",
+      "name": "Optimal Force Field",
+      "rarity": "Legendary"
+     }
+    ]
+   },
+   {
+    "id": "blackPossession",
+    "name": "Archimatos",
+    "progressionIndex": 16,
+    "xp": 5622942,
+    "xpLevel": 60,
+    "rank": 19,
+    "abilities": [
+     {
+      "id": "Incursion",
+      "level": 50
+     },
+     {
+      "id": "Possession",
+      "level": 50
+     }
+    ],
+    "upgrades": [],
+    "shards": 0,
+    "mythicShards": 0,
+    "items": [
+     {
+      "slotId": "Slot3",
+      "level": 6,
+      "id": "R_Booster_Crit_BookOfFate",
+      "name": "Book of Fate",
+      "rarity": "Mythic"
+     },
+     {
+      "slotId": "Slot1",
+      "level": 1,
+      "id": "I_Crit_M006",
+      "name": "Daemonic Bolt Pistol",
+      "rarity": "Mythic"
+     },
+     {
+      "slotId": "Slot2",
+      "level": 1,
+      "id": "I_Block_L003",
+      "name": "Optimal Force Field",
+      "rarity": "Legendary"
+     }
+    ]
+   },
+   {
+    "id": "tyranNeurothrope",
+    "name": "Neurothrope",
+    "progressionIndex": 16,
+    "xp": 5630853,
+    "xpLevel": 60,
+    "rank": 19,
+    "abilities": [
+     {
+      "id": "SpiritLeech",
+      "level": 38
+     },
+     {
+      "id": "Neuroparasite",
+      "level": 60
+     }
+    ],
+    "upgrades": [],
+    "shards": 0,
+    "mythicShards": 2,
+    "items": [
+     {
+      "slotId": "Slot2",
+      "level": 11,
+      "id": "I_Block_L003",
+      "name": "Optimal Force Field",
+      "rarity": "Legendary"
+     },
+     {
+      "slotId": "Slot3",
+      "level": 10,
+      "id": "R_Booster_Block_NornCrown",
+      "name": "Norn Crown",
+      "rarity": "Mythic"
+     },
+     {
+      "slotId": "Slot1",
+      "level": 1,
+      "id": "I_Crit_M011",
+      "name": "Apex Bonesword",
+      "rarity": "Mythic"
+     }
+    ]
+   },
+   {
+    "id": "thousDaemonPrince",
+    "name": "Z'Kar",
+    "progressionIndex": 19,
+    "xp": 0,
+    "xpLevel": 1,
+    "rank": 0,
+    "abilities": [
+     {
+      "id": "AetherStride",
+      "level": 60
+     },
+     {
+      "id": "InfernalCannon",
+      "level": 35
+     },
+     {
+      "id": "CabalOfSorcerers",
+      "level": 4
+     }
+    ],
+    "upgrades": [],
+    "shards": 0,
+    "mythicShards": 0,
+    "items": []
+   },
+   {
+    "id": "ultraTigurius",
+    "name": "Tigurius",
+    "progressionIndex": 8,
+    "xp": 19396,
+    "xpLevel": 26,
+    "rank": 9,
+    "abilities": [
+     {
+      "id": "StormOfWrath",
+      "level": 26
+     },
+     {
+      "id": "PsychicFortress",
+      "level": 10
+     }
+    ],
+    "upgrades": [],
+    "shards": 480,
+    "mythicShards": 0,
+    "items": [
+     {
+      "slotId": "Slot2",
+      "level": 7,
+      "id": "I_Defensive_R002",
+      "name": "Sanctified MK X Pauldron",
+      "rarity": "Rare"
+     },
+     {
+      "slotId": "Slot3",
+      "level": 1,
+      "id": "I_Booster_Crit_R001",
+      "name": "Sanctified Frag Grenades",
+      "rarity": "Rare"
+     }
+    ]
+   }
+  ]
+ },
+ "metaData": {
+  "configHash": "x",
+  "apiKeyExpiresOn": null,
+  "lastUpdatedOn": 0,
+  "scopes": [
+   "Player"
+  ]
+ }
+}

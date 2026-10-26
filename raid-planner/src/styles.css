@@ -471,41 +471,170 @@ button.small {
     height: 40px;
 }
 
-.unit-card .grid {
-    display: grid;
-    gap: 8px;
-}
-
-.unit-card label {
+.field-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
+    margin-bottom: 8px;
     font-size: 13px;
 }
 
-.unit-card select,
+.field-row .label {
+    color: var(--muted);
+    min-width: 44px;
+}
+
+.choices {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.choice {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    opacity: 0.55;
+}
+
+.choice:hover {
+    opacity: 0.85;
+}
+
+.choice.selected {
+    opacity: 1;
+    border-color: var(--accent);
+    background: #1d2a3f;
+}
+
+.choice img.rarity {
+    width: 26px;
+    height: 26px;
+}
+
+.choice img.rank {
+    height: 30px;
+    width: auto;
+}
+
+.stars-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    min-height: 22px;
+}
+
+.star {
+    height: 18px;
+    width: auto;
+}
+
+.star.wings {
+    height: 22px;
+}
+
+.unit-card .title {
+    flex: 1;
+}
+
+.unit-card .title h3 {
+    margin: 0;
+}
+
+.damage {
+    font-size: 13px;
+}
+
+.damage strong {
+    font: 600 16px ui-monospace, monospace;
+}
+
+.abilities {
+    display: grid;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.ability {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.ability img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.ability .name {
+    flex: 1;
+}
+
 .unit-card input[type='number'] {
     background: var(--bg);
     color: var(--text);
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 4px 6px;
-    min-width: 0;
-}
-
-.unit-card select {
-    width: 150px;
-}
-
-.unit-card input[type='number'] {
     width: 56px;
 }
 
-.level {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+.account {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px 10px;
+    margin: 10px 0 6px;
+    padding: 10px 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.account label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.account input {
+    width: 280px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+}
+
+.account .hint,
+.account .error,
+.account .ok {
+    flex: 1 1 100%;
+    margin: 0;
+}
+
+.error {
+    color: #ff8a8a;
+    font-size: 13px;
+}
+
+.ok {
+    color: #6ee7a8;
+    font-size: 13px;
+}
+
+.account a {
+    color: var(--accent);
 }
 
 .relic {

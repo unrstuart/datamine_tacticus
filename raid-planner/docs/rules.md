@@ -119,7 +119,7 @@ An "attack" is one action, however many hits it has. Each (attack, buff) pair sc
 | Neurothrope | friendly **psykers and summons** | within 2 hexes of Neurothrope | Z'kar is both but counts once. |
 | Abraxas | **ranged** attacks of adjacent chaos units; **ranged and melee** attacks of adjacent chaos demons (Z'kar) | adjacent to Abraxas; normal attacks only, not abilities | Adds one psychic hit. Counts as a buff. Adds a neuroparasite stack only if the original attack wasn't already psychic or flame. |
 | Z'kar | friendly psykers (here everyone except Abaddon, and including Z'kar himself) | adjacent to another psyker, or to Z'kar | |
-| High ground | an attack | attacker stands higher than the target | Weighted the same as the others for now; likely to be weighted more later. All hexes of a multi-hex unit share one elevation, so there is nothing to choose. |
+| High ground | **any character's** attack (Z'kar's too) | attacker stands higher than the target | Worth **+50% damage** (a x1.5 modifier: see section 12). Scored as one point until damage drives the search. All hexes of a multi-hex unit share one elevation, so there is nothing to choose. |
 | Hex-effect bonus | **all** of Abaddon's attacks (ranged, melee, the extra melee attack) and **Archimatos's** attacks | the target stands on a hex with an effect: fire, despoiled ground or contaminated | +1 per attack (a hex has only one effect, so never +2). Ahriman's buff is separate and does not apply to the relic. |
 | Abaddon stack | Abaddon | each enemy he hits, to a maximum of 13 | **+1 for every stack added.** Not a buff on someone else's attack: it is the passive he is building. |
 | Neuroparasite stack | the boss | each psychic attack on the infected enemy adds a stack; the first Neurothrope attack infects (0 = not yet infected) | **+1 for every stack added** (this is the only way the parasite scores). Max 16. Neurothrope's own attacks add a stack too; the parasite's bonus on his attacks is not counted as a buff. |
@@ -180,3 +180,17 @@ Decisions made while building it, beyond what the sections above say. Tell me wh
   himself. **Z'kar's buff** needs him on the board and goes to a psyker beside another psyker or beside him.
 - **Neurothrope's penalty** applies once per plan if he is next to an enemy after a move, when he attacks, or at the end.
 - **Order within one move:** a character moves at most once, before attacking; attacking ends its turn.
+
+## 12. Damage (in progress)
+
+Scoring by buffs is a stand-in; the goal is damage. The pieces so far (`src/core/stats.ts`, `damage.ts`):
+
+- **A character's damage stat** = (base + the rank-up rows up to its rank) x the star step's multiplier / 100, from the game's
+  config. At Mythic wings and Adamantine II: Abaddon 2,001, Ahriman 4,005, Abraxas 2,402, Archimatos 2,136, Neurothrope 2,671.
+  This is before equipment, upgrades and relics. Z'kar, a machine of war, has no stats of his own.
+- **A hit** = max(raw - armor, raw x pierce) x modifiers, where raw = damage stat + fixed damage buffs ("+1400" applies on every
+  hit), pierce is the share a hit keeps against any armor (Psychic 1, Power 0.4, Bolter 0.2, Flame 0.25, Physical 0.01), and
+  the percentage modifiers multiply each other and apply after armor. **An attack is its hits**, each worked out on its own.
+  Weapons (hits per attack): Abaddon melee 5 Power, ranged 3 Bolter; Ahriman 1 Flame / 1 Psychic; Abraxas 2 Flame / 1 Psychic;
+  Archimatos 2 Psychic / 1 Psychic; Neurothrope 1 Physical / 1 Psychic; Z'kar 4 / 3 Psychic.
+- **Percentage modifiers:** high ground x1.5, Ahriman's x1.33, Z'kar's mythic ability x1.2; together x2.394.

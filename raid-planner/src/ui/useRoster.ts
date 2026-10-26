@@ -14,7 +14,7 @@ function load(): Roster {
 }
 
 /** The six units' stats, remembered in this browser. Starts maxed out. */
-export function useRoster(): { roster: Roster; setUnit: (unit: ActorName, spec: UnitSpec) => void; reset: () => void } {
+export function useRoster(): { roster: Roster; setUnit: (unit: ActorName, spec: UnitSpec) => void; replace: (roster: Roster) => void; reset: () => void } {
     const [roster, setRoster] = useState<Roster>(load);
 
     useEffect(() => {
@@ -26,6 +26,7 @@ export function useRoster(): { roster: Roster; setUnit: (unit: ActorName, spec: 
     }, [roster]);
 
     const setUnit = useCallback((unit: ActorName, spec: UnitSpec) => setRoster((r) => ({ ...r, [unit]: spec })), []);
+    const replace = useCallback((next: Roster) => setRoster(next), []);
     const reset = useCallback(() => setRoster(maxedRoster()), []);
-    return { roster, setUnit, reset };
+    return { roster, setUnit, replace, reset };
 }

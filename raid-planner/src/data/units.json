@@ -1,0 +1,1200 @@
+{
+ "progression": [
+  {
+   "rarity": "Common",
+   "stars": 0,
+   "maxRank": 3,
+   "maxAbilityLevel": 8,
+   "unitStatMultiplierPct": 100,
+   "abilityStatMultiplierPct": 100
+  },
+  {
+   "rarity": "Common",
+   "stars": 1,
+   "maxRank": 3,
+   "maxAbilityLevel": 8,
+   "unitStatMultiplierPct": 110,
+   "abilityStatMultiplierPct": 100
+  },
+  {
+   "rarity": "Common",
+   "stars": 2,
+   "maxRank": 3,
+   "maxAbilityLevel": 8,
+   "unitStatMultiplierPct": 120,
+   "abilityStatMultiplierPct": 100
+  },
+  {
+   "rarity": "Uncommon",
+   "stars": 2,
+   "maxRank": 6,
+   "maxAbilityLevel": 17,
+   "unitStatMultiplierPct": 120,
+   "abilityStatMultiplierPct": 120
+  },
+  {
+   "rarity": "Uncommon",
+   "stars": 3,
+   "maxRank": 6,
+   "maxAbilityLevel": 17,
+   "unitStatMultiplierPct": 130,
+   "abilityStatMultiplierPct": 120
+  },
+  {
+   "rarity": "Uncommon",
+   "stars": 4,
+   "maxRank": 6,
+   "maxAbilityLevel": 17,
+   "unitStatMultiplierPct": 140,
+   "abilityStatMultiplierPct": 120
+  },
+  {
+   "rarity": "Rare",
+   "stars": 4,
+   "maxRank": 9,
+   "maxAbilityLevel": 26,
+   "unitStatMultiplierPct": 140,
+   "abilityStatMultiplierPct": 140
+  },
+  {
+   "rarity": "Rare",
+   "stars": 5,
+   "maxRank": 9,
+   "maxAbilityLevel": 26,
+   "unitStatMultiplierPct": 150,
+   "abilityStatMultiplierPct": 140
+  },
+  {
+   "rarity": "Rare",
+   "stars": 6,
+   "maxRank": 9,
+   "maxAbilityLevel": 26,
+   "unitStatMultiplierPct": 160,
+   "abilityStatMultiplierPct": 140
+  },
+  {
+   "rarity": "Epic",
+   "stars": 6,
+   "maxRank": 12,
+   "maxAbilityLevel": 35,
+   "unitStatMultiplierPct": 160,
+   "abilityStatMultiplierPct": 160
+  },
+  {
+   "rarity": "Epic",
+   "stars": 7,
+   "maxRank": 12,
+   "maxAbilityLevel": 35,
+   "unitStatMultiplierPct": 170,
+   "abilityStatMultiplierPct": 160
+  },
+  {
+   "rarity": "Epic",
+   "stars": 8,
+   "maxRank": 12,
+   "maxAbilityLevel": 35,
+   "unitStatMultiplierPct": 180,
+   "abilityStatMultiplierPct": 160
+  },
+  {
+   "rarity": "Legendary",
+   "stars": 8,
+   "maxRank": 17,
+   "maxAbilityLevel": 50,
+   "unitStatMultiplierPct": 180,
+   "abilityStatMultiplierPct": 180
+  },
+  {
+   "rarity": "Legendary",
+   "stars": 9,
+   "maxRank": 17,
+   "maxAbilityLevel": 50,
+   "unitStatMultiplierPct": 190,
+   "abilityStatMultiplierPct": 180
+  },
+  {
+   "rarity": "Legendary",
+   "stars": 10,
+   "maxRank": 17,
+   "maxAbilityLevel": 50,
+   "unitStatMultiplierPct": 200,
+   "abilityStatMultiplierPct": 180
+  },
+  {
+   "rarity": "Legendary",
+   "stars": 11,
+   "maxRank": 17,
+   "maxAbilityLevel": 50,
+   "unitStatMultiplierPct": 210,
+   "abilityStatMultiplierPct": 180
+  },
+  {
+   "rarity": "Mythic",
+   "stars": 11,
+   "maxRank": 20,
+   "maxAbilityLevel": 60,
+   "unitStatMultiplierPct": 210,
+   "abilityStatMultiplierPct": 200
+  },
+  {
+   "rarity": "Mythic",
+   "stars": 12,
+   "maxRank": 20,
+   "maxAbilityLevel": 60,
+   "unitStatMultiplierPct": 220,
+   "abilityStatMultiplierPct": 200
+  },
+  {
+   "rarity": "Mythic",
+   "stars": 13,
+   "maxRank": 20,
+   "maxAbilityLevel": 60,
+   "unitStatMultiplierPct": 230,
+   "abilityStatMultiplierPct": 200
+  },
+  {
+   "rarity": "Mythic",
+   "stars": 14,
+   "maxRank": 20,
+   "maxAbilityLevel": 60,
+   "unitStatMultiplierPct": 240,
+   "abilityStatMultiplierPct": 200
+  }
+ ],
+ "units": {
+  "abaddon": {
+   "id": "blackAbaddon",
+   "name": "Abaddon",
+   "movement": 3,
+   "traits": [
+    "Hero",
+    "LetTheGalaxyBurn",
+    "Resilient",
+    "TerminatorArmour"
+   ],
+   "stats": {
+    "health": 100,
+    "damage": 15,
+    "armor": 25,
+    "progressionIndex": 12
+   },
+   "statIncreases": [
+    [
+     13,
+     13,
+     2,
+     2,
+     3,
+     3
+    ],
+    [
+     16,
+     16,
+     2,
+     3,
+     3,
+     5
+    ],
+    [
+     13,
+     25,
+     3,
+     2,
+     3,
+     7
+    ],
+    [
+     25,
+     25,
+     3,
+     5,
+     7,
+     5
+    ],
+    [
+     31,
+     31,
+     4,
+     5,
+     5,
+     11
+    ],
+    [
+     44,
+     33,
+     6,
+     6,
+     10,
+     10
+    ],
+    [
+     42,
+     55,
+     8,
+     6,
+     12,
+     12
+    ],
+    [
+     68,
+     54,
+     11,
+     8,
+     13,
+     17
+    ],
+    [
+     57,
+     95,
+     12,
+     10,
+     19,
+     19
+    ],
+    [
+     95,
+     95,
+     16,
+     13,
+     24,
+     24
+    ],
+    [
+     133,
+     106,
+     20,
+     16,
+     32,
+     27
+    ],
+    [
+     149,
+     149,
+     20,
+     25,
+     34,
+     41
+    ],
+    [
+     187,
+     187,
+     28,
+     28,
+     47,
+     47
+    ],
+    [
+     234,
+     234,
+     35,
+     35,
+     58,
+     58
+    ],
+    [
+     293,
+     293,
+     44,
+     44,
+     74,
+     74
+    ],
+    [
+     367,
+     367,
+     55,
+     55,
+     91,
+     91
+    ],
+    [
+     459,
+     459,
+     69,
+     69,
+     115,
+     115
+    ],
+    [
+     250,
+     250,
+     40,
+     34,
+     67,
+     58
+    ],
+    [
+     269,
+     231,
+     40,
+     35,
+     67,
+     58
+    ],
+    [
+     222,
+     278,
+     33,
+     42,
+     56,
+     69
+    ]
+   ],
+   "weapons": [
+    {
+     "hits": 5,
+     "profile": "Power"
+    },
+    {
+     "hits": 3,
+     "profile": "Bolter",
+     "range": 2
+    }
+   ],
+   "progressionOverride": false
+  },
+  "ahriman": {
+   "id": "thousAhriman",
+   "name": "Ahriman",
+   "movement": 3,
+   "traits": [
+    "Hero",
+    "WeaverOfFate",
+    "Flying",
+    "Psyker"
+   ],
+   "stats": {
+    "health": 80,
+    "damage": 30,
+    "armor": 18,
+    "progressionIndex": 12
+   },
+   "statIncreases": [
+    [
+     10,
+     10,
+     4,
+     4,
+     3,
+     3
+    ],
+    [
+     13,
+     13,
+     5,
+     5,
+     2,
+     2
+    ],
+    [
+     16,
+     16,
+     6,
+     6,
+     4,
+     4
+    ],
+    [
+     23,
+     16,
+     7,
+     7,
+     4,
+     4
+    ],
+    [
+     16,
+     33,
+     11,
+     7,
+     7,
+     4
+    ],
+    [
+     41,
+     21,
+     10,
+     14,
+     6,
+     8
+    ],
+    [
+     39,
+     39,
+     17,
+     12,
+     9,
+     9
+    ],
+    [
+     54,
+     43,
+     14,
+     23,
+     9,
+     13
+    ],
+    [
+     46,
+     76,
+     25,
+     20,
+     15,
+     12
+    ],
+    [
+     84,
+     68,
+     32,
+     25,
+     17,
+     17
+    ],
+    [
+     96,
+     96,
+     39,
+     32,
+     22,
+     22
+    ],
+    [
+     108,
+     130,
+     41,
+     49,
+     24,
+     29
+    ],
+    [
+     150,
+     150,
+     51,
+     61,
+     34,
+     34
+    ],
+    [
+     187,
+     187,
+     71,
+     71,
+     42,
+     42
+    ],
+    [
+     234,
+     234,
+     87,
+     87,
+     53,
+     53
+    ],
+    [
+     294,
+     294,
+     110,
+     110,
+     66,
+     66
+    ],
+    [
+     367,
+     367,
+     138,
+     138,
+     82,
+     82
+    ],
+    [
+     200,
+     200,
+     81,
+     69,
+     48,
+     42
+    ],
+    [
+     215,
+     185,
+     81,
+     69,
+     48,
+     42
+    ],
+    [
+     177,
+     222,
+     67,
+     83,
+     40,
+     50
+    ]
+   ],
+   "weapons": [
+    {
+     "hits": 1,
+     "profile": "Flame"
+    },
+    {
+     "hits": 1,
+     "profile": "Psychic",
+     "range": 2
+    }
+   ],
+   "progressionOverride": false
+  },
+  "abraxas": {
+   "id": "thousInfernalMaster",
+   "name": "Abraxas",
+   "movement": 3,
+   "traits": [
+    "Hero",
+    "WeaverOfFate",
+    "Psyker"
+   ],
+   "stats": {
+    "health": 70,
+    "damage": 18,
+    "armor": 20,
+    "progressionIndex": 6
+   },
+   "statIncreases": [
+    [
+     9,
+     9,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     11,
+     11,
+     2,
+     2,
+     3,
+     3
+    ],
+    [
+     11,
+     16,
+     4,
+     4,
+     4,
+     4
+    ],
+    [
+     21,
+     14,
+     4,
+     4,
+     4,
+     5
+    ],
+    [
+     14,
+     29,
+     7,
+     4,
+     8,
+     5
+    ],
+    [
+     37,
+     18,
+     6,
+     8,
+     8,
+     8
+    ],
+    [
+     34,
+     34,
+     10,
+     8,
+     9,
+     9
+    ],
+    [
+     47,
+     38,
+     8,
+     14,
+     11,
+     14
+    ],
+    [
+     40,
+     66,
+     15,
+     12,
+     17,
+     13
+    ],
+    [
+     74,
+     59,
+     19,
+     15,
+     19,
+     19
+    ],
+    [
+     84,
+     84,
+     23,
+     20,
+     21,
+     27
+    ],
+    [
+     95,
+     113,
+     25,
+     29,
+     27,
+     33
+    ],
+    [
+     131,
+     131,
+     27,
+     40,
+     37,
+     37
+    ],
+    [
+     164,
+     164,
+     43,
+     43,
+     47,
+     47
+    ],
+    [
+     205,
+     205,
+     52,
+     52,
+     59,
+     59
+    ],
+    [
+     257,
+     257,
+     66,
+     66,
+     73,
+     73
+    ],
+    [
+     321,
+     321,
+     83,
+     83,
+     92,
+     92
+    ],
+    [
+     175,
+     175,
+     48,
+     41,
+     54,
+     46
+    ],
+    [
+     188,
+     162,
+     48,
+     42,
+     54,
+     46
+    ],
+    [
+     156,
+     194,
+     40,
+     50,
+     44,
+     56
+    ]
+   ],
+   "weapons": [
+    {
+     "hits": 2,
+     "profile": "Flame"
+    },
+    {
+     "hits": 1,
+     "profile": "Psychic",
+     "range": 2
+    }
+   ],
+   "progressionOverride": false
+  },
+  "archimatos": {
+   "id": "blackPossession",
+   "name": "Archimatos",
+   "movement": 3,
+   "traits": [
+    "Hero",
+    "LetTheGalaxyBurn",
+    "Psyker"
+   ],
+   "stats": {
+    "health": 80,
+    "damage": 16,
+    "armor": 18,
+    "progressionIndex": 3
+   },
+   "statIncreases": [
+    [
+     10,
+     10,
+     2,
+     2,
+     3,
+     3
+    ],
+    [
+     13,
+     13,
+     2,
+     3,
+     1,
+     3
+    ],
+    [
+     10,
+     21,
+     4,
+     2,
+     2,
+     5
+    ],
+    [
+     20,
+     20,
+     3,
+     5,
+     5,
+     4
+    ],
+    [
+     25,
+     25,
+     4,
+     6,
+     4,
+     7
+    ],
+    [
+     35,
+     26,
+     7,
+     7,
+     5,
+     9
+    ],
+    [
+     33,
+     45,
+     6,
+     8,
+     9,
+     9
+    ],
+    [
+     54,
+     43,
+     11,
+     9,
+     9,
+     13
+    ],
+    [
+     46,
+     76,
+     13,
+     11,
+     14,
+     14
+    ],
+    [
+     76,
+     76,
+     17,
+     13,
+     17,
+     17
+    ],
+    [
+     106,
+     85,
+     20,
+     20,
+     23,
+     19
+    ],
+    [
+     120,
+     120,
+     21,
+     25,
+     25,
+     29
+    ],
+    [
+     149,
+     149,
+     30,
+     30,
+     34,
+     34
+    ],
+    [
+     187,
+     187,
+     38,
+     38,
+     42,
+     42
+    ],
+    [
+     235,
+     235,
+     47,
+     47,
+     53,
+     53
+    ],
+    [
+     293,
+     293,
+     58,
+     58,
+     66,
+     66
+    ],
+    [
+     368,
+     368,
+     74,
+     74,
+     82,
+     82
+    ],
+    [
+     200,
+     200,
+     43,
+     36,
+     48,
+     42
+    ],
+    [
+     215,
+     184,
+     43,
+     37,
+     48,
+     42
+    ],
+    [
+     177,
+     222,
+     36,
+     44,
+     40,
+     50
+    ]
+   ],
+   "weapons": [
+    {
+     "hits": 2,
+     "profile": "Psychic"
+    },
+    {
+     "hits": 1,
+     "profile": "Psychic",
+     "range": 2
+    }
+   ],
+   "progressionOverride": false
+  },
+  "neurothrope": {
+   "id": "tyranNeurothrope",
+   "name": "Neurothrope",
+   "movement": 2,
+   "traits": [
+    "Hero",
+    "RangedSpecialist",
+    "Flying",
+    "Psyker",
+    "ShadowInTheWarp",
+    "Synapse"
+   ],
+   "stats": {
+    "health": 85,
+    "damage": 20,
+    "armor": 17,
+    "progressionIndex": 6
+   },
+   "statIncreases": [
+    [
+     11,
+     11,
+     3,
+     3,
+     2,
+     2
+    ],
+    [
+     13,
+     13,
+     2,
+     3,
+     3,
+     3
+    ],
+    [
+     14,
+     20,
+     4,
+     4,
+     4,
+     2
+    ],
+    [
+     25,
+     17,
+     5,
+     5,
+     4,
+     5
+    ],
+    [
+     17,
+     35,
+     8,
+     5,
+     6,
+     4
+    ],
+    [
+     44,
+     22,
+     6,
+     9,
+     7,
+     7
+    ],
+    [
+     42,
+     42,
+     11,
+     8,
+     8,
+     8
+    ],
+    [
+     57,
+     45,
+     9,
+     16,
+     9,
+     12
+    ],
+    [
+     48,
+     81,
+     17,
+     13,
+     14,
+     11
+    ],
+    [
+     90,
+     72,
+     21,
+     17,
+     17,
+     17
+    ],
+    [
+     102,
+     102,
+     26,
+     22,
+     20,
+     20
+    ],
+    [
+     115,
+     138,
+     27,
+     33,
+     25,
+     25
+    ],
+    [
+     159,
+     159,
+     34,
+     40,
+     32,
+     32
+    ],
+    [
+     199,
+     199,
+     47,
+     47,
+     40,
+     40
+    ],
+    [
+     249,
+     249,
+     59,
+     59,
+     50,
+     50
+    ],
+    [
+     312,
+     312,
+     73,
+     73,
+     62,
+     62
+    ],
+    [
+     390,
+     390,
+     92,
+     92,
+     78,
+     78
+    ],
+    [
+     213,
+     213,
+     54,
+     46,
+     46,
+     39
+    ],
+    [
+     228,
+     196,
+     54,
+     46,
+     46,
+     39
+    ],
+    [
+     188,
+     236,
+     44,
+     56,
+     38,
+     47
+    ]
+   ],
+   "weapons": [
+    {
+     "hits": 1,
+     "profile": "Physical"
+    },
+    {
+     "hits": 1,
+     "profile": "Psychic",
+     "range": 3
+    }
+   ],
+   "progressionOverride": false
+  },
+  "zkar": {
+   "id": "thousDaemonPrince",
+   "name": "Z'Kar",
+   "movement": 0,
+   "traits": [
+    "Summon",
+    "WeaverOfFate",
+    "Daemon",
+    "BigTarget",
+    "Psyker"
+   ],
+   "stats": {
+    "health": 0,
+    "damage": 0,
+    "armor": 0,
+    "progressionIndex": 0
+   },
+   "statIncreases": [],
+   "weapons": [
+    {
+     "hits": 4,
+     "profile": "Psychic"
+    },
+    {
+     "hits": 3,
+     "profile": "Psychic",
+     "range": 2
+    }
+   ],
+   "progressionOverride": false
+  }
+ },
+ "pierce": {
+  "Physical": 0.01,
+  "Projectile": 0.15,
+  "Las": 0.1,
+  "Bolter": 0.2,
+  "Flame": 0.25,
+  "Particle": 0.35,
+  "Acid": 0.4,
+  "Power": 0.4,
+  "Plasma": 0.65,
+  "Melta": 0.75,
+  "HeavyRound": 0.55,
+  "Gauss": 0.6,
+  "Psychic": 1,
+  "DirectDamage": 1,
+  "Energy": 0.3,
+  "Chain": 0.2,
+  "Blast": 0.15,
+  "Piercing": 0.8,
+  "Bio": 0.3,
+  "Pulse": 0.2,
+  "Toxic": 0.7,
+  "Eviscerate": 0.5
+ },
+ "damageProfileModifiers": {
+  "Physical": 35,
+  "Projectile": 56,
+  "Las": 54,
+  "Bolter": 63,
+  "Flame": 90,
+  "Particle": 82,
+  "Acid": 115,
+  "Power": 88,
+  "Plasma": 119,
+  "Melta": 130,
+  "HeavyRound": 107,
+  "Gauss": 113,
+  "Psychic": 191,
+  "DirectDamage": 159,
+  "Energy": 76,
+  "Chain": 63,
+  "Blast": 61,
+  "Piercing": 136,
+  "Bio": 76,
+  "Pulse": 63,
+  "Toxic": 156,
+  "Eviscerate": 101
+ }
+}
