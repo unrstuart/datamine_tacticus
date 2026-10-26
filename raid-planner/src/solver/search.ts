@@ -6,6 +6,7 @@ import { Action, PlanResult, applyAction, finishRound } from '../engine/plan';
 import { Context, State, distanceBetween, enemyCells, initialState } from '../engine/state';
 import { allDone, legalActions, moveTier } from './actions';
 import { hintScore } from './hints';
+import { allows, satisfied } from './rules';
 import { Analysis, analyse, makeStatics } from './analysis';
 import { COUNTER, Counters } from './counters';
 import { DEFAULT_OPTIONS, SolverOptions } from './options';
@@ -133,6 +134,7 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
     };
 
     const evaluate = (state: State, score: number) => {
+        if (!satisfied(ctx, state)) return;
         complete++;
         const finish = finishRound(ctx, state);
         const total = score + finish.reports.reduce((s, r) => s + r.score, 0) - finish.penalties.reduce((s, p) => s + p.points, 0);
@@ -152,6 +154,7 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
 
     /** Apply `action`, carry on from there with `next`, and undo. Does nothing if the action isn't legal. */
     const step = (state: State, score: number, action: Action, next: (s: State, score: number) => void) => {
+        if (!allows(ctx, state, action)) return;
         const result = applyAction(ctx, state, action);
         if (!result) return;
         path.push(action);
@@ -244,7 +247,9 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
     };
 
     const a = start.units.abaddon;
-    if (rules.abaddonFirst && a && !a.attacked && start.abaddonStacks < MAX_ABADDON_STACKS) abaddonFirst(start, 0);
+    // Rules about the order of attacks, or about Abaddon himself, can keep him from going first (or from attacking the way it assumes).
+    const orderRules = (ctx.setup.constraints ?? []).some((c) => c.kind === 'order' || c.kind === 'before' || ('unit' in c && c.unit === 'abaddon') || ('other' in c && c.other === 'abaddon'));
+    if (rules.abaddonFirst && !orderRules && a && !a.attacked && start.abaddonStacks < MAX_ABADDON_STACKS) abaddonFirst(start, 0);
     else visit(start, 0);
 
     if (!stopped) searched++; // the empty plan, now that everything under it is done

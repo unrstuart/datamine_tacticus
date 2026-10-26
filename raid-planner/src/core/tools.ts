@@ -1,4 +1,5 @@
 import { Board } from './board';
+import { togglePin, toggleZkarAt } from './constraints';
 import { Cell, cellKey } from './hex';
 import { Effect, Setup, UnitId, addMinion, clearCell, placeUnit, removeMinion, setEffect, setUndesirable } from './setup';
 
@@ -11,7 +12,9 @@ export type Tool =
     | { kind: 'effect'; effect: Effect }
     | { kind: 'undesirable' }
     | { kind: 'clear' }
-    | { kind: 'unit'; unit: UnitId };
+    | { kind: 'unit'; unit: UnitId }
+    /** Click a hex to pin a character (or Z'kar's deployment) there: a rule that the plans must keep to. */
+    | { kind: 'pin'; unit: UnitId | 'zkar' };
 
 /** Dragging paints: it adds the thing, or, when the drag started on a hex that already has it, removes it. */
 export type PaintMode = 'on' | 'off';
@@ -50,5 +53,12 @@ export function applyTool(board: Board, setup: Setup, tool: Tool, cell: Cell, mo
             return clearCell(setup, cell);
         case 'unit':
             return placeUnit(board, setup, tool.unit, cell) ?? setup;
+        case 'pin': {
+            // Somewhere a character can stand, that isn't the boss's or a minion's, and that no other pin has taken.
+            const blocked = setup.bossCells.concat(setup.minions).some((c) => cellKey(c) === cellKey(cell));
+            const taken = setup.constraints.some((c) => c.kind === 'pin' && c.unit !== tool.unit && cellKey(c.cell) === cellKey(cell));
+            if (board.hexAt(cell)?.passable !== true || blocked || taken) return setup;
+            return { ...setup, constraints: tool.unit === 'zkar' ? toggleZkarAt(setup.constraints, cell) : togglePin(setup.constraints, tool.unit, cell) };
+        }
     }
 }

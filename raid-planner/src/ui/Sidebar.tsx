@@ -3,6 +3,7 @@ import { RANK_NAMES } from '../core/roster';
 import { AbaddonExtraAttack, Effect, EFFECTS, MAX_ABADDON_STACKS, MAX_NEURO_STACKS, Setup, UNIT_IDS } from '../core/setup';
 import { Tool } from '../core/tools';
 import { EFFECT_LABELS, EffectIcon } from './EffectGlyph';
+import { ConstraintsPanel } from './ConstraintsPanel';
 import { Choice, Stars, rankIconUrl, rarityIconUrl } from './icons';
 import { UNITS, unitIconUrl } from './units';
 
@@ -87,6 +88,19 @@ export function Sidebar({ tool, setTool, setup, update, enemyRows, tiers, armor,
                     )
                 )}
             </section>
+
+            <section>
+                <h2>Pins</h2>
+                <p className="hint">
+                    Pick one, then click a hex to pin it there; click the same hex again to take the pin off. Plans must keep every pin. Pin a character on the hex it stands on to keep it from moving.
+                </p>
+                {UNIT_IDS.map((id) =>
+                    button({ kind: 'pin', unit: id }, `Pin ${UNITS[id].name}`, <img className="unit-chip" src={unitIconUrl(id)} alt="" style={{ borderColor: UNITS[id].color }} />, 'The hex this character stands on when it attacks')
+                )}
+                {button({ kind: 'pin', unit: 'zkar' }, 'Pin Z’kar’s deployment', <img className="unit-chip" src={unitIconUrl('zkar')} alt="" style={{ borderColor: '#9be15d' }} />, 'The hex Z’kar is deployed on')}
+            </section>
+
+            <ConstraintsPanel setup={setup} update={update} />
 
             {enemyRows.length > 0 && tiers.length > 0 && (
                 <section>

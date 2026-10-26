@@ -3,6 +3,7 @@ import { AttackReport } from '../engine/attacks';
 import { Action } from '../engine/plan';
 import { Enemy } from '../engine/state';
 import { ActorName } from '../engine/units';
+import { Constraint } from '../core/constraints';
 import { Cell } from '../core/hex';
 import { UNITS } from './units';
 
@@ -59,4 +60,30 @@ export function describeReport(r: AttackReport): string {
     const what = r.targets.length > 0 ? ` hits ${r.targets.map(enemyName).join(' and ')}${r.smite ? ` (smite: ${enemyName(r.smite)})` : ''}` : '';
     const head = r.extra ? `${who}'s extra attack` : who;
     return `${head}${why ? ` ${why}` : ''}${what}${r.note ? ` (${r.note})` : ''}: ${fmt(r.damage)} damage to the boss`;
+}
+
+/** A rule, as a sentence. */
+export function describeConstraint(c: Constraint): string {
+    switch (c.kind) {
+        case 'pin':
+            return `${actorName(c.unit)} is on ${where(c.cell)} when attacking`;
+        case 'zkarAt':
+            return `Z'kar is deployed at ${where(c.cell)}`;
+        case 'mustAttack':
+            return `${actorName(c.unit)} must attack`;
+        case 'mustNotAttack':
+            return `${actorName(c.unit)} does not attack`;
+        case 'attackKind':
+            return `${actorName(c.unit)} uses a ${c.attack === 'active' ? 'active' : c.attack} attack`;
+        case 'order':
+            return `${actorName(c.unit)} attacks ${c.position}`;
+        case 'before':
+            return `${actorName(c.unit)} attacks before ${actorName(c.other)}`;
+        case 'nextToBoss':
+            return `${actorName(c.unit)} is next to the boss when attacking`;
+        case 'highGround':
+            return `${actorName(c.unit)} is on high ground when attacking`;
+        case 'adjacent':
+            return `${actorName(c.unit)} is next to ${actorName(c.other)} when attacking`;
+    }
 }

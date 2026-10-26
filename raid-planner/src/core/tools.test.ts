@@ -52,4 +52,30 @@ describe('tools', () => {
         setup = applyTool(board, setup, { kind: 'clear' }, at(1, 1));
         expect(setup.undesirable).toEqual([]);
     });
+
+    it('the pin tool pins a character to a hex, moves the pin when clicked elsewhere, and removes it when clicked again', () => {
+        const pin = { kind: 'pin', unit: 'archimatos' } as const;
+        let setup = applyTool(board, initialSetup(board), pin, at(1, 1));
+        expect(setup.constraints).toEqual([{ kind: 'pin', unit: 'archimatos', cell: at(1, 1) }]);
+        setup = applyTool(board, setup, pin, at(2, 2));
+        expect(setup.constraints).toEqual([{ kind: 'pin', unit: 'archimatos', cell: at(2, 2) }]);
+        setup = applyTool(board, setup, pin, at(2, 2));
+        expect(setup.constraints).toEqual([]);
+    });
+
+    it("pins Z'kar's deployment too, but not onto a rock, the boss, or a hex another pin has", () => {
+        let setup = applyTool(board, initialSetup(board), { kind: 'pin', unit: 'zkar' }, at(1, 1));
+        expect(setup.constraints).toEqual([{ kind: 'zkarAt', cell: at(1, 1) }]);
+        const rock = applyTool(board, setup, { kind: 'pin', unit: 'abaddon' }, at(3, 3));
+        expect(rock.constraints).toHaveLength(1);
+        const boss = applyTool(board, setup, { kind: 'pin', unit: 'abaddon' }, at(5, 5));
+        expect(boss.constraints).toHaveLength(1);
+        setup = applyTool(board, setup, { kind: 'pin', unit: 'abaddon' }, at(2, 0));
+        const clash = applyTool(board, setup, { kind: 'pin', unit: 'ahriman' }, at(2, 0));
+        expect(clash.constraints).toHaveLength(2);
+    });
+
+    it('is not a painting tool', () => {
+        expect(isPaintTool({ kind: 'pin', unit: 'abaddon' })).toBe(false);
+    });
 });

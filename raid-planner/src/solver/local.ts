@@ -5,6 +5,7 @@ import { Action, applyAction, finishRound } from '../engine/plan';
 import { Context, State, enemyCells, initialState, unitIds } from '../engine/state';
 import { Analysis, analyse, makeStatics } from './analysis';
 import { deployHexes, zkarInReach } from './actions';
+import { allows, arrange, pinnedCell, satisfied, zkarPin } from './rules';
 import { COUNTER, Counters } from './counters';
 import { SearchOptions, SearchResult, StoredPlan, insertPlan, signatureOf } from './search';
 
@@ -71,6 +72,8 @@ export interface Decoded {
     final: State;
     /** How many units (Z'kar counting as one) end the round standing on an undesirable hex. */
     undesirable: number;
+    /** How many of the user's rules the plan breaks (a plan that breaks any is never kept). */
+    violations: number;
 }
 
 /**
@@ -83,9 +86,11 @@ export function decode(ctx: Context, genome: Genome, from?: State): Decoded {
     const actions: Action[] = [];
     const reports: AttackReport[] = [];
     let score = 0;
+    let violations = 0;
     const apply = (action: Action): boolean => {
         const result = applyAction(ctx, state, action);
         if (!result) return false;
+        if (!allows(ctx, state, action)) violations++;
         state = result.state;
         actions.push(action);
         for (const r of result.reports) {
@@ -94,15 +99,17 @@ export function decode(ctx: Context, genome: Genome, from?: State): Decoded {
         }
         return true;
     };
-    const present = genome.order.filter((id) => state.units[id]);
+    const present = arrange(ctx, genome.order.filter((id) => state.units[id]));
+    const zAt = zkarPin(ctx) ?? genome.zkarAt;
     const moves = (slot: number) => {
         for (const id of present) {
             const gene = genome.genes[id];
-            if (gene.dest && Math.min(gene.moveSlot, present.indexOf(id)) === slot) apply({ type: 'move', unit: id, to: gene.dest });
+            const dest = pinnedCell(ctx, id) ?? gene.dest;
+            if (dest && Math.min(gene.moveSlot, present.indexOf(id)) === slot) apply({ type: 'move', unit: id, to: dest });
         }
     };
     const deploy = (slot: number, first: boolean) => {
-        if (genome.zkarAt && Math.min(genome.zkarSlot, present.length) === slot && genome.zkarFirst === first) apply({ type: 'deploy', at: genome.zkarAt });
+        if (zAt && Math.min(genome.zkarSlot, present.length) === slot && genome.zkarFirst === first) apply({ type: 'deploy', at: zAt });
     };
 
     present.forEach((id, slot) => {
@@ -114,21 +121,22 @@ export function decode(ctx: Context, genome: Genome, from?: State): Decoded {
         const choices = legalAttacks(ctx, state, id);
         const onBoss = choices.filter((c) => c.target.kind === 'boss');
         const pool = onBoss.length > 0 ? onBoss : choices;
-        if (pool.length === 0) {
-            apply({ type: 'pass', unit: id });
-        } else {
-            const c = pool[gene.pick % pool.length];
-            apply({ type: 'attack', unit: id, kind: c.kind, target: c.target, ...(c.extra ? { extra: c.extra } : {}) });
-        }
+        const attackOf = (c: (typeof pool)[number]): Action => ({ type: 'attack', unit: id, kind: c.kind, target: c.target, ...(c.extra ? { extra: c.extra } : {}) });
+        // Prefer an attack the rules allow; failing that, passing if they allow it; failing that, break a rule and say so.
+        const okPool = pool.filter((c) => allows(ctx, state, attackOf(c)));
+        if (okPool.length > 0) apply(attackOf(okPool[gene.pick % okPool.length]));
+        else if (allows(ctx, state, { type: 'pass', unit: id }) || pool.length === 0) apply({ type: 'pass', unit: id });
+        else apply(attackOf(pool[gene.pick % pool.length]));
     });
     deploy(present.length, true);
     deploy(present.length, false);
 
+    if (!satisfied(ctx, state)) violations++;
     const done = finishRound(ctx, state);
     const total = score + done.reports.reduce((s, r) => s + r.score, 0) - done.penalties.reduce((s, p) => s + p.points, 0);
     const bad = new Set(ctx.setup.undesirable);
     const undesirable = Object.values(state.units).filter((u) => bad.has(cellKey(u!.cell))).length + (state.zkar?.cells.some((c) => bad.has(cellKey(c))) ? 1 : 0);
-    return { actions, total, reports: [...reports, ...done.reports], penalties: done.penalties, final: done.state, undesirable };
+    return { actions, total, reports: [...reports, ...done.reports], penalties: done.penalties, final: done.state, undesirable, violations };
 }
 
 // ---- the search --------------------------------------------------------------------------------------------------------
@@ -163,6 +171,8 @@ export function localSearch(ctx: Context, counters: Counters, options: LocalOpti
     const deploys = deployHexes(ctx, start, statics.deployCandidates).filter((d) => zkarInReach(start, d.cells));
 
     const randomDest = (id: UnitId): Cell | undefined => {
+        const pin = pinnedCell(ctx, id);
+        if (pin) return pin;
         const near = strike[id]!;
         const all = reach[id]!;
         const r = random();
@@ -171,6 +181,8 @@ export function localSearch(ctx: Context, counters: Counters, options: LocalOpti
         return choose(all);
     };
     const randomZkar = (g: Genome): Cell | undefined => {
+        const pin = zkarPin(ctx);
+        if (pin) return pin;
         if (deploys.length === 0 || random() < 0.05) return undefined;
         // Often next to where somebody is going, so the book holders and psykers are beside him.
         if (random() < 0.5) {
@@ -268,6 +280,9 @@ export function localSearch(ctx: Context, counters: Counters, options: LocalOpti
         const d = decode(ctx, g);
         evaluated++;
         if (++sinceCheck >= batch) checkIn();
+        // A plan that breaks a rule is never kept, but is scored just below the ones that keep to them, so the search can still
+        // walk through them towards plans that do not.
+        if (d.violations > 0) return d.total - d.violations * 1e7;
         const worst = plans[plans.length - 1];
         if (plans.length >= top && !(d.total > worst.total + 1e-6 || (Math.abs(d.total - worst.total) <= 1e-6 && d.undesirable < worst.undesirable))) return d.total;
         const signature = signatureOf(d.final, d.reports);

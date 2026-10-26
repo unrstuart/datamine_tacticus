@@ -8,6 +8,7 @@ import { occupiedKeys } from '../engine/state';
 import { Analysis, Statics, analyse, attackRange } from './analysis';
 import { EXHAUSTIVE, SolverOptions } from './options';
 import { hasTag } from '../engine/units';
+import { allows, pinnedCell } from './rules';
 
 /** Whether every character on the board has finished its turn, by attacking or passing. */
 export const allDone = (state: State): boolean => unitIds(state).every((id) => state.units[id]!.attacked);
@@ -96,7 +97,7 @@ export function legalActions(ctx: Context, state: State, options: SolverOptions 
             const ranked = (an.moves[unit] ?? []).map((to) => ({ to, tier: moveTier(ctx, state, an, statics, unit, to), d: distanceBetween([to], boss) }));
             ranked.sort((x, y) => x.tier - y.tier || x.d - y.d); // stable: ties keep the board's order
             for (const { to, tier } of ranked) {
-                if (options.relevantMovesOnly && statics && tier === 2) continue;
+                if (options.relevantMovesOnly && statics && tier === 2 && cellKey(pinnedCell(ctx, unit) ?? { col: -1, row: -1 }) !== cellKey(to)) continue;
                 actions.push({ type: 'move', unit, to });
             }
         }
@@ -109,7 +110,7 @@ export function legalActions(ctx: Context, state: State, options: SolverOptions 
         if (options.zkarInRangeOnly && !zkarInReach(state, d.cells)) continue;
         actions.push({ type: 'deploy', at: d.at });
     }
-    return actions;
+    return ctx.setup.constraints?.length ? actions.filter((a) => allows(ctx, state, a)) : actions;
 }
 
 export { attackRange };

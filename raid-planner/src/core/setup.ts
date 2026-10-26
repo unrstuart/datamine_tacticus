@@ -1,4 +1,5 @@
 import { Board } from './board';
+import { Constraint } from './constraints';
 import { EnemySelection } from './enemies';
 import { validFootprint } from './footprint';
 import { Cell, cellKey } from './hex';
@@ -52,6 +53,8 @@ export interface Setup {
     neuroAdjacentPenalty: number;
     /** Which rarity, stars and rank of boss to fight (its armor comes from that row); undefined means the strongest. */
     enemy?: EnemySelection;
+    /** Hard rules the plans must follow (see constraints.ts). */
+    constraints: Constraint[];
 }
 
 /**
@@ -75,6 +78,7 @@ export function initialSetup(board: Board, platformIndex = 0): Setup {
         abaddonSurvivesUndesirable: true,
         undesirablePenalty: 0,
         neuroAdjacentPenalty: 0,
+        constraints: [],
     };
     const deploy = board.deployCells();
     UNIT_IDS.forEach((unit, i) => {

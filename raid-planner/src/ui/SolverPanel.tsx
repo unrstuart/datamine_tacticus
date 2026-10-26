@@ -122,6 +122,12 @@ export function SolverPanel({ board, setup, roster, armor, solver, onReplay }: {
                 </p>
             )}
 
+            {p && !state.running && state.plans.length === 0 && setup.constraints.length > 0 && (
+                <p className="problem">
+                    No plan keeps to all {setup.constraints.length} rules. Check that each pin is somewhere its character can reach, and that the rules don’t contradict one another.
+                </p>
+            )}
+
             {state.plans.length > 0 && (
                 <>
                     <h3>Best plans so far</h3>

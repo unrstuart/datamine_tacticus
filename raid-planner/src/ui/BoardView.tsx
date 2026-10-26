@@ -2,7 +2,9 @@ import { useRef } from 'react';
 import { Board } from '../core/board';
 import { Point } from '../core/drag';
 import { Cell, cellKey } from '../core/hex';
-import { Effect, Setup, UNIT_IDS, UnitId } from '../core/setup';
+import { Effect, Setup, UNIT_IDS, UnitId, occupiedKeys } from '../core/setup';
+import { summonFootprint } from '../core/zkar';
+import { describeConstraint } from './describe';
 import { boardImageUrl, bossIconUrl } from '../data';
 import { EFFECT_TINT, EffectGlyph } from './EffectGlyph';
 import { UNITS, unitIconUrl } from './units';
@@ -136,6 +138,53 @@ export function BoardView({ board, setup, bossIcon, ghost, onCellDown, onCellEnt
 
             {bossCentre && !draggingBoss && <BossMark icon={bossIcon} x={bossCentre.x} y={bossCentre.y} r={iconR} />}
 
+            {/* The rules' pins: a ghost of the character where it must be, joined to where it starts. */}
+            {setup.constraints.map((c) => {
+                if (c.kind === 'pin' && setup.units[c.unit]) {
+                    const to = board.hexAt(c.cell);
+                    const from = board.hexAt(setup.units[c.unit]!);
+                    if (!to || !from) return null;
+                    const stays = cellKey(c.cell) === cellKey(setup.units[c.unit]!);
+                    return (
+                        <g key={`pin-${c.unit}`} pointerEvents="none">
+                            <title>{describeConstraint(c)}</title>
+                            {!stays && <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} className="pin-line" stroke={UNITS[c.unit].color} />}
+                            <g transform={`translate(${to.x} ${to.y})`}>
+                                {!stays && (
+                                    <>
+                                        <circle r={tokenR + 2} fill={UNITS[c.unit].color} fillOpacity={0.3} />
+                                        <image href={unitIconUrl(c.unit)} x={-tokenR} y={-tokenR} width={tokenR * 2} height={tokenR * 2} clipPath={`url(#clip-${c.unit})`} opacity={0.55} />
+                                    </>
+                                )}
+                                <circle r={tokenR + 5} className="pin-ring" stroke={UNITS[c.unit].color} />
+                                <PinGlyph x={tokenR * 0.75} y={-tokenR * 0.75} r={tokenR * 0.32} />
+                            </g>
+                        </g>
+                    );
+                }
+                if (c.kind === 'zkarAt') {
+                    const cells = summonFootprint(board, occupiedKeys(setup), c.cell) ?? [c.cell];
+                    const hexes = cells.flatMap((x) => board.hexAt(x) ?? []);
+                    const clickHex = board.hexAt(c.cell);
+                    if (!clickHex) return null;
+                    const mid = { x: hexes.reduce((t, h) => t + h.x, 0) / hexes.length, y: hexes.reduce((t, h) => t + h.y, 0) / hexes.length };
+                    return (
+                        <g key="pin-zkar" pointerEvents="none">
+                            <title>{describeConstraint(c)}</title>
+                            {hexes.map((h) => (
+                                <polygon key={cellKey(h.cell)} className="pin-zkar" points={polygon(h.x, h.y, 0.94)} />
+                            ))}
+                            <g transform={`translate(${mid.x} ${mid.y})`}>
+                                <circle r={tokenR * 1.45 + 2} fill="#9be15d" fillOpacity={0.3} />
+                                <image href={unitIconUrl('zkar')} x={-tokenR * 1.45} y={-tokenR * 1.45} width={tokenR * 2.9} height={tokenR * 2.9} opacity={0.55} />
+                                <PinGlyph x={tokenR * 1.1} y={-tokenR * 1.1} r={tokenR * 0.32} />
+                            </g>
+                        </g>
+                    );
+                }
+                return null;
+            })}
+
             {setup.minions.map((m) => {
                 const h = board.hexAt(m);
                 return h ? (
@@ -213,6 +262,17 @@ export function BossMark({ icon, x, y, r, opacity = 1 }: { icon?: string; x: num
                     BOSS
                 </text>
             )}
+        </g>
+    );
+}
+
+/** A small pushpin: the mark of a rule on the map. */
+function PinGlyph({ x, y, r }: { x: number; y: number; r: number }) {
+    return (
+        <g transform={`translate(${x} ${y})`}>
+            <circle r={r * 1.35} fill="#111" stroke="#fff" strokeWidth={1.5} />
+            <circle cy={-r * 0.25} r={r * 0.55} fill="#ffcf4a" />
+            <path d={`M0 ${r * 0.2} L0 ${r * 0.95}`} stroke="#ffcf4a" strokeWidth={r * 0.28} strokeLinecap="round" />
         </g>
     );
 }

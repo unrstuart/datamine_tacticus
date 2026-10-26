@@ -30,6 +30,7 @@ export interface ScenarioOptions {
     armor?: { boss: number; minion: number };
     undesirablePenalty?: number;
     neuroAdjacentPenalty?: number;
+    constraints?: Setup['constraints'];
 }
 
 /** A flat board (elevation 1 unless `hexes` says otherwise) with the given setup, ready to play. */
@@ -50,6 +51,7 @@ export function scenario(o: ScenarioOptions = {}): { ctx: Context; state: State;
         abaddonSurvivesUndesirable: o.abaddonSurvivesUndesirable ?? true,
         undesirablePenalty: o.undesirablePenalty ?? 0,
         neuroAdjacentPenalty: o.neuroAdjacentPenalty ?? 0,
+        constraints: o.constraints ?? [],
     };
     return { ctx: { board, setup, roster: o.roster ?? maxedRoster(), armor: o.armor ?? { boss: 1000, minion: 1000 } }, state: initialState(setup), setup };
 }

@@ -100,7 +100,7 @@ export function App() {
     const cellDown = useCallback(
         (cell: Cell, point: Point) => {
             if (!board || !setup) return;
-            const grabbed = isPaintTool(tool) ? undefined : startDrag(board, setup, cell, point);
+            const grabbed = isPaintTool(tool) || tool.kind === 'pin' ? undefined : startDrag(board, setup, cell, point);
             if (grabbed) {
                 setDrag({ drag: grabbed, hover: cell, point });
                 return;
