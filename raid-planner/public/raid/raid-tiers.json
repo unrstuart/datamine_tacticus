@@ -1,0 +1,152 @@
+[
+ {
+  "tier": 0,
+  "set": 0,
+  "label": "Common 1",
+  "level": 1
+ },
+ {
+  "tier": 0,
+  "set": 1,
+  "label": "Common 2",
+  "level": 2
+ },
+ {
+  "tier": 0,
+  "set": 2,
+  "label": "Common 3",
+  "level": 3
+ },
+ {
+  "tier": 0,
+  "set": 3,
+  "label": "Common 4",
+  "level": 4
+ },
+ {
+  "tier": 1,
+  "set": 0,
+  "label": "Uncommon 1",
+  "level": 5
+ },
+ {
+  "tier": 1,
+  "set": 1,
+  "label": "Uncommon 2",
+  "level": 6
+ },
+ {
+  "tier": 1,
+  "set": 2,
+  "label": "Uncommon 3",
+  "level": 7
+ },
+ {
+  "tier": 1,
+  "set": 3,
+  "label": "Uncommon 4",
+  "level": 8
+ },
+ {
+  "tier": 2,
+  "set": 0,
+  "label": "Rare 1",
+  "level": 9
+ },
+ {
+  "tier": 2,
+  "set": 1,
+  "label": "Rare 2",
+  "level": 10
+ },
+ {
+  "tier": 2,
+  "set": 2,
+  "label": "Rare 3",
+  "level": 11
+ },
+ {
+  "tier": 2,
+  "set": 3,
+  "label": "Rare 4",
+  "level": 12
+ },
+ {
+  "tier": 3,
+  "set": 0,
+  "label": "Epic 1",
+  "level": 13
+ },
+ {
+  "tier": 3,
+  "set": 1,
+  "label": "Epic 2",
+  "level": 14
+ },
+ {
+  "tier": 3,
+  "set": 2,
+  "label": "Epic 3",
+  "level": 15
+ },
+ {
+  "tier": 3,
+  "set": 3,
+  "label": "Epic 4",
+  "level": 16
+ },
+ {
+  "tier": 3,
+  "set": 4,
+  "label": "Epic 5",
+  "level": 17
+ },
+ {
+  "tier": 4,
+  "set": 0,
+  "label": "Legendary 1",
+  "level": 18
+ },
+ {
+  "tier": 4,
+  "set": 1,
+  "label": "Legendary 2",
+  "level": 19
+ },
+ {
+  "tier": 4,
+  "set": 2,
+  "label": "Legendary 3",
+  "level": 20
+ },
+ {
+  "tier": 4,
+  "set": 3,
+  "label": "Legendary 4",
+  "level": 21
+ },
+ {
+  "tier": 4,
+  "set": 4,
+  "label": "Legendary 5",
+  "level": 22
+ },
+ {
+  "tier": 5,
+  "set": 0,
+  "label": "Mythic 1",
+  "level": 23
+ },
+ {
+  "tier": 5,
+  "set": 1,
+  "label": "Mythic 2",
+  "level": 24
+ },
+ {
+  "tier": 5,
+  "set": 2,
+  "label": "Mythic 3",
+  "level": 25
+ }
+]

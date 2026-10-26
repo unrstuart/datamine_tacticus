@@ -30,7 +30,7 @@ const modifiersOn = (reports: readonly AttackReport[], actor: string): number =>
 /**
  * How promising `action` looks, judged from the state before it (`state`, `an`) and after (`next`, with its `reports`).
  *   - Abaddon attacks first, then Ahriman when nothing is burning (he lights the fire the rest profit from).
- *   - Neurothrope goes last, and goes to high ground.
+ *   - Neurothrope's attack comes last (he may still move early, to give the others his buffs), and he goes to high ground.
  *   - Abaddon and Archimatos get into melee range.
  *   - Z'kar goes on high ground and where every Book of Fate holder can attack while standing next to him.
  *   - Attacks that carry more modifiers come first.
@@ -38,7 +38,7 @@ const modifiersOn = (reports: readonly AttackReport[], actor: string): number =>
 export function hintScore(ctx: Context, state: State, an: Analysis, action: Action, next: State, reports: readonly AttackReport[]): number {
     let score = 0;
     const unit = 'unit' in action ? action.unit : undefined;
-    if (unit === 'neurothrope' && unitIds(state).some((u) => u !== 'neurothrope' && !state.units[u]!.attacked)) score += W.neuroTooSoon;
+    if (unit === 'neurothrope' && action.type !== 'move' && unitIds(state).some((u) => u !== 'neurothrope' && !state.units[u]!.attacked)) score += W.neuroTooSoon;
     const burning = Object.values(state.effects).some((e) => isFire(e));
 
     switch (action.type) {

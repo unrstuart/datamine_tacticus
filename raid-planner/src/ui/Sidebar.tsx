@@ -1,9 +1,9 @@
-import { EnemyArmor, EnemyRow, enemyRow, normalizeSelection, selectionOptions, strongestSelection } from '../core/enemies';
+import { EnemyArmor, EnemyRow, RaidTier, normalizeSelection, rowAt } from '../core/enemies';
 import { RANK_NAMES } from '../core/roster';
 import { AbaddonExtraAttack, Effect, EFFECTS, MAX_ABADDON_STACKS, MAX_NEURO_STACKS, Setup, UNIT_IDS } from '../core/setup';
 import { Tool } from '../core/tools';
 import { EFFECT_LABELS, EffectIcon } from './EffectGlyph';
-import { Choice, RarityChoices, Stars, rankIconUrl } from './icons';
+import { Choice, Stars, rankIconUrl, rarityIconUrl } from './icons';
 import { UNITS, unitIconUrl } from './units';
 
 interface SidebarProps {
@@ -11,8 +11,9 @@ interface SidebarProps {
     setTool: (tool: Tool) => void;
     setup: Setup;
     update: (patch: Partial<Setup>) => void;
-    /** The boss's stat rows (by rarity, stars and rank) and the armor the selected one gives it and its minions. */
+    /** The boss's stat rows (one per raid level), the raid tiers to pick from, and the armor the selected tier gives it and its minions. */
     enemyRows: readonly EnemyRow[];
+    tiers: readonly RaidTier[];
     armor: EnemyArmor;
     platformCount: number;
     onResetBoss: (platformIndex: number) => void;
@@ -21,7 +22,7 @@ interface SidebarProps {
 
 const same = (a: Tool, b: Tool): boolean => JSON.stringify(a) === JSON.stringify(b);
 
-export function Sidebar({ tool, setTool, setup, update, enemyRows, armor, platformCount, onResetBoss, onClearAll }: SidebarProps) {
+export function Sidebar({ tool, setTool, setup, update, enemyRows, tiers, armor, platformCount, onResetBoss, onClearAll }: SidebarProps) {
     const button = (t: Tool, label: string, icon: React.ReactNode, hint?: string) => (
         <button key={label} type="button" className={`tool${same(tool, t) ? ' active' : ''}`} onClick={() => setTool(t)} title={hint}>
             <span className="tool-icon">{icon}</span>
@@ -87,45 +88,45 @@ export function Sidebar({ tool, setTool, setup, update, enemyRows, armor, platfo
                 )}
             </section>
 
-            {enemyRows.length > 0 && (
+            {enemyRows.length > 0 && tiers.length > 0 && (
                 <section>
-                    <h2>Boss stats</h2>
+                    <h2>Raid tier</h2>
                     {(() => {
-                        const chosen = normalizeSelection(enemyRows, setup.enemy ?? strongestSelection(enemyRows));
-                        const options = selectionOptions(enemyRows);
-                        const row = enemyRow(enemyRows, chosen);
-                        const pick = (next: Partial<typeof chosen>) => update({ enemy: normalizeSelection(enemyRows, { ...chosen, ...next }) });
+                        const chosen = normalizeSelection(tiers, setup.enemy);
+                        const row = rowAt(enemyRows, chosen.level);
+                        const rarities = [...new Set(tiers.map((t) => t.tier))].sort((a, b) => a - b);
                         return (
                             <>
-                                <div className="field-row">
-                                    <span className="label">Rarity</span>
-                                    <RarityChoices value={chosen.rarity} options={options.rarities} onChange={(rarity) => pick({ rarity })} />
-                                </div>
-                                <div className="field-row">
-                                    <span className="label">Stars</span>
-                                    <div className="choices">
-                                        {options.starsFor(chosen.rarity).map((s) => (
-                                            <Choice key={s} selected={s === chosen.stars} title={`Stars: ${s}`} onClick={() => pick({ stars: s })}>
-                                                <Stars level={s} />
-                                            </Choice>
-                                        ))}
+                                {rarities.map((tier) => {
+                                    const here = tiers.filter((t) => t.tier === tier);
+                                    const rarity = rowAt(enemyRows, here[0].level)?.rarity;
+                                    return (
+                                        <div className="field-row" key={tier}>
+                                            <span className="label">{rarity ? <img className="rarity" src={rarityIconUrl(rarity)} alt={here[0].label.replace(/ \d+$/, '')} title={here[0].label.replace(/ \d+$/, '')} /> : here[0].label.replace(/ \d+$/, '')}</span>
+                                            <div className="choices">
+                                                {here.map((t) => (
+                                                    <Choice key={t.level} selected={t.level === chosen.level} title={t.label} onClick={() => update({ enemy: { level: t.level } })}>
+                                                        <span className="tier-number">{t.set + 1}</span>
+                                                    </Choice>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                                {row && (
+                                    <div className="field-row">
+                                        <span className="label">Boss</span>
+                                        <div className="rank-pick">
+                                            <img className="rarity" src={rarityIconUrl(row.rarity)} alt={row.rarity} />
+                                            <Stars level={row.stars} />
+                                            <img className="rank" src={rankIconUrl(row.rank)} alt="" />
+                                            <span>{RANK_NAMES[row.rank]}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="field-row">
-                                    <span className="label">Rank</span>
-                                    <div className="rank-pick">
-                                        <img className="rank" src={rankIconUrl(chosen.rank)} alt="" />
-                                        <select value={chosen.rank} onChange={(e) => pick({ rank: Number(e.target.value) })}>
-                                            {[...options.ranksFor(chosen.rarity, chosen.stars)].reverse().map((r) => (
-                                                <option key={r} value={r}>
-                                                    {RANK_NAMES[r]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
+                                )}
                                 <p className="hint">
-                                    Boss: armor {armor.boss.toLocaleString()}, health {row?.health.toLocaleString()}. Minions: armor {armor.minion.toLocaleString()}.
+                                    {tiers.find((t) => t.level === chosen.level)?.label}: armor {armor.boss.toLocaleString()}, health {row?.health.toLocaleString()}. Minions: armor{' '}
+                                    {armor.minion.toLocaleString()}.
                                 </p>
                             </>
                         );

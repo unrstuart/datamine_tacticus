@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BoardData, BossData } from './core/board';
-import { EnemyData, enemyArmor } from './core/enemies';
+import { EnemyData, RaidTier, enemyArmor, normalizeSelection } from './core/enemies';
 import { Cell } from './core/hex';
 import { Drag, Point, dragPreview, dropDrag, startDrag } from './core/drag';
 import { Setup, initialSetup } from './core/setup';
@@ -44,7 +44,7 @@ function saveSetup(setup: Setup) {
 }
 
 export function App() {
-    const [data, setData] = useState<{ bosses: BossData[]; boards: Record<string, BoardData>; enemies: EnemyData }>();
+    const [data, setData] = useState<{ bosses: BossData[]; boards: Record<string, BoardData>; enemies: EnemyData; tiers: RaidTier[] }>();
     const [bossType, setBossType] = useState('');
     const [boardId, setBoardId] = useState('');
     const [tool, setTool] = useState<Tool>({ kind: 'move' });
@@ -138,7 +138,8 @@ export function App() {
     const encounter = boss?.encounters.find((e) => e.boardId === boardId);
     const bossIcon = encounter?.icon;
     const enemyRows = (data && encounter && data.enemies[encounter.unitId]) || [];
-    const armor = data && encounter && setup ? enemyArmor(data.enemies, encounter.unitId, encounter.minionIds, setup.enemy) : { boss: 0, minion: 0 };
+    const tiers = data?.tiers ?? [];
+    const armor = data && encounter && setup ? enemyArmor(data.enemies, encounter.unitId, encounter.minionIds, normalizeSelection(tiers, setup.enemy)) : { boss: 0, minion: 0 };
     if (!data) return <p className="loading">Loading boards...</p>;
     return (
         <main>
@@ -183,6 +184,7 @@ export function App() {
                         setup={setup}
                         update={(patch) => setSetup({ ...setup, ...patch })}
                         enemyRows={enemyRows}
+                        tiers={tiers}
                         armor={armor}
                         platformCount={board.bossPlatforms().length}
                         onResetBoss={(i) => setSetup({ ...setup, bossCells: board.bossPlatforms()[i]?.cells ?? setup.bossCells })}

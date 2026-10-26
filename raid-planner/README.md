@@ -20,8 +20,12 @@ npm test         # core model tests
 `extract_raid_boards.ts` in the datamine_tacticus root, which needs that repo's `hex_map_core.ts`:
 
 ```
-npx tsx extract_raid_boards.ts guild_boss.json extracted_assets_143_94_marketing raid-planner/public/raid
+npx tsx extract_raid_boards.ts guild_boss.json extracted_assets_143_94_marketing raid-planner/public/raid --live-config=liveconfig.1.43.json
 ```
+
+`--live-config` takes the raid tiers (Common 1 to Mythic 3, written to `raid-tiers.json`) from the live config, which can be newer than
+`guild_boss.json`. Each tier's encounters name the boss's stat row (the `:n` on their unit ids), and that row gives its rarity, stars and
+rank.
 
 `bosses.json` lists each boss type with the boards of its encounters (`Boss` = the main fight, `Crystal` = the support
 fights). Each board's `bossPlatforms` gives the boss's footprint (1, 3 or 7 hexes) and where it starts.

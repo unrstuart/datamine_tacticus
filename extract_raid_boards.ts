@@ -16,7 +16,7 @@ import {
 // Guild raid (guild boss) boards for the raid planner: every board used by guild_boss.json's encounters, as a plain
 // cropped background image plus a JSON description of its hexes.
 //
-//   npx tsx extract_raid_boards.ts <guild_boss.json> <boards-assets-dir> <out-dir> [scale]
+//   npx tsx extract_raid_boards.ts <guild_boss.json> <boards-assets-dir> <out-dir> [scale] [--live-config=<liveconfig.N.json>]
 //
 // <boards-assets-dir> is an extracted-assets root with monobehaviour/<BoardId>.json, ..._Config_Visual.json and
 // texture2d/<BoardId>_Visual.png (the 1.43.94 marketing dump has all 107). Writes
@@ -27,6 +27,8 @@ import {
 //   <out-dir>/enemies.json             { [unitId]: [{ rarity, stars, rank, armor, health }] } for every boss and minion of those
 //                                      encounters: the game's stat rows (one per rarity / star / rank step; rank is the planner's
 //                                      1-based index, Stone I = 1)
+//   <out-dir>/raid-tiers.json          [{ tier, set, label, level }]: the raid tiers (Common 1 .. Mythic 3) and the stat row (1-based,
+//                                      the ":n" on the encounters' unit ids) each one fights at
 //
 // Hex adjacency is defined on the visual grid (vCol, vRow): vRow grows northward and ODD columns are staggered half a
 // hex SOUTH. The logical (column, row) is what the game addresses units and spawn points by; it is kept for reference.
@@ -100,9 +102,12 @@ function bossPortrait(spriteFiles: Map<string, string>, unitId: string): string 
 }
 
 async function main() {
-    const [guildBossPath, assetsDir, outDir, scaleArg] = process.argv.slice(2);
+    const flags = process.argv.slice(2).filter((a) => a.startsWith('--'));
+    const [guildBossPath, assetsDir, outDir, scaleArg] = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+    // --live-config=<liveconfig.N.json>: take the raid tiers from the live config, which can be newer than guild_boss.json.
+    const liveConfigPath = flags.find((f) => f.startsWith('--live-config='))?.slice('--live-config='.length);
     if (!guildBossPath || !assetsDir || !outDir) {
-        console.error('usage: extract_raid_boards.ts <guild_boss.json> <boards-assets-dir> <out-dir> [scale]');
+        console.error('usage: extract_raid_boards.ts <guild_boss.json> <boards-assets-dir> <out-dir> [scale] [--live-config=<liveconfig.N.json>]');
         process.exit(2);
     }
     const scale = scaleArg ? Number(scaleArg) : 0.4;
@@ -251,6 +256,31 @@ async function main() {
         enemies[id] = set.stats.map((row: any) => ({ rarity: row.BaseRarity, stars: row.StarLevel, rank: row.Rank + 1, armor: row.FixedArmor ?? 0, health: row.Health ?? 0 }));
     }
     fs.writeFileSync(path.join(outDir, 'enemies.json'), JSON.stringify(enemies));
+
+    // The raid tiers: season config -> tier (a rarity) -> set (1..n within it). Each set's encounters name their stat row by the
+    // ":n" after the unit id, and every season config agrees on it.
+    const TIER_NAMES = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic'];
+    const levels = new Map<string, number>();
+    const tierSource = liveConfigPath ? JSON.parse(fs.readFileSync(liveConfigPath, 'utf-8')).guildBoss : guildBoss;
+    for (const [configId, season] of Object.entries<any>(tierSource.guildBossSeasonDataConfigsGDTO)) {
+        for (const tier of season.tiers) {
+            for (const set of tier.sets) {
+                const rows = new Set<number>(set.encounters.map((enc: any) => Number(String(enc.unitId).split(':')[1])));
+                const key = `${tier.tier},${set.set}`;
+                if (rows.size !== 1) problems.push(`${configId} tier ${tier.tier} set ${set.set}: encounters use rows ${[...rows].join(',')}`);
+                const level = [...rows][0];
+                if (levels.has(key) && levels.get(key) !== level) problems.push(`${configId} tier ${tier.tier} set ${set.set}: row ${level}, other seasons ${levels.get(key)}`);
+                levels.set(key, level);
+            }
+        }
+    }
+    const tiers = [...levels.entries()]
+        .map(([key, level]) => {
+            const [tier, set] = key.split(',').map(Number);
+            return { tier, set, label: `${TIER_NAMES[tier] ?? `Tier ${tier}`} ${set + 1}`, level };
+        })
+        .sort((a, b) => a.tier - b.tier || a.set - b.set);
+    fs.writeFileSync(path.join(outDir, 'raid-tiers.json'), JSON.stringify(tiers, null, 1));
 
     console.log(`${Object.keys(boards).length}/${boardIds.length} boards -> ${outDir}`);
     for (const problem of problems) console.log('PROBLEM', problem);

@@ -518,6 +518,18 @@ button.small {
     width: auto;
 }
 
+.choice .tier-number {
+    min-width: 18px;
+    text-align: center;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+.field-row .label img.rarity {
+    height: 28px;
+    width: auto;
+}
+
 .choice img.rank {
     height: 30px;
     width: auto;

@@ -187,7 +187,7 @@ Decisions made while building it, beyond what the sections above say. Tell me wh
 
 Plans are scored by damage to the boss alone (minion damage and smite damage are not counted). The search keeps the **ten
 best** plans: ties are broken by fewer units left on undesirable hexes, then first found. Penalties (default 0) are in damage
-units. Armor is taken off each hit. The boss's armor comes from its rarity, stars and rank (`enemies.json`). Ability values
+units. Armor is taken off each hit. The boss's armor comes from the raid tier you pick (Common 1 to Mythic 3, `raid-tiers.json` from the live config), each of which fights at one stat row (`enemies.json`), giving the boss its rarity, stars and rank. Ability values
 come from the game's tables, using the average of min and max. Let the Galaxy Burn gives its extra hit only on a hex with an
 effect, Book of Fate is needed for Archimatos or Abraxas to trigger Z'kar, and the parasite level used is the one before the
 attack. Z'kar's stats come from his Aether Stride summon, and his melee gets Infernal Pacts too, as a Chaos Daemon. The
