@@ -1,5 +1,6 @@
 import { Cell, Direction, cellKey, neighbor } from './hex';
 import { Board } from './board';
+import { validFootprint } from './footprint';
 
 // Where a three-hex summon (Z'kar, Galatian) ends up when deployed on a clicked hex. See docs/zkar-deployment.md.
 
@@ -15,21 +16,17 @@ export const SUMMON_PAIRS: ReadonlyArray<readonly [Direction, Direction]> = [
 
 /**
  * The three hexes (the clicked one first) a summon deployed on `clicked` occupies, or undefined when it can't be
- * deployed there. A neighbour is blocked when it is off the board, can't be occupied, holds a unit (`occupied`) or
- * has a different elevation from the clicked hex. The clicked hex itself must be free.
+ * deployed there. The first pair of neighbours whose hexes are free (`occupied`) and which together with the clicked hex
+ * form a legal footprint (see validFootprint: same elevation, all or none in a trench, properly connected) is used. The
+ * clicked hex itself must be free.
  */
 export function summonFootprint(board: Board, occupied: ReadonlySet<string>, clicked: Cell): [Cell, Cell, Cell] | undefined {
-    const origin = board.hexAt(clicked);
-    if (!origin || !origin.passable || occupied.has(cellKey(clicked))) return undefined;
-    const free = (d: Direction): Cell | undefined => {
-        const c = neighbor(clicked, d);
-        const hex = board.hexAt(c);
-        return hex && hex.passable && hex.elevation === origin.elevation && !occupied.has(cellKey(c)) ? c : undefined;
-    };
+    if (occupied.has(cellKey(clicked)) || !board.hexAt(clicked)?.passable) return undefined;
     for (const [a, b] of SUMMON_PAIRS) {
-        const ca = free(a);
-        const cb = free(b);
-        if (ca && cb) return [clicked, ca, cb];
+        const ca = neighbor(clicked, a);
+        const cb = neighbor(clicked, b);
+        if (occupied.has(cellKey(ca)) || occupied.has(cellKey(cb))) continue;
+        if (validFootprint(board, [clicked, ca, cb])) return [clicked, ca, cb];
     }
     return undefined;
 }

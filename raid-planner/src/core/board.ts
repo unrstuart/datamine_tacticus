@@ -1,4 +1,4 @@
-import { Cell, cellKey, neighbors } from './hex';
+import { Cell, Direction, OPPOSITE, cellKey, directionBetween, neighbors } from './hex';
 
 /** One hex as exported by extract_raid_boards.ts (public/raid/boards.json). */
 export interface HexData {
@@ -7,9 +7,13 @@ export interface HexData {
     /** Visual-grid cell: the hex's position on the board and what adjacency is defined on. */
     vCol: number;
     vRow: number;
+    /** Gameplay elevation (a bridge deck sits level with the land at its ends). */
     elevation: number;
     tile: string;
     passable: boolean;
+    trench: boolean;
+    /** For a bridge: the two directions it connects. */
+    bridge?: [Direction, Direction];
     /** Pixel centre in the board image. */
     x: number;
     y: number;
@@ -25,11 +29,13 @@ export interface BoardData {
     hexHeight: number;
     hexes: HexData[];
     bossPlatforms: Array<{ size: number; hexes: Array<{ column: number; row: number }> }>;
+    /** The player's starting hexes (logical cells), at most 5. */
+    deploy?: Array<{ column: number; row: number }>;
 }
 
 export interface BossData {
     bossType: string;
-    encounters: Array<{ type: string; boardId: string }>;
+    encounters: Array<{ type: string; boardId: string; unitId: string; icon?: string }>;
 }
 
 export interface Hex {
@@ -38,6 +44,10 @@ export interface Hex {
     tile: string;
     /** Can be stood on. The ones that can't are rocks and the like: fliers cross them. */
     passable: boolean;
+    /** Trench hexes: a multi-hex unit must lie entirely in one trench to be on any of them. */
+    trench: boolean;
+    /** A bridge is a narrow ramp: it connects only to the hexes at its two ends. */
+    bridge?: [Direction, Direction];
     x: number;
     y: number;
 }
@@ -55,6 +65,8 @@ export class Board {
             elevation: h.elevation,
             tile: h.tile,
             passable: h.passable,
+            trench: h.trench,
+            bridge: h.bridge,
             x: h.x,
             y: h.y,
         }));
@@ -79,8 +91,25 @@ export class Board {
         return neighbors(c).flatMap((n) => this.hexAt(n) ?? []);
     }
 
+    /**
+     * Whether two cells are adjacent in the sense that matters for multi-hex units and for walking: they are neighbours
+     * on the grid and neither is a bridge hex whose ends don't point at the other. Elevation isn't considered.
+     */
+    connected(a: Cell, b: Cell): boolean {
+        const d = directionBetween(a, b);
+        const ha = this.hexAt(a);
+        const hb = this.hexAt(b);
+        if (!d || !ha || !hb) return false;
+        return (!ha.bridge || ha.bridge.includes(d)) && (!hb.bridge || hb.bridge.includes(OPPOSITE[d]));
+    }
+
     fromLogical(column: number, row: number): Cell | undefined {
         return this.logical.get(`${column},${row}`);
+    }
+
+    /** Where the player's characters start, as visual-grid cells. */
+    deployCells(): Cell[] {
+        return (this.data.deploy ?? []).flatMap((d) => this.fromLogical(d.column, d.row) ?? []);
     }
 
     /** The boss platforms (initial boss footprints) as visual-grid cells. */

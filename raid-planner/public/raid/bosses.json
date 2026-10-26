@@ -4,43 +4,63 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_Khaine_01"
+    "boardId": "GB_Khaine_01",
+    "unitId": "GuildBoss8Boss1EldarAvatar",
+    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Khaine_05"
+    "boardId": "GB_Khaine_05",
+    "unitId": "GuildBoss8Boss1EldarAvatar",
+    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Khaine_02"
+    "boardId": "GB_Khaine_02",
+    "unitId": "GuildBoss8Boss1EldarAvatar",
+    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Khaine_04"
+    "boardId": "GB_Khaine_04",
+    "unitId": "GuildBoss8Boss1EldarAvatar",
+    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Khaine_support_01"
+    "boardId": "GB_Khaine_support_01",
+    "unitId": "GuildBoss8MiniBoss1EldarAutarch",
+    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Khaine_support_02"
+    "boardId": "GB_Khaine_support_02",
+    "unitId": "GuildBoss8MiniBoss2EldarFarseer",
+    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Khaine_support_05"
+    "boardId": "GB_Khaine_support_05",
+    "unitId": "GuildBoss8MiniBoss1EldarAutarch",
+    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Khaine_support_06"
+    "boardId": "GB_Khaine_support_06",
+    "unitId": "GuildBoss8MiniBoss2EldarFarseer",
+    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Khaine_support_03"
+    "boardId": "GB_Khaine_support_03",
+    "unitId": "GuildBoss8MiniBoss1EldarAutarch",
+    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Khaine_support_04"
+    "boardId": "GB_Khaine_support_04",
+    "unitId": "GuildBoss8MiniBoss2EldarFarseer",
+    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png"
    }
   ]
  },
@@ -49,43 +69,63 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_Belisarius_02"
+    "boardId": "GB_Belisarius_02",
+    "unitId": "GuildBoss10Boss1AdmecBelisarius",
+    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Belisarius_01"
+    "boardId": "GB_Belisarius_01",
+    "unitId": "GuildBoss10Boss1AdmecBelisarius",
+    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Belisarius_04"
+    "boardId": "GB_Belisarius_04",
+    "unitId": "GuildBoss10Boss1AdmecBelisarius",
+    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Belisarius_03"
+    "boardId": "GB_Belisarius_03",
+    "unitId": "GuildBoss10Boss1AdmecBelisarius",
+    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Belisarius_support_02"
+    "boardId": "GB_Belisarius_support_02",
+    "unitId": "GuildBoss10MiniBoss1AdmecMarshall",
+    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Belisarius_support_05"
+    "boardId": "GB_Belisarius_support_05",
+    "unitId": "GuildBoss10MiniBoss2AdmecManipulus",
+    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Belisarius_support_01"
+    "boardId": "GB_Belisarius_support_01",
+    "unitId": "GuildBoss10MiniBoss1AdmecMarshall",
+    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Belisarius_support_04"
+    "boardId": "GB_Belisarius_support_04",
+    "unitId": "GuildBoss10MiniBoss2AdmecManipulus",
+    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Belisarius_support_03"
+    "boardId": "GB_Belisarius_support_03",
+    "unitId": "GuildBoss10MiniBoss1AdmecMarshall",
+    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Belisarius_support_06"
+    "boardId": "GB_Belisarius_support_06",
+    "unitId": "GuildBoss10MiniBoss2AdmecManipulus",
+    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png"
    }
   ]
  },
@@ -94,55 +134,81 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_Dakka_04"
+    "boardId": "GB_Dakka_04",
+    "unitId": "GuildBoss4Boss1OrksGhazghkull",
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Dakka_01"
+    "boardId": "GB_Dakka_01",
+    "unitId": "GuildBoss4Boss1OrksGhazghkull",
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Dakka_02"
+    "boardId": "GB_Dakka_02",
+    "unitId": "GuildBoss4Boss1OrksGhazghkull",
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Dakka_03"
+    "boardId": "GB_Dakka_03",
+    "unitId": "GuildBoss4Boss1OrksGhazghkull",
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Dakka_05"
+    "boardId": "GB_Dakka_05",
+    "unitId": "GuildBoss4Boss1OrksGhazghkull",
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Dakka_03_1"
+    "boardId": "GB_Dakka_03_1",
+    "unitId": "GuildBoss4Boss1OrksGhazghkull",
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Dakka_support_05_1"
+    "boardId": "GB_Dakka_support_05_1",
+    "unitId": "GuildBoss4MiniBoss1OrksBigMek",
+    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Dakka_support_06"
+    "boardId": "GB_Dakka_support_06",
+    "unitId": "GuildBoss4MiniBoss2OrksNob",
+    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Dakka_support_01"
+    "boardId": "GB_Dakka_support_01",
+    "unitId": "GuildBoss4MiniBoss1OrksBigMek",
+    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Dakka_support_02"
+    "boardId": "GB_Dakka_support_02",
+    "unitId": "GuildBoss4MiniBoss2OrksNob",
+    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Dakka_support_03"
+    "boardId": "GB_Dakka_support_03",
+    "unitId": "GuildBoss4MiniBoss1OrksBigMek",
+    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Dakka_support_04"
+    "boardId": "GB_Dakka_support_04",
+    "unitId": "GuildBoss4MiniBoss2OrksNob",
+    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Dakka_support_05"
+    "boardId": "GB_Dakka_support_05",
+    "unitId": "GuildBoss4MiniBoss1OrksBigMek",
+    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png"
    }
   ]
  },
@@ -151,27 +217,39 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_04"
+    "boardId": "GB_04",
+    "unitId": "GuildBoss2Boss3TyranHiveTyrantGorgon",
+    "icon": "bosses/GuildBoss2Boss3TyranHiveTyrantGorgon.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_03"
+    "boardId": "GB_03",
+    "unitId": "GuildBoss2Boss3TyranHiveTyrantGorgon",
+    "icon": "bosses/GuildBoss2Boss3TyranHiveTyrantGorgon.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_09"
+    "boardId": "GB_support_09",
+    "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_11"
+    "boardId": "GB_support_11",
+    "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_05"
+    "boardId": "GB_support_05",
+    "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_06"
+    "boardId": "GB_support_06",
+    "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
    }
   ]
  },
@@ -180,15 +258,21 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_06"
+    "boardId": "GB_06",
+    "unitId": "GuildBoss2Boss2TyranHiveTyrantKronos",
+    "icon": "bosses/GuildBoss2Boss2TyranHiveTyrantKronos.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_07"
+    "boardId": "GB_support_07",
+    "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_08"
+    "boardId": "GB_support_08",
+    "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
    }
   ]
  },
@@ -197,27 +281,39 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_02"
+    "boardId": "GB_02",
+    "unitId": "GuildBoss2Boss1TyranHiveTyrantLeviathan",
+    "icon": "bosses/GuildBoss2Boss1TyranHiveTyrantLeviathan.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_05"
+    "boardId": "GB_05",
+    "unitId": "GuildBoss2Boss1TyranHiveTyrantLeviathan",
+    "icon": "bosses/GuildBoss2Boss1TyranHiveTyrantLeviathan.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_03"
+    "boardId": "GB_support_03",
+    "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_04"
+    "boardId": "GB_support_04",
+    "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_01"
+    "boardId": "GB_support_01",
+    "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_02"
+    "boardId": "GB_support_02",
+    "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
    }
   ]
  },
@@ -226,31 +322,45 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_Lion_02"
+    "boardId": "GB_Lion_02",
+    "unitId": "GuildBoss12Boss1DarkaLion",
+    "icon": "bosses/GuildBoss12Boss1DarkaLion.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Lion_03"
+    "boardId": "GB_Lion_03",
+    "unitId": "GuildBoss12Boss1DarkaLion",
+    "icon": "bosses/GuildBoss12Boss1DarkaLion.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Lion_01"
+    "boardId": "GB_Lion_01",
+    "unitId": "GuildBoss12Boss1DarkaLion",
+    "icon": "bosses/GuildBoss12Boss1DarkaLion.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Lion_support_03"
+    "boardId": "GB_Lion_support_03",
+    "unitId": "GuildBoss12MiniBoss1DarkaTerminator",
+    "icon": "bosses/GuildBoss12MiniBoss1DarkaTerminator.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Lion_support_04"
+    "boardId": "GB_Lion_support_04",
+    "unitId": "GuildBoss12MiniBoss2DarkaCompanion",
+    "icon": "bosses/GuildBoss12MiniBoss2DarkaCompanion.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Lion_support_01"
+    "boardId": "GB_Lion_support_01",
+    "unitId": "GuildBoss12MiniBoss1DarkaTerminator",
+    "icon": "bosses/GuildBoss12MiniBoss1DarkaTerminator.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Lion_support_02"
+    "boardId": "GB_Lion_support_02",
+    "unitId": "GuildBoss12MiniBoss2DarkaCompanion",
+    "icon": "bosses/GuildBoss12MiniBoss2DarkaCompanion.png"
    }
   ]
  },
@@ -259,31 +369,45 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_Magnus_03"
+    "boardId": "GB_Magnus_03",
+    "unitId": "GuildBoss9Boss1ThousMagnus",
+    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Magnus_02"
+    "boardId": "GB_Magnus_02",
+    "unitId": "GuildBoss9Boss1ThousMagnus",
+    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Magnus_01"
+    "boardId": "GB_Magnus_01",
+    "unitId": "GuildBoss9Boss1ThousMagnus",
+    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Magnus_support_06"
+    "boardId": "GB_Magnus_support_06",
+    "unitId": "GuildBoss9MiniBoss1ThousSorcerer",
+    "icon": "bosses/GuildBoss9MiniBoss1ThousSorcerer.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Magnus_support_05"
+    "boardId": "GB_Magnus_support_05",
+    "unitId": "GuildBoss9MiniBoss2ThousInfernalMaster",
+    "icon": "bosses/GuildBoss9MiniBoss2ThousInfernalMaster.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Magnus_support_02"
+    "boardId": "GB_Magnus_support_02",
+    "unitId": "GuildBoss9MiniBoss1ThousSorcerer",
+    "icon": "bosses/GuildBoss9MiniBoss1ThousSorcerer.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Magnus_support_01"
+    "boardId": "GB_Magnus_support_01",
+    "unitId": "GuildBoss9MiniBoss2ThousInfernalMaster",
+    "icon": "bosses/GuildBoss9MiniBoss2ThousInfernalMaster.png"
    }
   ]
  },
@@ -292,27 +416,39 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_Mortarion_03"
+    "boardId": "GB_Mortarion_03",
+    "unitId": "GuildBoss5Boss1DeathMortarion",
+    "icon": "bosses/GuildBoss5Boss1DeathMortarion.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Mortarion_04"
+    "boardId": "GB_Mortarion_04",
+    "unitId": "GuildBoss5Boss1DeathMortarion",
+    "icon": "bosses/GuildBoss5Boss1DeathMortarion.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Mortarion_support_03"
+    "boardId": "GB_Mortarion_support_03",
+    "unitId": "GuildBoss5MiniBoss1DeathRotbone",
+    "icon": "bosses/GuildBoss5MiniBoss1DeathRotbone.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Mortarion_support_04"
+    "boardId": "GB_Mortarion_support_04",
+    "unitId": "GuildBoss5MiniBoss2DeathBlightbringer",
+    "icon": "bosses/GuildBoss5MiniBoss2DeathBlightbringer.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Mortarion_support_05"
+    "boardId": "GB_Mortarion_support_05",
+    "unitId": "GuildBoss5MiniBoss1DeathRotbone",
+    "icon": "bosses/GuildBoss5MiniBoss1DeathRotbone.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Mortarion_support_06"
+    "boardId": "GB_Mortarion_support_06",
+    "unitId": "GuildBoss5MiniBoss2DeathBlightbringer",
+    "icon": "bosses/GuildBoss5MiniBoss2DeathBlightbringer.png"
    }
   ]
  },
@@ -321,31 +457,45 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_Riptide_03"
+    "boardId": "GB_Riptide_03",
+    "unitId": "GuildBoss11Boss1TauRiptide",
+    "icon": "bosses/GuildBoss11Boss1TauRiptide.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Riptide_01"
+    "boardId": "GB_Riptide_01",
+    "unitId": "GuildBoss11Boss1TauRiptide",
+    "icon": "bosses/GuildBoss11Boss1TauRiptide.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Riptide_02"
+    "boardId": "GB_Riptide_02",
+    "unitId": "GuildBoss11Boss1TauRiptide",
+    "icon": "bosses/GuildBoss11Boss1TauRiptide.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Riptide_support_02"
+    "boardId": "GB_Riptide_support_02",
+    "unitId": "GuildBoss11MiniBoss1TauMarksman",
+    "icon": "bosses/GuildBoss11MiniBoss1TauMarksman.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Riptide_support_04"
+    "boardId": "GB_Riptide_support_04",
+    "unitId": "GuildBoss11MiniBoss2TauCrisis",
+    "icon": "bosses/GuildBoss11MiniBoss2TauCrisis.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Riptide_support_01"
+    "boardId": "GB_Riptide_support_01",
+    "unitId": "GuildBoss11MiniBoss1TauMarksman",
+    "icon": "bosses/GuildBoss11MiniBoss1TauMarksman.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Riptide_support_03"
+    "boardId": "GB_Riptide_support_03",
+    "unitId": "GuildBoss11MiniBoss2TauCrisis",
+    "icon": "bosses/GuildBoss11MiniBoss2TauCrisis.png"
    }
   ]
  },
@@ -354,47 +504,69 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_RogalDorn_02"
+    "boardId": "GB_RogalDorn_02",
+    "unitId": "GuildBoss7Boss1AstraRogaldorn",
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_RogalDorn_06"
+    "boardId": "GB_RogalDorn_06",
+    "unitId": "GuildBoss7Boss1AstraRogaldorn",
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_RogalDorn_04"
+    "boardId": "GB_RogalDorn_04",
+    "unitId": "GuildBoss7Boss1AstraRogaldorn",
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_RogalDorn_05"
+    "boardId": "GB_RogalDorn_05",
+    "unitId": "GuildBoss7Boss1AstraRogaldorn",
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_RogalDorn_03"
+    "boardId": "GB_RogalDorn_03",
+    "unitId": "GuildBoss7Boss1AstraRogaldorn",
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_RogalDorn_support_01"
+    "boardId": "GB_RogalDorn_support_01",
+    "unitId": "GuildBoss7MiniBoss1AstraPrimarisPsy",
+    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_RogalDorn_support_02"
+    "boardId": "GB_RogalDorn_support_02",
+    "unitId": "GuildBoss7MiniBoss2AstraOrdnance",
+    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_RogalDorn_support_03"
+    "boardId": "GB_RogalDorn_support_03",
+    "unitId": "GuildBoss7MiniBoss1AstraPrimarisPsy",
+    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_RogalDorn_support_04"
+    "boardId": "GB_RogalDorn_support_04",
+    "unitId": "GuildBoss7MiniBoss2AstraOrdnance",
+    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_RogalDorn_support_05"
+    "boardId": "GB_RogalDorn_support_05",
+    "unitId": "GuildBoss7MiniBoss1AstraPrimarisPsy",
+    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_RogalDorn_support_06"
+    "boardId": "GB_RogalDorn_support_06",
+    "unitId": "GuildBoss7MiniBoss2AstraOrdnance",
+    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png"
    }
   ]
  },
@@ -403,47 +575,69 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_Screamer_03"
+    "boardId": "GB_Screamer_03",
+    "unitId": "GuildBoss6Boss1TyranScreamerKiller",
+    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Screamer_01"
+    "boardId": "GB_Screamer_01",
+    "unitId": "GuildBoss6Boss1TyranScreamerKiller",
+    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_Screamer_04"
+    "boardId": "GB_Screamer_04",
+    "unitId": "GuildBoss6Boss1TyranScreamerKiller",
+    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Screamer_support_07"
+    "boardId": "GB_Screamer_support_07",
+    "unitId": "GuildBoss6MiniBoss1TyranNeurothrope",
+    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Screamer_support_08"
+    "boardId": "GB_Screamer_support_08",
+    "unitId": "GuildBoss6MiniBoss2TyranWingedPrime",
+    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Screamer_support_01"
+    "boardId": "GB_Screamer_support_01",
+    "unitId": "GuildBoss6MiniBoss1TyranNeurothrope",
+    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Screamer_support_02"
+    "boardId": "GB_Screamer_support_02",
+    "unitId": "GuildBoss6MiniBoss2TyranWingedPrime",
+    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Screamer_support_03"
+    "boardId": "GB_Screamer_support_03",
+    "unitId": "GuildBoss6MiniBoss1TyranNeurothrope",
+    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Screamer_support_04"
+    "boardId": "GB_Screamer_support_04",
+    "unitId": "GuildBoss6MiniBoss2TyranWingedPrime",
+    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Screamer_support_05"
+    "boardId": "GB_Screamer_support_05",
+    "unitId": "GuildBoss6MiniBoss1TyranNeurothrope",
+    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_Screamer_support_06"
+    "boardId": "GB_Screamer_support_06",
+    "unitId": "GuildBoss6MiniBoss2TyranWingedPrime",
+    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png"
    }
   ]
  },
@@ -452,39 +646,57 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_SK_04"
+    "boardId": "GB_SK_04",
+    "unitId": "GuildBoss3Boss1NecroSilentKing",
+    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_SK_01"
+    "boardId": "GB_SK_01",
+    "unitId": "GuildBoss3Boss1NecroSilentKing",
+    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_SK_03"
+    "boardId": "GB_SK_03",
+    "unitId": "GuildBoss3Boss1NecroSilentKing",
+    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_SK_support_08"
+    "boardId": "GB_SK_support_08",
+    "unitId": "GuildBoss3Minion3NecroMenhir",
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_SK_support_07"
+    "boardId": "GB_SK_support_07",
+    "unitId": "GuildBoss3Minion3NecroMenhir",
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_SK_support_02"
+    "boardId": "GB_SK_support_02",
+    "unitId": "GuildBoss3Minion3NecroMenhir",
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_SK_support_01"
+    "boardId": "GB_SK_support_01",
+    "unitId": "GuildBoss3Minion3NecroMenhir",
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_SK_support_04"
+    "boardId": "GB_SK_support_04",
+    "unitId": "GuildBoss3Minion3NecroMenhir",
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_SK_support_03"
+    "boardId": "GB_SK_support_03",
+    "unitId": "GuildBoss3Minion3NecroMenhir",
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
    }
   ]
  },
@@ -493,27 +705,39 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_03"
+    "boardId": "GB_03",
+    "unitId": "GuildBoss1Boss3TyranTervigonGorgon",
+    "icon": "bosses/GuildBoss1Boss3TyranTervigonGorgon.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_04"
+    "boardId": "GB_04",
+    "unitId": "GuildBoss1Boss3TyranTervigonGorgon",
+    "icon": "bosses/GuildBoss1Boss3TyranTervigonGorgon.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_05"
+    "boardId": "GB_support_05",
+    "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_06"
+    "boardId": "GB_support_06",
+    "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_09"
+    "boardId": "GB_support_09",
+    "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_11"
+    "boardId": "GB_support_11",
+    "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
    }
   ]
  },
@@ -522,27 +746,39 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_06"
+    "boardId": "GB_06",
+    "unitId": "GuildBoss1Boss2TyranTervigonKronos",
+    "icon": "bosses/GuildBoss1Boss2TyranTervigonKronos.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_01"
+    "boardId": "GB_01",
+    "unitId": "GuildBoss1Boss2TyranTervigonKronos",
+    "icon": "bosses/GuildBoss1Boss2TyranTervigonKronos.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_07"
+    "boardId": "GB_support_07",
+    "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_08"
+    "boardId": "GB_support_08",
+    "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_03"
+    "boardId": "GB_support_03",
+    "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_04"
+    "boardId": "GB_support_04",
+    "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
    }
   ]
  },
@@ -551,19 +787,27 @@
   "encounters": [
    {
     "type": "Boss",
-    "boardId": "GB_01"
+    "boardId": "GB_01",
+    "unitId": "GuildBoss1Boss1TyranTervigonLeviathan",
+    "icon": "bosses/GuildBoss1Boss1TyranTervigonLeviathan.png"
    },
    {
     "type": "Boss",
-    "boardId": "GB_05"
+    "boardId": "GB_05",
+    "unitId": "GuildBoss1Boss1TyranTervigonLeviathan",
+    "icon": "bosses/GuildBoss1Boss1TyranTervigonLeviathan.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_01"
+    "boardId": "GB_support_01",
+    "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
    },
    {
     "type": "Crystal",
-    "boardId": "GB_support_02"
+    "boardId": "GB_support_02",
+    "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
    }
   ]
  }

@@ -1,19 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { Board } from './board';
 import { Cell, cellKey, neighbor } from './hex';
+import { TestHex, gridBoard } from './testBoard';
 import { summonFootprint } from './zkar';
 
 // A flat 5x5 patch of hexes at elevation 1, with the clicked hex in the middle (col 2, row 2).
-function patch(overrides: Record<string, { elevation?: number; passable?: boolean }> = {}): Board {
-    const hexes = [];
-    for (let col = 0; col < 5; col++) {
-        for (let row = 0; row < 5; row++) {
-            const o = overrides[`${col},${row}`] ?? {};
-            hexes.push({ column: col, row, vCol: col, vRow: row, elevation: o.elevation ?? 1, tile: 'Grass', passable: o.passable ?? true, x: 0, y: 0 });
-        }
-    }
-    return new Board({ boardId: 'patch', width: 5, height: 5, imageWidth: 0, imageHeight: 0, hexWidth: 0, hexHeight: 0, hexes, bossPlatforms: [] });
-}
+const patch = (overrides: Record<string, TestHex> = {}) => gridBoard(5, 5, overrides);
 
 const centre: Cell = { col: 2, row: 2 };
 const keys = (cells: Cell[] | undefined) => cells?.map(cellKey).sort();

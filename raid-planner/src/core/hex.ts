@@ -57,3 +57,25 @@ export function footprintDistance(a: readonly Cell[], b: readonly Cell[]): numbe
     for (const x of a) for (const y of b) best = Math.min(best, distance(x, y));
     return best;
 }
+
+/** The direction pointing from `a` to the neighbouring cell `b`, or undefined when they aren't neighbours. */
+export function directionBetween(a: Cell, b: Cell): Direction | undefined {
+    return DIRECTIONS.find((d) => sameCell(neighbor(a, d), b));
+}
+
+export const OPPOSITE: Record<Direction, Direction> = { N: 'S', S: 'N', NE: 'SW', SW: 'NE', SE: 'NW', NW: 'SE' };
+
+/** Shift a cell by (dq, dz) in axial coordinates, so a whole footprint can be slid around without distorting its shape. */
+export function translate(c: Cell, dq: number, dz: number): Cell {
+    const { q, z } = axial(c);
+    const nq = q + dq;
+    const nz = z + dz;
+    return { col: nq, row: nz + (nq - (nq & 1)) / 2 };
+}
+
+/** The axial offset (dq, dz) that takes `from` to `to`. */
+export function offsetBetween(from: Cell, to: Cell): { dq: number; dz: number } {
+    const a = axial(from);
+    const b = axial(to);
+    return { dq: b.q - a.q, dz: b.z - a.z };
+}

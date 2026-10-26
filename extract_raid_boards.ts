@@ -22,21 +22,32 @@ import {
 // texture2d/<BoardId>_Visual.png (the 1.43.94 marketing dump has all 107). Writes
 //   <out-dir>/boards/<BoardId>.jpg     the board texture cropped to the drawn hexes, downsampled by `scale` (default 0.4)
 //   <out-dir>/boards.json              { [BoardId]: Board }
-//   <out-dir>/bosses.json              [{ bossType, encounters: [{ type, boardId }] }]
+//   <out-dir>/bosses.json              [{ bossType, encounters: [{ type, boardId, unitId, icon? }] }]
+//   <out-dir>/bosses/<unitId>.png      the encounter boss's round portrait (when the dump has one)
 //
 // Hex adjacency is defined on the visual grid (vCol, vRow): vRow grows northward and ODD columns are staggered half a
 // hex SOUTH. The logical (column, row) is what the game addresses units and spawn points by; it is kept for reference.
 // Every logical cell is exported, with `passable: false` for the ones that can't be stood on (rocks / blocked / forced
 // unplayable) - fliers cross those.
+//
+// `elevation` is the gameplay elevation (the level's own Elevation; a bridge deck sits level with the land at its
+// ends), while the pixel position uses the drawn elevation. `trench` marks Trench tiles. A Bridge tile is a narrow ramp:
+// it connects only along its axis, given by the tile's Rotation. The mapping (screen angle = 210 - 60 * rotation, an axis
+// being a pair of opposite directions) was read off GB_Magnus_03 and checked against all 90 bridges on the raid boards:
+// the predicted ends are land on both sides for every bridge that has a usable axis.
 
 interface Hex {
     column: number;
     row: number;
     vCol: number;
     vRow: number;
+    /** Gameplay elevation. */
     elevation: number;
     tile: string;
     passable: boolean;
+    trench: boolean;
+    /** For a bridge: the two directions it connects (flat-topped names, N/NE/SE/S/SW/NW). */
+    bridge?: [string, string];
     /** Pixel centre in the exported image. */
     x: number;
     y: number;
@@ -58,9 +69,32 @@ interface Board {
     hexHeight: number;
     hexes: Hex[];
     bossPlatforms: BossPlatform[];
+    /** Where the player's characters start: the first 5 player spawn points of spawn-point set 0, as logical cells. */
+    deploy: Array<{ column: number; row: number }>;
 }
 
 const round2 = (v: number) => Math.round(v * 100) / 100;
+
+// Bridge rotation -> the pair of directions it connects.
+const BRIDGE_AXES: Record<number, [string, string]> = {
+    0: ['NE', 'SW'],
+    1: ['NW', 'SE'],
+    2: ['N', 'S'],
+    3: ['NE', 'SW'],
+    4: ['NW', 'SE'],
+    5: ['N', 'S'],
+};
+
+/** The sprite file for a boss encounter's round portrait: exact name, then the Minion spelling the Ork mini bosses use. */
+function bossPortrait(spriteFiles: Map<string, string>, unitId: string): string | undefined {
+    for (const name of [unitId, unitId.replace('MiniBoss', 'Minion')]) {
+        const exact = spriteFiles.get(`ui_image_portraitround_${name}.png`.toLowerCase());
+        if (exact) return exact;
+        const prefix = [...spriteFiles.keys()].find((k) => k.startsWith(`ui_image_portraitround_${name}`.toLowerCase()));
+        if (prefix) return spriteFiles.get(prefix);
+    }
+    return undefined;
+}
 
 async function main() {
     const [guildBossPath, assetsDir, outDir, scaleArg] = process.argv.slice(2);
@@ -71,22 +105,22 @@ async function main() {
     const scale = scaleArg ? Number(scaleArg) : 0.4;
     const guildBoss = JSON.parse(fs.readFileSync(guildBossPath, 'utf-8'));
 
-    // bossType -> encounter type -> board ids, in first-seen order.
-    const bosses = new Map<string, Map<string, Set<string>>>();
+    // bossType -> encounter type -> board id -> unit id, in first-seen order.
+    const bosses = new Map<string, Map<string, Map<string, string>>>();
     for (const season of Object.values<any>(guildBoss.guildBossSeasonDataConfigsGDTO)) {
         for (const tier of season.tiers) {
             for (const set of tier.sets) {
                 for (const enc of set.encounters) {
-                    const types = bosses.get(enc.bossType) ?? new Map<string, Set<string>>();
-                    const boards = types.get(enc.guildBossEncounterType) ?? new Set<string>();
-                    boards.add(enc.boardId);
+                    const types = bosses.get(enc.bossType) ?? new Map<string, Map<string, string>>();
+                    const boards = types.get(enc.guildBossEncounterType) ?? new Map<string, string>();
+                    if (!boards.has(enc.boardId)) boards.set(enc.boardId, String(enc.unitId).split(':')[0]);
                     types.set(enc.guildBossEncounterType, boards);
                     bosses.set(enc.bossType, types);
                 }
             }
         }
     }
-    const boardIds = [...new Set([...bosses.values()].flatMap((t) => [...t.values()].flatMap((b) => [...b])))].sort();
+    const boardIds = [...new Set([...bosses.values()].flatMap((t) => [...t.values()].flatMap((b) => [...b.keys()])))].sort();
 
     fs.mkdirSync(path.join(outDir, 'boards'), { recursive: true });
     const boards: Record<string, Board> = {};
@@ -127,16 +161,18 @@ async function main() {
                 const lvl = level.Tiles[vis.LogicalColumn]?.Tile[vis.LogicalRow];
                 if (!lvl) continue;
                 const result = classify(vis, lvl);
-                const elevation = result.draw ? result.elevation : vis.Configuration.Elevation;
-                const centre = toOutputPixels(render.rect, tileCenter(render.metrics, vCol, vRow, elevation));
+                const drawnElevation = result.draw ? result.elevation : vis.Configuration.Elevation;
+                const centre = toOutputPixels(render.rect, tileCenter(render.metrics, vCol, vRow, drawnElevation));
                 hexes.push({
                     column: vis.LogicalColumn,
                     row: vis.LogicalRow,
                     vCol,
                     vRow,
-                    elevation,
+                    elevation: lvl.Elevation,
                     tile: lvl.TileId,
                     passable: result.draw,
+                    trench: vis.Configuration.TileId === 'Trench',
+                    ...(lvl.TileId === 'Bridge' ? { bridge: BRIDGE_AXES[(lvl as any).Rotation] ?? undefined } : {}),
                     x: round2(centre.x),
                     y: round2(centre.y),
                 });
@@ -153,6 +189,9 @@ async function main() {
             hexWidth: round2(render.metrics.hexWidth * pxScale),
             hexHeight: round2(render.metrics.hexHeight * pxScale),
             hexes,
+            deploy: (level.SpawnPointSets[0]?.SpawnPointGroups.find((g) => g.TeamWithPlayerIndex === 0)?.SpawnPoints ?? [])
+                .slice(0, 5)
+                .map((p) => ({ column: p.Column, row: p.Row })),
             bossPlatforms: (level.BossPlatforms ?? []).map((p) => ({
                 size: p.Size,
                 hexes: p.Tiles.map((t) => ({ column: t.Column, row: t.Row })),
@@ -161,11 +200,32 @@ async function main() {
     }
 
     fs.writeFileSync(path.join(outDir, 'boards.json'), JSON.stringify(boards, null, 1));
+    // Round portraits of the encounter bosses, shrunk to 160px.
+    const spriteDir = path.join(assetsDir, 'sprites');
+    const spriteFiles = new Map(fs.readdirSync(spriteDir).map((f) => [f.toLowerCase(), f]));
+    fs.mkdirSync(path.join(outDir, 'bosses'), { recursive: true });
+    const icons = new Map<string, string | undefined>();
+    for (const unitId of new Set([...bosses.values()].flatMap((t) => [...t.values()].flatMap((b) => [...b.values()])))) {
+        const file = bossPortrait(spriteFiles, unitId);
+        if (!file) {
+            problems.push(`${unitId}: no round portrait sprite`);
+            icons.set(unitId, undefined);
+            continue;
+        }
+        const image = await loadImage(path.join(spriteDir, file));
+        const size = 160;
+        const canvas = createCanvas(size, size);
+        canvas.getContext('2d').drawImage(image, 0, 0, size, size);
+        fs.writeFileSync(path.join(outDir, 'bosses', `${unitId}.png`), canvas.toBuffer('image/png'));
+        icons.set(unitId, `bosses/${unitId}.png`);
+    }
     const bossList = [...bosses.entries()]
         .sort(([a], [b]) => a.localeCompare(b))
         .map(([bossType, types]) => ({
             bossType,
-            encounters: [...types.entries()].flatMap(([type, ids]) => [...ids].filter((id) => boards[id]).map((boardId) => ({ type, boardId }))),
+            encounters: [...types.entries()].flatMap(([type, ids]) =>
+                [...ids.entries()].filter(([id]) => boards[id]).map(([boardId, unitId]) => ({ type, boardId, unitId, icon: icons.get(unitId) }))
+            ),
         }));
     fs.writeFileSync(path.join(outDir, 'bosses.json'), JSON.stringify(bossList, null, 1));
 
