@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { rosterFromPlayer } from '../core/api';
-import { MAX_RELIC_LEVEL, RANK_NAMES, ROSTER_ORDER, ROSTER_UNITS, Roster, UnitSpec, maxedSpec, optionsFor, withAbilityLevel, withRank, withRarity, withRelic, withStars } from '../core/roster';
+import { MAX_MYTHIC_ABILITY_LEVEL, MAX_RELIC_LEVEL, RANK_NAMES, ROSTER_ORDER, ROSTER_UNITS, Roster, UnitSpec, maxedSpec, optionsFor, withAbilityLevel, withRank, withRarity, withRelic, withStars } from '../core/roster';
 import { characterStats, hasStats } from '../core/stats';
 import { ActorName } from '../engine/units';
 import { clearSavedKey, fetchPlayer, loadSavedKey, saveKey } from './account';
@@ -77,19 +77,31 @@ function UnitCard({ unit, spec, setUnit }: { unit: ActorName; spec: UnitSpec; se
             )}
 
             <div className="abilities">
-                {info.abilities.map((ability, i) => (
-                    <label key={ability.id} className="ability">
-                        <img src={abilityIconUrl(ability.id)} alt="" />
-                        <span className="name">
-                            {ability.name}
-                            {ability.kind !== 'ability' && <span className="muted"> ({ability.kind})</span>}
-                        </span>
-                        <span className="level">
-                            <input type="number" min={1} max={options.maxAbilityLevel} value={spec.abilityLevels[i]} onChange={(e) => change(withAbilityLevel(unit, spec, i, Number(e.target.value)))} />
-                            <span className="muted">/ {options.maxAbilityLevel}</span>
-                        </span>
-                    </label>
-                ))}
+                {info.abilities.map((ability, i) =>
+                    ability.derived ? (
+                        // A mythic ability isn't levelled: it comes with Mythic and its level is the unit's blue stars.
+                        <div key={ability.id} className={`ability derived${spec.abilityLevels[i] === 0 ? ' off' : ''}`} title="Comes with Mythic; its level follows the unit's stars (1 blue star is level 1, wings level 4)">
+                            <img src={abilityIconUrl(ability.id)} alt="" />
+                            <span className="name">
+                                {ability.name}
+                                <span className="muted"> ({ability.kind})</span>
+                            </span>
+                            <span className="level muted">{spec.abilityLevels[i] > 0 ? `Level ${spec.abilityLevels[i]} / ${MAX_MYTHIC_ABILITY_LEVEL}` : 'needs Mythic'}</span>
+                        </div>
+                    ) : (
+                        <label key={ability.id} className="ability">
+                            <img src={abilityIconUrl(ability.id)} alt="" />
+                            <span className="name">
+                                {ability.name}
+                                {ability.kind !== 'ability' && <span className="muted"> ({ability.kind})</span>}
+                            </span>
+                            <span className="level">
+                                <input type="number" min={1} max={options.maxAbilityLevel} value={spec.abilityLevels[i]} onChange={(e) => change(withAbilityLevel(unit, spec, i, Number(e.target.value)))} />
+                                <span className="muted">/ {options.maxAbilityLevel}</span>
+                            </span>
+                        </label>
+                    )
+                )}
             </div>
 
             {relic ? (

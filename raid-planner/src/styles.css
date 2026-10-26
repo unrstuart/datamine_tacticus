@@ -681,3 +681,11 @@ button.small {
 .account .remember input {
     width: auto;
 }
+
+.ability.derived.off {
+    opacity: 0.45;
+}
+
+.ability.derived .level {
+    font-size: 13px;
+}

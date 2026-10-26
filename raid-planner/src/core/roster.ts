@@ -74,12 +74,21 @@ export const RARITY_RULES: Record<Rarity, RarityRules> = {
 };
 
 export const MAX_RELIC_LEVEL = 10;
+export const MAX_MYTHIC_ABILITY_LEVEL = 4;
+
+/** A mythic ability's level: the blue stars a Mythic unit has (1 to 3), then 4 for the wings; none below Mythic. */
+export const mythicAbilityLevel = (rarity: Rarity, stars: number): number => (rarity === 'Mythic' ? Math.min(MAX_MYTHIC_ABILITY_LEVEL, Math.max(0, stars - 10)) : 0);
 export const MIN_ABILITY_LEVEL = 1;
 
 export interface AbilityInfo {
     id: string;
     name: string;
-    kind: 'active' | 'passive' | 'ability';
+    kind: 'active' | 'passive' | 'ability' | 'mythic';
+    /**
+     * A mythic ability isn't levelled up: it exists only on a Mythic unit, at a level given by its stars (1 blue star is level 1, up
+     * to Mythic wings at 4). Below Mythic it is 0, and it can't be edited.
+     */
+    derived?: boolean;
 }
 
 export interface RosterUnit {
@@ -142,7 +151,7 @@ export const ROSTER_UNITS: Record<ActorName, RosterUnit> = {
         abilities: [
             { id: 'AetherStride', name: 'Aether Stride', kind: 'ability' },
             { id: 'InfernalCannon', name: 'Infernal Cannon', kind: 'ability' },
-            { id: 'CabalOfSorcerers', name: 'Cabal of Sorcerers', kind: 'ability' },
+            { id: 'CabalOfSorcerers', name: 'Cabal of Sorcerers', kind: 'mythic', derived: true },
         ],
     },
 };
@@ -170,13 +179,13 @@ export const canEquipRelic = (unit: ActorName): boolean => ROSTER_UNITS[unit].re
 /** A unit with everything at the game's current maximum: Mythic, wings, Adamantine II, abilities at 60, relic level 10. */
 export function maxedSpec(unit: ActorName): UnitSpec {
     const rules = RARITY_RULES.Mythic;
-    return {
+    return clampSpec(unit, {
         rarity: 'Mythic',
         stars: rules.maxStars,
         rank: rules.maxRank,
         abilityLevels: ROSTER_UNITS[unit].abilities.map(() => rules.maxAbilityLevel),
         ...(canEquipRelic(unit) ? { relicLevel: MAX_RELIC_LEVEL } : {}),
-    };
+    });
 }
 
 export function maxedRoster(): Roster {
@@ -190,11 +199,13 @@ export function maxedRoster(): Roster {
 export function clampSpec(unit: ActorName, spec: UnitSpec): UnitSpec {
     const rules = RARITY_RULES[spec.rarity];
     const abilities = ROSTER_UNITS[unit].abilities;
+    const stars = clamp(spec.stars, rules.minStars, rules.maxStars);
     return {
         rarity: spec.rarity,
-        stars: clamp(spec.stars, rules.minStars, rules.maxStars),
+        stars,
         rank: clamp(spec.rank, rules.minRank, rules.maxRank),
-        abilityLevels: abilities.map((_, i) => clamp(spec.abilityLevels[i] ?? rules.maxAbilityLevel, MIN_ABILITY_LEVEL, rules.maxAbilityLevel)),
+        // A mythic ability follows the stars; the others are levelled between 1 and the rarity's cap.
+        abilityLevels: abilities.map((a, i) => (a.derived ? mythicAbilityLevel(spec.rarity, stars) : clamp(spec.abilityLevels[i] ?? rules.maxAbilityLevel, MIN_ABILITY_LEVEL, rules.maxAbilityLevel))),
         ...(canEquipRelic(unit) && spec.relicLevel !== undefined ? { relicLevel: clamp(spec.relicLevel, 1, MAX_RELIC_LEVEL) } : {}),
     };
 }

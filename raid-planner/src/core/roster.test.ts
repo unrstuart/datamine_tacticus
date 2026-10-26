@@ -12,6 +12,7 @@ import {
     isValidSpec,
     maxedRoster,
     maxedSpec,
+    mythicAbilityLevel,
     optionsFor,
     sanitizeRoster,
     withAbilityLevel,
@@ -155,5 +156,39 @@ describe('reading a roster back', () => {
         const roster = maxedRoster();
         roster.neurothrope = withRelic('neurothrope', roster.neurothrope, undefined);
         expect(sanitizeRoster(JSON.parse(JSON.stringify(roster))).neurothrope.relicLevel).toBeUndefined();
+    });
+});
+
+describe("Z'kar's mythic ability (Cabal of Sorcerers)", () => {
+    it('is not levelled: it follows the stars, and only exists at Mythic', () => {
+        expect(mythicAbilityLevel('Mythic', 11)).toBe(1);
+        expect(mythicAbilityLevel('Mythic', 12)).toBe(2);
+        expect(mythicAbilityLevel('Mythic', 13)).toBe(3);
+        expect(mythicAbilityLevel('Mythic', 14)).toBe(4);
+        for (const rarity of ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'] as const) expect(mythicAbilityLevel(rarity, 11)).toBe(0);
+    });
+
+    it('is level 4 on a maxed Z\'kar and the only derived ability', () => {
+        expect(maxedSpec('zkar').abilityLevels).toEqual([60, 60, 4]);
+        expect(ROSTER_UNITS.zkar.abilities.filter((a) => a.derived).map((a) => a.id)).toEqual(['CabalOfSorcerers']);
+        for (const unit of ROSTER_ORDER) if (unit !== 'zkar') expect(ROSTER_UNITS[unit].abilities.some((a) => a.derived)).toBe(false);
+    });
+
+    it('changes with his stars and disappears below Mythic, and cannot be set by hand', () => {
+        const z = maxedSpec('zkar');
+        expect(withStars('zkar', z, 12).abilityLevels[2]).toBe(2);
+        expect(withStars('zkar', z, 11).abilityLevels[2]).toBe(1);
+        expect(withRarity('zkar', z, 'Legendary').abilityLevels[2]).toBe(0);
+        expect(withRarity('zkar', withRarity('zkar', z, 'Legendary'), 'Mythic').abilityLevels[2]).toBe(1); // back at Mythic, at its first blue star
+        expect(withAbilityLevel('zkar', z, 2, 1).abilityLevels[2]).toBe(4);
+        expect(withAbilityLevel('zkar', z, 2, 99).abilityLevels[2]).toBe(4);
+        // The other two abilities are still his to level.
+        expect(withAbilityLevel('zkar', z, 0, 20).abilityLevels).toEqual([20, 60, 4]);
+    });
+
+    it('is recomputed from the stars when read back, whatever was stored', () => {
+        const r = sanitizeRoster({ zkar: { rarity: 'Mythic', stars: 12, rank: 20, abilityLevels: [60, 35, 99] } });
+        expect(r.zkar.abilityLevels).toEqual([60, 35, 2]);
+        expect(isValidSpec('zkar', { ...maxedSpec('zkar'), abilityLevels: [60, 60, 1] })).toBe(false);
     });
 });
