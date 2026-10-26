@@ -300,9 +300,9 @@ aside h2 {
 }
 
 .solver {
-    margin-top: 20px;
-    border-top: 1px solid var(--border);
-    padding-top: 12px;
+    margin: 8px 0 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
 }
 
 .solver-head {

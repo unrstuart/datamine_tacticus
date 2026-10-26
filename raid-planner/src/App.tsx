@@ -175,6 +175,7 @@ export function App() {
                     </select>
                 </label>
             </div>
+            {tab === 'board' && board && setup && data && <SolverPanel board={data.boards[board.id]} setup={setup} roster={roster} armor={armor} />}
             {tab === 'board' && board && setup && (
                 <div className="layout">
                     <BoardView board={board} setup={setup} bossIcon={bossIcon} ghost={ghost} onCellDown={cellDown} onCellEnter={cellEnter} onPointerMove={pointerMove} onPointerEnd={pointerEnd} />
@@ -192,7 +193,6 @@ export function App() {
                     />
                 </div>
             )}
-            {tab === 'board' && board && setup && data && <SolverPanel board={data.boards[board.id]} setup={setup} roster={roster} armor={armor} />}
         </main>
     );
 }
