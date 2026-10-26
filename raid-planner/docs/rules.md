@@ -144,3 +144,30 @@ won't survive".
 5. Neuroparasite stacks on the boss, 0 to 16.
 6. Starting positions of the five characters (any hex; no deployment zones).
 7. Whether each once-per-battle active is still available.
+
+## 11. How the engine reads the rules (`src/engine/`)
+
+Decisions made while building it, beyond what the sections above say. Tell me where one is wrong.
+
+- **Adjacent** means *connected*: neighbours on the grid, and a bridge hex only to the hexes at its two ends. **Range** is
+  plain hex distance (to the nearest hex of a multi-hex unit), connection and elevation ignored. A unit that is not
+  adjacent to any enemy but is at distance 1 across a bridge's side may still shoot.
+- **Minions:** a character's attack kills the minion it hits (and any minions the relic hits). Smite does not kill.
+  Z'kar kills the minion he hits. Minions block walkers and are in the way of Neurothrope.
+- **Z'kar's target** is a minion when one is in reach (adjacent if any enemy is adjacent, otherwise within 2), else the
+  boss. A trigger with nothing in reach is spent for nothing.
+- **Z'kar's triggers:** landing next to a psyker (Ahriman, Abraxas, Archimatos or Neurothrope; not Abaddon), and
+  Archimatos or Abraxas attacking next to him, once each. Ahriman or Neurothrope *attacking* beside him do not.
+- **The parasite:** at 0 stacks only a Neurothrope psychic attack that hits the boss (directly or by smite) infects it
+  (0 -> 1). At 1 or more every psychic attack that hits the boss adds one, to a maximum of 16. Flame, physical and
+  bolter attacks add none, except that Abraxas's added psychic hit makes an Abaddon bolter shot psychic.
+- **Ahriman's buff** is judged before the attack lands, so his own fire-lighting hit does not get it. It applies to a
+  psychic or flame attack when any hex of what it hit (target or smite) is burning.
+- **Fire** that an attack lights is always the two-round kind (it replaces whatever effect was there). Fire placed as
+  "this round only" is gone for Z'kar's start-of-next-round attack.
+- **Abaddon's own attacks** score +2 for a melee or relic attack; a ranged shot scores only through the usual buffs
+  (so ranged beside Abraxas is the +1 Abraxas buff, and with Ahriman, the parasite or a hex effect more).
+- **Abaddon buffs** chaos units within 2 other than himself. **Neurothrope buffs** psykers and summons within 2 other than
+  himself. **Z'kar's buff** needs him on the board and goes to a psyker beside another psyker or beside him.
+- **Neurothrope's penalty** applies once per plan if he is next to an enemy after a move, when he attacks, or at the end.
+- **Order within one move:** a character moves at most once, before attacking; attacking ends its turn.
