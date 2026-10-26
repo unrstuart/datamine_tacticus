@@ -394,3 +394,130 @@ aside h2 {
     padding-left: 20px;
     font-size: 13px;
 }
+
+.tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.tabs button {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    padding: 8px 14px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.tabs button.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+}
+
+.roster-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.roster-head h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+button.small {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.unit-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.unit-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+
+.unit-card header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.unit-card h3 {
+    margin: 0;
+    font-size: 16px;
+    flex: 1;
+}
+
+.unit-chip.big {
+    width: 40px;
+    height: 40px;
+}
+
+.unit-card .grid {
+    display: grid;
+    gap: 8px;
+}
+
+.unit-card label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.unit-card select,
+.unit-card input[type='number'] {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 6px;
+    min-width: 0;
+}
+
+.unit-card select {
+    width: 150px;
+}
+
+.unit-card input[type='number'] {
+    width: 56px;
+}
+
+.level {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.relic {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.pickers[hidden] {
+    display: none;
+}

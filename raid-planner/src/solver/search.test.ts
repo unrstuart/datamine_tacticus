@@ -194,13 +194,27 @@ describe('the bound only cuts what cannot win', () => {
 
     it('cuts branches, and counts them', { timeout: 120000 }, () => {
         const { ctx } = randomScenario(3, 2);
+        const noTable = { ...DEFAULT_OPTIONS, abaddonFirst: false, tableBits: 0 };
         const counters = makeCounters();
-        search(ctx, counters, { rules: { ...DEFAULT_OPTIONS, abaddonFirst: false } });
+        search(ctx, counters, { rules: noTable });
         const full = makeCounters();
-        search(ctx, full, { rules: { ...DEFAULT_OPTIONS, abaddonFirst: false, prune: false } });
+        search(ctx, full, { rules: { ...noTable, prune: false } });
         expect(readProgress(counters).pruned).toBeGreaterThan(0n);
         expect(readProgress(counters).planned).toBeLessThan(readProgress(full).planned);
         expect(readProgress(full).pruned).toBe(0n);
+    });
+
+    it('the state table only drops plans that tie, never the best score', { timeout: 120000 }, () => {
+        for (const seed of [2, 4, 7]) {
+            const { ctx } = randomScenario(seed, 2);
+            const base = { ...DEFAULT_OPTIONS, abaddonFirst: false };
+            const without = search(ctx, makeCounters(), { rules: { ...base, tableBits: 0 }, maxStored: 100000 });
+            const withTable = search(ctx, makeCounters(), { rules: { ...base, tableBits: 16 }, maxStored: 100000 });
+            expect(withTable.bestScore).toBe(without.bestScore);
+            // Whatever the table lets through is a real best plan.
+            const all = new Set(without.plans.map((p) => p.signature));
+            for (const p of withTable.plans) expect(all.has(p.signature)).toBe(true);
+        }
     });
 });
 

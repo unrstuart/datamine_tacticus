@@ -7,7 +7,9 @@ import { PaintMode, Tool, applyTool, isPaintTool, paintModeFor } from './core/to
 import { loadData, makeBoard } from './data';
 import { BoardView, DragGhost } from './ui/BoardView';
 import { Sidebar } from './ui/Sidebar';
+import { RosterPanel } from './ui/RosterPanel';
 import { SolverPanel } from './ui/SolverPanel';
+import { useRoster } from './ui/useRoster';
 
 const encounterLabel = (type: string): string => (type === 'Boss' ? 'Boss' : type === 'Crystal' ? 'Support' : type);
 
@@ -47,6 +49,8 @@ export function App() {
     const [tool, setTool] = useState<Tool>({ kind: 'move' });
     const [drag, setDrag] = useState<{ drag: Drag; hover: Cell; point: Point }>();
     const [setup, setSetup] = useState<Setup>();
+    const [tab, setTab] = useState<'board' | 'characters'>(() => (new URLSearchParams(location.search).get('tab') === 'characters' ? 'characters' : 'board'));
+    const { roster, setUnit, reset } = useRoster();
     const painting = useRef<{ tool: Tool; mode: PaintMode } | undefined>(undefined);
 
     useEffect(() => {
@@ -135,7 +139,16 @@ export function App() {
     return (
         <main>
             <h1>Raid planner</h1>
-            <div className="pickers">
+            <nav className="tabs">
+                <button type="button" className={tab === 'board' ? 'active' : ''} onClick={() => setTab('board')}>
+                    Board
+                </button>
+                <button type="button" className={tab === 'characters' ? 'active' : ''} onClick={() => setTab('characters')}>
+                    Characters
+                </button>
+            </nav>
+            {tab === 'characters' && <RosterPanel roster={roster} setUnit={setUnit} reset={reset} />}
+            <div className="pickers" hidden={tab !== 'board'}>
                 <label>
                     Boss
                     <select value={bossType} onChange={(e) => setBossType(e.target.value)}>
@@ -157,7 +170,7 @@ export function App() {
                     </select>
                 </label>
             </div>
-            {board && setup && (
+            {tab === 'board' && board && setup && (
                 <div className="layout">
                     <BoardView board={board} setup={setup} bossIcon={bossIcon} ghost={ghost} onCellDown={cellDown} onCellEnter={cellEnter} onPointerMove={pointerMove} onPointerEnd={pointerEnd} />
                     <Sidebar
@@ -171,7 +184,7 @@ export function App() {
                     />
                 </div>
             )}
-            {board && setup && data && <SolverPanel board={data.boards[board.id]} setup={setup} />}
+            {tab === 'board' && board && setup && data && <SolverPanel board={data.boards[board.id]} setup={setup} />}
         </main>
     );
 }
