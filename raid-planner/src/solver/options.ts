@@ -29,3 +29,6 @@ export const DEFAULT_OPTIONS: SolverOptions = { abaddonFirst: true, relevantMove
 
 /** Every rule off: the full search space. */
 export const EXHAUSTIVE: SolverOptions = { abaddonFirst: false, relevantMovesOnly: false, hints: false, zkarInRangeOnly: false, tableBits: 0 };
+
+/** How to look for plans: a local search (fast, very good, no proof) or the exhaustive one (slow, complete). */
+export type SearchMode = 'local' | 'exhaustive';

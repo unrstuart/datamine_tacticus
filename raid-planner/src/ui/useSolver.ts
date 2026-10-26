@@ -4,6 +4,7 @@ import { EnemyArmor } from '../core/enemies';
 import { Roster } from '../core/roster';
 import { Setup } from '../core/setup';
 import { COUNTER, COUNTER_LENGTH, Counters, NO_SCORE, Progress, bytesForCounters, makeCounters, readProgress, requestStop } from '../solver/counters';
+import { SearchMode } from '../solver/options';
 import { StoredPlan } from '../solver/search';
 import type { FromWorker, ToWorker } from '../solver/worker';
 
@@ -15,15 +16,17 @@ export interface SolverState {
     elapsed: number;
     /** True when the counters are shared with the worker (so the page reads them live, and the worker can be stopped cleanly). */
     shared: boolean;
+    /** Which search the results are from. */
+    mode: SearchMode;
 }
 
-const idle: SolverState = { running: false, progress: undefined, plans: [], elapsed: 0, shared: false };
+const idle: SolverState = { running: false, progress: undefined, plans: [], elapsed: 0, shared: false, mode: 'local' };
 
 /**
  * Runs the search in a worker. The page polls the counters about ten times a second; with a SharedArrayBuffer (a cross-origin
  * isolated page) it reads the worker's atomics directly, otherwise the worker posts them.
  */
-export function useSolver(): { state: SolverState; start: (board: BoardData, setup: Setup, roster: Roster, armor: EnemyArmor) => void; stop: () => void } {
+export function useSolver(): { state: SolverState; start: (board: BoardData, setup: Setup, roster: Roster, armor: EnemyArmor, mode: SearchMode) => void; stop: () => void } {
     const [state, setState] = useState<SolverState>(idle);
     const worker = useRef<Worker | undefined>(undefined);
     const counters = useRef<Counters | undefined>(undefined);
@@ -31,10 +34,11 @@ export function useSolver(): { state: SolverState; start: (board: BoardData, set
     const startedAt = useRef(0);
     const plans = useRef<StoredPlan[]>([]);
     const running = useRef(false);
+    const mode = useRef<SearchMode>('local');
 
     const publish = useCallback(() => {
         if (!counters.current) return;
-        setState({ running: running.current, progress: readProgress(counters.current), plans: plans.current, elapsed: Date.now() - startedAt.current, shared: shared.current });
+        setState({ running: running.current, progress: readProgress(counters.current), plans: plans.current, elapsed: Date.now() - startedAt.current, shared: shared.current, mode: mode.current });
     }, []);
 
     useEffect(() => {
@@ -48,8 +52,9 @@ export function useSolver(): { state: SolverState; start: (board: BoardData, set
     }, [publish]);
 
     const start = useCallback(
-        (board: BoardData, setup: Setup, roster: Roster, armor: EnemyArmor) => {
+        (board: BoardData, setup: Setup, roster: Roster, armor: EnemyArmor, searchMode: SearchMode) => {
             worker.current?.terminate();
+            mode.current = searchMode;
             const canShare = typeof SharedArrayBuffer !== 'undefined' && self.crossOriginIsolated;
             const buffer = canShare ? new SharedArrayBuffer(bytesForCounters()) : new ArrayBuffer(bytesForCounters());
             // The page's counters sit over the buffer that goes to the worker (shared), or over a copy that messages fill in.
@@ -75,7 +80,7 @@ export function useSolver(): { state: SolverState; start: (board: BoardData, set
                     publish();
                 }
             };
-            const message: ToWorker = { type: 'start', board, setup, roster, armor, counters: buffer, top: 10 };
+            const message: ToWorker = { type: 'start', board, setup, roster, armor, counters: buffer, top: 10, mode: searchMode };
             w.postMessage(message);
             publish();
         },

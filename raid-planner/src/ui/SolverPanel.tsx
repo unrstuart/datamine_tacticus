@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { BoardData } from '../core/board';
 import { EnemyArmor } from '../core/enemies';
 import { Roster } from '../core/roster';
 import { Setup } from '../core/setup';
+import { SearchMode } from '../solver/options';
 import { StoredPlan } from '../solver/search';
 import { describeAction, describeGroup, describeReport, fmt } from './describe';
 import { useSolver } from './useSolver';
@@ -44,6 +46,7 @@ function PlanView({ plan, index }: { plan: StoredPlan; index: number }) {
 /** Starts and stops the search and shows how it is going, then the best plans found so far. */
 export function SolverPanel({ board, setup, roster, armor }: { board: BoardData; setup: Setup; roster: Roster; armor: EnemyArmor }) {
     const { state, start, stop } = useSolver();
+    const [mode, setMode] = useState<SearchMode>('local');
     const p = state.progress;
     const ratio = p && p.planned > 0n ? Number(p.searched) / Number(p.planned) : 0;
     return (
@@ -55,9 +58,15 @@ export function SolverPanel({ board, setup, roster, armor }: { board: BoardData;
                         Stop
                     </button>
                 ) : (
-                    <button type="button" className="tool" onClick={() => start(board, setup, roster, armor)}>
+                    <button type="button" className="tool" onClick={() => start(board, setup, roster, armor, mode)}>
                         Search
                     </button>
+                )}
+                {!state.running && (
+                    <select value={mode} onChange={(e) => setMode(e.target.value as SearchMode)} aria-label="Search mode">
+                        <option value="local">Quick: local search</option>
+                        <option value="exhaustive">Exhaustive: slow, complete</option>
+                    </select>
                 )}
                 {state.running && <span className="spinner" aria-label="searching" />}
             </div>
@@ -65,7 +74,7 @@ export function SolverPanel({ board, setup, roster, armor }: { board: BoardData;
             {p && (
                 <dl className="stats">
                     <div>
-                        <dt>Sequences searched / planned</dt>
+                        <dt>{state.mode === 'exhaustive' ? 'Sequences searched / planned' : 'Plans tried / budget'}</dt>
                         <dd>
                             {count(p.searched)} / {count(p.planned)}
                         </dd>
@@ -97,11 +106,15 @@ export function SolverPanel({ board, setup, roster, armor }: { board: BoardData;
             )}
             {p && (
                 <p className="hint">
-                    {state.running
-                        ? 'Searching every sequence. The planned count grows as the search finds more of them.'
-                        : p.status === 'done'
-                          ? 'Finished: every sequence was searched.'
-                          : 'Stopped before it finished: these are the best plans among the sequences searched so far.'}
+                    {state.mode === 'exhaustive'
+                        ? state.running
+                            ? 'Searching every sequence. The planned count grows as the search finds more of them.'
+                            : p.status === 'done'
+                              ? 'Finished: every sequence was searched.'
+                              : 'Stopped before it finished: these are the best plans among the sequences searched so far.'
+                        : state.running
+                          ? 'Improving plans by trying small changes to them. It finds very good plans quickly, but cannot prove none is better.'
+                          : 'Local search finished: these are the best plans it found. A better one may exist (the exhaustive mode can prove otherwise, slowly).'}
                     {!state.shared && state.running ? ' (This page is not cross-origin isolated, so the counters update from messages.)' : ''}
                 </p>
             )}

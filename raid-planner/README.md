@@ -1,7 +1,7 @@
 # Raid planner
 
 Plans one guild raid round for a fixed comp (Abaddon, Ahriman, Abraxas, Archimatos, Neurothrope + Z'kar): searches the
-moves, deployment and attack order that do the most damage to the boss, and keeps the ten best plans. The rules are in `docs/rules.md`; Z'kar's placement rule is
+moves, deployment and attack order that do the most damage to the boss, and keeps the ten best plans. The default search is a local search (simulated annealing over the attack order, each character's move and when it moves, and where and when Z'kar lands, in `src/solver/local.ts`): very good plans in seconds, but no proof that nothing is better. The exhaustive search (`src/solver/search.ts`) is the slow, complete mode. The rules are in `docs/rules.md`; Z'kar's placement rule is
 in `docs/zkar-deployment.md`.
 
 Lives inside datamine_tacticus for now, and has no imports from the rest of the repo, so it can move to its own repo.
