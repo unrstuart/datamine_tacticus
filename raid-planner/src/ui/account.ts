@@ -1,6 +1,36 @@
 // Asking for the player's account from this app's own /api/player (the worker in production, the dev server's proxy while
 // developing), which forwards it to Snowprint with the key.
 
+const KEY_STORAGE = 'raid-planner:api-key';
+
+/** The minimal part of localStorage used here, so tests can pass a stand-in. */
+export type KeyStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
+
+/** The key saved on this device, or undefined if none is (or storage isn't available). The key isn't encrypted: it is only read-only account access. */
+export function loadSavedKey(storage: KeyStorage = localStorage): string | undefined {
+    try {
+        return storage.getItem(KEY_STORAGE) || undefined;
+    } catch {
+        return undefined;
+    }
+}
+
+export function saveKey(key: string, storage: KeyStorage = localStorage): void {
+    try {
+        storage.setItem(KEY_STORAGE, key);
+    } catch {
+        // Blocked storage just doesn't remember.
+    }
+}
+
+export function clearSavedKey(storage: KeyStorage = localStorage): void {
+    try {
+        storage.removeItem(KEY_STORAGE);
+    } catch {
+        // Nothing to clear.
+    }
+}
+
 export type FetchResult = { ok: true; data: unknown } | { ok: false; message: string };
 
 export async function fetchPlayer(key: string, fetchImpl: typeof fetch = fetch): Promise<FetchResult> {

@@ -3,7 +3,7 @@ import { rosterFromPlayer } from '../core/api';
 import { MAX_RELIC_LEVEL, RANK_NAMES, ROSTER_ORDER, ROSTER_UNITS, Roster, UnitSpec, maxedSpec, optionsFor, withAbilityLevel, withRank, withRarity, withRelic, withStars } from '../core/roster';
 import { characterStats, hasStats } from '../core/stats';
 import { ActorName } from '../engine/units';
-import { fetchPlayer } from './account';
+import { clearSavedKey, fetchPlayer, loadSavedKey, saveKey } from './account';
 import { Choice, RarityChoices, Stars, abilityIconUrl, rankIconUrl } from './icons';
 import { unitIconUrl } from './units';
 
@@ -117,10 +117,20 @@ type Status = { kind: 'idle' } | { kind: 'loading' } | { kind: 'error'; message:
 
 /** Fill the cards from the player's own account: paste a player API key and press Go. */
 function AccountRead({ roster, replace }: { roster: Roster; replace: (roster: Roster) => void }) {
-    const [key, setKey] = useState('');
+    // A key saved on this device fills the box and ticks "Remember".
+    const [saved] = useState(() => loadSavedKey());
+    const [key, setKey] = useState(saved ?? '');
+    const [remember, setRemember] = useState(saved !== undefined);
     const [status, setStatus] = useState<Status>({ kind: 'idle' });
 
+    // Ticking "Remember" doesn't save anything by itself: pressing Go does. Unticking forgets the saved key at once.
+    const toggleRemember = (on: boolean) => {
+        setRemember(on);
+        if (!on) clearSavedKey();
+    };
+
     const go = async () => {
+        if (remember && key.trim()) saveKey(key.trim());
         setStatus({ kind: 'loading' });
         const result = await fetchPlayer(key);
         if (!result.ok) {
@@ -159,12 +169,16 @@ function AccountRead({ roster, replace }: { roster: Roster; replace: (roster: Ro
             <button type="button" className="tool" onClick={() => void go()} disabled={status.kind === 'loading'}>
                 {status.kind === 'loading' ? 'Reading...' : 'Go'}
             </button>
+            <label className="check remember">
+                <input type="checkbox" checked={remember} onChange={(e) => toggleRemember(e.target.checked)} />
+                Remember API key
+            </label>
             <p className="hint">
                 Reads your units' rarity, stars, rank, ability levels and relics from the game. Get a key at{' '}
                 <a href="https://api.tacticusgame.com" target="_blank" rel="noreferrer">
                     api.tacticusgame.com
                 </a>
-                . It is sent once to read your account and is not saved.
+                ; it is sent only to read your account. It is saved on this device (unencrypted) only if Remember API key is ticked when you press Go.
             </p>
             {status.kind === 'error' && <p className="error">{status.message}</p>}
             {status.kind === 'done' && <p className="ok">{status.message}</p>}

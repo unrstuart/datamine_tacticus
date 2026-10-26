@@ -45,7 +45,7 @@ npm run build
 npx wrangler deploy        # uses wrangler.toml: the worker plus ./dist
 ```
 
-The key is not stored or logged anywhere. The built app also needs the two cross-origin isolation headers (`public/_headers` sets
+The worker doesn't store or log the key. The page keeps it only if "Remember API key" is ticked when you press Go (in localStorage, unencrypted); unticking it clears it. The built app also needs the two cross-origin isolation headers (`public/_headers` sets
 them on Cloudflare) so the search's progress counters can use shared memory.
 
 ## Layout

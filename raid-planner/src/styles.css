@@ -670,3 +670,14 @@ button.small {
     padding: 5px 8px;
     min-width: 140px;
 }
+
+.account .remember {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    color: var(--text);
+}
+
+.account .remember input {
+    width: auto;
+}
