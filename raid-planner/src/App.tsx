@@ -10,7 +10,11 @@ import { BoardView, DragGhost } from './ui/BoardView';
 import { Sidebar } from './ui/Sidebar';
 import { RosterPanel } from './ui/RosterPanel';
 import { SolverPanel } from './ui/SolverPanel';
+import { ReplayPanel } from './ui/ReplayPanel';
 import { useRoster } from './ui/useRoster';
+import { useSolver } from './ui/useSolver';
+import { buildReplay } from './replay/replay';
+import { StoredPlan } from './solver/search';
 
 const encounterLabel = (type: string): string => (type === 'Boss' ? 'Boss' : type === 'Crystal' ? 'Support' : type);
 
@@ -50,8 +54,10 @@ export function App() {
     const [tool, setTool] = useState<Tool>({ kind: 'move' });
     const [drag, setDrag] = useState<{ drag: Drag; hover: Cell; point: Point }>();
     const [setup, setSetup] = useState<Setup>();
-    const [tab, setTab] = useState<'board' | 'characters'>(() => (new URLSearchParams(location.search).get('tab') === 'characters' ? 'characters' : 'board'));
+    const [tab, setTab] = useState<'board' | 'characters' | 'replay'>(() => (new URLSearchParams(location.search).get('tab') === 'characters' ? 'characters' : 'board'));
     const { roster, setUnit, replace, reset } = useRoster();
+    const solver = useSolver();
+    const [watching, setWatching] = useState<{ plan: StoredPlan; index: number }>();
     const painting = useRef<{ tool: Tool; mode: PaintMode } | undefined>(undefined);
 
     useEffect(() => {
@@ -140,6 +146,19 @@ export function App() {
     const enemyRows = (data && encounter && data.enemies[encounter.unitId]) || [];
     const tiers = data?.tiers ?? [];
     const armor = data && encounter && setup ? enemyArmor(data.enemies, encounter.unitId, encounter.minionIds, normalizeSelection(tiers, setup.enemy)) : { boss: 0, minion: 0 };
+    // Anything that changes what a plan was made for (the map, the setup, the characters, the boss tier) makes every plan stale:
+    // forget the search and close the replay.
+    const resetSolver = solver.reset;
+    useEffect(() => {
+        resetSolver();
+        setWatching(undefined);
+        setTab((t) => (t === 'replay' ? 'board' : t));
+    }, [board, setup, roster, armor.boss, armor.minion, resetSolver]);
+    const replay = useMemo(
+        () => (watching && board && setup ? buildReplay({ board, setup, roster, armor: { boss: armor.boss, minion: armor.minion } }, watching.plan.actions) : undefined),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [watching, board, setup, roster, armor.boss, armor.minion]
+    );
     if (!data) return <p className="loading">Loading boards...</p>;
     return (
         <main>
@@ -151,7 +170,15 @@ export function App() {
                 <button type="button" className={tab === 'characters' ? 'active' : ''} onClick={() => setTab('characters')}>
                     Characters
                 </button>
+                {replay && (
+                    <button type="button" className={tab === 'replay' ? 'active' : ''} onClick={() => setTab('replay')}>
+                        Replay
+                    </button>
+                )}
             </nav>
+            {tab === 'replay' && replay && board && setup && watching && (
+                <ReplayPanel board={board} replay={replay} title={`Plan ${watching.index + 1}: ${Math.round(watching.plan.total).toLocaleString()} damage`} bossIcon={bossIcon} undesirable={setup.undesirable} onClose={() => setTab('board')} />
+            )}
             {tab === 'characters' && <RosterPanel roster={roster} setUnit={setUnit} replace={replace} reset={reset} />}
             <div className="pickers" hidden={tab !== 'board'}>
                 <label>
@@ -178,7 +205,17 @@ export function App() {
             {/* Kept mounted (just hidden) on the other tab, so a search that is running or done is not lost when you look at the characters. */}
             {board && setup && data && (
                 <div style={tab === 'board' ? undefined : { display: 'none' }}>
-                    <SolverPanel board={data.boards[board.id]} setup={setup} roster={roster} armor={armor} />
+                    <SolverPanel
+                        board={data.boards[board.id]}
+                        setup={setup}
+                        roster={roster}
+                        armor={armor}
+                        solver={solver}
+                        onReplay={(plan, index) => {
+                            setWatching({ plan, index });
+                            setTab('replay');
+                        }}
+                    />
                 </div>
             )}
             {tab === 'board' && board && setup && (

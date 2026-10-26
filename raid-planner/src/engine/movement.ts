@@ -16,12 +16,45 @@ import { UNIT_DEFS } from './units';
  */
 export function legalMoves(board: Board, state: State, unit: UnitId): Cell[] {
     const u = state.units[unit];
-    if (!u || u.moved || u.attacked) return [];
-    const def = UNIT_DEFS[unit];
+    if (!u) return [];
     const occupied = occupiedKeys(state);
+    const result: Cell[] = [];
+    for (const key of explore(board, state, unit).keys()) {
+        if (key === cellKey(u.cell) || occupied.has(key)) continue;
+        const cell = parseKey(key);
+        if (board.hexAt(cell)?.passable) result.push(cell);
+    }
+    return result;
+}
+
+/**
+ * One way for `unit` to get to `to` (the hexes it steps through, from the one after its own up to `to`), by a shortest route, or
+ * undefined when it can't. For showing a move: the rules are the ones legalMoves uses.
+ */
+export function movePath(board: Board, state: State, unit: UnitId, to: Cell): Cell[] | undefined {
+    const u = state.units[unit];
+    if (!u) return undefined;
+    const found = explore(board, state, unit);
+    if (!found.has(cellKey(to))) return undefined;
+    const path: Cell[] = [];
+    for (let key: string | undefined = cellKey(to); key !== undefined && key !== cellKey(u.cell); key = found.get(key)!.from) path.unshift(parseKey(key));
+    return path;
+}
+
+const parseKey = (key: string): Cell => {
+    const [col, row] = key.split(',').map(Number);
+    return { col, row };
+};
+
+/** Every hex reachable within the unit's movement (its own included, at step 0), and the hex each was first reached from. */
+function explore(board: Board, state: State, unit: UnitId): Map<string, { step: number; from?: string }> {
+    const u = state.units[unit];
+    const reached = new Map<string, { step: number; from?: string }>();
+    if (!u || u.moved || u.attacked) return reached;
+    const def = UNIT_DEFS[unit];
     const enemies = new Set([...state.bossCells, ...state.minions].map(cellKey));
 
-    const cost = new Map<string, number>([[cellKey(u.cell), 0]]);
+    reached.set(cellKey(u.cell), { step: 0 });
     let frontier: Cell[] = [u.cell];
     for (let step = 1; step <= def.movement; step++) {
         const next: Cell[] = [];
@@ -31,24 +64,16 @@ export function legalMoves(board: Board, state: State, unit: UnitId): Cell[] {
             for (const to of neighbors(from)) {
                 const key = cellKey(to);
                 const hex = board.hexAt(to);
-                if (!hex || cost.has(key)) continue;
+                if (!hex || reached.has(key)) continue;
                 if (!def.flies) {
                     const here = board.hexAt(from)!;
                     if (!hex.passable || !board.connected(from, to) || Math.abs(hex.elevation - here.elevation) > 1 || enemies.has(key)) continue;
                 }
-                cost.set(key, step);
+                reached.set(key, { step, from: cellKey(from) });
                 next.push(to);
             }
         }
         frontier = next;
     }
-
-    const result: Cell[] = [];
-    for (const key of cost.keys()) {
-        if (key === cellKey(u.cell) || occupied.has(key)) continue;
-        const [col, row] = key.split(',').map(Number);
-        const cell = { col, row };
-        if (board.hexAt(cell)?.passable) result.push(cell);
-    }
-    return result;
+    return reached;
 }

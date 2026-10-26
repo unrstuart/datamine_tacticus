@@ -6,18 +6,21 @@ import { Setup } from '../core/setup';
 import { SearchMode } from '../solver/options';
 import { StoredPlan } from '../solver/search';
 import { describeAction, describeGroup, describeReport, fmt } from './describe';
-import { useSolver } from './useSolver';
+import { Solver } from './useSolver';
 
 const count = (n: bigint | number): string => n.toLocaleString();
 const seconds = (ms: number): string => `${(ms / 1000).toFixed(1)} s`;
 
-function PlanView({ plan, index }: { plan: StoredPlan; index: number }) {
+function PlanView({ plan, index, onReplay }: { plan: StoredPlan; index: number; onReplay: (plan: StoredPlan, index: number) => void }) {
     return (
         <details className="plan" open={index === 0}>
             <summary>
                 Plan {index + 1}: {fmt(plan.total)} damage to the boss, {plan.actions.length} actions
                 {plan.undesirable > 0 ? `, ${plan.undesirable} on an undesirable hex` : ''}
             </summary>
+            <button type="button" className="tool" onClick={() => onReplay(plan, index)}>
+                Watch this plan
+            </button>
             <ol>
                 {plan.actions.map((a, i) => (
                     <li key={i}>{describeAction(a)}</li>
@@ -44,8 +47,8 @@ function PlanView({ plan, index }: { plan: StoredPlan; index: number }) {
 }
 
 /** Starts and stops the search and shows how it is going, then the best plans found so far. */
-export function SolverPanel({ board, setup, roster, armor }: { board: BoardData; setup: Setup; roster: Roster; armor: EnemyArmor }) {
-    const { state, start, stop } = useSolver();
+export function SolverPanel({ board, setup, roster, armor, solver, onReplay }: { board: BoardData; setup: Setup; roster: Roster; armor: EnemyArmor; solver: Solver; onReplay: (plan: StoredPlan, index: number) => void }) {
+    const { state, start, stop } = solver;
     const [mode, setMode] = useState<SearchMode>('local');
     const p = state.progress;
     const ratio = p && p.planned > 0n ? Number(p.searched) / Number(p.planned) : 0;
@@ -123,7 +126,7 @@ export function SolverPanel({ board, setup, roster, armor }: { board: BoardData;
                 <>
                     <h3>Best plans so far</h3>
                     {state.plans.map((plan, i) => (
-                        <PlanView key={plan.signature} plan={plan} index={i} />
+                        <PlanView key={plan.signature} plan={plan} index={i} onReplay={onReplay} />
                     ))}
                 </>
             )}

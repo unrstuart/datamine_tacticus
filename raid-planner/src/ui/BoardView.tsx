@@ -31,11 +31,11 @@ interface BoardViewProps {
 }
 
 /** The boss portrait's diameter as a multiple of a hex's height, by how many hexes the boss covers. */
-const BOSS_ICON_SCALE: Record<number, number> = { 1: 0.8, 3: 1.4, 7: 2.2 };
+export const BOSS_ICON_SCALE: Record<number, number> = { 1: 0.8, 3: 1.4, 7: 2.2 };
 
 const DRAW_SCALE = 0.88;
 
-function hexPoints(x: number, y: number, w: number, h: number, scale = DRAW_SCALE): string {
+export function hexPoints(x: number, y: number, w: number, h: number, scale = DRAW_SCALE): string {
     const w2 = (w / 2) * scale;
     const h2 = (h / 2) * scale;
     const w4 = w2 / 2;
@@ -200,7 +200,7 @@ export function BoardView({ board, setup, bossIcon, ghost, onCellDown, onCellEnt
 }
 
 /** The boss's round portrait ringed in red, sized for its footprint; the word BOSS when the dump has no portrait for it. */
-function BossMark({ icon, x, y, r, opacity = 1 }: { icon?: string; x: number; y: number; r: number; opacity?: number }) {
+export function BossMark({ icon, x, y, r, opacity = 1 }: { icon?: string; x: number; y: number; r: number; opacity?: number }) {
     return (
         <g transform={`translate(${x} ${y})`} opacity={opacity} pointerEvents="none">
             {icon ? (

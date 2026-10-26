@@ -26,7 +26,15 @@ const idle: SolverState = { running: false, progress: undefined, plans: [], elap
  * Runs the search in a worker. The page polls the counters about ten times a second; with a SharedArrayBuffer (a cross-origin
  * isolated page) it reads the worker's atomics directly, otherwise the worker posts them.
  */
-export function useSolver(): { state: SolverState; start: (board: BoardData, setup: Setup, roster: Roster, armor: EnemyArmor, mode: SearchMode) => void; stop: () => void } {
+export interface Solver {
+    state: SolverState;
+    start: (board: BoardData, setup: Setup, roster: Roster, armor: EnemyArmor, mode: SearchMode) => void;
+    stop: () => void;
+    /** Stop any search and forget its plans (they no longer fit what is on the page). */
+    reset: () => void;
+}
+
+export function useSolver(): Solver {
     const [state, setState] = useState<SolverState>(idle);
     const worker = useRef<Worker | undefined>(undefined);
     const counters = useRef<Counters | undefined>(undefined);
@@ -98,5 +106,14 @@ export function useSolver(): { state: SolverState; start: (board: BoardData, set
         }
     }, [publish]);
 
-    return { state, start, stop };
+    const reset = useCallback(() => {
+        worker.current?.terminate();
+        worker.current = undefined;
+        running.current = false;
+        plans.current = [];
+        counters.current = undefined;
+        setState(idle);
+    }, []);
+
+    return { state, start, stop, reset };
 }
