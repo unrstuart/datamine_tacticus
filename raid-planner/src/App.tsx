@@ -175,7 +175,12 @@ export function App() {
                     </select>
                 </label>
             </div>
-            {tab === 'board' && board && setup && data && <SolverPanel board={data.boards[board.id]} setup={setup} roster={roster} armor={armor} />}
+            {/* Kept mounted (just hidden) on the other tab, so a search that is running or done is not lost when you look at the characters. */}
+            {board && setup && data && (
+                <div style={tab === 'board' ? undefined : { display: 'none' }}>
+                    <SolverPanel board={data.boards[board.id]} setup={setup} roster={roster} armor={armor} />
+                </div>
+            )}
             {tab === 'board' && board && setup && (
                 <div className="layout">
                     <BoardView board={board} setup={setup} bossIcon={bossIcon} ghost={ghost} onCellDown={cellDown} onCellEnter={cellEnter} onPointerMove={pointerMove} onPointerEnd={pointerEnd} />
