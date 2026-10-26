@@ -8,7 +8,6 @@ import { createCanvas, loadImage } from 'canvas';
 //
 // <assets-dir> is an extracted-assets root with sprites/. Writes
 //   <data-dir>/units.json                { progression, units } (see below), to be imported by the app
-//   <public-dir>/icons/rarity/<Rarity>.png  the round rarity arrow
 //   <public-dir>/icons/rank/<n>.png         the rank medals, n = the planner's rank index (1 = Stone I ... 20 = Adamantine II)
 //   <public-dir>/icons/star/<colour>.png    gold, red, blue stars and the Mythic wings
 //   <public-dir>/icons/ability/<id>.png     each ability's icon
@@ -27,7 +26,7 @@ const UNITS: Record<string, string> = {
 // Z'kar is a machine of war: the game fights with the summon (Phosis Z'Kar), which carries the weapons and traits.
 const SUMMONS: Record<string, string> = { zkar: 'thousSmnDaemonPrince' };
 
-const RARITIES = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic'];
+// (The rarity badges, public/icons/rarity/<Rarity>.png, are the planner's own: tacticusplanner/src/assets/images/rarity/resized.)
 const STAR_SPRITES: Record<string, string> = { gold: 'stars.png', red: 'star_epic.png', blue: 'star_legendary.png', wings: 'ui_icon_star_mythic_large_01.png' };
 // Silver III was extracted under a different name; there is no Rank_11.png.
 const RANK_SPRITE_OVERRIDES: Record<number, string> = { 11: 'IdunTextRRank_11.png' };
@@ -90,7 +89,6 @@ async function main() {
     const spriteDir = path.join(assetsDir, 'sprites');
     const files = new Map(fs.readdirSync(spriteDir).map((f) => [f.toLowerCase(), f]));
     let n = 0;
-    for (const r of RARITIES) n += (await icon(spriteDir, files, `rarityUp_${r.toLowerCase()}.png`, path.join(outDir, 'icons/rarity', `${r}.png`), 64)) ? 1 : 0;
     // The game's rank is 0-based (Stone I = 0); the planner's index is 1-based (Stone I = 1), so planner index n is sprite Rank_{n-1}.
     for (let rank = 1; rank <= 20; rank++) {
         const sprite = RANK_SPRITE_OVERRIDES[rank - 1] ?? `Rank_${rank - 1}.png`;

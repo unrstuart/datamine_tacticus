@@ -514,8 +514,8 @@ button.small {
 }
 
 .choice img.rarity {
-    width: 26px;
-    height: 26px;
+    height: 30px;
+    width: auto;
 }
 
 .choice img.rank {

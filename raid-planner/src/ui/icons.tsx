@@ -1,6 +1,6 @@
 import { RARITIES, Rarity, STAR_NAMES } from '../core/roster';
 
-// The game's own icons, extracted into public/icons by extract_raid_units.ts.
+// The game's own icons, extracted into public/icons by extract_raid_units.ts. (The rarity badges are the planner's own.)
 
 const icon = (path: string): string => `${import.meta.env.BASE_URL}icons/${path}`;
 
