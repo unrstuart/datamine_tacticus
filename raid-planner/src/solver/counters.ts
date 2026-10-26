@@ -17,6 +17,8 @@ export const COUNTER = {
     status: 5,
     /** Complete plans evaluated (every character finished). */
     complete: 6,
+    /** Branches cut because they could not reach the best score (each of them counts as searched). */
+    pruned: 7,
 } as const;
 
 export const COUNTER_LENGTH = 8;
@@ -42,6 +44,7 @@ export interface Progress {
     bestRuns: bigint;
     bestScore: number | undefined;
     complete: bigint;
+    pruned: bigint;
     status: 'running' | 'done' | 'stopped';
 }
 
@@ -54,6 +57,7 @@ export function readProgress(counters: Counters): Progress {
         bestRuns: Atomics.load(counters, COUNTER.bestRuns),
         bestScore: score === NO_SCORE ? undefined : Number(score),
         complete: Atomics.load(counters, COUNTER.complete),
+        pruned: Atomics.load(counters, COUNTER.pruned),
         status: status === 1n ? 'done' : status === 2n ? 'stopped' : 'running',
     };
 }

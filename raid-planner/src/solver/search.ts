@@ -1,13 +1,20 @@
-import { Action, PlanResult, applyAction, finishRound } from '../engine/plan';
-import { AttackReport } from '../engine/attacks';
-import { Context, State, initialState } from '../engine/state';
 import { cellKey } from '../core/hex';
-import { allDone, legalActions } from './actions';
+import { MAX_ABADDON_STACKS } from '../core/setup';
+import { AttackReport, legalAttacks } from '../engine/attacks';
+import { legalMoves } from '../engine/movement';
+import { Action, PlanResult, applyAction, finishRound } from '../engine/plan';
+import { Context, State, initialState } from '../engine/state';
+import { allDone, legalActions, relevantMove } from './actions';
+import { Analysis, analyse, makeStatics } from './analysis';
+import { upperBound } from './bound';
 import { COUNTER, Counters } from './counters';
+import { DEFAULT_OPTIONS, SolverOptions } from './options';
+import { StateTable } from './table';
 
-// Exhaustive search of every sequence of actions, with no pruning and no shortcuts: each state is expanded into every
-// action that can follow it, depth first. Progress goes into the shared counters as it happens (see counters.ts), so the
-// page can show how many sequences have been planned (which grows as the search discovers more) and how many searched.
+// Depth-first search of the sequences of actions, narrowed by the rules in SolverOptions. Memory is the depth of the
+// search plus the plans it keeps: nothing is remembered about states already seen, so it cannot run out of memory the way
+// a table of visited states would. Progress goes into the shared counters as it happens (see counters.ts): sequences
+// planned (it keeps growing as the search finds more) and searched, the best runs found so far, and the branches cut.
 
 export interface StoredPlan {
     actions: Action[];
@@ -19,6 +26,8 @@ export interface StoredPlan {
 }
 
 export interface SearchOptions {
+    /** What the search may skip (default: all of it; see SolverOptions). */
+    rules?: SolverOptions;
     /** How many tied-best plans to keep the full detail of (they are all counted). */
     maxStored?: number;
     /** Called now and then with the plans so far, when they have changed. */
@@ -35,8 +44,7 @@ export interface SearchResult {
     stopped: boolean;
 }
 
-const reportKey = (r: AttackReport): string =>
-    `${r.actor}:${r.kind}${r.extra ? '+' : ''}${r.trigger ? `@${r.trigger}` : ''}[${r.buffs.map((b) => `${b.id}${b.points}`).join(',')}]`;
+const reportKey = (r: AttackReport): string => `${r.actor}:${r.kind}${r.extra ? '+' : ''}${r.trigger ? `@${r.trigger}` : ''}[${r.buffs.map((b) => `${b.id}${b.points}`).join(',')}]`;
 
 /**
  * Two plans are the same outcome when they apply the same buffs (attack by attack, in any order) and leave everyone on
@@ -50,15 +58,23 @@ export function signatureOf(state: State, reports: readonly AttackReport[]): str
     return `${units.join(' ')} z:${zkar} | ${reports.map(reportKey).sort().join(' ')}`;
 }
 
+// Try the attacks first (they score now, and a good plan found early makes the bound cut more), then deployments and
+// Abaddon's active, then moves, then passing.
+const ORDER: Record<Action['type'], number> = { attack: 0, deploy: 1, abaddonActive: 1, move: 2, pass: 3 };
+
 export function search(ctx: Context, counters: Counters, options: SearchOptions = {}): SearchResult {
+    const rules = options.rules ?? DEFAULT_OPTIONS;
     const maxStored = options.maxStored ?? 500;
     // How many sequences go by between publishing the counters (and checking the clock and the cancel flag).
     const batch = options.batch ?? 256;
     const start = initialState(ctx.setup);
+    const statics = makeStatics(ctx, start);
+    const table = rules.tableBits > 0 ? new StateTable(rules.tableBits) : undefined;
 
     let planned = 1; // the empty plan
     let searched = 0;
     let complete = 0;
+    let pruned = 0;
     let sinceCheck = 0;
     let stopped = false;
     let changed = false;
@@ -73,10 +89,12 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
     const reports: AttackReport[] = [];
 
     const flush = () => {
-        if (planned) Atomics.add(counters, COUNTER.planned, BigInt(planned));
-        if (searched) Atomics.add(counters, COUNTER.searched, BigInt(searched));
-        if (complete) Atomics.add(counters, COUNTER.complete, BigInt(complete));
-        planned = searched = complete = 0;
+        const add = (i: number, n: number) => n && Atomics.add(counters, i, BigInt(n));
+        add(COUNTER.planned, planned);
+        add(COUNTER.searched, searched);
+        add(COUNTER.complete, complete);
+        add(COUNTER.pruned, pruned);
+        planned = searched = complete = pruned = 0;
     };
     const checkIn = () => {
         flush();
@@ -87,14 +105,22 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
             lastPost = Date.now();
         }
     };
+    /** One sequence has been searched. */
+    const done = () => {
+        searched++;
+        if (++sinceCheck >= batch) {
+            sinceCheck = 0;
+            checkIn();
+        }
+    };
 
     const evaluate = (state: State, score: number) => {
         complete++;
-        const done = finishRound(ctx, state);
-        const total = score + done.reports.reduce((s, r) => s + r.score, 0) - done.penalties.reduce((s, p) => s + p.points, 0);
+        const finish = finishRound(ctx, state);
+        const total = score + finish.reports.reduce((s, r) => s + r.score, 0) - finish.penalties.reduce((s, p) => s + p.points, 0);
         if (bestScore !== undefined && total < bestScore) return;
-        const all = [...reports, ...done.reports];
-        const signature = signatureOf(done.state, all);
+        const all = [...reports, ...finish.reports];
+        const signature = signatureOf(finish.state, all);
         if (bestScore === undefined || total > bestScore) {
             bestScore = total;
             plans = [];
@@ -107,33 +133,106 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
         bestRuns++;
         Atomics.store(counters, COUNTER.bestRuns, BigInt(bestRuns));
         if (plans.length < maxStored) {
-            plans.push({ actions: [...path], total, reports: all, penalties: done.penalties, signature });
+            plans.push({ actions: [...path], total, reports: all, penalties: finish.penalties, signature });
             changed = true;
         }
     };
 
-    const visit = (state: State, score: number): void => {
-        if (allDone(state)) evaluate(state, score);
-        const actions = legalActions(ctx, state);
-        planned += actions.length;
-        for (const action of actions) {
+    /** Apply `action`, carry on from there with `next`, and undo. Does nothing if the action isn't legal. */
+    const step = (state: State, score: number, action: Action, next: (s: State, score: number) => void) => {
+        const result = applyAction(ctx, state, action);
+        if (!result) return;
+        path.push(action);
+        const before = reports.length;
+        for (const r of result.reports) reports.push(r);
+        next(result.state, score + result.reports.reduce((s, r) => s + r.score, 0));
+        reports.length = before;
+        path.pop();
+    };
+
+    /** Run `each` on every item, counting each as a planned and then searched sequence. */
+    const each = <T>(items: readonly T[], run: (item: T) => void) => {
+        planned += items.length;
+        for (const item of items) {
             if (stopped) return;
-            const result = applyAction(ctx, state, action)!;
-            path.push(action);
-            const before = reports.length;
-            for (const r of result.reports) reports.push(r);
-            visit(result.state, score + result.reports.reduce((s, r) => s + r.score, 0));
-            reports.length = before;
-            path.pop();
-            searched++;
-            if (++sinceCheck >= batch) {
-                sinceCheck = 0;
-                checkIn();
-            }
+            run(item);
+            done();
         }
     };
 
-    visit(start, 0);
+    const visit = (state: State, score: number): void => {
+        // Reached before by another order of the same actions, at least as well: nothing new can come of it.
+        if (table?.seen(state, score)) {
+            pruned++;
+            return;
+        }
+        const an = analyse(ctx, state);
+        const actions = legalActions(ctx, state, rules, statics, an);
+        if (rules.prune && bestScore !== undefined && score + upperBound(ctx, state, statics, actions.some((a) => a.type === 'deploy')) < bestScore) {
+            pruned++;
+            return;
+        }
+        if (allDone(state)) evaluate(state, score);
+
+        // Apply each action first, so the ones that score most go first.
+        const children = actions.flatMap((action) => {
+            const result = applyAction(ctx, state, action);
+            return result ? [{ action, result, gain: result.reports.reduce((s, r) => s + r.score, 0) }] : [];
+        });
+        children.sort((a, b) => b.gain - a.gain || ORDER[a.action.type] - ORDER[b.action.type]);
+        each(children, (child) => {
+            path.push(child.action);
+            const before = reports.length;
+            for (const r of child.result.reports) reports.push(r);
+            visit(child.result.state, score + child.gain);
+            reports.length = before;
+            path.pop();
+        });
+    };
+
+    // ---- Abaddon first -----------------------------------------------------------------------------------------------
+
+    const abaddonMoves = (state: State, an: Analysis): Action[] =>
+        (an.moves.abaddon ?? []).filter((to) => !rules.relevantMovesOnly || relevantMove(ctx, state, an, statics, 'abaddon', to)).map((to) => ({ type: 'move', unit: 'abaddon', to }));
+
+    const attackWith = (state: State, score: number, kind: 'melee' | 'ranged') => {
+        const choices = legalAttacks(ctx, state, 'abaddon').filter((c) => c.kind === kind);
+        each(choices, (c) => step(state, score, { type: 'attack', unit: 'abaddon', kind: c.kind, target: c.target, ...(c.extra ? { extra: c.extra } : {}) }, visit));
+    };
+
+    const afterAbaddonMoved = (state: State, score: number) => {
+        const choices = legalAttacks(ctx, state, 'abaddon');
+        if (choices.some((c) => c.kind === 'melee')) {
+            // In melee range: he attacks. His active only ever adds, so when it is available he uses it first.
+            if (state.abaddonExtra === 'available') each([{ type: 'abaddonActive' } as Action], (a) => step(state, score, a, (s, sc) => attackWith(s, sc, 'melee')));
+            else attackWith(state, score, 'melee');
+        } else if (choices.some((c) => c.kind === 'ranged')) {
+            // Only at range: first he shoots alone, then Abraxas moves next to him first and he shoots.
+            attackWith(state, score, 'ranged');
+            const abraxas = state.units.abraxas;
+            const abaddon = state.units.abaddon!;
+            if (abraxas && !abraxas.attacked && !abraxas.moved) {
+                const beside = legalMoves(ctx.board, state, 'abraxas').filter((to) => ctx.board.connected(to, abaddon.cell));
+                each(beside, (to) => step(state, score, { type: 'move', unit: 'abraxas', to }, (s, sc) => attackWith(s, sc, 'ranged')));
+            }
+        } else {
+            each([{ type: 'pass', unit: 'abaddon' } as Action], (a) => step(state, score, a, visit));
+        }
+    };
+
+    const abaddonFirst = (state: State, score: number) => {
+        const moves = abaddonMoves(state, analyse(ctx, state));
+        // Staying put is the first option, then every move.
+        planned += 1;
+        afterAbaddonMoved(state, score);
+        done();
+        each(moves, (m) => step(state, score, m, afterAbaddonMoved));
+    };
+
+    const a = start.units.abaddon;
+    if (rules.abaddonFirst && a && !a.attacked && start.abaddonStacks < MAX_ABADDON_STACKS) abaddonFirst(start, 0);
+    else visit(start, 0);
+
     if (!stopped) searched++; // the empty plan, now that everything under it is done
     flush();
     if (options.onBest && changed) options.onBest(plans);
