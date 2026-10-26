@@ -57,7 +57,7 @@ export const RANK_NAMES = [
 export interface RarityRules {
     minStars: number;
     maxStars: number;
-    /** A unit keeps its rank when it is promoted, so the lowest rank of a rarity is the highest of the one before. */
+    /** Stone I for every rarity: a unit of any rarity can be at any rank up to the rarity's maximum. */
     minRank: number;
     maxRank: number;
     /** Abilities can be levelled up to this. (Level 65 and Adamantine III aren't in the game yet.) */
@@ -66,11 +66,11 @@ export interface RarityRules {
 
 export const RARITY_RULES: Record<Rarity, RarityRules> = {
     Common: { minStars: 0, maxStars: 2, minRank: 1, maxRank: 4, maxAbilityLevel: 8 },
-    Uncommon: { minStars: 2, maxStars: 4, minRank: 4, maxRank: 7, maxAbilityLevel: 17 },
-    Rare: { minStars: 4, maxStars: 6, minRank: 7, maxRank: 10, maxAbilityLevel: 26 },
-    Epic: { minStars: 6, maxStars: 8, minRank: 10, maxRank: 13, maxAbilityLevel: 35 },
-    Legendary: { minStars: 8, maxStars: 11, minRank: 13, maxRank: 18, maxAbilityLevel: 50 },
-    Mythic: { minStars: 11, maxStars: 14, minRank: 18, maxRank: 20, maxAbilityLevel: 60 },
+    Uncommon: { minStars: 2, maxStars: 4, minRank: 1, maxRank: 7, maxAbilityLevel: 17 },
+    Rare: { minStars: 4, maxStars: 6, minRank: 1, maxRank: 10, maxAbilityLevel: 26 },
+    Epic: { minStars: 6, maxStars: 8, minRank: 1, maxRank: 13, maxAbilityLevel: 35 },
+    Legendary: { minStars: 8, maxStars: 11, minRank: 1, maxRank: 18, maxAbilityLevel: 50 },
+    Mythic: { minStars: 11, maxStars: 14, minRank: 1, maxRank: 20, maxAbilityLevel: 60 },
 };
 
 export const MAX_RELIC_LEVEL = 10;

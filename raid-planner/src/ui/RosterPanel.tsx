@@ -62,12 +62,16 @@ function UnitCard({ unit, spec, setUnit }: { unit: ActorName; spec: UnitSpec; se
             {info.hasRank && (
                 <div className="field-row">
                     <span className="label">Rank</span>
-                    <div className="choices">
-                        {options.ranks.map((r) => (
-                            <Choice key={r} selected={r === spec.rank} title={RANK_NAMES[r]} onClick={() => change(withRank(unit, spec, r))}>
-                                <img className="rank" src={rankIconUrl(r)} alt="" />
-                            </Choice>
-                        ))}
+                    <div className="rank-pick">
+                        <img className="rank" src={rankIconUrl(spec.rank)} alt="" />
+                        <select value={spec.rank} onChange={(e) => change(withRank(unit, spec, Number(e.target.value)))}>
+                            {/* Highest first: most players are near the top. */}
+                            {[...options.ranks].reverse().map((r) => (
+                                <option key={r} value={r}>
+                                    {RANK_NAMES[r]}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
             )}

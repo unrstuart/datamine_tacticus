@@ -22,20 +22,21 @@ import {
 } from './roster';
 
 describe('the rarity rules', () => {
-    it('match the game: stars, ranks and ability caps climb with rarity, and each rarity starts where the last ended', () => {
+    it('match the game: stars and rank caps and ability caps climb with rarity, each rarity starts its stars where the last ended, and every rank starts at Stone I', () => {
         let previous = undefined as (typeof RARITY_RULES)[(typeof RARITIES)[number]] | undefined;
         for (const rarity of RARITIES) {
             const r = RARITY_RULES[rarity];
             expect(r.minStars).toBeLessThan(r.maxStars);
             expect(r.minRank).toBeLessThan(r.maxRank);
+            expect(r.minRank).toBe(1);
             if (previous) {
                 expect(r.minStars).toBe(previous.maxStars);
-                expect(r.minRank).toBe(previous.maxRank);
+                expect(r.maxRank).toBeGreaterThan(previous.maxRank);
                 expect(r.maxAbilityLevel).toBeGreaterThan(previous.maxAbilityLevel);
             }
             previous = r;
         }
-        expect(RARITY_RULES.Mythic).toMatchObject({ minStars: 11, maxStars: 14, maxRank: 20, maxAbilityLevel: 60 });
+        expect(RARITY_RULES.Mythic).toMatchObject({ minStars: 11, maxStars: 14, minRank: 1, maxRank: 20, maxAbilityLevel: 60 });
         expect(STAR_NAMES[RARITY_RULES.Mythic.minStars]).toBe('1 blue star');
         expect(STAR_NAMES[RARITY_RULES.Mythic.maxStars]).toBe('Mythic wings');
         expect(RANK_NAMES[RARITY_RULES.Mythic.maxRank]).toBe('Adamantine II');
@@ -89,10 +90,10 @@ describe('changing a unit keeps it legal', () => {
         expect(common).toMatchObject({ stars: 2, rank: 4, abilityLevels: [8, 8] });
     });
 
-    it('raising the rarity lifts stars and rank to the new minimum but leaves ability levels that still fit', () => {
+    it('raising the rarity lifts stars to the new minimum but leaves the rank and ability levels that still fit', () => {
         const rare = { rarity: 'Rare', stars: 4, rank: 7, abilityLevels: [10, 20], relicLevel: undefined } as const;
         const mythic = withRarity('abaddon', { ...rare, abilityLevels: [10, 20] }, 'Mythic');
-        expect(mythic).toMatchObject({ rarity: 'Mythic', stars: 11, rank: 18, abilityLevels: [10, 20] });
+        expect(mythic).toMatchObject({ rarity: 'Mythic', stars: 11, rank: 7, abilityLevels: [10, 20] });
     });
 
     it('clamps stars, rank and ability levels to the rarity, and to at least 1 for abilities', () => {
@@ -100,7 +101,8 @@ describe('changing a unit keeps it legal', () => {
         expect(withStars('ahriman', s, 14).stars).toBe(6);
         expect(withStars('ahriman', s, 0).stars).toBe(4);
         expect(withRank('ahriman', s, 20).rank).toBe(10);
-        expect(withRank('ahriman', s, 1).rank).toBe(7);
+        expect(withRank('ahriman', s, 1).rank).toBe(1); // Stone I is allowed at any rarity
+        expect(withRank('ahriman', s, -4).rank).toBe(1);
         expect(withAbilityLevel('ahriman', s, 0, 60).abilityLevels[0]).toBe(26);
         expect(withAbilityLevel('ahriman', s, 1, 0).abilityLevels[1]).toBe(1);
         expect(withAbilityLevel('ahriman', s, 1, 12.4).abilityLevels[1]).toBe(12);
@@ -121,9 +123,10 @@ describe('changing a unit keeps it legal', () => {
     it('offers exactly the legal choices for a rarity', () => {
         const mythic = optionsFor('Mythic');
         expect(mythic.stars).toEqual([11, 12, 13, 14]);
-        expect(mythic.ranks).toEqual([18, 19, 20]);
+        expect(mythic.ranks).toEqual(Array.from({ length: 20 }, (_, i) => i + 1));
         expect(mythic.maxAbilityLevel).toBe(60);
         expect(optionsFor('Common').stars).toEqual([0, 1, 2]);
+        expect(optionsFor('Common').ranks).toEqual([1, 2, 3, 4]);
         for (const rarity of RARITIES) {
             const o = optionsFor(rarity);
             for (const stars of o.stars) expect(clampSpec('abaddon', { ...maxedSpec('abaddon'), rarity, stars }).stars).toBe(stars);
@@ -143,7 +146,7 @@ describe('reading a roster back', () => {
         expect(sanitizeRoster('nope')).toEqual(maxedRoster());
         expect(sanitizeRoster({})).toEqual(maxedRoster());
         const bad = sanitizeRoster({ abaddon: { rarity: 'Epic', stars: 99, rank: -3, abilityLevels: [500, 'x'], relicLevel: 40 }, ahriman: { rarity: 'Nonsense' }, zkar: { relicLevel: 5 } });
-        expect(bad.abaddon).toEqual({ rarity: 'Epic', stars: 8, rank: 10, abilityLevels: [35, 35], relicLevel: 10 });
+        expect(bad.abaddon).toEqual({ rarity: 'Epic', stars: 8, rank: 1, abilityLevels: [35, 35], relicLevel: 10 });
         expect(bad.ahriman).toEqual(maxedSpec('ahriman'));
         expect(bad.zkar.relicLevel).toBeUndefined();
     });
