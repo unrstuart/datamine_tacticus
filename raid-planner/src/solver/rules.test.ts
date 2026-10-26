@@ -141,6 +141,17 @@ describe('searches keep to the rules', () => {
         }
     });
 
+    it("exhaustive deploys Z'kar on a pinned hex even where no enemy is within his reach", { timeout: 120000 }, () => {
+        const far = south(5);
+        const { ctx } = make([{ kind: 'zkarAt', cell: far }], { archimatos: south(4) });
+        const r = search(ctx, makeCounters(), { top: 5 });
+        expect(r.plans.length).toBeGreaterThan(0);
+        for (const p of r.plans) {
+            expect(violationsOf(ctx, p.actions)).toBe(0);
+            expect(p.actions.some((a) => a.type === 'deploy')).toBe(true);
+        }
+    });
+
     it('state is still initial for the check', () => {
         const { ctx } = make([]);
         expect(initialState(ctx.setup).units.abaddon).toBeDefined();

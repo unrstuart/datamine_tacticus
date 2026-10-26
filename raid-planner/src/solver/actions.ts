@@ -8,7 +8,7 @@ import { occupiedKeys } from '../engine/state';
 import { Analysis, Statics, analyse, attackRange } from './analysis';
 import { EXHAUSTIVE, SolverOptions } from './options';
 import { hasTag } from '../engine/units';
-import { allows, pinnedCell } from './rules';
+import { allows, pinnedCell, zkarPin } from './rules';
 
 /** Whether every character on the board has finished its turn, by attacking or passing. */
 export const allDone = (state: State): boolean => unitIds(state).every((id) => state.units[id]!.attacked);
@@ -105,9 +105,11 @@ export function legalActions(ctx: Context, state: State, options: SolverOptions 
         actions.push({ type: 'pass', unit });
     }
     if (state.units.abaddon && !state.units.abaddon.attacked && state.abaddonExtra === 'available') actions.push({ type: 'abaddonActive' });
-    const candidates = options.zkarInRangeOnly && statics ? statics.deployCandidates : undefined;
+    // A pinned deployment is tried wherever it is: the rule says where, whether or not he would have an enemy in reach.
+    const pinned = zkarPin(ctx);
+    const candidates = pinned ? [pinned] : options.zkarInRangeOnly && statics ? statics.deployCandidates : undefined;
     for (const d of deployHexes(ctx, state, candidates)) {
-        if (options.zkarInRangeOnly && !zkarInReach(state, d.cells)) continue;
+        if (options.zkarInRangeOnly && !pinned && !zkarInReach(state, d.cells)) continue;
         actions.push({ type: 'deploy', at: d.at });
     }
     return ctx.setup.constraints?.length ? actions.filter((a) => allows(ctx, state, a)) : actions;
