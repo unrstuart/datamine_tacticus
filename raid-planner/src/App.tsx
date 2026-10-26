@@ -7,6 +7,7 @@ import { PaintMode, Tool, applyTool, isPaintTool, paintModeFor } from './core/to
 import { loadData, makeBoard } from './data';
 import { BoardView, DragGhost } from './ui/BoardView';
 import { Sidebar } from './ui/Sidebar';
+import { SolverPanel } from './ui/SolverPanel';
 
 const encounterLabel = (type: string): string => (type === 'Boss' ? 'Boss' : type === 'Crystal' ? 'Support' : type);
 
@@ -170,6 +171,7 @@ export function App() {
                     />
                 </div>
             )}
+            {board && setup && data && <SolverPanel board={data.boards[board.id]} setup={setup} />}
         </main>
     );
 }

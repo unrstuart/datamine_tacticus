@@ -12,6 +12,8 @@ export type Action =
     | { type: 'move'; unit: UnitId; to: Cell }
     /** `extra` is Abaddon's second melee attack, once his active is on. */
     | { type: 'attack'; unit: UnitId; kind: AttackChoice['kind']; target: Enemy; extra?: Enemy }
+    /** A character ends its turn without attacking (it may have moved). */
+    | { type: 'pass'; unit: UnitId }
     /** Abaddon uses his once-per-battle active: from now on his normal melee attacks get a second melee attack. */
     | { type: 'abaddonActive' }
     /** Deploy Z'kar by clicking `at`; he takes the hexes summonFootprint says. */
@@ -61,6 +63,11 @@ export function applyAction(ctx: Context, state: State, action: Action): { state
             const same = (a?: Enemy, b?: Enemy) => (a === undefined ? b === undefined : b !== undefined && sameEnemy(a, b));
             const ok = legalAttacks(ctx, state, action.unit).some((c) => c.kind === action.kind && sameEnemy(c.target, action.target) && same(c.extra, action.extra));
             return ok ? performAttack(ctx, state, action.unit, action.kind, action.target, undefined, action.extra) : undefined;
+        }
+        case 'pass': {
+            const u = state.units[action.unit];
+            if (!u || u.attacked) return undefined;
+            return { state: { ...state, units: { ...state.units, [action.unit]: { ...u, attacked: true } } }, reports: [] };
         }
         case 'abaddonActive': {
             const a = state.units.abaddon;
