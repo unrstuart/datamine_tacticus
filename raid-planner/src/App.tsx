@@ -77,7 +77,8 @@ export function App() {
 
     // Each map remembers its own setup in this browser.
     useEffect(() => {
-        if (board) setSetup(loadSetup(board.id) ?? initialSetup(board));
+        // A saved setup may predate newer fields: anything it lacks takes its default.
+        if (board) setSetup({ ...initialSetup(board), ...loadSetup(board.id) });
     }, [board]);
     useEffect(() => {
         if (setup) saveSetup(setup);

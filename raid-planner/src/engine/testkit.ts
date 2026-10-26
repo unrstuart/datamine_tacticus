@@ -1,5 +1,5 @@
 import { Cell, Direction, neighbor } from '../core/hex';
-import { Effect, Setup, UnitId } from '../core/setup';
+import { AbaddonExtraAttack, Effect, Setup, UnitId } from '../core/setup';
 import { TestHex, gridBoard } from '../core/testBoard';
 import { Context, Enemy, State, initialState } from './state';
 
@@ -19,6 +19,8 @@ export interface ScenarioOptions {
     units?: Partial<Record<UnitId, Cell>>;
     effects?: Record<string, Effect>;
     neuroStacks?: number;
+    abaddonStacks?: number;
+    abaddonExtra?: AbaddonExtraAttack;
     undesirable?: string[];
     abaddonSurvivesUndesirable?: boolean;
     ahrimanActiveAvailable?: boolean;
@@ -36,6 +38,8 @@ export function scenario(o: ScenarioOptions = {}): { ctx: Context; state: State;
         undesirable: o.undesirable ?? [],
         neuroStacks: o.neuroStacks ?? 0,
         units: o.units ?? {},
+        abaddonStacks: o.abaddonStacks ?? 0,
+        abaddonExtraAttack: o.abaddonExtra ?? 'off',
         ahrimanActiveAvailable: o.ahrimanActiveAvailable ?? true,
         neuroActiveAvailable: o.neuroActiveAvailable ?? true,
         abaddonSurvivesUndesirable: o.abaddonSurvivesUndesirable ?? true,

@@ -1,5 +1,5 @@
 import { Cell, cellKey } from '../core/hex';
-import { MAX_NEURO_STACKS, UnitId } from '../core/setup';
+import { MAX_ABADDON_STACKS, MAX_NEURO_STACKS, UnitId } from '../core/setup';
 import {
     Context,
     Enemy,
@@ -18,11 +18,11 @@ import { ATTACKS, ActorName, AttackDef, AttackKind, attackDef, hasTag, psychicOr
 // Attacks: which ones a character may make, and what happens (and which buffs apply) when one is made. The rules are in
 // docs/rules.md; the comments here point at the parts that are easy to get wrong.
 
-export type BuffId = 'abaddon' | 'ahriman' | 'neurothrope' | 'abraxas' | 'zkar' | 'highGround' | 'hexEffect' | 'neuroStack' | 'abaddonPassive';
+export type BuffId = 'abaddon' | 'ahriman' | 'neurothrope' | 'abraxas' | 'zkar' | 'highGround' | 'hexEffect' | 'neuroStack' | 'abaddonStack';
 
 export interface Buff {
     id: BuffId;
-    /** What it is worth: 1 each, except Abaddon stacking his passive with a melee attack (2). */
+    /** What it is worth: 1, or one for every stack added (the parasite on the boss, Abaddon's passive). */
     points: number;
     note?: string;
 }
@@ -40,6 +40,8 @@ export interface AttackReport {
     smite?: Enemy;
     buffs: Buff[];
     score: number;
+    /** Abaddon's second melee attack, from his active. */
+    extra?: boolean;
     /** A Z'kar trigger with nothing in reach. */
     note?: string;
 }
@@ -48,6 +50,8 @@ export interface AttackChoice {
     unit: UnitId;
     kind: AttackKind;
     target: Enemy;
+    /** Abaddon's second melee attack (once his active is on): who it hits, when anyone is left to hit. */
+    extra?: Enemy;
 }
 
 const unitAdjacentEnemies = (ctx: Context, state: State, cells: readonly Cell[]): Enemy[] =>
@@ -55,8 +59,9 @@ const unitAdjacentEnemies = (ctx: Context, state: State, cells: readonly Cell[])
 
 /**
  * The attacks `unit` may make now. A unit next to an enemy must attack it in melee (its choice of which); otherwise it
- * attacks at range. Abilities (the relic is melee, the two actives are ranged) are extra options when available;
- * Neurothrope's active can hit the boss even with an enemy beside him.
+ * attacks at range. The two actives (ranged) are extra options when available; Neurothrope's can hit the boss even with an
+ * enemy beside him. Abaddon's relic is part of his melee attack, and once his active is on, that attack is followed by a
+ * second melee attack on an enemy still adjacent (the minions the first attack killed are gone).
  */
 export function legalAttacks(ctx: Context, state: State, unit: UnitId): AttackChoice[] {
     const u = state.units[unit];
@@ -71,7 +76,17 @@ export function legalAttacks(ctx: Context, state: State, unit: UnitId): AttackCh
         }
         if (def.melee) {
             if (near.length === 0) continue;
-            for (const target of near) choices.push({ unit, kind: def.kind, target });
+            for (const target of near) {
+                if (unit === 'abaddon' && state.abaddonExtra === 'on') {
+                    const victims = relicTargets(ctx, state, cells, target);
+                    const left = near.filter((e) => e.kind === 'boss' || !victims.some((v) => sameEnemy(v, e)));
+                    if (left.length > 0) {
+                        for (const extra of left) choices.push({ unit, kind: def.kind, target, extra });
+                        continue;
+                    }
+                }
+                choices.push({ unit, kind: def.kind, target });
+            }
         } else if (def.kind === 'active') {
             for (const target of listEnemies(state)) if (distanceBetween(cells, enemyCells(state, target)) <= def.range) choices.push({ unit, kind: def.kind, target });
         } else if (near.length === 0) {
@@ -135,8 +150,6 @@ function buffsFor(ctx: Context, state: State, actor: ActorName, def: AttackDef, 
     const height = (cells: readonly Cell[]) => board.hexAt(cells[0])?.elevation ?? 0;
     if (height(mine) > height(primaryCells)) add('highGround');
     if ((actor === 'abaddon' || actor === 'archimatos') && hasEffect(state, primaryCells, nextRound)) add('hexEffect');
-    if (actor === 'abaddon' && (def.kind === 'melee' || def.kind === 'relic')) add('abaddonPassive', 2, 'stacks his passive');
-
     return { buffs, psychicHit };
 }
 
@@ -150,23 +163,27 @@ function stackAfter(stacks: number, actor: ActorName, psychicHit: boolean, hitBo
 const fireTrigger = (actor: ActorName, def: AttackDef): boolean => def.lightsFire && (actor === 'ahriman' || actor === 'abraxas');
 
 /**
- * Make an attack: score its buffs, then apply what it does: minions it hit die, Ahriman's and Abraxas's flame attacks
- * (and Ahriman's ranged smite) set the hit hexes on fire for two rounds, the parasite grows. Then, if Archimatos or
- * Abraxas attacked next to Z'kar, Z'kar attacks too.
+ * Resolve one attack on `targets` (the first is the main target): score its buffs, then apply what it does. Minions it
+ * hit die; Ahriman's and Abraxas's flame attacks (and Ahriman's ranged smite) set the hit hexes on fire for two rounds;
+ * the parasite grows; Abaddon's stacks grow, one per enemy he hit.
  */
-export function performAttack(ctx: Context, state: State, actor: ActorName, kind: AttackKind, primary: Enemy, trigger?: Trigger): { state: State; reports: AttackReport[] } {
+function resolveAttack(ctx: Context, state: State, actor: ActorName, def: AttackDef, targets: Enemy[], trigger: Trigger | undefined, extra = false): { state: State; report: AttackReport } {
     const nextRound = trigger === 'nextRound';
-    const def = attackDef(actor, kind);
     const mine = actorCells(state, actor)!;
-    const targets = kind === 'relic' ? relicTargets(ctx, state, mine, primary) : [primary];
-    const smite = def.smite ? smiteTarget(ctx, state, primary) : undefined;
+    const smite = def.smite ? smiteTarget(ctx, state, targets[0]) : undefined;
 
     const { buffs, psychicHit } = buffsFor(ctx, state, actor, def, targets, smite, nextRound);
     const hitBoss = [...targets, ...(smite ? [smite] : [])].some((e) => e.kind === 'boss');
     const stacks = stackAfter(state.neuroStacks, actor, psychicHit, hitBoss);
     if (stacks > state.neuroStacks) buffs.push({ id: 'neuroStack', points: stacks - state.neuroStacks, note: state.neuroStacks === 0 ? 'infects the boss' : `${stacks} stacks` });
+    let abaddonStacks = state.abaddonStacks;
+    if (actor === 'abaddon') {
+        const added = Math.max(0, Math.min(targets.length, MAX_ABADDON_STACKS - abaddonStacks));
+        if (added > 0) buffs.push({ id: 'abaddonStack', points: added, note: `${abaddonStacks + added} stacks` });
+        abaddonStacks += added;
+    }
 
-    let next: State = { ...state, neuroStacks: stacks, effects: { ...state.effects }, minions: [...state.minions] };
+    const next: State = { ...state, neuroStacks: stacks, abaddonStacks, effects: { ...state.effects }, minions: [...state.minions] };
     // Neurothrope next to an enemy at the moment he attacks.
     if (actor === 'neurothrope' && unitAdjacentEnemies(ctx, state, mine).length > 0) next.neuroAdjacent = true;
     // Whoever the attack hit and killed: the characters kill a minion in one attack (and so does Z'kar). Smite doesn't.
@@ -174,13 +191,32 @@ export function performAttack(ctx: Context, state: State, actor: ActorName, kind
     if (fireTrigger(actor, def)) {
         for (const e of [...targets, ...(smite && actor === 'ahriman' ? [smite] : [])]) for (const c of enemyCells(state, e)) next.effects[cellKey(c)] = 'fire2';
     }
+    const report: AttackReport = { actor, kind: def.kind, trigger, targets, smite, buffs, score: buffs.reduce((s, b) => s + b.points, 0), ...(extra ? { extra: true } : {}) };
+    return { state: next, report };
+}
+
+/**
+ * Make an attack: resolve it (see resolveAttack), end the attacker's turn, and then, for Abaddon with his active on, make
+ * his second melee attack on `extra`. If Archimatos or Abraxas attacked next to Z'kar, Z'kar attacks too.
+ */
+export function performAttack(ctx: Context, state: State, actor: ActorName, kind: AttackKind, primary: Enemy, trigger?: Trigger, extra?: Enemy): { state: State; reports: AttackReport[] } {
+    const def = attackDef(actor, kind);
+    const mine = actorCells(state, actor)!;
+    const targets = def.relic ? relicTargets(ctx, state, mine, primary) : [primary];
+    const first = resolveAttack(ctx, state, actor, def, targets, trigger);
+    let next = first.state;
+    const reports: AttackReport[] = [first.report];
+
     if (actor !== 'zkar') {
         const u = next.units[actor as UnitId]!;
         next = { ...next, units: { ...next.units, [actor]: { ...u, attacked: true } } };
         if (kind === 'active') next = actor === 'ahriman' ? { ...next, ahrimanActiveAvailable: false } : { ...next, neuroActiveAvailable: false };
     }
-
-    const reports: AttackReport[] = [{ actor, kind, trigger, targets, smite, buffs, score: buffs.reduce((s, b) => s + b.points, 0) }];
+    if (actor === 'abaddon' && kind === 'melee' && extra && next.abaddonExtra === 'on') {
+        const second = resolveAttack(ctx, next, actor, { ...def, relic: false }, [extra], trigger, true);
+        next = second.state;
+        reports.push(second.report);
+    }
 
     // Archimatos and Abraxas attacking next to Z'kar make him attack once each.
     if ((actor === 'archimatos' || actor === 'abraxas') && next.zkar && !next.zkar.triggered[actor] && adjacent(ctx.board, next.zkar.cells, mine)) {

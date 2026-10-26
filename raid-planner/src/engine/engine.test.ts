@@ -4,11 +4,12 @@ import { UnitId } from '../core/setup';
 import { AttackReport, BuffId, legalAttacks } from './attacks';
 import { legalMoves } from './movement';
 import { Action, PlanResult, applyAction, legalDeploys, runPlan } from './plan';
+import { Enemy } from './state';
 import { BOSS, go, minion, scenario } from './testkit';
 
 const at = (col: number, row: number): Cell => ({ col, row });
 const ids = (r: AttackReport): BuffId[] => r.buffs.map((b) => b.id).sort();
-const attack = (unit: UnitId, kind: 'ranged' | 'melee' | 'relic' | 'active' | 'physical', target = BOSS): Action => ({ type: 'attack', unit, kind, target });
+const attack = (unit: UnitId, kind: 'ranged' | 'melee' | 'active' | 'physical', target = BOSS, extra?: Enemy): Action => ({ type: 'attack', unit, kind, target, ...(extra ? { extra } : {}) });
 const only = (plan: PlanResult): AttackReport[] => plan.steps.flatMap((s) => s.reports);
 
 // The boss is a single hex at (6,10). Straight "S" steps from it run down the column, so go(boss,'S',k) is k hexes away.
@@ -16,16 +17,25 @@ const boss = at(6, 10);
 const south = (k: number) => go(boss, 'S', k);
 
 describe('attacks and the buffs on them', () => {
-    it("Abaddon's melee attack scores 2 for stacking his passive, and nothing else", () => {
-        const { ctx } = scenario({ units: { abaddon: south(1) } });
-        const plan = runPlan(ctx, [attack('abaddon', 'melee')]);
-        expect(ids(only(plan)[0])).toEqual(['abaddonPassive']);
-        expect(plan.total).toBe(2);
+    it("every Abaddon attack adds a stack to his passive, which scores one per stack added", () => {
+        const melee = scenario({ units: { abaddon: south(1) } });
+        const plan = runPlan(melee.ctx, [attack('abaddon', 'melee')]);
+        expect(ids(only(plan)[0])).toEqual(['abaddonStack']);
+        expect(plan.total).toBe(1);
+        expect(plan.final.abaddonStacks).toBe(1);
+        const ranged = scenario({ units: { abaddon: south(2) } });
+        expect(runPlan(ranged.ctx, [attack('abaddon', 'ranged')]).total).toBe(1);
     });
 
-    it('a ranged Abaddon next to nobody scores nothing', () => {
-        const { ctx } = scenario({ units: { abaddon: south(2) } });
-        expect(runPlan(ctx, [attack('abaddon', 'ranged')]).total).toBe(0);
+    it('Abaddon stops stacking at 13', () => {
+        const m1 = go(boss, 'SE', 1);
+        const m2 = go(boss, 'SW', 1);
+        const near = scenario({ units: { abaddon: south(1) }, minions: [m1, m2], abaddonStacks: 12 });
+        const plan = runPlan(near.ctx, [attack('abaddon', 'melee')]); // hits three enemies, but only one more stack fits
+        expect(plan.final.abaddonStacks).toBe(13);
+        expect(plan.total).toBe(1);
+        const full = scenario({ units: { abaddon: south(1) }, abaddonStacks: 13 });
+        expect(runPlan(full.ctx, [attack('abaddon', 'melee')]).total).toBe(0);
     });
 
     describe("Abaddon's buff", () => {
@@ -95,13 +105,13 @@ describe('attacks and the buffs on them', () => {
             });
             const [r] = only(runPlan(ctx, [attack('abaddon', 'ranged')]));
             // Abaddon also gets his hex-effect bonus: the boss stands on fire.
-            expect(ids(r)).toEqual(['abraxas', 'ahriman', 'hexEffect', 'neuroStack']);
-            expect(r.score).toBe(4);
+            expect(ids(r)).toEqual(['abaddonStack', 'abraxas', 'ahriman', 'hexEffect', 'neuroStack']);
+            expect(r.score).toBe(5);
         });
 
         it('does nothing when Abraxas is not adjacent, or for an ability attack', () => {
             const far = scenario({ units: { abaddon: south(2), abraxas: south(5) }, neuroStacks: 2 });
-            expect(ids(only(runPlan(far.ctx, [attack('abaddon', 'ranged')]))[0])).toEqual([]);
+            expect(ids(only(runPlan(far.ctx, [attack('abaddon', 'ranged')]))[0])).toEqual(['abaddonStack']); // just the stack
         });
 
         it("adds no stack to an attack that was already psychic, but still counts as a buff", () => {
@@ -168,20 +178,97 @@ describe('attacks and the buffs on them', () => {
         expect(ids(b)).not.toContain('zkar');
     });
 
-    it('the relic hits its target plus up to two more enemies adjacent to both him and that target', () => {
+    it('his relic makes the melee attack hit up to two more enemies adjacent to both him and the target, a stack each', () => {
         const abaddon = south(1);
         const m1 = go(boss, 'SE', 1);
         const m2 = go(boss, 'SW', 1);
         const { ctx } = scenario({ units: { abaddon }, minions: [m1, m2] });
-        const plan = runPlan(ctx, [attack('abaddon', 'relic')]);
+        const plan = runPlan(ctx, [attack('abaddon', 'melee')]);
         const [r] = only(plan);
         expect(r.targets).toHaveLength(3); // the boss and both minions
         expect(plan.final.minions).toEqual([]); // they die; the boss does not
+        expect(plan.final.abaddonStacks).toBe(3);
+        expect(r.buffs.find((b) => b.id === 'abaddonStack')!.points).toBe(3);
         // A minion that is not beside both of them is left alone.
         const far = scenario({ units: { abaddon }, minions: [go(boss, 'N', 1)] });
-        expect(only(runPlan(far.ctx, [attack('abaddon', 'relic')]))[0].targets).toHaveLength(1);
-        // And it is an ability: Abraxas's bonus hit doesn't apply, but it does score as a melee attack.
-        expect(r.buffs.some((b) => b.id === 'abaddonPassive')).toBe(true);
+        expect(only(runPlan(far.ctx, [attack('abaddon', 'melee')]))[0].targets).toHaveLength(1);
+        // Ranged attacks have no relic.
+        const ranged = scenario({ units: { abaddon: south(2) }, minions: [go(boss, 'SE', 1)] });
+        expect(only(runPlan(ranged.ctx, [attack('abaddon', 'ranged')]))[0].targets).toHaveLength(1);
+    });
+});
+
+describe("Abaddon's extra melee attack", () => {
+    const m1 = go(boss, 'SE', 1);
+    const m2 = go(boss, 'SW', 1);
+    const abaddon = south(1);
+
+    it('comes with the active: a normal melee attack is followed by a second one on an adjacent enemy', () => {
+        const { ctx } = scenario({ units: { abaddon }, abaddonExtra: 'on' });
+        const plan = runPlan(ctx, [attack('abaddon', 'melee', BOSS, BOSS)]);
+        const reports = only(plan);
+        expect(reports.map((r) => !!r.extra)).toEqual([false, true]);
+        expect(reports.map((r) => r.score)).toEqual([1, 1]);
+        expect(plan.final.abaddonStacks).toBe(2);
+    });
+
+    it('is not offered without the active, and does not run the relic again', () => {
+        const off = scenario({ units: { abaddon }, minions: [m1], abaddonExtra: 'off' });
+        expect(legalAttacks(off.ctx, off.state, 'abaddon').every((c) => c.extra === undefined)).toBe(true);
+        const on = scenario({ units: { abaddon }, minions: [m1, m2], abaddonExtra: 'on' });
+        // The first attack (relic) kills both minions; the second hits the boss and has no relic of its own.
+        const plan = runPlan(on.ctx, [attack('abaddon', 'melee', BOSS, BOSS)]);
+        expect(only(plan).map((r) => r.targets.length)).toEqual([3, 1]);
+        expect(plan.final.abaddonStacks).toBe(4); // up to four attacks in a turn: three with the relic, one extra
+    });
+
+    it('can pick a different enemy from the first attack, if one is left', () => {
+        const { ctx, state } = scenario({ units: { abaddon }, minions: [go(abaddon, 'S', 1)], abaddonExtra: 'on' });
+        // The minion south of him is beside him but not beside the boss, so the relic leaves it alone: it can be the extra.
+        const choices = legalAttacks(ctx, state, 'abaddon').filter((c) => c.kind === 'melee' && c.target.kind === 'boss');
+        expect(choices.map((c) => c.extra)).toEqual([BOSS, minion(go(abaddon, 'S', 1))]);
+    });
+
+    it('has nothing to do when the first attack kills the only enemy beside him', () => {
+        const far = at(2, 3);
+        const lone = go(far, 'N', 1);
+        const { ctx, state } = scenario({ units: { abaddon: far }, minions: [lone], abaddonExtra: 'on' });
+        const choices = legalAttacks(ctx, state, 'abaddon');
+        expect(choices).toEqual([{ unit: 'abaddon', kind: 'melee', target: minion(lone) }]);
+        const plan = runPlan(ctx, [attack('abaddon', 'melee', minion(lone))]);
+        expect(only(plan)).toHaveLength(1);
+        expect(plan.final.abaddonStacks).toBe(1);
+    });
+
+    it('the second attack gets its own buffs: high ground, and a hex effect on its target', () => {
+        const hexes = { [cellKey(abaddon)]: { elevation: 2 } };
+        const { ctx } = scenario({ units: { abaddon }, hexes, effects: { [cellKey(boss)]: 'despoiled' }, abaddonExtra: 'on' });
+        const reports = only(runPlan(ctx, [attack('abaddon', 'melee', BOSS, BOSS)]));
+        for (const r of reports) expect(ids(r)).toEqual(['abaddonStack', 'hexEffect', 'highGround']);
+    });
+
+    it('is switched on by using the active, once, before he attacks', () => {
+        const { ctx, state } = scenario({ units: { abaddon }, abaddonExtra: 'available' });
+        expect(legalAttacks(ctx, state, 'abaddon').every((c) => c.extra === undefined)).toBe(true);
+        const used = applyAction(ctx, state, { type: 'abaddonActive' })!;
+        expect(used.state.abaddonExtra).toBe('on');
+        expect(applyAction(ctx, used.state, { type: 'abaddonActive' })).toBeUndefined(); // once per battle
+        // The turn he uses it, his melee attack already gets the extra one.
+        const plan = runPlan(ctx, [{ type: 'abaddonActive' }, attack('abaddon', 'melee', BOSS, BOSS)]);
+        expect(only(plan)).toHaveLength(2);
+        // Not after he has attacked, and not when it is off or already used before.
+        const after = runPlan(ctx, [attack('abaddon', 'melee')]);
+        expect(applyAction(ctx, after.final, { type: 'abaddonActive' })).toBeUndefined();
+        for (const mode of ['off', 'on'] as const) {
+            const other = scenario({ units: { abaddon }, abaddonExtra: mode });
+            expect(applyAction(other.ctx, other.state, { type: 'abaddonActive' })).toBeUndefined();
+        }
+    });
+
+    it('needs the extra target named when there is one to hit', () => {
+        const { ctx, state } = scenario({ units: { abaddon }, abaddonExtra: 'on' });
+        expect(applyAction(ctx, state, attack('abaddon', 'melee', BOSS))).toBeUndefined();
+        expect(applyAction(ctx, state, attack('abaddon', 'melee', BOSS, BOSS))).toBeDefined();
     });
 });
 
@@ -493,7 +580,7 @@ describe("a full plan, in the order the strategy calls for", () => {
     it('scores each attack the way the rules say', () => {
         const lines = plan.steps.flatMap((s) => s.reports).map((r) => `${r.actor} ${r.trigger ?? ''}: ${buffs(r)} = ${r.score}`);
         expect(lines).toEqual([
-            'abaddon : abaddonPassive+2 = 2',
+            'abaddon : abaddonStack = 1',
             'ahriman : abaddon,neurothrope,neuroStack = 3', // no Ahriman buff on his own fire-lighting hit
             'zkar deploy: abaddon,ahriman,abraxas,zkar,neuroStack = 5',
             'archimatos : abaddon,ahriman,neurothrope,zkar,hexEffect,neuroStack = 6',
@@ -507,7 +594,7 @@ describe("a full plan, in the order the strategy calls for", () => {
     it("adds Z'kar's start-of-next-round attack, with the fire still burning, and totals the plan", () => {
         expect(plan.finish.reports.map((r) => `${r.actor} ${r.trigger}: ${buffs(r)} = ${r.score}`)).toEqual(['zkar nextRound: abaddon,ahriman,abraxas,zkar,neuroStack = 5']);
         expect(plan.finish.penalties).toEqual([]);
-        expect(plan.total).toBe(37);
+        expect(plan.total).toBe(36);
         expect(plan.final.neuroStacks).toBe(10); // 3 to start, +1 for every psychic attack on the boss
     });
 });

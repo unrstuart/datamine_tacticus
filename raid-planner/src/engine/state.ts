@@ -1,6 +1,6 @@
 import { Board } from '../core/board';
 import { Cell, cellKey, footprintDistance } from '../core/hex';
-import { Effect, Setup, UNIT_IDS, UnitId } from '../core/setup';
+import { AbaddonExtraAttack, Effect, Setup, UNIT_IDS, UnitId } from '../core/setup';
 import { ActorName } from './units';
 
 // The state of one round as it is played out. Plain data, copied on every step (cheap at this size).
@@ -27,6 +27,9 @@ export interface State {
     /** Hex effect by cell key. `fire1` is gone by next round; `fire2` is still burning. */
     effects: Record<string, Effect>;
     neuroStacks: number;
+    /** Abaddon's passive stacks, and whether his normal melee attacks currently get a second one. */
+    abaddonStacks: number;
+    abaddonExtra: AbaddonExtraAttack;
     ahrimanActiveAvailable: boolean;
     neuroActiveAvailable: boolean;
     /** Neurothrope stood next to an enemy at some point in his turn. */
@@ -50,6 +53,8 @@ export function initialState(setup: Setup): State {
         minions: setup.minions,
         effects: setup.effects,
         neuroStacks: setup.neuroStacks,
+        abaddonStacks: setup.abaddonStacks ?? 0,
+        abaddonExtra: setup.abaddonExtraAttack ?? 'off',
         ahrimanActiveAvailable: setup.ahrimanActiveAvailable,
         neuroActiveAvailable: setup.neuroActiveAvailable,
         neuroAdjacent: false,

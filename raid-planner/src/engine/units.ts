@@ -27,11 +27,10 @@ export type Damage = 'psychic' | 'flame' | 'bolter' | 'power' | 'physical';
 
 /**
  * - `ranged`, `melee`: the normal attacks.
- * - `relic`: Abaddon's melee ability (one target plus up to two more adjacent to both).
  * - `active`: Ahriman's and Neurothrope's once-per-battle abilities.
  * - `physical`: what Neurothrope does to an adjacent enemy instead of a melee attack (it has none).
  */
-export type AttackKind = 'ranged' | 'melee' | 'relic' | 'active' | 'physical';
+export type AttackKind = 'ranged' | 'melee' | 'active' | 'physical';
 
 export interface AttackDef {
     kind: AttackKind;
@@ -42,6 +41,8 @@ export interface AttackDef {
     range: number;
     /** An ability rather than a normal attack: Abraxas's bonus hit and smite don't apply. */
     ability: boolean;
+    /** Abaddon's relic: the attack also hits up to two more enemies adjacent to both him and its target. */
+    relic: boolean;
     /** Sets the target's hexes on fire for two rounds after hitting. */
     lightsFire: boolean;
     /** A normal ranged psychic attack also hits one other enemy next to its target. */
@@ -51,16 +52,17 @@ export interface AttackDef {
 const def = (kind: AttackKind, damage: Damage, over: Partial<AttackDef> = {}): AttackDef => ({
     kind,
     damage,
-    melee: kind === 'melee' || kind === 'relic' || kind === 'physical',
+    melee: kind === 'melee' || kind === 'physical',
     range: 1,
-    ability: kind === 'relic' || kind === 'active',
+    ability: kind === 'active',
+    relic: false,
     lightsFire: false,
     smite: false,
     ...over,
 });
 
 export const ATTACKS: Record<ActorName, AttackDef[]> = {
-    abaddon: [def('ranged', 'bolter', { range: 2 }), def('melee', 'power'), def('relic', 'power')],
+    abaddon: [def('ranged', 'bolter', { range: 2 }), def('melee', 'power', { relic: true })],
     abraxas: [def('ranged', 'psychic', { range: 2, smite: true }), def('melee', 'flame', { lightsFire: true })],
     archimatos: [def('ranged', 'psychic', { range: 2, smite: true }), def('melee', 'psychic')],
     ahriman: [

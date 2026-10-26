@@ -14,6 +14,14 @@ export type Effect = 'fire2' | 'fire1' | 'despoiled' | 'contaminated';
 export const EFFECTS: readonly Effect[] = ['fire2', 'fire1', 'despoiled', 'contaminated'];
 
 export const MAX_NEURO_STACKS = 16;
+export const MAX_ABADDON_STACKS = 13;
+
+/**
+ * Abaddon's once-per-battle active costs him health but, from the turn it is used until the battle ends, gives each of his
+ * normal melee attacks a second melee attack. `on`: already used in an earlier turn; `available`: the plan may use it
+ * this turn; `off`: it won't be used.
+ */
+export type AbaddonExtraAttack = 'off' | 'available' | 'on';
 
 export interface Setup {
     boardId: string;
@@ -27,6 +35,9 @@ export interface Setup {
     neuroStacks: number;
     /** Where each character stands; a character not listed isn't placed. */
     units: Partial<Record<UnitId, Cell>>;
+    /** Abaddon's passive stacks (0..13); every attack he makes adds one, and each stack added scores. */
+    abaddonStacks: number;
+    abaddonExtraAttack: AbaddonExtraAttack;
     /** Once-per-battle actives that haven't been spent yet. */
     ahrimanActiveAvailable: boolean;
     neuroActiveAvailable: boolean;
@@ -51,6 +62,8 @@ export function initialSetup(board: Board, platformIndex = 0): Setup {
         undesirable: [],
         neuroStacks: 0,
         units: {},
+        abaddonStacks: 0,
+        abaddonExtraAttack: 'available',
         ahrimanActiveAvailable: true,
         neuroActiveAvailable: true,
         abaddonSurvivesUndesirable: true,
@@ -133,4 +146,9 @@ export function clearCell(setup: Setup, cell: Cell): Setup {
 export function setNeuroStacks(setup: Setup, stacks: number): Setup {
     const n = Number.isFinite(stacks) ? Math.round(stacks) : 0;
     return { ...setup, neuroStacks: Math.min(MAX_NEURO_STACKS, Math.max(0, n)) };
+}
+
+export function setAbaddonStacks(setup: Setup, stacks: number): Setup {
+    const n = Number.isFinite(stacks) ? Math.round(stacks) : 0;
+    return { ...setup, abaddonStacks: Math.min(MAX_ABADDON_STACKS, Math.max(0, n)) };
 }

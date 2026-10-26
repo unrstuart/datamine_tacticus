@@ -1,4 +1,4 @@
-import { Effect, EFFECTS, Setup, UNIT_IDS, MAX_NEURO_STACKS } from '../core/setup';
+import { AbaddonExtraAttack, Effect, EFFECTS, MAX_ABADDON_STACKS, MAX_NEURO_STACKS, Setup, UNIT_IDS } from '../core/setup';
 import { Tool } from '../core/tools';
 import { EFFECT_LABELS, EffectIcon } from './EffectGlyph';
 import { UNITS, unitIconUrl } from './units';
@@ -84,6 +84,19 @@ export function Sidebar({ tool, setTool, setup, update, platformCount, onResetBo
             <section>
                 <h2>Boss</h2>
                 {number('Neuroparasite stacks', setup.neuroStacks, (n) => update({ neuroStacks: Math.min(MAX_NEURO_STACKS, Math.max(0, n || 0)) }), 0, MAX_NEURO_STACKS)}
+            </section>
+
+            <section>
+                <h2>Abaddon</h2>
+                {number('Passive stacks', setup.abaddonStacks, (n) => update({ abaddonStacks: Math.min(MAX_ABADDON_STACKS, Math.max(0, n || 0)) }), 0, MAX_ABADDON_STACKS)}
+                <label className="field">
+                    Extra melee attack
+                    <select value={setup.abaddonExtraAttack} onChange={(e) => update({ abaddonExtraAttack: e.target.value as AbaddonExtraAttack })}>
+                        <option value="available">His active is available</option>
+                        <option value="on">Already active</option>
+                        <option value="off">Won't use it</option>
+                    </select>
+                </label>
             </section>
 
             <section>

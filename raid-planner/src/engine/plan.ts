@@ -10,7 +10,10 @@ import { Context, Enemy, State, adjacent, enemyCells, initialState, listEnemies,
 
 export type Action =
     | { type: 'move'; unit: UnitId; to: Cell }
-    | { type: 'attack'; unit: UnitId; kind: AttackChoice['kind']; target: Enemy }
+    /** `extra` is Abaddon's second melee attack, once his active is on. */
+    | { type: 'attack'; unit: UnitId; kind: AttackChoice['kind']; target: Enemy; extra?: Enemy }
+    /** Abaddon uses his once-per-battle active: from now on his normal melee attacks get a second melee attack. */
+    | { type: 'abaddonActive' }
     /** Deploy Z'kar by clicking `at`; he takes the hexes summonFootprint says. */
     | { type: 'deploy'; at: Cell };
 
@@ -55,8 +58,14 @@ export function applyAction(ctx: Context, state: State, action: Action): { state
             return { state: next, reports: [] };
         }
         case 'attack': {
-            const ok = legalAttacks(ctx, state, action.unit).some((c) => c.kind === action.kind && sameEnemy(c.target, action.target));
-            return ok ? performAttack(ctx, state, action.unit, action.kind, action.target) : undefined;
+            const same = (a?: Enemy, b?: Enemy) => (a === undefined ? b === undefined : b !== undefined && sameEnemy(a, b));
+            const ok = legalAttacks(ctx, state, action.unit).some((c) => c.kind === action.kind && sameEnemy(c.target, action.target) && same(c.extra, action.extra));
+            return ok ? performAttack(ctx, state, action.unit, action.kind, action.target, undefined, action.extra) : undefined;
+        }
+        case 'abaddonActive': {
+            const a = state.units.abaddon;
+            if (!a || a.attacked || state.abaddonExtra !== 'available') return undefined;
+            return { state: { ...state, abaddonExtra: 'on' }, reports: [] };
         }
         case 'deploy': {
             if (state.zkar) return undefined;

@@ -9,7 +9,7 @@ Items marked **(?)** are my reading of something you didn't say outright. Please
 
 | Unit | Move | Flies | Attacks | Tags |
 |---|---|---|---|---|
-| Abaddon | 3 | no | ranged bolter, range 2; melee power; relic (see 6) | chaos |
+| Abaddon | 3 | no | ranged bolter, range 2; melee power with his relic (see 7) | chaos |
 | Abraxas | 3 | no | ranged psychic, range 2; melee flame | chaos, psyker |
 | Archimatos | 3 | no | ranged psychic (1 hit), range 2; melee psychic (2 hits) | chaos, psyker |
 | Ahriman | 3 | yes | ranged psychic, range 2; melee flame; active (see 7) | chaos, psyker |
@@ -55,7 +55,7 @@ nearest hex.
 ## 4b. Smite (splash)
 
 - Only a **normal ranged psychic attack** has smite: Abraxas, Archimatos, Ahriman, Neurothrope and Z'kar's ranged
-  attack. Not ability attacks (Ahriman's and Neurothrope's actives, the relic) and not non-psychic attacks
+  attack. Not ability attacks (Ahriman's and Neurothrope's actives) and not non-psychic attacks
   (Abaddon's bolter shot, even with Abraxas's added psychic hit; Neurothrope's physical adjacent attack).
 - After hitting its target, the attack also hits **one other enemy adjacent to the original target**, for less
   damage. The smite target can never be the original target.
@@ -94,9 +94,14 @@ nearest hex.
 
 ## 7. Special abilities
 
-- **Abaddon's relic:** a **melee** ability attack. Hits one target, then up to two more targets adjacent to both
-  him and the first target. Each target actually hit adds one Abaddon stack; there are no phantom targets. As an
-  ability it gets no Abraxas bonus hit. Like all his attacks it gets the hex-effect bonus (see 8).
+- **Abaddon's relic** is part of his normal **melee** attack: it hits its target, then up to two more enemies adjacent to
+  both him and that target. Each enemy actually hit adds one Abaddon stack (to a maximum of 13); there are no phantom
+  targets. Like all his attacks it gets the hex-effect bonus (see 8). Ranged attacks have no relic.
+- **Abaddon's active:** once per battle, costs him health, and from the turn it is used until the battle ends, each normal
+  melee attack is followed by a **second melee attack** on an adjacent enemy (his choice). The second attack has no relic.
+  So a turn is 1 to 4 attacks: the first, up to two relic hits, and the extra one; the extra one is missing when the first
+  attack killed the only enemy beside him. The setup says whether the active is available, already used in an earlier
+  turn, or not to be used.
 - **Ahriman's active:** once per battle; range 1 or 2; psychic damage; does **not** light fire. Gets every buff
   except Abraxas's (his bonus hit is for normal attacks only).
 - **Neurothrope's active:** once per battle; a **range 3** attack that lets him attack the boss even when adjacent
@@ -115,11 +120,13 @@ An "attack" is one action, however many hits it has. Each (attack, buff) pair sc
 | Abraxas | **ranged** attacks of adjacent chaos units; **ranged and melee** attacks of adjacent chaos demons (Z'kar) | adjacent to Abraxas; normal attacks only, not abilities | Adds one psychic hit. Counts as a buff. Adds a neuroparasite stack only if the original attack wasn't already psychic or flame. |
 | Z'kar | friendly psykers (here everyone except Abaddon, and including Z'kar himself) | adjacent to another psyker, or to Z'kar | |
 | High ground | an attack | attacker stands higher than the target | Weighted the same as the others for now; likely to be weighted more later. All hexes of a multi-hex unit share one elevation, so there is nothing to choose. |
-| Hex-effect bonus | **all** of Abaddon's attacks (ranged, melee, relic) and **Archimatos's** attacks | the target stands on a hex with an effect: fire, despoiled ground or contaminated | +1 per attack (a hex has only one effect, so never +2). Ahriman's buff is separate and does not apply to the relic. |
+| Hex-effect bonus | **all** of Abaddon's attacks (ranged, melee, the extra melee attack) and **Archimatos's** attacks | the target stands on a hex with an effect: fire, despoiled ground or contaminated | +1 per attack (a hex has only one effect, so never +2). Ahriman's buff is separate and does not apply to the relic. |
+| Abaddon stack | Abaddon | each enemy he hits, to a maximum of 13 | **+1 for every stack added.** Not a buff on someone else's attack: it is the passive he is building. |
 | Neuroparasite stack | the boss | each psychic attack on the infected enemy adds a stack; the first Neurothrope attack infects (0 = not yet infected) | **+1 for every stack added** (this is the only way the parasite scores). Max 16. Neurothrope's own attacks add a stack too; the parasite's bonus on his attacks is not counted as a buff. |
 
-**Abaddon's own attacks** are scored for stacking his passive instead of the usual +1: melee **2**, ranged while
-adjacent to Abraxas **1**, ranged otherwise **0**.
+**Abaddon's passive stacks** (0 to 13, set on the board) score **+1 for every stack added**. Every enemy he hits adds
+one, so a melee attack with the relic and the extra attack can add up to 4, and a ranged shot adds 1. This replaces the
+earlier 2/1/0 rule of thumb.
 
 **Penalty:** Neurothrope loses damage if he is adjacent to any enemy at any point in his turn, and again next round
 if he stays adjacent (this round and the next). Scored as a soft penalty; the size is user-set, like the undesirable-hex penalty (suggested default 3).
@@ -141,7 +148,7 @@ won't survive".
 2. Boss and minion positions (boss footprint 1, 3 or 7 hexes).
 3. Hex modifiers: fire (two kinds) and despoiled ground.
 4. Undesirable hexes (single hexes for now; lines and groups later).
-5. Neuroparasite stacks on the boss, 0 to 16.
+5. Neuroparasite stacks on the boss, 0 to 16, and Abaddon's stacks, 0 to 13, and whether his active is available.
 6. Starting positions of the five characters (any hex; no deployment zones).
 7. Whether each once-per-battle active is still available.
 
@@ -165,8 +172,10 @@ Decisions made while building it, beyond what the sections above say. Tell me wh
   psychic or flame attack when any hex of what it hit (target or smite) is burning.
 - **Fire** that an attack lights is always the two-round kind (it replaces whatever effect was there). Fire placed as
   "this round only" is gone for Z'kar's start-of-next-round attack.
-- **Abaddon's own attacks** score +2 for a melee or relic attack; a ranged shot scores only through the usual buffs
-  (so ranged beside Abraxas is the +1 Abraxas buff, and with Ahriman, the parasite or a hex effect more).
+- **Abaddon's own attacks** score one per stack added (every enemy he hits), plus the usual buffs on the attack (ranged
+  beside Abraxas is the +1 Abraxas buff, and with Ahriman, the parasite or a hex effect more). His relic hits are
+  automatic: up to two more enemies adjacent to both him and the target. If his active is on, the second melee attack is
+  forced when an enemy is still adjacent (it is never worth skipping).
 - **Abaddon buffs** chaos units within 2 other than himself. **Neurothrope buffs** psykers and summons within 2 other than
   himself. **Z'kar's buff** needs him on the board and goes to a psyker beside another psyker or beside him.
 - **Neurothrope's penalty** applies once per plan if he is next to an enemy after a move, when he attacks, or at the end.
