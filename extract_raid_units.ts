@@ -8,6 +8,8 @@ import { createCanvas, loadImage } from 'canvas';
 //
 // <assets-dir> is an extracted-assets root with sprites/. Writes
 //   <data-dir>/units.json                { progression, units } (see below), to be imported by the app
+//   <data-dir>/abilities.json            the abilities and relic abilities the planner's damage uses: value tables by level, constants,
+//                                         which values the unit's rarity scales, the relics' levels, and the in-game description
 //   <public-dir>/icons/rank/<n>.png         the rank medals, n = the planner's rank index (1 = Stone I ... 20 = Adamantine II)
 //   <public-dir>/icons/star/<colour>.png    gold, red, blue stars and the Mythic wings
 //   <public-dir>/icons/ability/<id>.png     each ability's icon
@@ -48,6 +50,16 @@ async function icon(spriteDir: string, files: Map<string, string>, name: string,
     return true;
 }
 
+// The abilities the damage model reads. Passives and actives of the six units, Z'kar's summon ability and the battlefield ability
+// he is summoned with, and the three relics' abilities.
+const ABILITIES = [
+    'Drachnyen', 'FirstAmongTraitors', 'Doombolt', 'PsychicStalk', 'MasterOfTheTutelaries', 'InfernalPacts', 'Incursion', 'Possession',
+    'SpiritLeech', 'Neuroparasite', 'AetherStride', 'InfernalCannon', 'CabalOfSorcerers', 'HunterOfSouls', 'TalonOfHorus', 'BookOfFate', 'NornCrown',
+];
+const RELICS = ['R_Crit_TalonOfHorus', 'R_Booster_Crit_BookOfFate', 'R_Booster_Block_NornCrown'];
+
+const strip = (s: string): string => s.replace(/<[^>]+>/g, '');
+
 async function main() {
     const [gameconfigPath, assetsDir, dataDir, outDir] = process.argv.slice(2);
     if (!gameconfigPath || !assetsDir || !dataDir || !outDir) {
@@ -83,7 +95,30 @@ async function main() {
             progressionOverride: perUnitSteps[id] !== undefined,
         };
     }
+    // Abilities and relics, with their in-game descriptions (from the English strings next to the game config).
+    const i2Path = path.join(path.dirname(gameconfigPath), 'I2Languages_en.1.42.json');
+    const terms: Record<string, string> = {};
+    if (fs.existsSync(i2Path)) for (const t of JSON.parse(fs.readFileSync(i2Path, 'utf-8')).mSource.mTerms) if (t.Languages?.[0]) terms[t.Term] = t.Languages[0];
+    const abilities: Record<string, unknown> = {};
+    for (const id of ABILITIES) {
+        const a = units.abilities[id];
+        if (!a) throw new Error(`no ability ${id}`);
+        abilities[id] = {
+            name: strip(terms[`Abilities/${id}_Name`] ?? id),
+            description: strip(terms[`Abilities/${id}_CurrentLevelDescription`] ?? ''),
+            variables: a.variables ?? {},
+            constants: a.constants ?? {},
+            // The values the unit's rarity multiplies (Common x1 ... Mythic x2); the relics' are indexed by relic level and not scaled.
+            scaled: a.variablesAffectedByRarityBonus ?? [],
+        };
+    }
+    const relics: Record<string, unknown> = {};
+    for (const id of RELICS) {
+        const item = client.items[id];
+        relics[id] = { name: item.name, abilityId: item.abilityId, levels: item.levels.length };
+    }
     fs.mkdirSync(dataDir, { recursive: true });
+    fs.writeFileSync(path.join(dataDir, 'abilities.json'), JSON.stringify({ abilities, relics }, null, 1));
     fs.writeFileSync(path.join(dataDir, 'units.json'), JSON.stringify({ progression, units: out, pierce, damageProfileModifiers: units.damageProfileModifiers }, null, 1));
 
     const spriteDir = path.join(assetsDir, 'sprites');
