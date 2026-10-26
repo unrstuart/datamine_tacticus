@@ -1,4 +1,6 @@
 import { Board } from '../core/board';
+import { EnemyArmor } from '../core/enemies';
+import { Roster } from '../core/roster';
 import { Cell, cellKey, footprintDistance } from '../core/hex';
 import { AbaddonExtraAttack, Effect, Setup, UNIT_IDS, UnitId } from '../core/setup';
 import { ActorName } from './units';
@@ -36,9 +38,12 @@ export interface State {
     neuroAdjacent: boolean;
 }
 
+/** Everything a round is played on: the board, the setup, the six units' own stats, and the enemies' armor. */
 export interface Context {
     board: Board;
     setup: Setup;
+    roster: Roster;
+    armor: EnemyArmor;
 }
 
 export function initialState(setup: Setup): State {

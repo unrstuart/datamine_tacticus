@@ -1,7 +1,9 @@
 # Raid planner: rules sheet (draft, for the Abaddon / Z'kar comp)
 
 Goal: for one guild raid round, search every legal sequence of moves, deployments and attacks, score each by the
-buffs it applies, and report all plans tied for the top score.
+**damage it does to the boss** (section 12), and keep the ten best plans. Sections 8, 9 and 11 were written for buff
+points; where they talk of points, ties or "+1", the damage model in section 12 supersedes them (the legality, trigger,
+fire, kill and parasite rules there still stand).
 
 Items marked **(?)** are my reading of something you didn't say outright. Please correct them.
 
@@ -181,9 +183,15 @@ Decisions made while building it, beyond what the sections above say. Tell me wh
 - **Neurothrope's penalty** applies once per plan if he is next to an enemy after a move, when he attacks, or at the end.
 - **Order within one move:** a character moves at most once, before attacking; attacking ends its turn.
 
-## 12. Damage (in progress)
+## 12. Damage
 
-Scoring by buffs is a stand-in; the goal is damage. The pieces so far (`src/core/stats.ts`, `damage.ts`):
+Plans are scored by damage to the boss alone (minion damage and smite damage are not counted). The search keeps the **ten
+best** plans: ties are broken by fewer units left on undesirable hexes, then first found. Penalties (default 0) are in damage
+units. Armor is taken off each hit. The boss's armor comes from its rarity, stars and rank (`enemies.json`). Ability values
+come from the game's tables, using the average of min and max. Let the Galaxy Burn gives its extra hit only on a hex with an
+effect, Book of Fate is needed for Archimatos or Abraxas to trigger Z'kar, and the parasite level used is the one before the
+attack. Z'kar's stats come from his Aether Stride summon, and his melee gets Infernal Pacts too, as a Chaos Daemon. The
+pieces (`src/core/stats.ts`, `damage.ts`, `src/engine/calc.ts`) (`src/core/stats.ts`, `damage.ts`):
 
 - **A character's damage stat** = (base + the rank-up rows up to its rank) x the star step's multiplier / 100, from the game's
   config. At Mythic wings and Adamantine II: Abaddon 2,001, Ahriman 4,005, Abraxas 2,402, Archimatos 2,136, Neurothrope 2,671.

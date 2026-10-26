@@ -24,6 +24,9 @@ import {
 //   <out-dir>/boards.json              { [BoardId]: Board }
 //   <out-dir>/bosses.json              [{ bossType, encounters: [{ type, boardId, unitId, icon? }] }]
 //   <out-dir>/bosses/<unitId>.png      the encounter boss's round portrait (when the dump has one)
+//   <out-dir>/enemies.json             { [unitId]: [{ rarity, stars, rank, armor, health }] } for every boss and minion of those
+//                                      encounters: the game's stat rows (one per rarity / star / rank step; rank is the planner's
+//                                      1-based index, Stone I = 1)
 //
 // Hex adjacency is defined on the visual grid (vCol, vRow): vRow grows northward and ODD columns are staggered half a
 // hex SOUTH. The logical (column, row) is what the game addresses units and spawn points by; it is kept for reference.
@@ -107,6 +110,9 @@ async function main() {
 
     // bossType -> encounter type -> board id -> unit id, in first-seen order.
     const bosses = new Map<string, Map<string, Map<string, string>>>();
+    // board id -> the unit ids of the minions that fight alongside the boss on it (an encounter's npc1id / npc2id / enemies).
+    const minionIds = new Map<string, Set<string>>();
+    const enemyUnitIds = new Set<string>();
     for (const season of Object.values<any>(guildBoss.guildBossSeasonDataConfigsGDTO)) {
         for (const tier of season.tiers) {
             for (const set of tier.sets) {
@@ -114,6 +120,11 @@ async function main() {
                     const types = bosses.get(enc.bossType) ?? new Map<string, Map<string, string>>();
                     const boards = types.get(enc.guildBossEncounterType) ?? new Map<string, string>();
                     if (!boards.has(enc.boardId)) boards.set(enc.boardId, String(enc.unitId).split(':')[0]);
+                    const base = (id: string) => String(id).split(':')[0];
+                    enemyUnitIds.add(base(enc.unitId));
+                    const minions = minionIds.get(enc.boardId) ?? new Set<string>();
+                    for (const id of [enc.npc1id, enc.npc2id, ...(enc.enemies ?? [])]) if (id) minions.add(base(id)), enemyUnitIds.add(base(id));
+                    minionIds.set(enc.boardId, minions);
                     types.set(enc.guildBossEncounterType, boards);
                     bosses.set(enc.bossType, types);
                 }
@@ -224,10 +235,22 @@ async function main() {
         .map(([bossType, types]) => ({
             bossType,
             encounters: [...types.entries()].flatMap(([type, ids]) =>
-                [...ids.entries()].filter(([id]) => boards[id]).map(([boardId, unitId]) => ({ type, boardId, unitId, icon: icons.get(unitId) }))
+                [...ids.entries()].filter(([id]) => boards[id]).map(([boardId, unitId]) => ({ type, boardId, unitId, icon: icons.get(unitId), minionIds: [...(minionIds.get(boardId) ?? [])] }))
             ),
         }));
     fs.writeFileSync(path.join(outDir, 'bosses.json'), JSON.stringify(bossList, null, 1));
+
+    // The stat rows of every boss and minion: armor and health by rarity, stars and rank (the game's Rank is 0-based).
+    const enemies: Record<string, Array<{ rarity: string; stars: number; rank: number; armor: number; health: number }>> = {};
+    for (const id of [...enemyUnitIds].sort()) {
+        const set = guildBoss.unitSets[id];
+        if (!set) {
+            problems.push(`${id}: no stats in unitSets`);
+            continue;
+        }
+        enemies[id] = set.stats.map((row: any) => ({ rarity: row.BaseRarity, stars: row.StarLevel, rank: row.Rank + 1, armor: row.FixedArmor ?? 0, health: row.Health ?? 0 }));
+    }
+    fs.writeFileSync(path.join(outDir, 'enemies.json'), JSON.stringify(enemies));
 
     console.log(`${Object.keys(boards).length}/${boardIds.length} boards -> ${outDir}`);
     for (const problem of problems) console.log('PROBLEM', problem);

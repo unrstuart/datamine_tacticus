@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BoardData } from '../core/board';
+import { EnemyArmor } from '../core/enemies';
+import { Roster } from '../core/roster';
 import { Setup } from '../core/setup';
 import { COUNTER, COUNTER_LENGTH, Counters, NO_SCORE, Progress, bytesForCounters, makeCounters, readProgress, requestStop } from '../solver/counters';
 import { StoredPlan } from '../solver/search';
@@ -21,7 +23,7 @@ const idle: SolverState = { running: false, progress: undefined, plans: [], elap
  * Runs the search in a worker. The page polls the counters about ten times a second; with a SharedArrayBuffer (a cross-origin
  * isolated page) it reads the worker's atomics directly, otherwise the worker posts them.
  */
-export function useSolver(): { state: SolverState; start: (board: BoardData, setup: Setup) => void; stop: () => void } {
+export function useSolver(): { state: SolverState; start: (board: BoardData, setup: Setup, roster: Roster, armor: EnemyArmor) => void; stop: () => void } {
     const [state, setState] = useState<SolverState>(idle);
     const worker = useRef<Worker | undefined>(undefined);
     const counters = useRef<Counters | undefined>(undefined);
@@ -46,7 +48,7 @@ export function useSolver(): { state: SolverState; start: (board: BoardData, set
     }, [publish]);
 
     const start = useCallback(
-        (board: BoardData, setup: Setup) => {
+        (board: BoardData, setup: Setup, roster: Roster, armor: EnemyArmor) => {
             worker.current?.terminate();
             const canShare = typeof SharedArrayBuffer !== 'undefined' && self.crossOriginIsolated;
             const buffer = canShare ? new SharedArrayBuffer(bytesForCounters()) : new ArrayBuffer(bytesForCounters());
@@ -73,7 +75,7 @@ export function useSolver(): { state: SolverState; start: (board: BoardData, set
                     publish();
                 }
             };
-            const message: ToWorker = { type: 'start', board, setup, counters: buffer, maxStored: 200 };
+            const message: ToWorker = { type: 'start', board, setup, roster, armor, counters: buffer, top: 10 };
             w.postMessage(message);
             publish();
         },

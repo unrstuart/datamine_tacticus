@@ -6,61 +6,98 @@
     "type": "Boss",
     "boardId": "GB_Khaine_01",
     "unitId": "GuildBoss8Boss1EldarAvatar",
-    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png"
+    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png",
+    "minionIds": [
+     "GuildBoss8Npc1EldarGuardian",
+     "GuildBoss8Npc2EldarWarlock"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Khaine_05",
     "unitId": "GuildBoss8Boss1EldarAvatar",
-    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png"
+    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png",
+    "minionIds": [
+     "GuildBoss8Npc1EldarGuardian",
+     "GuildBoss8Npc2EldarWarlock"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Khaine_02",
     "unitId": "GuildBoss8Boss1EldarAvatar",
-    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png"
+    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png",
+    "minionIds": [
+     "GuildBoss8Npc1EldarGuardian",
+     "GuildBoss8Npc2EldarWarlock"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Khaine_04",
     "unitId": "GuildBoss8Boss1EldarAvatar",
-    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png"
+    "icon": "bosses/GuildBoss8Boss1EldarAvatar.png",
+    "minionIds": [
+     "GuildBoss8Npc1EldarGuardian",
+     "GuildBoss8Npc2EldarWarlock"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Khaine_support_01",
     "unitId": "GuildBoss8MiniBoss1EldarAutarch",
-    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png"
+    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png",
+    "minionIds": [
+     "GuildBoss8Npc1EldarGuardian",
+     "GuildBoss8Npc3EldarHarlequin"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Khaine_support_02",
     "unitId": "GuildBoss8MiniBoss2EldarFarseer",
-    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png"
+    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png",
+    "minionIds": [
+     "GuildBoss8Npc2EldarWarlock"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Khaine_support_05",
     "unitId": "GuildBoss8MiniBoss1EldarAutarch",
-    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png"
+    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png",
+    "minionIds": [
+     "GuildBoss8Npc1EldarGuardian",
+     "GuildBoss8Npc3EldarHarlequin"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Khaine_support_06",
     "unitId": "GuildBoss8MiniBoss2EldarFarseer",
-    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png"
+    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png",
+    "minionIds": [
+     "GuildBoss8Npc2EldarWarlock"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Khaine_support_03",
     "unitId": "GuildBoss8MiniBoss1EldarAutarch",
-    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png"
+    "icon": "bosses/GuildBoss8MiniBoss1EldarAutarch.png",
+    "minionIds": [
+     "GuildBoss8Npc1EldarGuardian",
+     "GuildBoss8Npc3EldarHarlequin"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Khaine_support_04",
     "unitId": "GuildBoss8MiniBoss2EldarFarseer",
-    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png"
+    "icon": "bosses/GuildBoss8MiniBoss2EldarFarseer.png",
+    "minionIds": [
+     "GuildBoss8Npc2EldarWarlock"
+    ]
    }
   ]
  },
@@ -71,61 +108,104 @@
     "type": "Boss",
     "boardId": "GB_Belisarius_02",
     "unitId": "GuildBoss10Boss1AdmecBelisarius",
-    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png"
+    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png",
+    "minionIds": [
+     "GuildBoss10Npc1AdmecTechpriest",
+     "GuildBoss10Npc2AdmecElectropriest"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Belisarius_01",
     "unitId": "GuildBoss10Boss1AdmecBelisarius",
-    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png"
+    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png",
+    "minionIds": [
+     "GuildBoss10Npc1AdmecTechpriest",
+     "GuildBoss10Npc2AdmecElectropriest"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Belisarius_04",
     "unitId": "GuildBoss10Boss1AdmecBelisarius",
-    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png"
+    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png",
+    "minionIds": [
+     "GuildBoss10Npc1AdmecTechpriest",
+     "GuildBoss10Npc2AdmecElectropriest"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Belisarius_03",
     "unitId": "GuildBoss10Boss1AdmecBelisarius",
-    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png"
+    "icon": "bosses/GuildBoss10Boss1AdmecBelisarius.png",
+    "minionIds": [
+     "GuildBoss10Npc1AdmecTechpriest",
+     "GuildBoss10Npc2AdmecElectropriest"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Belisarius_support_02",
     "unitId": "GuildBoss10MiniBoss1AdmecMarshall",
-    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png"
+    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png",
+    "minionIds": [
+     "GuildBoss10Minion1AdmecRuststalker",
+     "GuildBoss10Npc1AdmecTechpriest"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Belisarius_support_05",
     "unitId": "GuildBoss10MiniBoss2AdmecManipulus",
-    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png"
+    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png",
+    "minionIds": [
+     "GuildBoss10Minion2AdmecDestroyer",
+     "GuildBoss10LootObjArcheotecCrate",
+     "GuildBoss10Npc2AdmecElectropriest"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Belisarius_support_01",
     "unitId": "GuildBoss10MiniBoss1AdmecMarshall",
-    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png"
+    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png",
+    "minionIds": [
+     "GuildBoss10Minion1AdmecRuststalker",
+     "GuildBoss10Npc1AdmecTechpriest"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Belisarius_support_04",
     "unitId": "GuildBoss10MiniBoss2AdmecManipulus",
-    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png"
+    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png",
+    "minionIds": [
+     "GuildBoss10Minion2AdmecDestroyer",
+     "GuildBoss10LootObjArcheotecCrate",
+     "GuildBoss10Npc2AdmecElectropriest"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Belisarius_support_03",
     "unitId": "GuildBoss10MiniBoss1AdmecMarshall",
-    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png"
+    "icon": "bosses/GuildBoss10MiniBoss1AdmecMarshall.png",
+    "minionIds": [
+     "GuildBoss10Minion1AdmecRuststalker",
+     "GuildBoss10Npc1AdmecTechpriest"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Belisarius_support_06",
     "unitId": "GuildBoss10MiniBoss2AdmecManipulus",
-    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png"
+    "icon": "bosses/GuildBoss10MiniBoss2AdmecManipulus.png",
+    "minionIds": [
+     "GuildBoss10Minion2AdmecDestroyer",
+     "GuildBoss10LootObjArcheotecCrate",
+     "GuildBoss10Npc2AdmecElectropriest"
+    ]
    }
   ]
  },
@@ -136,79 +216,131 @@
     "type": "Boss",
     "boardId": "GB_Dakka_04",
     "unitId": "GuildBoss4Boss1OrksGhazghkull",
-    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png",
+    "minionIds": [
+     "GuildBoss4Npc2OrksOrkBoy",
+     "GuildBoss4Npc4OrksStormboy"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Dakka_01",
     "unitId": "GuildBoss4Boss1OrksGhazghkull",
-    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png",
+    "minionIds": [
+     "GuildBoss4Npc2OrksOrkBoy",
+     "GuildBoss4Npc4OrksStormboy"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Dakka_02",
     "unitId": "GuildBoss4Boss1OrksGhazghkull",
-    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png",
+    "minionIds": [
+     "GuildBoss4Npc2OrksOrkBoy",
+     "GuildBoss4Npc4OrksStormboy"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Dakka_03",
     "unitId": "GuildBoss4Boss1OrksGhazghkull",
-    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png",
+    "minionIds": [
+     "GuildBoss4Npc2OrksOrkBoy",
+     "GuildBoss4Npc4OrksStormboy"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Dakka_05",
     "unitId": "GuildBoss4Boss1OrksGhazghkull",
-    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png",
+    "minionIds": [
+     "GuildBoss4Npc2OrksOrkBoy",
+     "GuildBoss4Npc4OrksStormboy"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Dakka_03_1",
     "unitId": "GuildBoss4Boss1OrksGhazghkull",
-    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png"
+    "icon": "bosses/GuildBoss4Boss1OrksGhazghkull.png",
+    "minionIds": [
+     "GuildBoss4Npc2OrksOrkBoy",
+     "GuildBoss4Npc4OrksStormboy"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Dakka_support_05_1",
     "unitId": "GuildBoss4MiniBoss1OrksBigMek",
-    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png"
+    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png",
+    "minionIds": [
+     "GuildBoss4Minion1OrksKillaKan",
+     "GuildBoss4Npc3OrksGrotTank"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Dakka_support_06",
     "unitId": "GuildBoss4MiniBoss2OrksNob",
-    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png"
+    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png",
+    "minionIds": [
+     "GuildBoss4Minion2OrksRuntherd",
+     "GuildBoss4Npc1OrksGrot"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Dakka_support_01",
     "unitId": "GuildBoss4MiniBoss1OrksBigMek",
-    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png"
+    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png",
+    "minionIds": [
+     "GuildBoss4Minion1OrksKillaKan",
+     "GuildBoss4Npc3OrksGrotTank"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Dakka_support_02",
     "unitId": "GuildBoss4MiniBoss2OrksNob",
-    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png"
+    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png",
+    "minionIds": [
+     "GuildBoss4Minion2OrksRuntherd",
+     "GuildBoss4Npc1OrksGrot"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Dakka_support_03",
     "unitId": "GuildBoss4MiniBoss1OrksBigMek",
-    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png"
+    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png",
+    "minionIds": [
+     "GuildBoss4Minion1OrksKillaKan",
+     "GuildBoss4Npc3OrksGrotTank"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Dakka_support_04",
     "unitId": "GuildBoss4MiniBoss2OrksNob",
-    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png"
+    "icon": "bosses/GuildBoss4MiniBoss2OrksNob.png",
+    "minionIds": [
+     "GuildBoss4Minion2OrksRuntherd",
+     "GuildBoss4Npc1OrksGrot"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Dakka_support_05",
     "unitId": "GuildBoss4MiniBoss1OrksBigMek",
-    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png"
+    "icon": "bosses/GuildBoss4MiniBoss1OrksBigMek.png",
+    "minionIds": [
+     "GuildBoss4Minion1OrksKillaKan",
+     "GuildBoss4Npc3OrksGrotTank"
+    ]
    }
   ]
  },
@@ -219,37 +351,65 @@
     "type": "Boss",
     "boardId": "GB_04",
     "unitId": "GuildBoss2Boss3TyranHiveTyrantGorgon",
-    "icon": "bosses/GuildBoss2Boss3TyranHiveTyrantGorgon.png"
+    "icon": "bosses/GuildBoss2Boss3TyranHiveTyrantGorgon.png",
+    "minionIds": [
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc3TyranTermagantGorgon"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_03",
     "unitId": "GuildBoss2Boss3TyranHiveTyrantGorgon",
-    "icon": "bosses/GuildBoss2Boss3TyranHiveTyrantGorgon.png"
+    "icon": "bosses/GuildBoss2Boss3TyranHiveTyrantGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_09",
     "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
-    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc6TyranHormagauntGorgon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_11",
     "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
-    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc6TyranHormagauntGorgon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_05",
     "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
-    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc6TyranHormagauntGorgon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_06",
     "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
-    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc6TyranHormagauntGorgon"
+    ]
    }
   ]
  },
@@ -260,19 +420,33 @@
     "type": "Boss",
     "boardId": "GB_06",
     "unitId": "GuildBoss2Boss2TyranHiveTyrantKronos",
-    "icon": "bosses/GuildBoss2Boss2TyranHiveTyrantKronos.png"
+    "icon": "bosses/GuildBoss2Boss2TyranHiveTyrantKronos.png",
+    "minionIds": [
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc2TyranTermagantKronos"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_07",
     "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
-    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png",
+    "minionIds": [
+     "GuildBoss1Npc2TyranTermagantKronos",
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc5TyranHormagauntKronos"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_08",
     "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
-    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png",
+    "minionIds": [
+     "GuildBoss1Npc2TyranTermagantKronos",
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc5TyranHormagauntKronos"
+    ]
    }
   ]
  },
@@ -283,37 +457,70 @@
     "type": "Boss",
     "boardId": "GB_02",
     "unitId": "GuildBoss2Boss1TyranHiveTyrantLeviathan",
-    "icon": "bosses/GuildBoss2Boss1TyranHiveTyrantLeviathan.png"
+    "icon": "bosses/GuildBoss2Boss1TyranHiveTyrantLeviathan.png",
+    "minionIds": [
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_05",
     "unitId": "GuildBoss2Boss1TyranHiveTyrantLeviathan",
-    "icon": "bosses/GuildBoss2Boss1TyranHiveTyrantLeviathan.png"
+    "icon": "bosses/GuildBoss2Boss1TyranHiveTyrantLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_03",
     "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
-    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan",
+     "GuildBoss1Npc4TyranHormagauntLeviathan",
+     "GuildBoss1Npc2TyranTermagantKronos",
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc5TyranHormagauntKronos"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_04",
     "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
-    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan",
+     "GuildBoss1Npc4TyranHormagauntLeviathan",
+     "GuildBoss1Npc2TyranTermagantKronos",
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc5TyranHormagauntKronos"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_01",
     "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
-    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan",
+     "GuildBoss1Npc4TyranHormagauntLeviathan"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_02",
     "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
-    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan",
+     "GuildBoss1Npc4TyranHormagauntLeviathan"
+    ]
    }
   ]
  },
@@ -324,43 +531,76 @@
     "type": "Boss",
     "boardId": "GB_Lion_02",
     "unitId": "GuildBoss12Boss1DarkaLion",
-    "icon": "bosses/GuildBoss12Boss1DarkaLion.png"
+    "icon": "bosses/GuildBoss12Boss1DarkaLion.png",
+    "minionIds": [
+     "GuildBoss12Npc2DarkaHellblaster",
+     "GuildBoss12Npc3DarkaTerminator",
+     "GuildBoss12Npc4DarkaWatcher"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Lion_03",
     "unitId": "GuildBoss12Boss1DarkaLion",
-    "icon": "bosses/GuildBoss12Boss1DarkaLion.png"
+    "icon": "bosses/GuildBoss12Boss1DarkaLion.png",
+    "minionIds": [
+     "GuildBoss12Npc2DarkaHellblaster",
+     "GuildBoss12Npc3DarkaTerminator",
+     "GuildBoss12Npc4DarkaWatcher"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Lion_01",
     "unitId": "GuildBoss12Boss1DarkaLion",
-    "icon": "bosses/GuildBoss12Boss1DarkaLion.png"
+    "icon": "bosses/GuildBoss12Boss1DarkaLion.png",
+    "minionIds": [
+     "GuildBoss12Npc2DarkaHellblaster",
+     "GuildBoss12Npc3DarkaTerminator",
+     "GuildBoss12Npc4DarkaWatcher"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Lion_support_03",
     "unitId": "GuildBoss12MiniBoss1DarkaTerminator",
-    "icon": "bosses/GuildBoss12MiniBoss1DarkaTerminator.png"
+    "icon": "bosses/GuildBoss12MiniBoss1DarkaTerminator.png",
+    "minionIds": [
+     "GuildBoss12Npc3DarkaTerminator",
+     "GuildBoss12Npc2DarkaHellblaster"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Lion_support_04",
     "unitId": "GuildBoss12MiniBoss2DarkaCompanion",
-    "icon": "bosses/GuildBoss12MiniBoss2DarkaCompanion.png"
+    "icon": "bosses/GuildBoss12MiniBoss2DarkaCompanion.png",
+    "minionIds": [
+     "GuildBoss12Npc1DarkaInfiltrator",
+     "GuildBoss12Npc2DarkaHellblaster",
+     "GuildBoss12Npc3DarkaTerminator"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Lion_support_01",
     "unitId": "GuildBoss12MiniBoss1DarkaTerminator",
-    "icon": "bosses/GuildBoss12MiniBoss1DarkaTerminator.png"
+    "icon": "bosses/GuildBoss12MiniBoss1DarkaTerminator.png",
+    "minionIds": [
+     "GuildBoss12Npc3DarkaTerminator",
+     "GuildBoss12Npc2DarkaHellblaster"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Lion_support_02",
     "unitId": "GuildBoss12MiniBoss2DarkaCompanion",
-    "icon": "bosses/GuildBoss12MiniBoss2DarkaCompanion.png"
+    "icon": "bosses/GuildBoss12MiniBoss2DarkaCompanion.png",
+    "minionIds": [
+     "GuildBoss12Npc1DarkaInfiltrator",
+     "GuildBoss12Npc2DarkaHellblaster",
+     "GuildBoss12Npc3DarkaTerminator"
+    ]
    }
   ]
  },
@@ -371,43 +611,63 @@
     "type": "Boss",
     "boardId": "GB_Magnus_03",
     "unitId": "GuildBoss9Boss1ThousMagnus",
-    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png"
+    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png",
+    "minionIds": [
+     "GuildBoss9Npc3ThousRubricMarine",
+     "GuildBoss9Npc4ThousTerminator"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Magnus_02",
     "unitId": "GuildBoss9Boss1ThousMagnus",
-    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png"
+    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png",
+    "minionIds": [
+     "GuildBoss9Npc3ThousRubricMarine",
+     "GuildBoss9Npc4ThousTerminator"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Magnus_01",
     "unitId": "GuildBoss9Boss1ThousMagnus",
-    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png"
+    "icon": "bosses/GuildBoss9Boss1ThousMagnus.png",
+    "minionIds": [
+     "GuildBoss9Npc3ThousRubricMarine",
+     "GuildBoss9Npc4ThousTerminator"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Magnus_support_06",
     "unitId": "GuildBoss9MiniBoss1ThousSorcerer",
-    "icon": "bosses/GuildBoss9MiniBoss1ThousSorcerer.png"
+    "icon": "bosses/GuildBoss9MiniBoss1ThousSorcerer.png",
+    "minionIds": []
    },
    {
     "type": "Crystal",
     "boardId": "GB_Magnus_support_05",
     "unitId": "GuildBoss9MiniBoss2ThousInfernalMaster",
-    "icon": "bosses/GuildBoss9MiniBoss2ThousInfernalMaster.png"
+    "icon": "bosses/GuildBoss9MiniBoss2ThousInfernalMaster.png",
+    "minionIds": [
+     "GuildBoss9Npc1ThousPinkHorror"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Magnus_support_02",
     "unitId": "GuildBoss9MiniBoss1ThousSorcerer",
-    "icon": "bosses/GuildBoss9MiniBoss1ThousSorcerer.png"
+    "icon": "bosses/GuildBoss9MiniBoss1ThousSorcerer.png",
+    "minionIds": []
    },
    {
     "type": "Crystal",
     "boardId": "GB_Magnus_support_01",
     "unitId": "GuildBoss9MiniBoss2ThousInfernalMaster",
-    "icon": "bosses/GuildBoss9MiniBoss2ThousInfernalMaster.png"
+    "icon": "bosses/GuildBoss9MiniBoss2ThousInfernalMaster.png",
+    "minionIds": [
+     "GuildBoss9Npc1ThousPinkHorror"
+    ]
    }
   ]
  },
@@ -418,37 +678,57 @@
     "type": "Boss",
     "boardId": "GB_Mortarion_03",
     "unitId": "GuildBoss5Boss1DeathMortarion",
-    "icon": "bosses/GuildBoss5Boss1DeathMortarion.png"
+    "icon": "bosses/GuildBoss5Boss1DeathMortarion.png",
+    "minionIds": [
+     "GuildBoss5Npc1Poxwalker"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Mortarion_04",
     "unitId": "GuildBoss5Boss1DeathMortarion",
-    "icon": "bosses/GuildBoss5Boss1DeathMortarion.png"
+    "icon": "bosses/GuildBoss5Boss1DeathMortarion.png",
+    "minionIds": [
+     "GuildBoss5Npc1Poxwalker"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Mortarion_support_03",
     "unitId": "GuildBoss5MiniBoss1DeathRotbone",
-    "icon": "bosses/GuildBoss5MiniBoss1DeathRotbone.png"
+    "icon": "bosses/GuildBoss5MiniBoss1DeathRotbone.png",
+    "minionIds": [
+     "GuildBoss5Minion1DeathBlightlord",
+     "GuildBoss5Npc1Poxwalker"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Mortarion_support_04",
     "unitId": "GuildBoss5MiniBoss2DeathBlightbringer",
-    "icon": "bosses/GuildBoss5MiniBoss2DeathBlightbringer.png"
+    "icon": "bosses/GuildBoss5MiniBoss2DeathBlightbringer.png",
+    "minionIds": [
+     "GuildBoss5Npc1Poxwalker"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Mortarion_support_05",
     "unitId": "GuildBoss5MiniBoss1DeathRotbone",
-    "icon": "bosses/GuildBoss5MiniBoss1DeathRotbone.png"
+    "icon": "bosses/GuildBoss5MiniBoss1DeathRotbone.png",
+    "minionIds": [
+     "GuildBoss5Minion1DeathBlightlord",
+     "GuildBoss5Npc1Poxwalker"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Mortarion_support_06",
     "unitId": "GuildBoss5MiniBoss2DeathBlightbringer",
-    "icon": "bosses/GuildBoss5MiniBoss2DeathBlightbringer.png"
+    "icon": "bosses/GuildBoss5MiniBoss2DeathBlightbringer.png",
+    "minionIds": [
+     "GuildBoss5Npc1Poxwalker"
+    ]
    }
   ]
  },
@@ -459,43 +739,76 @@
     "type": "Boss",
     "boardId": "GB_Riptide_03",
     "unitId": "GuildBoss11Boss1TauRiptide",
-    "icon": "bosses/GuildBoss11Boss1TauRiptide.png"
+    "icon": "bosses/GuildBoss11Boss1TauRiptide.png",
+    "minionIds": [
+     "GuildBoss11Npc1TauFireWarrior",
+     "GuildBoss11Npc3TauDroneShield",
+     "GuildBoss11Npc4TauStealthSuit"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Riptide_01",
     "unitId": "GuildBoss11Boss1TauRiptide",
-    "icon": "bosses/GuildBoss11Boss1TauRiptide.png"
+    "icon": "bosses/GuildBoss11Boss1TauRiptide.png",
+    "minionIds": [
+     "GuildBoss11Npc1TauFireWarrior",
+     "GuildBoss11Npc3TauDroneShield",
+     "GuildBoss11Npc4TauStealthSuit"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Riptide_02",
     "unitId": "GuildBoss11Boss1TauRiptide",
-    "icon": "bosses/GuildBoss11Boss1TauRiptide.png"
+    "icon": "bosses/GuildBoss11Boss1TauRiptide.png",
+    "minionIds": [
+     "GuildBoss11Npc1TauFireWarrior",
+     "GuildBoss11Npc3TauDroneShield",
+     "GuildBoss11Npc4TauStealthSuit"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Riptide_support_02",
     "unitId": "GuildBoss11MiniBoss1TauMarksman",
-    "icon": "bosses/GuildBoss11MiniBoss1TauMarksman.png"
+    "icon": "bosses/GuildBoss11MiniBoss1TauMarksman.png",
+    "minionIds": [
+     "GuildBoss11Npc3TauDroneShield",
+     "GuildBoss11Npc1TauFireWarrior",
+     "GuildBoss11Npc2TauDroneSniper"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Riptide_support_04",
     "unitId": "GuildBoss11MiniBoss2TauCrisis",
-    "icon": "bosses/GuildBoss11MiniBoss2TauCrisis.png"
+    "icon": "bosses/GuildBoss11MiniBoss2TauCrisis.png",
+    "minionIds": [
+     "GuildBoss11Npc1TauFireWarrior",
+     "GuildBoss11Npc4TauStealthSuit"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Riptide_support_01",
     "unitId": "GuildBoss11MiniBoss1TauMarksman",
-    "icon": "bosses/GuildBoss11MiniBoss1TauMarksman.png"
+    "icon": "bosses/GuildBoss11MiniBoss1TauMarksman.png",
+    "minionIds": [
+     "GuildBoss11Npc3TauDroneShield",
+     "GuildBoss11Npc1TauFireWarrior",
+     "GuildBoss11Npc2TauDroneSniper"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Riptide_support_03",
     "unitId": "GuildBoss11MiniBoss2TauCrisis",
-    "icon": "bosses/GuildBoss11MiniBoss2TauCrisis.png"
+    "icon": "bosses/GuildBoss11MiniBoss2TauCrisis.png",
+    "minionIds": [
+     "GuildBoss11Npc1TauFireWarrior",
+     "GuildBoss11Npc4TauStealthSuit"
+    ]
    }
   ]
  },
@@ -506,67 +819,113 @@
     "type": "Boss",
     "boardId": "GB_RogalDorn_02",
     "unitId": "GuildBoss7Boss1AstraRogaldorn",
-    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png",
+    "minionIds": [
+     "GuildBoss7Npc1AstraGuardsman",
+     "GuildBoss7Npc4Mortar",
+     "GuildBoss4Npc2OrksOrkBoy",
+     "GuildBoss4Npc4OrksStormboy"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_RogalDorn_06",
     "unitId": "GuildBoss7Boss1AstraRogaldorn",
-    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png",
+    "minionIds": [
+     "GuildBoss7Npc1AstraGuardsman",
+     "GuildBoss7Npc4Mortar"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_RogalDorn_04",
     "unitId": "GuildBoss7Boss1AstraRogaldorn",
-    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png",
+    "minionIds": [
+     "GuildBoss7Npc1AstraGuardsman",
+     "GuildBoss7Npc4Mortar"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_RogalDorn_05",
     "unitId": "GuildBoss7Boss1AstraRogaldorn",
-    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png",
+    "minionIds": [
+     "GuildBoss7Npc1AstraGuardsman",
+     "GuildBoss7Npc4Mortar"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_RogalDorn_03",
     "unitId": "GuildBoss7Boss1AstraRogaldorn",
-    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png"
+    "icon": "bosses/GuildBoss7Boss1AstraRogaldorn.png",
+    "minionIds": [
+     "GuildBoss7Npc1AstraGuardsman",
+     "GuildBoss7Npc4Mortar"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_RogalDorn_support_01",
     "unitId": "GuildBoss7MiniBoss1AstraPrimarisPsy",
-    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png"
+    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png",
+    "minionIds": [
+     "GuildBoss7Npc3AstraVoxcaster",
+     "GuildBoss7Npc2AstraLascannon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_RogalDorn_support_02",
     "unitId": "GuildBoss7MiniBoss2AstraOrdnance",
-    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png"
+    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png",
+    "minionIds": [
+     "GuildBoss7Npc4Mortar",
+     "GuildBoss7Npc2AstraLascannon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_RogalDorn_support_03",
     "unitId": "GuildBoss7MiniBoss1AstraPrimarisPsy",
-    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png"
+    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png",
+    "minionIds": [
+     "GuildBoss7Npc3AstraVoxcaster",
+     "GuildBoss7Npc2AstraLascannon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_RogalDorn_support_04",
     "unitId": "GuildBoss7MiniBoss2AstraOrdnance",
-    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png"
+    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png",
+    "minionIds": [
+     "GuildBoss7Npc4Mortar",
+     "GuildBoss7Npc2AstraLascannon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_RogalDorn_support_05",
     "unitId": "GuildBoss7MiniBoss1AstraPrimarisPsy",
-    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png"
+    "icon": "bosses/GuildBoss7MiniBoss1AstraPrimarisPsy.png",
+    "minionIds": [
+     "GuildBoss7Npc3AstraVoxcaster",
+     "GuildBoss7Npc2AstraLascannon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_RogalDorn_support_06",
     "unitId": "GuildBoss7MiniBoss2AstraOrdnance",
-    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png"
+    "icon": "bosses/GuildBoss7MiniBoss2AstraOrdnance.png",
+    "minionIds": [
+     "GuildBoss7Npc4Mortar",
+     "GuildBoss7Npc2AstraLascannon"
+    ]
    }
   ]
  },
@@ -577,67 +936,114 @@
     "type": "Boss",
     "boardId": "GB_Screamer_03",
     "unitId": "GuildBoss6Boss1TyranScreamerKiller",
-    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png"
+    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png",
+    "minionIds": [
+     "GuildBoss6Npc1TyranHormagaunt",
+     "GuildBoss6Npc5TyranBarbgaunt",
+     "GuildBoss6Npc4TyranWarrior"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Screamer_01",
     "unitId": "GuildBoss6Boss1TyranScreamerKiller",
-    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png"
+    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png",
+    "minionIds": [
+     "GuildBoss6Npc1TyranHormagaunt",
+     "GuildBoss6Npc5TyranBarbgaunt",
+     "GuildBoss6Npc4TyranWarrior"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_Screamer_04",
     "unitId": "GuildBoss6Boss1TyranScreamerKiller",
-    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png"
+    "icon": "bosses/GuildBoss6Boss1TyranScreamerKiller.png",
+    "minionIds": [
+     "GuildBoss6Npc1TyranHormagaunt",
+     "GuildBoss6Npc5TyranBarbgaunt",
+     "GuildBoss6Npc4TyranWarrior"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Screamer_support_07",
     "unitId": "GuildBoss6MiniBoss1TyranNeurothrope",
-    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png"
+    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png",
+    "minionIds": [
+     "GuildBoss6Npc5TyranBarbgaunt",
+     "GuildBoss6Npc3TyranTermagant"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Screamer_support_08",
     "unitId": "GuildBoss6MiniBoss2TyranWingedPrime",
-    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png"
+    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png",
+    "minionIds": [
+     "GuildBoss6Npc4TyranWarrior",
+     "GuildBoss6Npc2TyranRipperSwarm"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Screamer_support_01",
     "unitId": "GuildBoss6MiniBoss1TyranNeurothrope",
-    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png"
+    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png",
+    "minionIds": [
+     "GuildBoss6Npc5TyranBarbgaunt",
+     "GuildBoss6Npc3TyranTermagant"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Screamer_support_02",
     "unitId": "GuildBoss6MiniBoss2TyranWingedPrime",
-    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png"
+    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png",
+    "minionIds": [
+     "GuildBoss6Npc4TyranWarrior",
+     "GuildBoss6Npc2TyranRipperSwarm"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Screamer_support_03",
     "unitId": "GuildBoss6MiniBoss1TyranNeurothrope",
-    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png"
+    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png",
+    "minionIds": [
+     "GuildBoss6Npc5TyranBarbgaunt",
+     "GuildBoss6Npc3TyranTermagant"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Screamer_support_04",
     "unitId": "GuildBoss6MiniBoss2TyranWingedPrime",
-    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png"
+    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png",
+    "minionIds": [
+     "GuildBoss6Npc4TyranWarrior",
+     "GuildBoss6Npc2TyranRipperSwarm"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Screamer_support_05",
     "unitId": "GuildBoss6MiniBoss1TyranNeurothrope",
-    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png"
+    "icon": "bosses/GuildBoss6MiniBoss1TyranNeurothrope.png",
+    "minionIds": [
+     "GuildBoss6Npc5TyranBarbgaunt",
+     "GuildBoss6Npc3TyranTermagant"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_Screamer_support_06",
     "unitId": "GuildBoss6MiniBoss2TyranWingedPrime",
-    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png"
+    "icon": "bosses/GuildBoss6MiniBoss2TyranWingedPrime.png",
+    "minionIds": [
+     "GuildBoss6Npc4TyranWarrior",
+     "GuildBoss6Npc2TyranRipperSwarm"
+    ]
    }
   ]
  },
@@ -648,55 +1054,100 @@
     "type": "Boss",
     "boardId": "GB_SK_04",
     "unitId": "GuildBoss3Boss1NecroSilentKing",
-    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png"
+    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png",
+    "minionIds": [
+     "GuildBoss3Npc3NecroDeathmark",
+     "GuildBoss3Minion2NecroHapthatra",
+     "GuildBoss3Minion1NecroMesophet"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_SK_01",
     "unitId": "GuildBoss3Boss1NecroSilentKing",
-    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png"
+    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png",
+    "minionIds": [
+     "GuildBoss3Npc3NecroDeathmark",
+     "GuildBoss3Minion2NecroHapthatra",
+     "GuildBoss3Minion1NecroMesophet"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_SK_03",
     "unitId": "GuildBoss3Boss1NecroSilentKing",
-    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png"
+    "icon": "bosses/GuildBoss3Boss1NecroSilentKing.png",
+    "minionIds": [
+     "GuildBoss3Npc3NecroDeathmark",
+     "GuildBoss3Minion2NecroHapthatra",
+     "GuildBoss3Minion1NecroMesophet"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_SK_support_08",
     "unitId": "GuildBoss3Minion3NecroMenhir",
-    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png",
+    "minionIds": [
+     "GuildBoss3Minion2NecroHapthatra",
+     "GuildBoss3Npc1NecroWarrior",
+     "GuildBoss3Npc3NecroDeathmark"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_SK_support_07",
     "unitId": "GuildBoss3Minion3NecroMenhir",
-    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png",
+    "minionIds": [
+     "GuildBoss3Minion1NecroMesophet",
+     "GuildBoss3Npc5NecroSwarm",
+     "GuildBoss3Npc2NecroFlayedOne"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_SK_support_02",
     "unitId": "GuildBoss3Minion3NecroMenhir",
-    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png",
+    "minionIds": [
+     "GuildBoss3Minion2NecroHapthatra",
+     "GuildBoss3Npc1NecroWarrior",
+     "GuildBoss3Npc3NecroDeathmark"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_SK_support_01",
     "unitId": "GuildBoss3Minion3NecroMenhir",
-    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png",
+    "minionIds": [
+     "GuildBoss3Minion1NecroMesophet",
+     "GuildBoss3Npc5NecroSwarm",
+     "GuildBoss3Npc2NecroFlayedOne"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_SK_support_04",
     "unitId": "GuildBoss3Minion3NecroMenhir",
-    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png",
+    "minionIds": [
+     "GuildBoss3Minion2NecroHapthatra",
+     "GuildBoss3Npc1NecroWarrior",
+     "GuildBoss3Npc3NecroDeathmark"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_SK_support_03",
     "unitId": "GuildBoss3Minion3NecroMenhir",
-    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png"
+    "icon": "bosses/GuildBoss3Minion3NecroMenhir.png",
+    "minionIds": [
+     "GuildBoss3Minion1NecroMesophet",
+     "GuildBoss3Npc5NecroSwarm",
+     "GuildBoss3Npc2NecroFlayedOne"
+    ]
    }
   ]
  },
@@ -707,37 +1158,65 @@
     "type": "Boss",
     "boardId": "GB_03",
     "unitId": "GuildBoss1Boss3TyranTervigonGorgon",
-    "icon": "bosses/GuildBoss1Boss3TyranTervigonGorgon.png"
+    "icon": "bosses/GuildBoss1Boss3TyranTervigonGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_04",
     "unitId": "GuildBoss1Boss3TyranTervigonGorgon",
-    "icon": "bosses/GuildBoss1Boss3TyranTervigonGorgon.png"
+    "icon": "bosses/GuildBoss1Boss3TyranTervigonGorgon.png",
+    "minionIds": [
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc3TyranTermagantGorgon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_05",
     "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
-    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc6TyranHormagauntGorgon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_06",
     "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
-    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc6TyranHormagauntGorgon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_09",
     "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
-    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc6TyranHormagauntGorgon"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_11",
     "unitId": "GuildBoss1MiniBoss3TyranWarriorGorgon",
-    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png"
+    "icon": "bosses/GuildBoss1MiniBoss3TyranWarriorGorgon.png",
+    "minionIds": [
+     "GuildBoss1Npc3TyranTermagantGorgon",
+     "GuildBoss2Npc3TyranRipperSwarmGorgon",
+     "GuildBoss1Npc6TyranHormagauntGorgon"
+    ]
    }
   ]
  },
@@ -748,37 +1227,71 @@
     "type": "Boss",
     "boardId": "GB_06",
     "unitId": "GuildBoss1Boss2TyranTervigonKronos",
-    "icon": "bosses/GuildBoss1Boss2TyranTervigonKronos.png"
+    "icon": "bosses/GuildBoss1Boss2TyranTervigonKronos.png",
+    "minionIds": [
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc2TyranTermagantKronos"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_01",
     "unitId": "GuildBoss1Boss2TyranTervigonKronos",
-    "icon": "bosses/GuildBoss1Boss2TyranTervigonKronos.png"
+    "icon": "bosses/GuildBoss1Boss2TyranTervigonKronos.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss1Npc2TyranTermagantKronos"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_07",
     "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
-    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png",
+    "minionIds": [
+     "GuildBoss1Npc2TyranTermagantKronos",
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc5TyranHormagauntKronos"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_08",
     "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
-    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png",
+    "minionIds": [
+     "GuildBoss1Npc2TyranTermagantKronos",
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc5TyranHormagauntKronos"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_03",
     "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
-    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan",
+     "GuildBoss1Npc4TyranHormagauntLeviathan",
+     "GuildBoss1Npc2TyranTermagantKronos",
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc5TyranHormagauntKronos"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_04",
     "unitId": "GuildBoss1MiniBoss2TyranWarriorKronos",
-    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png"
+    "icon": "bosses/GuildBoss1MiniBoss2TyranWarriorKronos.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan",
+     "GuildBoss1Npc4TyranHormagauntLeviathan",
+     "GuildBoss1Npc2TyranTermagantKronos",
+     "GuildBoss2Npc2TyranRipperSwarmKronos",
+     "GuildBoss1Npc5TyranHormagauntKronos"
+    ]
    }
   ]
  },
@@ -789,25 +1302,43 @@
     "type": "Boss",
     "boardId": "GB_01",
     "unitId": "GuildBoss1Boss1TyranTervigonLeviathan",
-    "icon": "bosses/GuildBoss1Boss1TyranTervigonLeviathan.png"
+    "icon": "bosses/GuildBoss1Boss1TyranTervigonLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss1Npc2TyranTermagantKronos"
+    ]
    },
    {
     "type": "Boss",
     "boardId": "GB_05",
     "unitId": "GuildBoss1Boss1TyranTervigonLeviathan",
-    "icon": "bosses/GuildBoss1Boss1TyranTervigonLeviathan.png"
+    "icon": "bosses/GuildBoss1Boss1TyranTervigonLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_01",
     "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
-    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan",
+     "GuildBoss1Npc4TyranHormagauntLeviathan"
+    ]
    },
    {
     "type": "Crystal",
     "boardId": "GB_support_02",
     "unitId": "GuildBoss1MiniBoss1TyranWarriorLeviathan",
-    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png"
+    "icon": "bosses/GuildBoss1MiniBoss1TyranWarriorLeviathan.png",
+    "minionIds": [
+     "GuildBoss1Npc1TyranTermagantLeviathan",
+     "GuildBoss2Npc1TyranRipperSwarmLeviathan",
+     "GuildBoss1Npc4TyranHormagauntLeviathan"
+    ]
    }
   ]
  }

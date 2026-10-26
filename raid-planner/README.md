@@ -1,7 +1,7 @@
 # Raid planner
 
 Plans one guild raid round for a fixed comp (Abaddon, Ahriman, Abraxas, Archimatos, Neurothrope + Z'kar): searches the
-moves, deployment and attack order that apply the most buffs. The rules are in `docs/rules.md`; Z'kar's placement rule is
+moves, deployment and attack order that do the most damage to the boss, and keeps the ten best plans. The rules are in `docs/rules.md`; Z'kar's placement rule is
 in `docs/zkar-deployment.md`.
 
 Lives inside datamine_tacticus for now, and has no imports from the rest of the repo, so it can move to its own repo.

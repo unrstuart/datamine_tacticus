@@ -1,37 +1,48 @@
 import { BoardData } from '../core/board';
+import { EnemyArmor } from '../core/enemies';
+import { Roster } from '../core/roster';
 import { Setup } from '../core/setup';
 import { StoredPlan } from '../solver/search';
-import { describeAction, describeReport } from './describe';
+import { describeAction, describeGroup, describeReport, fmt } from './describe';
 import { useSolver } from './useSolver';
 
-const fmt = (n: bigint | number): string => n.toLocaleString();
+const count = (n: bigint | number): string => n.toLocaleString();
 const seconds = (ms: number): string => `${(ms / 1000).toFixed(1)} s`;
 
 function PlanView({ plan, index }: { plan: StoredPlan; index: number }) {
-    const steps = plan.actions.length;
     return (
-        <details className="plan">
+        <details className="plan" open={index === 0}>
             <summary>
-                Plan {index + 1}: score {plan.total}, {steps} actions
+                Plan {index + 1}: {fmt(plan.total)} damage to the boss, {plan.actions.length} actions
+                {plan.undesirable > 0 ? `, ${plan.undesirable} on an undesirable hex` : ''}
             </summary>
             <ol>
                 {plan.actions.map((a, i) => (
                     <li key={i}>{describeAction(a)}</li>
                 ))}
             </ol>
-            <h4>Buffs, attack by attack</h4>
+            <h4>The damage, attack by attack</h4>
             <ul>
                 {plan.reports.map((r, i) => (
-                    <li key={i}>{describeReport(r)}</li>
+                    <li key={i}>
+                        {describeReport(r)}
+                        {r.groups.length > 0 && (
+                            <ul className="groups">
+                                {r.groups.map((g, j) => (
+                                    <li key={j}>{describeGroup(g)}</li>
+                                ))}
+                            </ul>
+                        )}
+                    </li>
                 ))}
             </ul>
-            {plan.penalties.length > 0 && <p className="hint">Penalties: {plan.penalties.map((p) => `${p.reason === 'undesirable' ? 'ends on an undesirable hex' : 'Neurothrope next to an enemy'} -${p.points}`).join(', ')}</p>}
+            {plan.penalties.length > 0 && <p className="hint">Penalties: {plan.penalties.map((p) => `${p.reason === 'undesirable' ? 'ends on an undesirable hex' : 'Neurothrope next to an enemy'} -${fmt(p.points)}`).join(', ')}</p>}
         </details>
     );
 }
 
-/** Starts and stops the search and shows how it is going, then the plans tied for the best score so far. */
-export function SolverPanel({ board, setup }: { board: BoardData; setup: Setup }) {
+/** Starts and stops the search and shows how it is going, then the best plans found so far. */
+export function SolverPanel({ board, setup, roster, armor }: { board: BoardData; setup: Setup; roster: Roster; armor: EnemyArmor }) {
     const { state, start, stop } = useSolver();
     const p = state.progress;
     const ratio = p && p.planned > 0n ? Number(p.searched) / Number(p.planned) : 0;
@@ -44,7 +55,7 @@ export function SolverPanel({ board, setup }: { board: BoardData; setup: Setup }
                         Stop
                     </button>
                 ) : (
-                    <button type="button" className="tool" onClick={() => start(board, setup)}>
+                    <button type="button" className="tool" onClick={() => start(board, setup, roster, armor)}>
                         Search
                     </button>
                 )}
@@ -56,19 +67,22 @@ export function SolverPanel({ board, setup }: { board: BoardData; setup: Setup }
                     <div>
                         <dt>Sequences searched / planned</dt>
                         <dd>
-                            {fmt(p.searched)} / {fmt(p.planned)}
+                            {count(p.searched)} / {count(p.planned)}
                         </dd>
                     </div>
                     <div>
-                        <dt>Best runs found</dt>
+                        <dt>Best plans kept</dt>
                         <dd>
-                            {fmt(p.bestRuns)}
-                            {p.bestScore !== undefined && <span className="muted"> (score {p.bestScore})</span>}
+                            {count(p.bestRuns)} <span className="muted">of 10</span>
                         </dd>
+                    </div>
+                    <div>
+                        <dt>Most damage so far</dt>
+                        <dd>{p.bestScore !== undefined ? fmt(p.bestScore) : '-'}</dd>
                     </div>
                     <div>
                         <dt>Complete plans evaluated</dt>
-                        <dd>{fmt(p.complete)}</dd>
+                        <dd>{count(p.complete)}</dd>
                     </div>
                     <div>
                         <dt>Time</dt>
@@ -94,11 +108,8 @@ export function SolverPanel({ board, setup }: { board: BoardData; setup: Setup }
 
             {state.plans.length > 0 && (
                 <>
-                    <h3>
-                        Best plans so far ({state.plans.length}
-                        {p && p.bestRuns > BigInt(state.plans.length) ? ` of ${fmt(p.bestRuns)}` : ''} shown)
-                    </h3>
-                    {state.plans.slice(0, 30).map((plan, i) => (
+                    <h3>Best plans so far</h3>
+                    {state.plans.map((plan, i) => (
                         <PlanView key={plan.signature} plan={plan} index={i} />
                     ))}
                 </>

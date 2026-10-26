@@ -1,31 +1,22 @@
 import { Cell, cellKey } from '../core/hex';
-import { MAX_ABADDON_STACKS, MAX_NEURO_STACKS, UnitId } from '../core/setup';
+import { MAX_ABADDON_STACKS, UnitId } from '../core/setup';
+import { HitGroup, armorOf, attackDamage, parasiteCap, relicValue } from './calc';
 import {
     Context,
     Enemy,
     State,
     actorCells,
     adjacent,
-    burning,
     distanceBetween,
     enemyCells,
-    hasEffect,
     listEnemies,
     sameEnemy,
 } from './state';
-import { ATTACKS, ActorName, AttackDef, AttackKind, attackDef, hasTag, psychicOrFlame } from './units';
+import { ATTACKS, ActorName, AttackKind, attackDef } from './units';
 
-// Attacks: which ones a character may make, and what happens (and which buffs apply) when one is made. The rules are in
-// docs/rules.md; the comments here point at the parts that are easy to get wrong.
-
-export type BuffId = 'abaddon' | 'ahriman' | 'neurothrope' | 'abraxas' | 'zkar' | 'highGround' | 'hexEffect' | 'neuroStack' | 'abaddonStack';
-
-export interface Buff {
-    id: BuffId;
-    /** What it is worth: 1, or one for every stack added (the parasite on the boss, Abaddon's passive). */
-    points: number;
-    note?: string;
-}
+// Attacks: which ones a character may make, and what happens when one is made: the damage it does (see calc.ts for what each hit
+// is worth), and its effects on the board: minions die, fire is lit, the parasite grows, Abaddon's attack count grows. Z'kar
+// attacks too when his triggers fire. The rules are in docs/rules.md.
 
 /** Why an attack happened: made by a character, or one of Z'kar's attacks and what set it off. */
 export type Trigger = 'deploy' | 'archimatos' | 'abraxas' | 'nextRound';
@@ -34,11 +25,15 @@ export interface AttackReport {
     actor: ActorName;
     kind: AttackKind;
     trigger?: Trigger;
-    /** The enemies it hit: the target, anything Abaddon's relic reached too. */
+    /** The enemies it hit: the target, anything Abaddon's Talon of Horus reached too. */
     targets: Enemy[];
     /** The extra enemy a normal ranged psychic attack's smite hit, if any. */
     smite?: Enemy;
-    buffs: Buff[];
+    /** Every group of hits, with the flat buffs and modifiers on it. */
+    groups: HitGroup[];
+    /** Damage to the boss: what a plan is scored on. */
+    damage: number;
+    /** The same as `damage`: the report's worth to the plan. */
     score: number;
     /** Abaddon's second melee attack, from his active. */
     extra?: boolean;
@@ -60,8 +55,8 @@ const unitAdjacentEnemies = (ctx: Context, state: State, cells: readonly Cell[])
 /**
  * The attacks `unit` may make now. A unit next to an enemy must attack it in melee (its choice of which); otherwise it
  * attacks at range. The two actives (ranged) are extra options when available; Neurothrope's can hit the boss even with an
- * enemy beside him. Abaddon's relic is part of his melee attack, and once his active is on, that attack is followed by a
- * second melee attack on an enemy still adjacent (the minions the first attack killed are gone).
+ * enemy beside him. Abaddon's Talon of Horus (when he has it) is part of his melee attack, and once his active is on, that
+ * attack is followed by a second melee attack on an enemy still adjacent (the minions the first attack killed are gone).
  */
 export function legalAttacks(ctx: Context, state: State, unit: UnitId): AttackChoice[] {
     const u = state.units[unit];
@@ -88,7 +83,9 @@ export function legalAttacks(ctx: Context, state: State, unit: UnitId): AttackCh
                 choices.push({ unit, kind: def.kind, target });
             }
         } else if (def.kind === 'active') {
-            for (const target of listEnemies(state)) if (distanceBetween(cells, enemyCells(state, target)) <= def.range) choices.push({ unit, kind: def.kind, target });
+            const reachable = listEnemies(state).filter((e) => distanceBetween(cells, enemyCells(state, e)) <= def.range);
+            // Doombolt hits every enemy in range, so which one is named changes nothing: offer one.
+            for (const target of unit === 'ahriman' ? reachable.slice(0, 1) : reachable) choices.push({ unit, kind: def.kind, target });
         } else if (near.length === 0) {
             for (const target of listEnemies(state)) if (distanceBetween(cells, enemyCells(state, target)) <= def.range) choices.push({ unit, kind: def.kind, target });
         }
@@ -107,103 +104,76 @@ function smiteTarget(ctx: Context, state: State, primary: Enemy): Enemy | undefi
     return firstMinion(others) ?? others[0];
 }
 
-/** Abaddon's relic hits its target and up to two more enemies adjacent to both him and that target. */
+/** The enemies Abaddon's melee attack hits: its target, and with the Talon of Horus equipped up to two more beside both him and it. */
 function relicTargets(ctx: Context, state: State, attacker: readonly Cell[], primary: Enemy): Enemy[] {
+    if (relicValue(ctx, 'abaddon', 'minDmg') === undefined) return [primary];
     const both = unitAdjacentEnemies(ctx, state, attacker).filter((e) => !sameEnemy(e, primary) && adjacent(ctx.board, enemyCells(state, primary), enemyCells(state, e)));
     return [primary, ...both.slice(0, 2)];
 }
 
-/** What a single attack scores, given the state just before it lands. `nextRound` is Z'kar's start-of-next-round attack. */
-function buffsFor(ctx: Context, state: State, actor: ActorName, def: AttackDef, targets: Enemy[], smite: Enemy | undefined, nextRound: boolean) {
-    const { board } = ctx;
-    const mine = actorCells(state, actor)!;
-    const primaryCells = enemyCells(state, targets[0]);
-    const hitCells = [...targets, ...(smite ? [smite] : [])].flatMap((e) => enemyCells(state, e));
-    const buffs: Buff[] = [];
-    const add = (id: BuffId, points = 1, note?: string) => buffs.push({ id, points, note });
-
-    const near = (other: ActorName, range: number): boolean => {
-        const cells = actorCells(state, other);
-        return cells !== undefined && other !== actor && distanceBetween(cells, mine) <= range;
-    };
-    const touching = (other: ActorName): boolean => {
-        const cells = actorCells(state, other);
-        return cells !== undefined && other !== actor && adjacent(board, cells, mine);
-    };
-
-    // Abraxas adds a psychic hit to normal ranged attacks of adjacent chaos units, and to every normal attack of an
-    // adjacent chaos demon (Z'kar). That makes an Abaddon bolter shot psychic: it can then stack the parasite and take
-    // Ahriman's bonus.
-    const abraxasBonus = actor !== 'abraxas' && touching('abraxas') && hasTag(actor, 'chaos') && !def.ability && (def.kind === 'ranged' || hasTag(actor, 'demon'));
-    const psychicHit = def.damage === 'psychic' || abraxasBonus;
-    const psychicFlameHit = psychicOrFlame(def.damage) || abraxasBonus;
-
-    if (actor !== 'abaddon' && hasTag(actor, 'chaos') && near('abaddon', 2)) add('abaddon');
-    if (psychicFlameHit && actorCells(state, 'ahriman') && burning(state, hitCells, nextRound)) add('ahriman');
-    if (actor !== 'neurothrope' && (hasTag(actor, 'psyker') || hasTag(actor, 'summon')) && near('neurothrope', 2)) add('neurothrope');
-    if (abraxasBonus) add('abraxas', 1, 'extra psychic hit');
-    if (state.zkar && hasTag(actor, 'psyker')) {
-        const psykers: ActorName[] = ['ahriman', 'abraxas', 'archimatos', 'neurothrope'];
-        const nextToPsyker = (actor === 'zkar' ? psykers : [...psykers, 'zkar' as const]).some((p) => touching(p));
-        if (nextToPsyker) add('zkar');
-    }
-    const height = (cells: readonly Cell[]) => board.hexAt(cells[0])?.elevation ?? 0;
-    if (height(mine) > height(primaryCells)) add('highGround');
-    if ((actor === 'abaddon' || actor === 'archimatos') && hasEffect(state, primaryCells, nextRound)) add('hexEffect');
-    return { buffs, psychicHit };
-}
-
 /** The parasite after an attack: +1 for a psychic attack that hit the boss on an infected boss; Neurothrope's hit infects. */
-function stackAfter(stacks: number, actor: ActorName, psychicHit: boolean, hitBoss: boolean): number {
-    if (!psychicHit || !hitBoss || stacks >= MAX_NEURO_STACKS) return stacks;
+function stackAfter(stacks: number, actor: ActorName, psychicOnBoss: boolean, cap: number): number {
+    if (!psychicOnBoss || stacks >= cap) return stacks;
     if (stacks === 0 && actor !== 'neurothrope') return stacks;
     return stacks + 1;
 }
 
-const fireTrigger = (actor: ActorName, def: AttackDef): boolean => def.lightsFire && (actor === 'ahriman' || actor === 'abraxas');
+const fireTrigger = (actor: ActorName, lightsFire: boolean): boolean => lightsFire && (actor === 'ahriman' || actor === 'abraxas');
+
+interface ResolveOptions {
+    trigger?: Trigger;
+    /** Abaddon's second melee attack. */
+    extraAttack?: boolean;
+    /** The extra damage Book of Fate gives the Daemon summon's attack that the bearer's attack set off. */
+    bookBonus?: number;
+}
 
 /**
- * Resolve one attack on `targets` (the first is the main target): score its buffs, then apply what it does. Minions it
- * hit die; Ahriman's and Abraxas's flame attacks (and Ahriman's ranged smite) set the hit hexes on fire for two rounds;
- * the parasite grows; Abaddon's stacks grow, one per enemy he hit.
+ * Resolve one attack on `targets` (the first is the main target): work out its damage, then apply what it does. Minions it hit
+ * die; Ahriman's and Abraxas's flame attacks (and Ahriman's ranged smite) set the hit hexes on fire for two rounds; the parasite
+ * grows; Abaddon's attack count grows, one per enemy he hit.
  */
-function resolveAttack(ctx: Context, state: State, actor: ActorName, def: AttackDef, targets: Enemy[], trigger: Trigger | undefined, extra = false): { state: State; report: AttackReport } {
-    const nextRound = trigger === 'nextRound';
+function resolveAttack(ctx: Context, state: State, actor: ActorName, kind: AttackKind, targets: Enemy[], options: ResolveOptions = {}): { state: State; report: AttackReport } {
+    const def = attackDef(actor, kind);
     const mine = actorCells(state, actor)!;
-    const smite = def.smite ? smiteTarget(ctx, state, targets[0]) : undefined;
+    const smite = def.smite && !options.extraAttack ? smiteTarget(ctx, state, targets[0]) : undefined;
 
-    const { buffs, psychicHit } = buffsFor(ctx, state, actor, def, targets, smite, nextRound);
-    const hitBoss = [...targets, ...(smite ? [smite] : [])].some((e) => e.kind === 'boss');
-    const stacks = stackAfter(state.neuroStacks, actor, psychicHit, hitBoss);
-    if (stacks > state.neuroStacks) buffs.push({ id: 'neuroStack', points: stacks - state.neuroStacks, note: state.neuroStacks === 0 ? 'infects the boss' : `${stacks} stacks` });
+    const damage = attackDamage(ctx, state, { actor, kind, targets, nextRound: options.trigger === 'nextRound', bookBonus: options.bookBonus, extraAttack: options.extraAttack }, smite);
+    const stacks = stackAfter(state.neuroStacks, actor, damage.psychicOnBoss, parasiteCap(ctx));
     let abaddonStacks = state.abaddonStacks;
-    if (actor === 'abaddon') {
-        const added = Math.max(0, Math.min(targets.length, MAX_ABADDON_STACKS - abaddonStacks));
-        if (added > 0) buffs.push({ id: 'abaddonStack', points: added, note: `${abaddonStacks + added} stacks` });
-        abaddonStacks += added;
-    }
+    if (actor === 'abaddon') abaddonStacks = Math.min(MAX_ABADDON_STACKS, abaddonStacks + targets.length);
 
     const next: State = { ...state, neuroStacks: stacks, abaddonStacks, effects: { ...state.effects }, minions: [...state.minions] };
     // Neurothrope next to an enemy at the moment he attacks.
     if (actor === 'neurothrope' && unitAdjacentEnemies(ctx, state, mine).length > 0) next.neuroAdjacent = true;
     // Whoever the attack hit and killed: the characters kill a minion in one attack (and so does Z'kar). Smite doesn't.
     for (const e of targets) if (e.kind === 'minion') next.minions = next.minions.filter((m) => cellKey(m) !== cellKey(e.cell));
-    if (fireTrigger(actor, def)) {
+    if (fireTrigger(actor, def.lightsFire) && !options.extraAttack) {
         for (const e of [...targets, ...(smite && actor === 'ahriman' ? [smite] : [])]) for (const c of enemyCells(state, e)) next.effects[cellKey(c)] = 'fire2';
     }
-    const report: AttackReport = { actor, kind: def.kind, trigger, targets, smite, buffs, score: buffs.reduce((s, b) => s + b.points, 0), ...(extra ? { extra: true } : {}) };
+    const report: AttackReport = {
+        actor,
+        kind,
+        trigger: options.trigger,
+        targets,
+        smite,
+        groups: damage.groups,
+        damage: damage.boss,
+        score: damage.boss,
+        ...(options.extraAttack ? { extra: true } : {}),
+    };
     return { state: next, report };
 }
 
 /**
  * Make an attack: resolve it (see resolveAttack), end the attacker's turn, and then, for Abaddon with his active on, make
- * his second melee attack on `extra`. If Archimatos or Abraxas attacked next to Z'kar, Z'kar attacks too.
+ * his second melee attack on `extra`. If Archimatos or Abraxas attacked next to Z'kar with a Book of Fate, Z'kar attacks too.
  */
-export function performAttack(ctx: Context, state: State, actor: ActorName, kind: AttackKind, primary: Enemy, trigger?: Trigger, extra?: Enemy): { state: State; reports: AttackReport[] } {
+export function performAttack(ctx: Context, state: State, actor: ActorName, kind: AttackKind, primary: Enemy, trigger?: Trigger, extra?: Enemy, bookBonus?: number): { state: State; reports: AttackReport[] } {
     const def = attackDef(actor, kind);
     const mine = actorCells(state, actor)!;
     const targets = def.relic ? relicTargets(ctx, state, mine, primary) : [primary];
-    const first = resolveAttack(ctx, state, actor, def, targets, trigger);
+    const first = resolveAttack(ctx, state, actor, kind, targets, { trigger, bookBonus });
     let next = first.state;
     const reports: AttackReport[] = [first.report];
 
@@ -213,17 +183,20 @@ export function performAttack(ctx: Context, state: State, actor: ActorName, kind
         if (kind === 'active') next = actor === 'ahriman' ? { ...next, ahrimanActiveAvailable: false } : { ...next, neuroActiveAvailable: false };
     }
     if (actor === 'abaddon' && kind === 'melee' && extra && next.abaddonExtra === 'on') {
-        const second = resolveAttack(ctx, next, actor, { ...def, relic: false }, [extra], trigger, true);
+        const second = resolveAttack(ctx, next, actor, kind, [extra], { trigger, extraAttack: true });
         next = second.state;
         reports.push(second.report);
     }
 
-    // Archimatos and Abraxas attacking next to Z'kar make him attack once each.
+    // A bearer of the Book of Fate (Archimatos or Abraxas) attacking next to Z'kar sets him off, with the Book's extra damage.
     if ((actor === 'archimatos' || actor === 'abraxas') && next.zkar && !next.zkar.triggered[actor] && adjacent(ctx.board, next.zkar.cells, mine)) {
-        next = { ...next, zkar: { ...next.zkar, triggered: { ...next.zkar.triggered, [actor]: true } } };
-        const more = zkarAttack(ctx, next, actor);
-        next = more.state;
-        reports.push(...more.reports);
+        const book = relicValue(ctx, actor, 'extraDmg');
+        if (book !== undefined) {
+            next = { ...next, zkar: { ...next.zkar, triggered: { ...next.zkar.triggered, [actor]: true } } };
+            const more = zkarAttack(ctx, next, actor, book);
+            next = more.state;
+            reports.push(...more.reports);
+        }
     }
     return { state: next, reports };
 }
@@ -233,7 +206,7 @@ export function performAttack(ctx: Context, state: State, actor: ActorName, kind
  * his player's choice, so for scoring he is assumed to hit a minion if one is in reach (killing it) and the boss only
  * when it is the only enemy. With nothing in reach the trigger is spent for nothing.
  */
-export function zkarAttack(ctx: Context, state: State, trigger: Trigger): { state: State; reports: AttackReport[] } {
+export function zkarAttack(ctx: Context, state: State, trigger: Trigger, bookBonus?: number): { state: State; reports: AttackReport[] } {
     const cells = state.zkar!.cells;
     const adjacentEnemies = unitAdjacentEnemies(ctx, state, cells);
     let kind: AttackKind = 'melee';
@@ -243,8 +216,8 @@ export function zkarAttack(ctx: Context, state: State, trigger: Trigger): { stat
         candidates = listEnemies(state).filter((e) => distanceBetween(cells, enemyCells(state, e)) <= attackDef('zkar', 'ranged').range);
     }
     const target = firstMinion(candidates) ?? candidates[0];
-    if (!target) return { state, reports: [{ actor: 'zkar', kind: 'melee', trigger, targets: [], buffs: [], score: 0, note: 'no enemy in reach' }] };
-    return performAttack(ctx, state, 'zkar', kind, target, trigger);
+    if (!target) return { state, reports: [{ actor: 'zkar', kind: 'melee', trigger, targets: [], groups: [], damage: 0, score: 0, note: 'no enemy in reach' }] };
+    return performAttack(ctx, state, 'zkar', kind, target, trigger, undefined, bookBonus);
 }
 
-export { MAX_NEURO_STACKS };
+export { armorOf };

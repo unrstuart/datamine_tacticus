@@ -35,7 +35,7 @@ export interface BoardData {
 
 export interface BossData {
     bossType: string;
-    encounters: Array<{ type: string; boardId: string; unitId: string; icon?: string }>;
+    encounters: Array<{ type: string; boardId: string; unitId: string; icon?: string; minionIds: string[] }>;
 }
 
 export interface Hex {

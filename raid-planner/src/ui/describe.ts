@@ -1,4 +1,5 @@
-import { AttackReport, BuffId } from '../engine/attacks';
+import { HitGroup } from '../engine/calc';
+import { AttackReport } from '../engine/attacks';
 import { Action } from '../engine/plan';
 import { Enemy } from '../engine/state';
 import { ActorName } from '../engine/units';
@@ -11,6 +12,8 @@ const where = (c: Cell): string => `(${c.col}, ${c.row})`;
 
 export const enemyName = (e: Enemy): string => (e.kind === 'boss' ? 'the boss' : `the minion at ${where(e.cell)}`);
 
+export const fmt = (n: number): string => Math.round(n).toLocaleString();
+
 export function describeAction(a: Action): string {
     switch (a.type) {
         case 'move':
@@ -22,29 +25,38 @@ export function describeAction(a: Action): string {
         case 'abaddonActive':
             return 'Abaddon uses his active';
         case 'attack': {
-            const kind = a.kind === 'active' ? "uses his active on" : a.kind === 'ranged' ? 'shoots' : a.kind === 'physical' ? 'strikes' : 'attacks';
+            const kind = a.kind === 'active' ? 'uses his active on' : a.kind === 'ranged' ? 'shoots' : a.kind === 'physical' ? 'strikes' : 'attacks';
             return `${actorName(a.unit)} ${kind} ${enemyName(a.target)}${a.extra ? `, then ${enemyName(a.extra)}` : ''}`;
         }
     }
 }
 
-export const BUFF_LABELS: Record<BuffId, string> = {
-    abaddon: "Abaddon's buff",
-    ahriman: "Ahriman's fire bonus",
-    neurothrope: "Neurothrope's buff",
-    abraxas: "Abraxas's extra psychic hit",
-    zkar: "Z'kar's buff",
+/** What each flat buff and modifier is called in the breakdown. */
+export const SOURCE_LABELS: Record<string, string> = {
+    abaddonPassive: "Abaddon's passive",
+    psychicStalkFlat: 'Psychic Stalk',
+    nornCrown: 'Norn Crown',
+    neuroparasite: 'Neuroparasite',
+    bookOfFate: 'Book of Fate',
+    hunterOfSouls: 'Hunter of Souls',
     highGround: 'high ground',
-    hexEffect: 'hex effect',
-    neuroStack: 'neuroparasite stack',
-    abaddonStack: "Abaddon's stack",
+    psychicStalk: 'Psychic Stalk',
+    cabal: 'Cabal of Sorcerers',
 };
+
+const pct = (m: number): string => `+${Math.round((m - 1) * 100)}%`;
+
+/** One group of hits, as a line: "5 hits of 2,001 +652 (Abaddon's passive) vs armor 1,000, high ground +50% = 11,000 to the boss". */
+export function describeGroup(g: HitGroup): string {
+    const flat = g.flat.map((f) => `+${fmt(f.amount)} ${SOURCE_LABELS[f.id] ?? f.id}`).join(' ');
+    const mods = g.modifiers.map((m) => `${SOURCE_LABELS[m.id] ?? m.id} ${pct(m.multiplier)}`).join(', ');
+    return `${g.label}: ${g.hits} ${g.hits === 1 ? 'hit' : 'hits'} of ${fmt(g.base)}${flat ? ` ${flat}` : ''} against armor ${fmt(g.armor)}${mods ? `, ${mods}` : ''} = ${fmt(g.damage)} to ${enemyName(g.target)}`;
+}
 
 export function describeReport(r: AttackReport): string {
     const who = actorName(r.actor);
     const why = r.trigger ? { deploy: 'on deploying', archimatos: "after Archimatos's attack", abraxas: "after Abraxas's attack", nextRound: 'at the start of next round' }[r.trigger] : '';
     const what = r.targets.length > 0 ? ` hits ${r.targets.map(enemyName).join(' and ')}${r.smite ? ` (smite: ${enemyName(r.smite)})` : ''}` : '';
-    const buffs = r.buffs.map((b) => `${BUFF_LABELS[b.id]}${b.points > 1 ? ` +${b.points}` : ''}`).join(', ') || 'no buffs';
     const head = r.extra ? `${who}'s extra attack` : who;
-    return `${head}${why ? ` ${why}` : ''}${what}${r.note ? ` (${r.note})` : ''}: ${buffs} = ${r.score}`;
+    return `${head}${why ? ` ${why}` : ''}${what}${r.note ? ` (${r.note})` : ''}: ${fmt(r.damage)} damage to the boss`;
 }

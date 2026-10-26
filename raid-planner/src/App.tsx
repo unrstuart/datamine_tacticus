@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BoardData, BossData } from './core/board';
+import { EnemyData, enemyArmor } from './core/enemies';
 import { Cell } from './core/hex';
 import { Drag, Point, dragPreview, dropDrag, startDrag } from './core/drag';
 import { Setup, initialSetup } from './core/setup';
@@ -43,7 +44,7 @@ function saveSetup(setup: Setup) {
 }
 
 export function App() {
-    const [data, setData] = useState<{ bosses: BossData[]; boards: Record<string, BoardData> }>();
+    const [data, setData] = useState<{ bosses: BossData[]; boards: Record<string, BoardData>; enemies: EnemyData }>();
     const [bossType, setBossType] = useState('');
     const [boardId, setBoardId] = useState('');
     const [tool, setTool] = useState<Tool>({ kind: 'move' });
@@ -134,7 +135,10 @@ export function App() {
         board && setup && drag
             ? { ...dragPreview(board, setup, drag.drag, drag.hover, drag.point), unit: drag.drag.kind === 'unit' ? drag.drag.unit : undefined }
             : undefined;
-    const bossIcon = boss?.encounters.find((e) => e.boardId === boardId)?.icon;
+    const encounter = boss?.encounters.find((e) => e.boardId === boardId);
+    const bossIcon = encounter?.icon;
+    const enemyRows = (data && encounter && data.enemies[encounter.unitId]) || [];
+    const armor = data && encounter && setup ? enemyArmor(data.enemies, encounter.unitId, encounter.minionIds, setup.enemy) : { boss: 0, minion: 0 };
     if (!data) return <p className="loading">Loading boards...</p>;
     return (
         <main>
@@ -178,13 +182,15 @@ export function App() {
                         setTool={setTool}
                         setup={setup}
                         update={(patch) => setSetup({ ...setup, ...patch })}
+                        enemyRows={enemyRows}
+                        armor={armor}
                         platformCount={board.bossPlatforms().length}
                         onResetBoss={(i) => setSetup({ ...setup, bossCells: board.bossPlatforms()[i]?.cells ?? setup.bossCells })}
                         onClearAll={() => setSetup(initialSetup(board))}
                     />
                 </div>
             )}
-            {tab === 'board' && board && setup && data && <SolverPanel board={data.boards[board.id]} setup={setup} />}
+            {tab === 'board' && board && setup && data && <SolverPanel board={data.boards[board.id]} setup={setup} roster={roster} armor={armor} />}
         </main>
     );
 }

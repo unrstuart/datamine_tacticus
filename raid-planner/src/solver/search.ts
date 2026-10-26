@@ -6,7 +6,6 @@ import { Action, PlanResult, applyAction, finishRound } from '../engine/plan';
 import { Context, State, initialState } from '../engine/state';
 import { allDone, legalActions, relevantMove } from './actions';
 import { Analysis, analyse, makeStatics } from './analysis';
-import { upperBound } from './bound';
 import { COUNTER, Counters } from './counters';
 import { DEFAULT_OPTIONS, SolverOptions } from './options';
 import { StateTable } from './table';
@@ -18,18 +17,21 @@ import { StateTable } from './table';
 
 export interface StoredPlan {
     actions: Action[];
+    /** The damage to the boss, less any penalties the setup puts on the plan. */
     total: number;
-    /** Every attack's buffs along the way, then Z'kar's start-of-next-round attack. */
+    /** Every attack along the way, then Z'kar's start-of-next-round attack. */
     reports: AttackReport[];
     penalties: PlanResult['finish']['penalties'];
+    /** How many units end the round standing on an undesirable hex. */
+    undesirable: number;
     signature: string;
 }
 
 export interface SearchOptions {
     /** What the search may skip (default: all of it; see SolverOptions). */
     rules?: SolverOptions;
-    /** How many tied-best plans to keep the full detail of (they are all counted). */
-    maxStored?: number;
+    /** How many plans to keep: the best by damage (default 10). */
+    top?: number;
     /** Called now and then with the plans so far, when they have changed. */
     onBest?: (plans: StoredPlan[]) => void;
     /** Extra reason to stop, checked along with the counters' cancel flag. */
@@ -44,11 +46,11 @@ export interface SearchResult {
     stopped: boolean;
 }
 
-const reportKey = (r: AttackReport): string => `${r.actor}:${r.kind}${r.extra ? '+' : ''}${r.trigger ? `@${r.trigger}` : ''}[${r.buffs.map((b) => `${b.id}${b.points}`).join(',')}]`;
+const reportKey = (r: AttackReport): string => `${r.actor}:${r.kind}${r.extra ? '+' : ''}${r.trigger ? `@${r.trigger}` : ''}=${Math.round(r.damage)}`;
 
 /**
- * Two plans are the same outcome when they apply the same buffs (attack by attack, in any order) and leave everyone on
- * the same hexes; then only one is kept.
+ * Two plans are the same outcome when every attack does the same damage (in any order) and everyone ends on the same hexes;
+ * then only one is kept.
  */
 export function signatureOf(state: State, reports: readonly AttackReport[]): string {
     const units = Object.entries(state.units)
@@ -58,13 +60,30 @@ export function signatureOf(state: State, reports: readonly AttackReport[]): str
     return `${units.join(' ')} z:${zkar} | ${reports.map(reportKey).sort().join(' ')}`;
 }
 
-// Try the attacks first (they score now, and a good plan found early makes the bound cut more), then deployments and
-// Abaddon's active, then moves, then passing.
+const EPS = 1e-6;
+
+/** Whether `a` ranks above `b`: more damage; at equal damage, fewer units on undesirable hexes. (Equal on both: the earlier one wins.) */
+const better = (a: { total: number; undesirable: number }, b: { total: number; undesirable: number }): boolean => a.total > b.total + EPS || (Math.abs(a.total - b.total) <= EPS && a.undesirable < b.undesirable);
+
+/**
+ * Put `plan` into the list of the best `top` plans, best first, or say it doesn't belong: more damage ranks higher; at equal
+ * damage, a plan with fewer units standing on undesirable hexes; at equal on both, whichever was found first. The same outcome
+ * (see signatureOf) is never listed twice. Returns the new list, or undefined when the plan didn't make it.
+ */
+export function insertPlan(plans: readonly StoredPlan[], plan: StoredPlan, top: number): StoredPlan[] | undefined {
+    if (plans.some((p) => p.signature === plan.signature)) return undefined;
+    let at = plans.findIndex((p) => better(plan, p));
+    if (at < 0) at = plans.length;
+    if (at >= top) return undefined;
+    return [...plans.slice(0, at), plan, ...plans.slice(at)].slice(0, top);
+}
+
+// Try the attacks first (they score now), then deployments and Abaddon's active, then moves, then passing.
 const ORDER: Record<Action['type'], number> = { attack: 0, deploy: 1, abaddonActive: 1, move: 2, pass: 3 };
 
 export function search(ctx: Context, counters: Counters, options: SearchOptions = {}): SearchResult {
     const rules = options.rules ?? DEFAULT_OPTIONS;
-    const maxStored = options.maxStored ?? 500;
+    const top = options.top ?? 10;
     // How many sequences go by between publishing the counters (and checking the clock and the cancel flag).
     const batch = options.batch ?? 256;
     const start = initialState(ctx.setup);
@@ -80,10 +99,8 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
     let changed = false;
     let lastPost = Date.now();
 
-    let bestScore: number | undefined;
+    // The best plans so far, best first: more damage, then fewer units on undesirable hexes, then whichever was found first.
     let plans: StoredPlan[] = [];
-    let seen = new Set<string>();
-    let bestRuns = 0;
 
     const path: Action[] = [];
     const reports: AttackReport[] = [];
@@ -118,24 +135,18 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
         complete++;
         const finish = finishRound(ctx, state);
         const total = score + finish.reports.reduce((s, r) => s + r.score, 0) - finish.penalties.reduce((s, p) => s + p.points, 0);
-        if (bestScore !== undefined && total < bestScore) return;
-        const all = [...reports, ...finish.reports];
-        const signature = signatureOf(finish.state, all);
-        if (bestScore === undefined || total > bestScore) {
-            bestScore = total;
-            plans = [];
-            seen = new Set();
-            bestRuns = 0;
-            Atomics.store(counters, COUNTER.bestScore, BigInt(total));
-        }
-        if (seen.has(signature)) return;
-        seen.add(signature);
-        bestRuns++;
-        Atomics.store(counters, COUNTER.bestRuns, BigInt(bestRuns));
-        if (plans.length < maxStored) {
-            plans.push({ actions: [...path], total, reports: all, penalties: finish.penalties, signature });
-            changed = true;
-        }
+        const bad = new Set(ctx.setup.undesirable);
+        const undesirable = Object.values(state.units).filter((u) => bad.has(cellKey(u!.cell))).length + (state.zkar?.cells.some((c) => bad.has(cellKey(c))) ? 1 : 0);
+        // Quick out for a plan that cannot make the list, before the work of describing it.
+        const worst = plans[plans.length - 1];
+        if (plans.length >= top && !better({ total, undesirable }, worst)) return;
+        const signature = signatureOf(finish.state, [...reports, ...finish.reports]);
+        const updated = insertPlan(plans, { actions: [...path], total, reports: [...reports, ...finish.reports], penalties: finish.penalties, undesirable, signature }, top);
+        if (!updated) return;
+        plans = updated;
+        Atomics.store(counters, COUNTER.bestScore, BigInt(Math.round(plans[0].total)));
+        Atomics.store(counters, COUNTER.bestRuns, BigInt(plans.length));
+        changed = true;
     };
 
     /** Apply `action`, carry on from there with `next`, and undo. Does nothing if the action isn't legal. */
@@ -168,10 +179,6 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
         }
         const an = analyse(ctx, state);
         const actions = legalActions(ctx, state, rules, statics, an);
-        if (rules.prune && bestScore !== undefined && score + upperBound(ctx, state, statics, actions.some((a) => a.type === 'deploy')) < bestScore) {
-            pruned++;
-            return;
-        }
         if (allDone(state)) evaluate(state, score);
 
         // Apply each action first, so the ones that score most go first.
@@ -237,5 +244,5 @@ export function search(ctx: Context, counters: Counters, options: SearchOptions 
     flush();
     if (options.onBest && changed) options.onBest(plans);
     Atomics.store(counters, COUNTER.status, stopped ? 2n : 1n);
-    return { bestScore, plans, stopped };
+    return { bestScore: plans[0]?.total, plans, stopped };
 }

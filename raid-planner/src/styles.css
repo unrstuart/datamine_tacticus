@@ -689,3 +689,10 @@ button.small {
 .ability.derived .level {
     font-size: 13px;
 }
+
+.plan .groups {
+    margin: 2px 0 6px;
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 12px;
+}

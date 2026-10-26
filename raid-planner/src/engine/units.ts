@@ -23,8 +23,6 @@ export const UNIT_DEFS: Record<ActorName, UnitDef> = {
 
 export const hasTag = (actor: ActorName, tag: Tag): boolean => UNIT_DEFS[actor].tags.includes(tag);
 
-export type Damage = 'psychic' | 'flame' | 'bolter' | 'power' | 'physical';
-
 /**
  * - `ranged`, `melee`: the normal attacks.
  * - `active`: Ahriman's and Neurothrope's once-per-battle abilities.
@@ -34,7 +32,6 @@ export type AttackKind = 'ranged' | 'melee' | 'active' | 'physical';
 
 export interface AttackDef {
     kind: AttackKind;
-    damage: Damage;
     /** Reaches only enemies adjacent to the attacker (connected hexes). */
     melee: boolean;
     /** Hex distance (any path) the attack reaches, for the non-melee ones. */
@@ -49,9 +46,8 @@ export interface AttackDef {
     smite: boolean;
 }
 
-const def = (kind: AttackKind, damage: Damage, over: Partial<AttackDef> = {}): AttackDef => ({
+const def = (kind: AttackKind, over: Partial<AttackDef> = {}): AttackDef => ({
     kind,
-    damage,
     melee: kind === 'melee' || kind === 'physical',
     range: 1,
     ability: kind === 'active',
@@ -62,16 +58,16 @@ const def = (kind: AttackKind, damage: Damage, over: Partial<AttackDef> = {}): A
 });
 
 export const ATTACKS: Record<ActorName, AttackDef[]> = {
-    abaddon: [def('ranged', 'bolter', { range: 2 }), def('melee', 'power', { relic: true })],
-    abraxas: [def('ranged', 'psychic', { range: 2, smite: true }), def('melee', 'flame', { lightsFire: true })],
-    archimatos: [def('ranged', 'psychic', { range: 2, smite: true }), def('melee', 'psychic')],
+    abaddon: [def('ranged', { range: 2 }), def('melee', { relic: true })],
+    abraxas: [def('ranged', { range: 2, smite: true }), def('melee', { lightsFire: true })],
+    archimatos: [def('ranged', { range: 2, smite: true }), def('melee')],
     ahriman: [
-        def('ranged', 'psychic', { range: 2, smite: true, lightsFire: true }),
-        def('melee', 'flame', { lightsFire: true }),
-        def('active', 'psychic', { range: 2 }),
+        def('ranged', { range: 2, smite: true, lightsFire: true }),
+        def('melee', { lightsFire: true }),
+        def('active', { range: 2 }),
     ],
-    neurothrope: [def('ranged', 'psychic', { range: 3, smite: true }), def('physical', 'physical'), def('active', 'psychic', { range: 3 })],
-    zkar: [def('ranged', 'psychic', { range: 2, smite: true }), def('melee', 'psychic')],
+    neurothrope: [def('ranged', { range: 3, smite: true }), def('physical'), def('active', { range: 3 })],
+    zkar: [def('ranged', { range: 2, smite: true }), def('melee')],
 };
 
 export const attackDef = (actor: ActorName, kind: AttackKind): AttackDef => {
@@ -80,4 +76,3 @@ export const attackDef = (actor: ActorName, kind: AttackKind): AttackDef => {
     return found;
 };
 
-export const psychicOrFlame = (d: Damage): boolean => d === 'psychic' || d === 'flame';

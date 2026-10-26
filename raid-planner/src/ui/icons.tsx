@@ -47,9 +47,9 @@ export function Choice({ selected, title, onClick, children }: ChoiceProps) {
     );
 }
 
-export const RarityChoices = ({ value, onChange }: { value: Rarity; onChange: (r: Rarity) => void }) => (
+export const RarityChoices = ({ value, onChange, options = RARITIES }: { value: Rarity; onChange: (r: Rarity) => void; options?: readonly Rarity[] }) => (
     <div className="choices">
-        {RARITIES.map((r) => (
+        {options.map((r) => (
             <Choice key={r} selected={r === value} title={r} onClick={() => onChange(r)}>
                 <img className="rarity" src={rarityIconUrl(r)} alt="" />
             </Choice>

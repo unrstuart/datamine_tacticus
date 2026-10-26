@@ -3,8 +3,8 @@ import { cellKey } from '../core/hex';
 import { runPlan } from '../engine/plan';
 import { go, scenario } from '../engine/testkit';
 import { COUNTER, makeCounters, readProgress, requestStop } from './counters';
-import { search } from './search';
-import { DEFAULT_OPTIONS, EXHAUSTIVE, SolverOptions } from './options';
+import { StoredPlan, insertPlan, search } from './search';
+import { DEFAULT_OPTIONS, EXHAUSTIVE } from './options';
 import { analyse, makeStatics } from './analysis';
 import { deployHexes, zkarInReach } from './actions';
 import { UnitId } from '../core/setup';
@@ -25,8 +25,9 @@ describe('the exhaustive search', () => {
         expect(p.searched).toBe(p.planned);
         expect(p.planned).toBeGreaterThan(100n);
         expect(p.complete).toBeGreaterThan(0n);
-        expect(p.bestScore).toBe(result.bestScore);
+        expect(p.bestScore).toBe(Math.round(result.bestScore!));
         expect(p.bestRuns).toBe(BigInt(result.plans.length));
+        expect(result.plans.length).toBeLessThanOrEqual(10);
     });
 
     it('finds plans at least as good as one made by hand, and every stored plan replays to its score', () => {
@@ -174,44 +175,63 @@ function randomScenario(seed: number, unitCount: number) {
     });
 }
 
-const outcomes = (plans: { signature: string }[]) => plans.map((p) => p.signature).sort();
 
-describe('the bound only cuts what cannot win', () => {
-    // The bound must never change the answer: with it on or off, the same best score and the same set of best plans.
-    const rules = (prune: boolean): SolverOptions => ({ ...DEFAULT_OPTIONS, abaddonFirst: false, prune });
-    for (let seed = 1; seed <= 10; seed++) {
-        it(`random scenario ${seed}`, { timeout: 120000 }, () => {
-            const { ctx } = randomScenario(seed, 2);
-            const without = search(ctx, makeCounters(), { rules: rules(false), maxStored: 100000 });
-            const counters = makeCounters();
-            const withBound = search(ctx, counters, { rules: rules(true), maxStored: 100000 });
-            expect(withBound.bestScore).toBe(without.bestScore);
-            expect(outcomes(withBound.plans)).toEqual(outcomes(without.plans));
-            const p = readProgress(counters);
-            expect(p.searched).toBe(p.planned);
-        });
-    }
+describe('the ten best plans', () => {
+    const plan = (total: number, undesirable: number, signature: string): StoredPlan => ({ actions: [], total, reports: [], penalties: [], undesirable, signature });
 
-    it('cuts branches, and counts them', { timeout: 120000 }, () => {
-        const { ctx } = randomScenario(3, 2);
-        const noTable = { ...DEFAULT_OPTIONS, abaddonFirst: false, tableBits: 0 };
-        const counters = makeCounters();
-        search(ctx, counters, { rules: noTable });
-        const full = makeCounters();
-        search(ctx, full, { rules: { ...noTable, prune: false } });
-        expect(readProgress(counters).pruned).toBeGreaterThan(0n);
-        expect(readProgress(counters).planned).toBeLessThan(readProgress(full).planned);
-        expect(readProgress(full).pruned).toBe(0n);
+    it('ranks by damage, then by fewer units on undesirable hexes, then by who came first', () => {
+        let list: StoredPlan[] = [];
+        for (const p of [plan(100, 0, 'a'), plan(200, 1, 'b'), plan(200, 0, 'c'), plan(200, 0, 'd'), plan(150, 0, 'e'), plan(200, 2, 'f')]) list = insertPlan(list, p, 10) ?? list;
+        // 200 damage three times: c and d have no unit on an undesirable hex (c came first), then b (one), then f (two).
+        expect(list.map((p) => p.signature)).toEqual(['c', 'd', 'b', 'f', 'e', 'a']);
     });
 
-    it('the state table only drops plans that tie, never the best score', { timeout: 120000 }, () => {
+    it('keeps only the best ten, and tells a plan it did not make the list', () => {
+        let list: StoredPlan[] = [];
+        for (let i = 0; i < 15; i++) list = insertPlan(list, plan(i * 10, 0, `p${i}`), 10) ?? list;
+        expect(list.map((p) => p.total)).toEqual([140, 130, 120, 110, 100, 90, 80, 70, 60, 50]);
+        expect(insertPlan(list, plan(10, 0, 'low'), 10)).toBeUndefined();
+        expect(insertPlan(list, plan(50, 0, 'tie'), 10)).toBeUndefined(); // equal to the tenth: it came later
+        expect(insertPlan(list, plan(50, 1, 'worse'), 10)).toBeUndefined();
+        expect(insertPlan(list, plan(50, 0, 'p5'), 10)).toBeUndefined(); // the same outcome as one listed
+        expect(insertPlan(list, plan(55, 0, 'better'), 10)!.map((p) => p.signature)[9]).toBe('better');
+    });
+
+    it('never lists the same outcome twice', () => {
+        const list = [plan(100, 0, 'x')];
+        expect(insertPlan(list, plan(100, 0, 'x'), 10)).toBeUndefined();
+        expect(insertPlan(list, plan(300, 0, 'x'), 10)).toBeUndefined(); // even if it somehow scored more: same signature means the same outcome
+    });
+
+    it('a search returns at most ten, best first, each replaying to its damage', { timeout: 120000 }, () => {
+        const { ctx } = randomScenario(3, 2);
+        const result = search(ctx, makeCounters(), { rules: { ...DEFAULT_OPTIONS, abaddonFirst: false } });
+        expect(result.plans.length).toBeGreaterThan(1);
+        expect(result.plans.length).toBeLessThanOrEqual(10);
+        for (let i = 1; i < result.plans.length; i++) expect(result.plans[i - 1].total).toBeGreaterThanOrEqual(result.plans[i].total - 1e-6);
+        for (const p of result.plans) expect(runPlan(ctx, p.actions).total).toBeCloseTo(p.total, 6);
+        expect(new Set(result.plans.map((p) => p.signature)).size).toBe(result.plans.length);
+    });
+
+    it("among plans of equal damage, one with a unit on an undesirable hex comes after one without", { timeout: 120000 }, () => {
+        // Archimatos has no enemy in reach wherever it goes, so it only matters where it ends. The boss is out of everyone's way.
+        const { ctx, setup } = scenario({ cols: 6, rows: 6, boss: [{ col: 5, row: 5 }], units: { archimatos: { col: 0, row: 0 } }, abaddonExtra: 'off' });
+        const bad = new Set(['0,0']);
+        const marked = { ...ctx, setup: { ...setup, undesirable: [...bad] } };
+        const result = search(marked, makeCounters(), { rules: { ...DEFAULT_OPTIONS, abaddonFirst: false }, top: 10 });
+        expect(result.plans[0].undesirable).toBe(0);
+        const ranks = result.plans.map((p) => p.undesirable);
+        expect(ranks).toEqual([...ranks].sort((a, b) => a - b)); // equal damage throughout, so fewest-undesirable first
+    });
+
+    it('the state table only drops plans that tie, never the best damage', { timeout: 120000 }, () => {
         for (const seed of [2, 4, 7]) {
             const { ctx } = randomScenario(seed, 2);
             const base = { ...DEFAULT_OPTIONS, abaddonFirst: false };
-            const without = search(ctx, makeCounters(), { rules: { ...base, tableBits: 0 }, maxStored: 100000 });
-            const withTable = search(ctx, makeCounters(), { rules: { ...base, tableBits: 16 }, maxStored: 100000 });
-            expect(withTable.bestScore).toBe(without.bestScore);
-            // Whatever the table lets through is a real best plan.
+            const without = search(ctx, makeCounters(), { rules: { ...base, tableBits: 0 }, top: 100000 });
+            const withTable = search(ctx, makeCounters(), { rules: { ...base, tableBits: 16 }, top: 100000 });
+            expect(withTable.bestScore).toBeCloseTo(without.bestScore!, 6);
+            // Whatever the table lets through is a real plan.
             const all = new Set(without.plans.map((p) => p.signature));
             for (const p of withTable.plans) expect(all.has(p.signature)).toBe(true);
         }
@@ -268,9 +288,9 @@ describe('moves that could not matter are left out', () => {
 });
 
 describe('Abaddon goes first', () => {
-    it('every plan starts with Abaddon (or Abraxas moving next to him), unless he is full on stacks', () => {
-        const { ctx } = scenario({ cols: 8, rows: 8, boss: [{ col: 4, row: 5 }], units: { abaddon: { col: 3, row: 3 }, abraxas: { col: 5, row: 2 }, archimatos: { col: 2, row: 2 } }, abaddonExtra: 'off' });
-        const result = search(ctx, makeCounters(), { rules: DEFAULT_OPTIONS, maxStored: 100000 });
+    it('every plan starts with Abaddon (or Abraxas moving next to him), unless he is full on stacks', { timeout: 120000 }, () => {
+        const { ctx } = scenario({ cols: 8, rows: 8, boss: [{ col: 4, row: 5 }], units: { abaddon: { col: 3, row: 3 }, abraxas: { col: 5, row: 2 } }, abaddonExtra: 'off' });
+        const result = search(ctx, makeCounters(), { rules: DEFAULT_OPTIONS, top: 100 });
         expect(result.plans.length).toBeGreaterThan(0);
         for (const p of result.plans) {
             const first = p.actions[0];
@@ -282,7 +302,7 @@ describe('Abaddon goes first', () => {
 
     it('uses his active first when he is in melee range and it is available', () => {
         const { ctx } = scenario({ cols: 8, rows: 8, boss: [{ col: 4, row: 5 }], units: { abaddon: { col: 4, row: 4 } }, abaddonExtra: 'available' });
-        const result = search(ctx, makeCounters(), { rules: DEFAULT_OPTIONS, maxStored: 1000 });
+        const result = search(ctx, makeCounters(), { rules: DEFAULT_OPTIONS, top: 1000 });
         const withMelee = result.plans.filter((p) => p.actions.some((a) => a.type === 'attack' && a.kind === 'melee'));
         expect(withMelee.length).toBeGreaterThan(0);
         for (const p of withMelee) {
@@ -293,7 +313,7 @@ describe('Abaddon goes first', () => {
 
     it('does not go first when he is already at 13 stacks', { timeout: 120000 }, () => {
         const { ctx } = scenario({ cols: 6, rows: 6, boss: [{ col: 3, row: 4 }], units: { abaddon: { col: 3, row: 3 }, archimatos: { col: 2, row: 2 } }, abaddonStacks: 13, abaddonExtra: 'off' });
-        const result = search(ctx, makeCounters(), { rules: DEFAULT_OPTIONS, maxStored: 100000 });
+        const result = search(ctx, makeCounters(), { rules: DEFAULT_OPTIONS, top: 100000 });
         const firsts = new Set(result.plans.map((p) => ('unit' in p.actions[0] ? p.actions[0].unit : p.actions[0].type)));
         expect(firsts.size).toBeGreaterThan(1);
     });
@@ -304,8 +324,9 @@ describe('Abaddon goes first', () => {
         for (const c of ['4,7', '4,5', '5,6', '5,5', '3,6', '3,5']) rocks[c] = { passable: false };
         const lines = (units: Parameters<typeof scenario>[0]) => {
             const { ctx } = scenario({ cols: 9, rows: 10, hexes: rocks, boss: [{ col: 4, row: 6 }], abaddonExtra: 'off', ...units });
-            const result = search(ctx, makeCounters(), { rules: DEFAULT_OPTIONS, maxStored: 100000 });
-            return result.plans.map((p) => p.actions.map((a) => a.type + ('unit' in a ? `:${a.unit}` : '')).join(' '));
+            const result = search(ctx, makeCounters(), { rules: DEFAULT_OPTIONS, top: 100000 });
+            // Only the plans that do as much damage as the best: the rest are runners-up.
+            return result.plans.filter((p) => p.total >= result.bestScore! - 1e-6).map((p) => p.actions.map((a) => a.type + ('unit' in a ? `:${a.unit}` : '')).join(' '));
         };
 
         it('shoots without help when there is nobody to help', () => {

@@ -60,8 +60,8 @@ export class StateTable {
     private readonly mask: number;
     private readonly hi: Uint32Array;
     private readonly lo: Uint32Array;
-    /** The best score so far with which each state was reached, plus one (so 0 means an empty slot). */
-    private readonly score: Int32Array;
+    /** The most damage so far with which each state was reached, plus one (so 0 means an empty slot). */
+    private readonly score: Float64Array;
 
     /** `bits` slots = 2^bits; 21 bits is 2M states in 24 MB. */
     constructor(bits = 21) {
@@ -69,12 +69,12 @@ export class StateTable {
         this.mask = size - 1;
         this.hi = new Uint32Array(size);
         this.lo = new Uint32Array(size);
-        this.score = new Int32Array(size);
+        this.score = new Float64Array(size);
     }
 
     /**
-     * Note that `state` was reached with `score` so far. Returns true when it had already been reached with at least that
-     * score, which means searching it again cannot find anything better (it can only tie), so the caller can skip it.
+     * Note that `state` was reached with `score` damage so far. Returns true when it had already been reached with at least that
+     * much, which means searching it again cannot find anything better (it can only tie), so the caller can skip it.
      */
     seen(state: State, score: number): boolean {
         const [a, b] = hashState(state);

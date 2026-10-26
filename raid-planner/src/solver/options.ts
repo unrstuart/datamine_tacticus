@@ -1,5 +1,5 @@
-// What the search may skip. Everything except `prune` narrows the search with a rule of thumb, so a plan that breaks the
-// rule can be missed; `prune` only cuts branches that provably cannot reach the best score, so it never changes the answer.
+// What the search may skip. Each narrows the search with a rule of thumb, so a plan that breaks the rule can be missed. (The
+// exact cut, an upper bound on what is left to score, is being rebuilt for damage; until then nothing is cut that could win.)
 
 export interface SolverOptions {
     /**
@@ -12,17 +12,15 @@ export interface SolverOptions {
     relevantMovesOnly: boolean;
     /** Only deploy Z'kar where an enemy is within his reach (adjacent, or within range 2). */
     zkarInRangeOnly: boolean;
-    /** Cut a branch when its score plus the most the rest could possibly add is below the best found. Exact. */
-    prune: boolean;
     /**
-     * Skip a state reached again by another order of the same actions when it was already reached with at least as high a score
-     * (a fixed-size table, so memory cannot grow). It can only drop plans that tie with one already found, such as the same
-     * attacks in another order; it never loses the best score. 0 turns it off; otherwise the table has 2^bits slots.
+     * Skip a state reached again by another order of the same actions when it was already reached with at least as much damage
+     * (a fixed-size table, so memory cannot grow). It can only drop a plan that ties with one already found, such as the same
+     * attacks in another order; it never loses the best damage. 0 turns it off; otherwise the table has 2^bits slots.
      */
     tableBits: number;
 }
 
-export const DEFAULT_OPTIONS: SolverOptions = { abaddonFirst: true, relevantMovesOnly: true, zkarInRangeOnly: true, prune: true, tableBits: 21 };
+export const DEFAULT_OPTIONS: SolverOptions = { abaddonFirst: true, relevantMovesOnly: true, zkarInRangeOnly: true, tableBits: 21 };
 
 /** Every rule off: the full search space. */
-export const EXHAUSTIVE: SolverOptions = { abaddonFirst: false, relevantMovesOnly: false, zkarInRangeOnly: false, prune: false, tableBits: 0 };
+export const EXHAUSTIVE: SolverOptions = { abaddonFirst: false, relevantMovesOnly: false, zkarInRangeOnly: false, tableBits: 0 };

@@ -1,6 +1,7 @@
 import { Cell, Direction, neighbor } from '../core/hex';
 import { AbaddonExtraAttack, Effect, Setup, UnitId } from '../core/setup';
 import { TestHex, gridBoard } from '../core/testBoard';
+import { Roster, maxedRoster } from '../core/roster';
 import { Context, Enemy, State, initialState } from './state';
 
 /** Step `n` hexes from `c` in direction `d` (straight along the grid axes, so N/S stay in a column). */
@@ -25,6 +26,10 @@ export interface ScenarioOptions {
     abaddonSurvivesUndesirable?: boolean;
     ahrimanActiveAvailable?: boolean;
     neuroActiveAvailable?: boolean;
+    roster?: Roster;
+    armor?: { boss: number; minion: number };
+    undesirablePenalty?: number;
+    neuroAdjacentPenalty?: number;
 }
 
 /** A flat board (elevation 1 unless `hexes` says otherwise) with the given setup, ready to play. */
@@ -43,10 +48,10 @@ export function scenario(o: ScenarioOptions = {}): { ctx: Context; state: State;
         ahrimanActiveAvailable: o.ahrimanActiveAvailable ?? true,
         neuroActiveAvailable: o.neuroActiveAvailable ?? true,
         abaddonSurvivesUndesirable: o.abaddonSurvivesUndesirable ?? true,
-        undesirablePenalty: 3,
-        neuroAdjacentPenalty: 3,
+        undesirablePenalty: o.undesirablePenalty ?? 0,
+        neuroAdjacentPenalty: o.neuroAdjacentPenalty ?? 0,
     };
-    return { ctx: { board, setup }, state: initialState(setup), setup };
+    return { ctx: { board, setup, roster: o.roster ?? maxedRoster(), armor: o.armor ?? { boss: 1000, minion: 1000 } }, state: initialState(setup), setup };
 }
 
 export const BOSS: Enemy = { kind: 'boss' };

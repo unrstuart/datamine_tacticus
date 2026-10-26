@@ -1,4 +1,5 @@
 import { Board } from './board';
+import { EnemySelection } from './enemies';
 import { validFootprint } from './footprint';
 import { Cell, cellKey } from './hex';
 
@@ -43,9 +44,14 @@ export interface Setup {
     neuroActiveAvailable: boolean;
     /** Abaddon is tanky: by default he survives standing on an undesirable hex. */
     abaddonSurvivesUndesirable: boolean;
-    /** Score taken off a plan for each unit ending on an undesirable hex, and for Neurothrope ending next to an enemy. */
+    /**
+     * Damage taken off a plan for each unit ending on an undesirable hex, and for Neurothrope ending next to an enemy. Zero by
+     * default: plans are ranked by damage, and a plan with a unit on an undesirable hex only loses to an equal one without.
+     */
     undesirablePenalty: number;
     neuroAdjacentPenalty: number;
+    /** Which rarity, stars and rank of boss to fight (its armor comes from that row); undefined means the strongest. */
+    enemy?: EnemySelection;
 }
 
 /**
@@ -67,8 +73,8 @@ export function initialSetup(board: Board, platformIndex = 0): Setup {
         ahrimanActiveAvailable: true,
         neuroActiveAvailable: true,
         abaddonSurvivesUndesirable: true,
-        undesirablePenalty: 3,
-        neuroAdjacentPenalty: 3,
+        undesirablePenalty: 0,
+        neuroAdjacentPenalty: 0,
     };
     const deploy = board.deployCells();
     UNIT_IDS.forEach((unit, i) => {

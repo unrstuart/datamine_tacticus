@@ -1,6 +1,9 @@
+import { EnemyArmor, EnemyRow, enemyRow, normalizeSelection, selectionOptions, strongestSelection } from '../core/enemies';
+import { RANK_NAMES } from '../core/roster';
 import { AbaddonExtraAttack, Effect, EFFECTS, MAX_ABADDON_STACKS, MAX_NEURO_STACKS, Setup, UNIT_IDS } from '../core/setup';
 import { Tool } from '../core/tools';
 import { EFFECT_LABELS, EffectIcon } from './EffectGlyph';
+import { Choice, RarityChoices, Stars, rankIconUrl } from './icons';
 import { UNITS, unitIconUrl } from './units';
 
 interface SidebarProps {
@@ -8,6 +11,9 @@ interface SidebarProps {
     setTool: (tool: Tool) => void;
     setup: Setup;
     update: (patch: Partial<Setup>) => void;
+    /** The boss's stat rows (by rarity, stars and rank) and the armor the selected one gives it and its minions. */
+    enemyRows: readonly EnemyRow[];
+    armor: EnemyArmor;
     platformCount: number;
     onResetBoss: (platformIndex: number) => void;
     onClearAll: () => void;
@@ -15,7 +21,7 @@ interface SidebarProps {
 
 const same = (a: Tool, b: Tool): boolean => JSON.stringify(a) === JSON.stringify(b);
 
-export function Sidebar({ tool, setTool, setup, update, platformCount, onResetBoss, onClearAll }: SidebarProps) {
+export function Sidebar({ tool, setTool, setup, update, enemyRows, armor, platformCount, onResetBoss, onClearAll }: SidebarProps) {
     const button = (t: Tool, label: string, icon: React.ReactNode, hint?: string) => (
         <button key={label} type="button" className={`tool${same(tool, t) ? ' active' : ''}`} onClick={() => setTool(t)} title={hint}>
             <span className="tool-icon">{icon}</span>
@@ -81,6 +87,52 @@ export function Sidebar({ tool, setTool, setup, update, platformCount, onResetBo
                 )}
             </section>
 
+            {enemyRows.length > 0 && (
+                <section>
+                    <h2>Boss stats</h2>
+                    {(() => {
+                        const chosen = normalizeSelection(enemyRows, setup.enemy ?? strongestSelection(enemyRows));
+                        const options = selectionOptions(enemyRows);
+                        const row = enemyRow(enemyRows, chosen);
+                        const pick = (next: Partial<typeof chosen>) => update({ enemy: normalizeSelection(enemyRows, { ...chosen, ...next }) });
+                        return (
+                            <>
+                                <div className="field-row">
+                                    <span className="label">Rarity</span>
+                                    <RarityChoices value={chosen.rarity} options={options.rarities} onChange={(rarity) => pick({ rarity })} />
+                                </div>
+                                <div className="field-row">
+                                    <span className="label">Stars</span>
+                                    <div className="choices">
+                                        {options.starsFor(chosen.rarity).map((s) => (
+                                            <Choice key={s} selected={s === chosen.stars} title={`Stars: ${s}`} onClick={() => pick({ stars: s })}>
+                                                <Stars level={s} />
+                                            </Choice>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="field-row">
+                                    <span className="label">Rank</span>
+                                    <div className="rank-pick">
+                                        <img className="rank" src={rankIconUrl(chosen.rank)} alt="" />
+                                        <select value={chosen.rank} onChange={(e) => pick({ rank: Number(e.target.value) })}>
+                                            {[...options.ranksFor(chosen.rarity, chosen.stars)].reverse().map((r) => (
+                                                <option key={r} value={r}>
+                                                    {RANK_NAMES[r]}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <p className="hint">
+                                    Boss: armor {armor.boss.toLocaleString()}, health {row?.health.toLocaleString()}. Minions: armor {armor.minion.toLocaleString()}.
+                                </p>
+                            </>
+                        );
+                    })()}
+                </section>
+            )}
+
             <section>
                 <h2>Boss</h2>
                 {number('Neuroparasite stacks', setup.neuroStacks, (n) => update({ neuroStacks: Math.min(MAX_NEURO_STACKS, Math.max(0, n || 0)) }), 0, MAX_NEURO_STACKS)}
@@ -104,8 +156,8 @@ export function Sidebar({ tool, setTool, setup, update, platformCount, onResetBo
                 {check('Ahriman’s active is available', setup.ahrimanActiveAvailable, (v) => update({ ahrimanActiveAvailable: v }))}
                 {check('Neurothrope’s active is available', setup.neuroActiveAvailable, (v) => update({ neuroActiveAvailable: v }))}
                 {check('Abaddon survives an undesirable hex', setup.abaddonSurvivesUndesirable, (v) => update({ abaddonSurvivesUndesirable: v }))}
-                {number('Penalty per unit on an undesirable hex', setup.undesirablePenalty, (n) => update({ undesirablePenalty: n || 0 }))}
-                {number('Penalty for Neurothrope next to an enemy', setup.neuroAdjacentPenalty, (n) => update({ neuroAdjacentPenalty: n || 0 }))}
+                {number('Damage lost per unit on an undesirable hex', setup.undesirablePenalty, (n) => update({ undesirablePenalty: n || 0 }))}
+                {number('Damage lost if Neurothrope ends next to an enemy', setup.neuroAdjacentPenalty, (n) => update({ neuroAdjacentPenalty: n || 0 }))}
             </section>
 
             <button type="button" className="danger" onClick={onClearAll}>
