@@ -620,8 +620,9 @@ async function runAll(
         const events = discoverShopEvents(data);
         for (const name of events.keys()) {
             runJob(results, `shop_event:${name}`, () => {
-                const eventData = extractShopEvent({ gameconfigPath, eventName: name, i2Path });
-                const filename = deriveShopEventFilename(name, eventData.title);
+                const eventData = extractShopEvent({ gameconfigPath, eventName: name, i2Path, assetsDir });
+                // Named after the event's own title ("skull-harvest"), falling back to the shop tab name.
+                const filename = deriveShopEventFilename(name, eventData.title ?? eventData.shopTabTitle);
                 const outputPath = plannerDir
                     ? path.join(plannerDir, 'src/fsd/4-entities/shops/data', filename)
                     : path.join(outputDir, filename);
@@ -708,6 +709,13 @@ async function runAll(
             const job = results.find((r) => r.name === jobName);
             if (job?.ok && job.outputPath) {
                 assetRefs.push(...findAssetRefs(fs.readFileSync(job.outputPath, 'utf-8'), assetsDir));
+            }
+        }
+        // Shop events name their interstitial sprite by file name only (no snowprint_assets/ path to scan for).
+        for (const job of results.filter((r) => r.name.startsWith('shop_event:') && r.ok && r.outputPath)) {
+            const interstitial = JSON.parse(fs.readFileSync(job.outputPath!, 'utf-8')).interstitial;
+            if (interstitial) {
+                assetRefs.push({ destRelPath: `misc/${interstitial}`, sourceAbsPath: path.join(assetsDir, 'sprites', interstitial) });
             }
         }
         const equipmentJob = results.find((r) => r.name === 'equipment_data');
@@ -1251,7 +1259,7 @@ async function runOne(name: string, flags: Record<string, string>, paths: Resolv
             }
             const eventName = requireFlag(flags, 'event', 'Usage: extract_all.ts shop_event --gameconfig <p> --mode extract --event <name> [--level L|M|H]');
             const level = parseLevel(flags.level);
-            const eventData = extractShopEvent({ gameconfigPath: gc, eventName, i2Path: flags.i2 ?? paths.i2Path, level });
+            const eventData = extractShopEvent({ gameconfigPath: gc, eventName, i2Path: flags.i2 ?? paths.i2Path, level, assetsDir: paths.assetsDir });
             if (format === 'json') {
                 printJson(eventData);
             } else {

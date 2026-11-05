@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as path from 'path';
 import {
     convertReward,
     resolveTieredProgressRewards,
@@ -7,6 +8,7 @@ import {
     ProgressRewardTier,
     SeasonalMissions,
 } from './seasonal_event_shared';
+import { loadSpriteFilesByLowercaseName, resolveSpriteCaseInsensitive } from './sprite_lookup';
 
 function globToRegex(pattern: string): RegExp {
     const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.');
@@ -206,10 +208,52 @@ export interface ShopEventWeek {
     missions?: SeasonalMissions;
 }
 
+export interface ShopEventOffer {
+    /** The raw shop.offers entry. */
+    offer: any;
+    /** The shop.realMoneyProducts entry the offer points at (price, rewards). */
+    realMoneyProduct?: any;
+}
+
 export interface ShopEventData {
     event: string;
+    /** The event's own name as the game shows it ("Skull Harvest"), from SeasonalEvents/name_<theme>. Falls back to shopTabTitle. */
     title?: string;
+    /** The name of the event's shop tab ("Boons of Blood"), from the live event's shopTabLocaKey. */
+    shopTabTitle?: string;
+    /** The live event's `theme` (e.g. "november_2026"); the stem of the event's art, like its interstitial. */
+    theme?: string;
+    /**
+     * File name of the event's interstitial sprite (e.g. "ui_interstitial_november_2026.png", on-disk casing).
+     * GameConfig never names it - it is the `ui_interstitial_<theme>` convention - so it is only set when an
+     * assetsDir is given and that sprite exists in <assetsDir>/sprites.
+     */
+    interstitial?: string;
     weeks: ShopEventWeek[];
+    /**
+     * Real-money offers sold alongside the event (the Bonus Shipment "pass", special bundles, webstore
+     * exclusives, final push), keyed by offerId. Segment variants (_SHD/_HD/_MD/_LD) are separate entries.
+     * The per-day calendar offers are not included - they live in the product calendar data.
+     */
+    offers?: Record<string, ShopEventOffer>;
+}
+
+// "November2026" -> "november_2026" - the infix of the event's offer ids (offer_seasonal_event_november_2026_pass).
+function eventOfferInfix(eventName: string): string {
+    return eventName.replace(/([a-z])([0-9])/gi, '$1_$2').toLowerCase();
+}
+
+const EVENT_OFFER_KINDS = /^(pass|special_bundle|webstore_exclusive|final_push)/;
+
+function resolveShopEventOffers(data: any, eventName: string): Record<string, ShopEventOffer> | undefined {
+    const prefix = `offer_seasonal_event_${eventOfferInfix(eventName)}_`;
+    const realMoneyProducts = data.clientGameConfig.shop.realMoneyProducts;
+    const offers: Record<string, ShopEventOffer> = {};
+    for (const offer of data.clientGameConfig.shop.offers as any[]) {
+        if (!offer.offerId.startsWith(prefix) || !EVENT_OFFER_KINDS.test(offer.offerId.slice(prefix.length))) continue;
+        offers[offer.offerId] = { offer, realMoneyProduct: realMoneyProducts[offer.realMoneyProductId] };
+    }
+    return Object.keys(offers).length > 0 ? offers : undefined;
 }
 
 export type Level = 'L' | 'M' | 'H';
@@ -283,16 +327,25 @@ function conditionRedundantForLevel(conditions: ShopEventConditions, level: Leve
     return true;
 }
 
+function findInterstitial(theme: string | undefined, assetsDir: string | undefined): string | undefined {
+    if (!theme || !assetsDir) return undefined;
+    const spritesDir = path.join(assetsDir, 'sprites');
+    if (!fs.existsSync(spritesDir)) return undefined;
+    return resolveSpriteCaseInsensitive(loadSpriteFilesByLowercaseName(spritesDir), `ui_interstitial_${theme}.png`);
+}
+
 function extractShopEventData(
     data: any,
     eventName: string,
     terms: Map<string, string> | null,
-    level: Level | null
+    level: Level | null,
+    assetsDir?: string
 ): ShopEventData {
     const summary = discoverShopEvents(data).get(eventName)!;
     const merchants = data.clientGameConfig.shop.merchants;
 
-    let title: string | undefined;
+    let shopTabTitle: string | undefined;
+    let theme: string | undefined;
     const weeks: ShopEventWeek[] = [];
 
     for (const { week, merchant: merchantKey } of summary.weeks) {
@@ -300,10 +353,11 @@ function extractShopEventData(
         if (!merchant) continue;
 
         const seasonalConfig = findSeasonalEventConfig(data, merchantKey);
+        if (!theme && seasonalConfig?.theme) theme = seasonalConfig.theme;
         let subtitle: string | undefined;
         if (terms && seasonalConfig) {
-            if (!title && seasonalConfig.shopTabLocaKey && terms.has(seasonalConfig.shopTabLocaKey)) {
-                title = terms.get(seasonalConfig.shopTabLocaKey);
+            if (!shopTabTitle && seasonalConfig.shopTabLocaKey && terms.has(seasonalConfig.shopTabLocaKey)) {
+                shopTabTitle = terms.get(seasonalConfig.shopTabLocaKey);
             }
             if (seasonalConfig.subtitleLocaKey && terms.has(seasonalConfig.subtitleLocaKey)) {
                 subtitle = terms.get(seasonalConfig.subtitleLocaKey);
@@ -353,7 +407,20 @@ function extractShopEventData(
         weeks.push({ week, merchant: merchantKey, subtitle, slots, milestoneRewards, progressChests, missions });
     }
 
-    return { event: eventName, title, weeks };
+    // The event's own name lives under SeasonalEvents/name_<theme>; the shop tab name is only a fallback.
+    const eventTitle = theme && terms ? terms.get(`SeasonalEvents/name_${theme}`) : undefined;
+    const title = eventTitle || shopTabTitle;
+    const interstitial = findInterstitial(theme, assetsDir);
+    const offers = resolveShopEventOffers(data, eventName);
+    return {
+        event: eventName,
+        title,
+        shopTabTitle,
+        theme,
+        interstitial,
+        weeks,
+        ...(offers ? { offers } : {}),
+    };
 }
 
 function formatProgressTier(tier: ProgressRewardTier, data: any): string {
@@ -476,10 +543,12 @@ export interface ExtractShopEventParams {
     eventName: string;
     i2Path?: string;
     level?: Level | null;
+    /** Extracted-assets root; lets the extraction check that the event's interstitial sprite exists. */
+    assetsDir?: string;
 }
 
-export function extractShopEvent({ gameconfigPath, eventName, i2Path, level = null }: ExtractShopEventParams): ShopEventData {
+export function extractShopEvent({ gameconfigPath, eventName, i2Path, level = null, assetsDir }: ExtractShopEventParams): ShopEventData {
     const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
     const terms = i2Path ? loadTerms(i2Path) : null;
-    return extractShopEventData(data, eventName, terms, level);
+    return extractShopEventData(data, eventName, terms, level, assetsDir);
 }
