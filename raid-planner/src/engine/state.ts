@@ -2,8 +2,8 @@ import { Board } from '../core/board';
 import { EnemyArmor } from '../core/enemies';
 import { Roster } from '../core/roster';
 import { Cell, cellKey, footprintDistance } from '../core/hex';
-import { AbaddonExtraAttack, Effect, Setup, UNIT_IDS, UnitId } from '../core/setup';
-import { ActorName } from './units';
+import { AbaddonExtraAttack, Effect, Setup, Summon, UNIT_IDS, UnitId } from '../core/setup';
+import { ActorName, UNIT_DEFS, summonHasTag } from './units';
 
 // The state of one round as it is played out. Plain data, copied on every step (cheap at this size).
 
@@ -26,6 +26,8 @@ export interface State {
     zkar?: ZkarState;
     bossCells: Cell[];
     minions: Cell[];
+    /** Friendly summon tokens: static, never act. */
+    summons: Summon[];
     /** Hex effect by cell key. `fire1` is gone by next round; `fire2` is still burning. */
     effects: Record<string, Effect>;
     neuroStacks: number;
@@ -56,6 +58,7 @@ export function initialState(setup: Setup): State {
         units,
         bossCells: setup.bossCells,
         minions: setup.minions,
+        summons: setup.summons ?? [],
         effects: setup.effects,
         neuroStacks: setup.neuroStacks,
         abaddonStacks: setup.abaddonStacks ?? 0,
@@ -92,6 +95,7 @@ export function occupiedKeys(state: State): Set<string> {
     const keys = new Set<string>();
     for (const c of state.bossCells) keys.add(cellKey(c));
     for (const c of state.minions) keys.add(cellKey(c));
+    for (const s of state.summons) keys.add(cellKey(s.cell));
     for (const u of Object.values(state.units)) if (u) keys.add(cellKey(u.cell));
     for (const c of state.zkar?.cells ?? []) keys.add(cellKey(c));
     return keys;
@@ -118,3 +122,14 @@ export const burning = (state: State, cells: readonly Cell[], nextRound = false)
 
 /** Whether any hex of the footprint carries an effect (fire, despoiled ground, contaminated). */
 export const hasEffect = (state: State, cells: readonly Cell[], nextRound = false): boolean => cells.some((c) => effectAt(state, c, nextRound) !== undefined);
+
+/**
+ * The hex of every friendly psyker on the board other than Z'kar himself: the characters who are psykers, plus the Pink Horrors
+ * (the only summon with the Psyker trait). `except` leaves one character out.
+ */
+export function friendlyPsykers(state: State, except?: UnitId): Cell[] {
+    const cells: Cell[] = [];
+    for (const id of unitIds(state)) if (id !== except && UNIT_DEFS[id].tags.includes('psyker')) cells.push(state.units[id]!.cell);
+    for (const s of state.summons) if (summonHasTag(s.kind, 'psyker')) cells.push(s.cell);
+    return cells;
+}

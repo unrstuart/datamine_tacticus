@@ -23,7 +23,7 @@ const storageKey = (boardId: string) => `raid-planner:setup:${boardId}`;
 function loadSetup(boardId: string): Setup | undefined {
     try {
         const raw = localStorage.getItem(storageKey(boardId));
-        return raw ? (JSON.parse(raw) as Setup) : undefined;
+        return raw ? { ...(JSON.parse(raw) as Setup), summons: (JSON.parse(raw) as Partial<Setup>).summons ?? [] } : undefined;
     } catch {
         return undefined;
     }

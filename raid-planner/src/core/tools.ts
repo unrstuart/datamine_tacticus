@@ -1,7 +1,7 @@
 import { Board } from './board';
 import { togglePin, toggleZkarAt } from './constraints';
 import { Cell, cellKey } from './hex';
-import { Effect, Setup, UnitId, addMinion, clearCell, placeUnit, removeMinion, setEffect, setUndesirable } from './setup';
+import { Effect, Setup, SummonKind, UnitId, addMinion, addSummon, clearCell, placeUnit, removeMinion, removeSummon, setEffect, setUndesirable } from './setup';
 
 // What clicking (or dragging across) hexes does for each tool in the placement sidebar. The boss and the characters can
 // be picked up and dragged with any tool that doesn't paint (see drag.ts); `move` is the tool that does only that.
@@ -9,6 +9,8 @@ import { Effect, Setup, UnitId, addMinion, clearCell, placeUnit, removeMinion, s
 export type Tool =
     | { kind: 'move' }
     | { kind: 'minion' }
+    /** A friendly summon token (Pink Horror, Blue Horror, Screamer, Bloodletter). */
+    | { kind: 'summon'; summon: SummonKind }
     | { kind: 'effect'; effect: Effect }
     | { kind: 'undesirable' }
     | { kind: 'clear' }
@@ -20,7 +22,7 @@ export type Tool =
 export type PaintMode = 'on' | 'off';
 
 /** Tools that can be dragged across several hexes. The boss and the characters are placed by a single click. */
-export const isPaintTool = (tool: Tool): boolean => tool.kind === 'minion' || tool.kind === 'effect' || tool.kind === 'undesirable' || tool.kind === 'clear';
+export const isPaintTool = (tool: Tool): boolean => tool.kind === 'minion' || tool.kind === 'summon' || tool.kind === 'effect' || tool.kind === 'undesirable' || tool.kind === 'clear';
 
 const hasMinion = (setup: Setup, cell: Cell): boolean => setup.minions.some((m) => cellKey(m) === cellKey(cell));
 
@@ -29,6 +31,8 @@ export function paintModeFor(setup: Setup, tool: Tool, cell: Cell): PaintMode {
     switch (tool.kind) {
         case 'minion':
             return hasMinion(setup, cell) ? 'off' : 'on';
+        case 'summon':
+            return setup.summons.some((s) => cellKey(s.cell) === cellKey(cell)) ? 'off' : 'on';
         case 'effect':
             return setup.effects[cellKey(cell)] === tool.effect ? 'off' : 'on';
         case 'undesirable':
@@ -45,6 +49,8 @@ export function applyTool(board: Board, setup: Setup, tool: Tool, cell: Cell, mo
             return setup;
         case 'minion':
             return mode === 'on' ? (addMinion(board, setup, cell) ?? setup) : removeMinion(setup, cell);
+        case 'summon':
+            return mode === 'on' ? (addSummon(board, setup, tool.summon, cell) ?? setup) : removeSummon(setup, cell);
         case 'effect':
             return setEffect(board, setup, cell, mode === 'on' ? tool.effect : null) ?? setup;
         case 'undesirable':
@@ -55,7 +61,7 @@ export function applyTool(board: Board, setup: Setup, tool: Tool, cell: Cell, mo
             return placeUnit(board, setup, tool.unit, cell) ?? setup;
         case 'pin': {
             // Somewhere a character can stand, that isn't the boss's or a minion's, and that no other pin has taken.
-            const blocked = setup.bossCells.concat(setup.minions).some((c) => cellKey(c) === cellKey(cell));
+            const blocked = setup.bossCells.concat(setup.minions, setup.summons.map((x) => x.cell)).some((c) => cellKey(c) === cellKey(cell));
             const taken = setup.constraints.some((c) => c.kind === 'pin' && c.unit !== tool.unit && cellKey(c.cell) === cellKey(cell));
             if (board.hexAt(cell)?.passable !== true || blocked || taken) return setup;
             return { ...setup, constraints: tool.unit === 'zkar' ? toggleZkarAt(setup.constraints, cell) : togglePin(setup.constraints, tool.unit, cell) };

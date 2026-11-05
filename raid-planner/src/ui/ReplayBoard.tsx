@@ -1,6 +1,6 @@
 import { Board } from '../core/board';
 import { Cell, cellKey } from '../core/hex';
-import { Effect, UNIT_IDS, UnitId } from '../core/setup';
+import { Effect, SUMMON_LABELS, UNIT_IDS, UnitId } from '../core/setup';
 import { Enemy, State } from '../engine/state';
 import { ActorName } from '../engine/units';
 import { Scene, along } from '../replay/timeline';
@@ -128,6 +128,18 @@ export function ReplayBoard({ board, state, zkar, scene, bossIcon, undesirable }
 
             <BossMark icon={bossIcon} x={centre.x} y={centre.y} r={bossR} />
             {stack(state.neuroStacks, centre.x + bossR * 0.72, centre.y + bossR * 0.72)}
+
+            {state.summons.map((s) => {
+                const p = pixel(s.cell);
+                return (
+                    <g key={`s-${cellKey(s.cell)}`} transform={`translate(${p.x} ${p.y})`} pointerEvents="none">
+                        <circle r={tokenR * 0.8} className="summon" />
+                        <text className="summon-label" textAnchor="middle" dominantBaseline="central">
+                            {SUMMON_LABELS[s.kind].letter}
+                        </text>
+                    </g>
+                );
+            })}
 
             {state.minions.map((m) => {
                 const p = pixel(m);

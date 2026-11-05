@@ -118,6 +118,17 @@ main {
     stroke-width: 2;
 }
 
+.summon {
+    fill: #1f5a7a;
+    stroke: #8ad0ff;
+    stroke-width: 2;
+}
+
+.summon-label {
+    fill: #fff;
+    font: 700 13px system-ui, sans-serif;
+}
+
 .minion-label {
     fill: #fff;
     font: 700 13px system-ui, sans-serif;
@@ -211,6 +222,18 @@ aside h2 {
 .boss-chip {
     background: #961414;
     border: 2px solid #ff5a5a;
+}
+
+.summon-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font: 700 12px system-ui, sans-serif;
+    background: #1f5a7a;
+    border: 2px solid #8ad0ff;
 }
 
 .minion-chip {

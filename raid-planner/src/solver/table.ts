@@ -44,6 +44,8 @@ export function hashState(state: State): [number, number] {
     } else h.add(-2);
     h.add(state.minions.length);
     for (const m of [...state.minions].map(cellKey).sort()) h.addString(m);
+    h.add(state.summons.length);
+    for (const m of state.summons.map((x) => `${x.kind}@${cellKey(x.cell)}`).sort()) h.addString(m);
     const effects = Object.entries(state.effects).sort(([a], [b]) => (a < b ? -1 : 1));
     for (const [k, v] of effects) {
         h.addString(k);

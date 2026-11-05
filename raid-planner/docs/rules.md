@@ -163,6 +163,10 @@ Decisions made while building it, beyond what the sections above say. Tell me wh
   adjacent to any enemy but is at distance 1 across a bridge's side may still shoot.
 - **Minions:** a character's attack kills the minion it hits (and any minions the relic hits). Smite does not kill.
   Z'kar kills the minion he hits. Minions block walkers and are in the way of Neurothrope.
+- **Summons:** Screamers, Bloodletters, Pink Horrors and Blue Horrors can be placed as static friendly tokens. They never
+  act, move, take damage or get attacked; they occupy their hex (nobody may end a move or deploy Z'kar there) and
+  walkers may pass through them like any friendly unit. Pink Horrors are Chaos Psykers: they count for Z'kar's Hunter of
+  Souls and set off his immediate attack when he is deployed beside one. The other three have no Psyker trait.
 - **Z'kar's target** is a minion when one is in reach (adjacent if any enemy is adjacent, otherwise within 2), else the
   boss. A trigger with nothing in reach is spent for nothing.
 - **Z'kar's triggers:** landing next to a psyker (Ahriman, Abraxas, Archimatos or Neurothrope; not Abaddon), and

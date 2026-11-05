@@ -3,7 +3,7 @@ import { UnitId } from '../core/setup';
 import { summonFootprint } from '../core/zkar';
 import { AttackChoice, AttackReport, legalAttacks, performAttack, zkarAttack } from './attacks';
 import { legalMoves } from './movement';
-import { Context, Enemy, State, adjacent, enemyCells, initialState, listEnemies, occupiedKeys, sameEnemy } from './state';
+import { Context, Enemy, State, adjacent, enemyCells, friendlyPsykers, initialState, listEnemies, occupiedKeys, sameEnemy } from './state';
 
 // A plan is a sequence of actions played out on a Setup. Moves, attacks and the deployment can come in any order, with
 // one limit: a character moves (at most once) before it attacks, and attacking ends its turn.
@@ -38,8 +38,6 @@ export interface Penalty {
     unit?: UnitId;
     points: number;
 }
-
-const PSYKERS: UnitId[] = ['ahriman', 'abraxas', 'archimatos', 'neurothrope'];
 
 /** The hexes Z'kar could be deployed by clicking: every hex where a legal triangle fits right now. */
 export function legalDeploys(ctx: Context, state: State): Cell[] {
@@ -80,7 +78,7 @@ export function applyAction(ctx: Context, state: State, action: Action): { state
             if (!cells) return undefined;
             let next: State = { ...state, zkar: { cells, triggered: { deploy: false, archimatos: false, abraxas: false } } };
             // He attacks on the spot if he lands next to a psyker.
-            const nextToPsyker = PSYKERS.some((id) => next.units[id] && adjacent(ctx.board, cells, [next.units[id]!.cell]));
+            const nextToPsyker = friendlyPsykers(next).some((c) => adjacent(ctx.board, cells, [c]));
             if (!nextToPsyker) return { state: next, reports: [] };
             next = { ...next, zkar: { ...next.zkar!, triggered: { ...next.zkar!.triggered, deploy: true } } };
             return zkarAttack(ctx, next, 'deploy');

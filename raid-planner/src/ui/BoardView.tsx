@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Board } from '../core/board';
 import { Point } from '../core/drag';
 import { Cell, cellKey } from '../core/hex';
-import { Effect, Setup, UNIT_IDS, UnitId, occupiedKeys } from '../core/setup';
+import { Effect, SUMMON_LABELS, Setup, UNIT_IDS, UnitId, occupiedKeys } from '../core/setup';
 import { summonFootprint } from '../core/zkar';
 import { describeConstraint } from './describe';
 import { boardImageUrl, bossIconUrl } from '../data';
@@ -192,6 +192,18 @@ export function BoardView({ board, setup, bossIcon, ghost, onCellDown, onCellEnt
                         <circle r={tokenR * 0.8} className="minion" />
                         <text className="minion-label" textAnchor="middle" dominantBaseline="central">
                             M
+                        </text>
+                    </g>
+                ) : null;
+            })}
+
+            {setup.summons.map((s) => {
+                const h = board.hexAt(s.cell);
+                return h ? (
+                    <g key={`s-${cellKey(s.cell)}`} transform={`translate(${h.x} ${h.y})`} pointerEvents="none">
+                        <circle r={tokenR * 0.8} className="summon" />
+                        <text className="summon-label" textAnchor="middle" dominantBaseline="central">
+                            {SUMMON_LABELS[s.kind].letter}
                         </text>
                     </g>
                 ) : null;

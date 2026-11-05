@@ -25,10 +25,26 @@ export const MAX_ABADDON_STACKS = 13;
  */
 export type AbaddonExtraAttack = 'off' | 'available' | 'on';
 
+/** Friendly summons that can be placed as static tokens. Pink Horrors are Chaos Psykers; the others have no Psyker trait. */
+export const SUMMON_KINDS = ['screamer', 'bloodletter', 'pinkHorror', 'blueHorror'] as const;
+export type SummonKind = (typeof SUMMON_KINDS)[number];
+export const SUMMON_LABELS: Record<SummonKind, { name: string; letter: string }> = {
+    screamer: { name: 'Screamer', letter: 'S' },
+    bloodletter: { name: 'Bloodletter', letter: 'B' },
+    pinkHorror: { name: 'Pink Horror', letter: 'P' },
+    blueHorror: { name: 'Blue Horror', letter: 'b' },
+};
+export interface Summon {
+    kind: SummonKind;
+    cell: Cell;
+}
+
 export interface Setup {
     boardId: string;
     bossCells: Cell[];
     minions: Cell[];
+    /** Friendly summons standing on the board: they block hexes and count for adjacency and tags, but never act. */
+    summons: Summon[];
     /** Effect by cell key. */
     effects: Record<string, Effect>;
     /** Hexes a unit would rather not end the round on (the boss marks them to strike next turn). */
@@ -67,6 +83,7 @@ export function initialSetup(board: Board, platformIndex = 0): Setup {
         boardId: board.id,
         bossCells: board.bossPlatforms()[platformIndex]?.cells ?? [],
         minions: [],
+        summons: [],
         effects: {},
         undesirable: [],
         neuroStacks: 0,
@@ -92,6 +109,7 @@ export function occupiedKeys(setup: Setup, except?: UnitId): Set<string> {
     const keys = new Set<string>();
     for (const c of setup.bossCells) keys.add(cellKey(c));
     for (const c of setup.minions) keys.add(cellKey(c));
+    for (const s of setup.summons ?? []) keys.add(cellKey(s.cell));
     for (const [unit, c] of Object.entries(setup.units) as Array<[UnitId, Cell]>) if (unit !== except) keys.add(cellKey(c));
     return keys;
 }
@@ -117,6 +135,16 @@ export function addMinion(board: Board, setup: Setup, cell: Cell): Setup | undef
 
 export function removeMinion(setup: Setup, cell: Cell): Setup {
     return { ...setup, minions: setup.minions.filter((m) => cellKey(m) !== cellKey(cell)) };
+}
+
+/** Put a summon of `kind` on `cell`; same legality as a minion (a passable hex nobody stands on). */
+export function addSummon(board: Board, setup: Setup, kind: SummonKind, cell: Cell): Setup | undefined {
+    if (!standable(board, cell) || occupiedKeys(setup).has(cellKey(cell))) return undefined;
+    return { ...setup, summons: [...setup.summons, { kind, cell }] };
+}
+
+export function removeSummon(setup: Setup, cell: Cell): Setup {
+    return { ...setup, summons: setup.summons.filter((s) => cellKey(s.cell) !== cellKey(cell)) };
 }
 
 /** Put (or move) a character on `cell`. */
@@ -145,12 +173,12 @@ export function setUndesirable(board: Board, setup: Setup, cell: Cell, on: boole
     return { ...setup, undesirable: on ? [...rest, key] : rest };
 }
 
-/** Clear a hex of whatever the user put there: a minion, a character, an effect, an undesirable mark. The boss stays. */
+/** Clear a hex of whatever the user put there: a minion, a summon, a character, an effect, an undesirable mark. The boss stays. */
 export function clearCell(setup: Setup, cell: Cell): Setup {
     const key = cellKey(cell);
     const units = Object.fromEntries(Object.entries(setup.units).filter(([, c]) => cellKey(c as Cell) !== key));
     const { [key]: _effect, ...effects } = setup.effects;
-    return { ...setup, minions: setup.minions.filter((m) => cellKey(m) !== key), units, effects, undesirable: setup.undesirable.filter((k) => k !== key) };
+    return { ...setup, minions: setup.minions.filter((m) => cellKey(m) !== key), summons: setup.summons.filter((s) => cellKey(s.cell) !== key), units, effects, undesirable: setup.undesirable.filter((k) => k !== key) };
 }
 
 export function setNeuroStacks(setup: Setup, stacks: number): Setup {

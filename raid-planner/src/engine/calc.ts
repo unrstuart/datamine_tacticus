@@ -4,7 +4,7 @@ import { Rarity, ROSTER_UNITS } from '../core/roster';
 import { UnitId } from '../core/setup';
 import { characterStats, weaponsOf, Weapon } from '../core/stats';
 import { HIGH_GROUND_MULTIPLIER, hitDamage, pierceRatio } from '../core/damage';
-import { Context, Enemy, State, actorCells, adjacent, burning, distanceBetween, enemyCells, hasEffect } from './state';
+import { Context, Enemy, State, actorCells, adjacent, burning, distanceBetween, enemyCells, friendlyPsykers, hasEffect } from './state';
 import { ActorName, AttackKind, hasTag } from './units';
 
 // What an attack is worth in damage. Every hit is a raw value (the attacker's damage stat, or an ability's own damage, plus the
@@ -161,7 +161,7 @@ export function attackDamage(ctx: Context, state: State, spec: AttackSpec, smite
         }
         if (spec.bookBonus !== undefined && spec.bookBonus > 0) flat.push({ id: 'bookOfFate', amount: spec.bookBonus });
         if (actor === 'zkar' && nextRound) {
-            const psykers = (['ahriman', 'abraxas', 'archimatos', 'neurothrope'] as const).filter((u) => here(state, u) && adjacent(ctx.board, [state.units[u]!.cell], mine)).length;
+            const psykers = friendlyPsykers(state).filter((c) => adjacent(ctx.board, [c], mine)).length;
             if (psykers > 0) flat.push({ id: 'hunterOfSouls', amount: abilityValue('HunterOfSouls', 'extraDmg', ctx.roster.zkar.abilityLevels[0], ctx.roster.zkar.rarity) * psykers });
         }
         return flat;

@@ -1,4 +1,4 @@
-import { UnitId } from '../core/setup';
+import { SummonKind, UnitId } from '../core/setup';
 
 // The six actors of the comp and what they can do. Numbers and tags come from docs/rules.md.
 
@@ -20,6 +20,16 @@ export const UNIT_DEFS: Record<ActorName, UnitDef> = {
     neurothrope: { movement: 2, flies: true, tags: ['xenos', 'psyker'] },
     zkar: { movement: 0, flies: false, tags: ['chaos', 'psyker', 'summon', 'demon'] },
 };
+
+/** Tags of the placeable summons. The gameconfig gives Pink Horror the Psyker trait and none of the others; Chaos is their alliance. */
+export const SUMMON_TAGS: Record<SummonKind, readonly Tag[]> = {
+    pinkHorror: ['chaos', 'psyker', 'summon', 'demon'],
+    blueHorror: ['chaos', 'summon', 'demon'],
+    bloodletter: ['chaos', 'summon', 'demon'],
+    screamer: ['chaos', 'summon', 'demon'],
+};
+
+export const summonHasTag = (kind: SummonKind, tag: Tag): boolean => SUMMON_TAGS[kind].includes(tag);
 
 export const hasTag = (actor: ActorName, tag: Tag): boolean => UNIT_DEFS[actor].tags.includes(tag);
 

@@ -1,6 +1,6 @@
 import { EnemyArmor, EnemyRow, RaidTier, normalizeSelection, rowAt } from '../core/enemies';
 import { RANK_NAMES } from '../core/roster';
-import { AbaddonExtraAttack, Effect, EFFECTS, MAX_ABADDON_STACKS, MAX_NEURO_STACKS, Setup, UNIT_IDS } from '../core/setup';
+import { AbaddonExtraAttack, Effect, EFFECTS, MAX_ABADDON_STACKS, MAX_NEURO_STACKS, Setup, SUMMON_KINDS, SUMMON_LABELS, UNIT_IDS } from '../core/setup';
 import { Tool } from '../core/tools';
 import { EFFECT_LABELS, EffectIcon } from './EffectGlyph';
 import { ConstraintsPanel } from './ConstraintsPanel';
@@ -68,6 +68,13 @@ export function Sidebar({ tool, setTool, setup, update, enemyRows, tiers, armor,
             <section>
                 <h2>Enemies</h2>
                 {button({ kind: 'minion' }, 'Minion', <span className="minion-chip">M</span>, 'Click or drag to place (or remove) minions')}
+            </section>
+
+            <section>
+                <h2>Summons</h2>
+                {SUMMON_KINDS.map((summon) =>
+                    button({ kind: 'summon', summon }, SUMMON_LABELS[summon].name, <span className="summon-chip">{SUMMON_LABELS[summon].letter}</span>, summon === 'pinkHorror' ? 'A friendly Chaos Psyker: counts for Z\'kar\'s Hunter of Souls' : 'A friendly token that blocks the hex'),
+                )}
             </section>
 
             <section>

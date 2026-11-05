@@ -17,6 +17,7 @@ export interface ScenarioOptions {
     hexes?: Record<string, TestHex>;
     boss?: Cell[];
     minions?: Cell[];
+    summons?: Setup['summons'];
     units?: Partial<Record<UnitId, Cell>>;
     effects?: Record<string, Effect>;
     neuroStacks?: number;
@@ -40,6 +41,7 @@ export function scenario(o: ScenarioOptions = {}): { ctx: Context; state: State;
         boardId: board.id,
         bossCells: o.boss ?? [{ col: 6, row: 10 }],
         minions: o.minions ?? [],
+        summons: o.summons ?? [],
         effects: o.effects ?? {},
         undesirable: o.undesirable ?? [],
         neuroStacks: o.neuroStacks ?? 0,

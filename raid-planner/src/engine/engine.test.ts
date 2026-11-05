@@ -458,6 +458,14 @@ describe("Z'kar", () => {
         expect(zbase).toBe(914);
     });
 
+    it('attacks when deployed next to a Pink Horror, but not next to a Blue Horror', () => {
+        const z = south(5);
+        const pink = scenario({ summons: [{ kind: 'pinkHorror', cell: go(z, 'S', 1) }], minions: [south(3)] });
+        expect(applyAction(pink.ctx, pink.state, { type: 'deploy', at: z })!.reports.map((r) => r.trigger)).toEqual(['deploy']);
+        const blue = scenario({ summons: [{ kind: 'blueHorror', cell: go(z, 'S', 1) }], minions: [south(3)] });
+        expect(applyAction(blue.ctx, blue.state, { type: 'deploy', at: z })!.reports).toEqual([]);
+    });
+
     it('attacks when deployed next to a psyker, and not otherwise', () => {
         const z = south(5);
         const { ctx, state } = scenario({ units: { ahriman: go(z, 'S', 1) }, minions: [south(3)] });
@@ -544,6 +552,20 @@ describe("Z'kar", () => {
         const lonely = scenario({ units: {} });
         const alone = runPlan(lonely.ctx, [], { ...lonely.state, zkar: { cells, triggered: { deploy: true, archimatos: true, abraxas: true } } });
         expect(flatOf(alone.finish.reports[0].groups[0]).hunterOfSouls).toBeUndefined();
+    });
+
+    it('a Pink Horror beside him counts as a friendly psyker for Hunter of Souls, the other summons do not', () => {
+        const z = south(2);
+        const cells = [z, go(z, 'N', 1), go(z, 'NE', 1)];
+        const run = (kind: 'pinkHorror' | 'blueHorror' | 'screamer' | 'bloodletter') => {
+            const { ctx, state } = scenario({ summons: [{ kind, cell: go(z, 'S', 1) }] });
+            const plan = runPlan(ctx, [], { ...state, zkar: { cells, triggered: { deploy: true, archimatos: true, abraxas: true } } });
+            return flatOf(plan.finish.reports[0].groups[0]).hunterOfSouls;
+        };
+        expect(run('pinkHorror')).toBe(abilityValue('HunterOfSouls', 'extraDmg', 60, 'Mythic'));
+        expect(run('blueHorror')).toBeUndefined();
+        expect(run('screamer')).toBeUndefined();
+        expect(run('bloodletter')).toBeUndefined();
     });
 
     it("fire that burns this round only is gone for his next-round attack, but fire that burns two rounds still helps", () => {

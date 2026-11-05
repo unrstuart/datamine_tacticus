@@ -6,11 +6,13 @@ import {
     MAX_NEURO_STACKS,
     Setup,
     addMinion,
+    addSummon,
     clearCell,
     initialSetup,
     moveBoss,
     placeUnit,
     removeMinion,
+    removeSummon,
     setEffect,
     setNeuroStacks,
     setUndesirable,
@@ -86,6 +88,18 @@ describe('setup', () => {
             setup = addMinion(board, setup, at(0, 0))!;
             expect(addMinion(board, setup, at(0, 0))).toBeUndefined(); // occupied
             expect(removeMinion(setup, at(0, 0)).minions).toHaveLength(0);
+        });
+
+        it('adds, removes and clears summons on free standable hexes only', () => {
+            const board = flat();
+            let setup: Setup | undefined = initialSetup(board);
+            expect(addSummon(board, setup, 'screamer', at(4, 4))).toBeUndefined(); // rock
+            expect(addSummon(board, setup, 'screamer', at(5, 5))).toBeUndefined(); // boss
+            setup = addSummon(board, setup, 'screamer', at(0, 0))!;
+            expect(addSummon(board, setup, 'blueHorror', at(0, 0))).toBeUndefined(); // occupied
+            expect(addMinion(board, setup, at(0, 0))).toBeUndefined();
+            expect(clearCell(setup, at(0, 0)).summons).toHaveLength(0);
+            expect(removeSummon(setup, at(0, 0)).summons).toHaveLength(0);
         });
 
         it('moves a character without colliding with itself, but not onto another unit', () => {

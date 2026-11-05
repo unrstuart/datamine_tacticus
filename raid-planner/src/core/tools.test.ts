@@ -18,6 +18,18 @@ describe('tools', () => {
         expect(isPaintTool({ kind: 'unit', unit: 'abaddon' })).toBe(false);
     });
 
+    it('the summon tool paints, erases and refuses occupied hexes', () => {
+        const tool = { kind: 'summon', summon: 'pinkHorror' } as const;
+        expect(isPaintTool(tool)).toBe(true);
+        let setup = applyTool(board, initialSetup(board), tool, at(0, 0));
+        expect(setup.summons).toEqual([{ kind: 'pinkHorror', cell: at(0, 0) }]);
+        expect(paintModeFor(setup, tool, at(0, 0))).toBe('off');
+        expect(applyTool(board, setup, { kind: 'minion' }, at(0, 0)).minions).toHaveLength(0);
+        setup = applyTool(board, setup, tool, at(0, 0), 'off');
+        expect(setup.summons).toHaveLength(0);
+        expect(applyTool(board, setup, tool, at(3, 3)).summons).toHaveLength(0); // rock
+    });
+
     it('a drag that starts on a hex that already has the thing erases it', () => {
         let setup = applyTool(board, initialSetup(board), { kind: 'minion' }, at(0, 0));
         expect(paintModeFor(setup, { kind: 'minion' }, at(0, 0))).toBe('off');
