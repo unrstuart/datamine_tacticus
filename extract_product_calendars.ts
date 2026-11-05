@@ -256,7 +256,7 @@ export function formatCalendarFindResults(data: any, globPattern?: string): stri
     for (const name of names) {
         const calendar = calendars.get(name)!;
         const totalOffers = [...calendar.variantsByDay.values()].reduce(
-            (sum, variants) => sum + variants.filter((v) => v !== 'closed' && v !== 'expired').length,
+            (sum, variants) => sum + variants.filter((v) => v !== 'closed' && v !== 'expired' && v !== 'active').length,
             0
         );
         lines.push(`${name}  (${calendar.days.length} days, days ${calendar.days[0]}-${calendar.days[calendar.days.length - 1]}, ${totalOffers} offers)`);
@@ -328,7 +328,8 @@ function extractCalendarData(data: any, name: string, terms: Map<string, string>
         if (!match) continue;
         const day = parseInt(match[1], 10);
         const variant = match[2] ?? '(default)';
-        if (variant === 'closed' || variant === 'expired') continue;
+        // closed/expired/active are UI-state placeholders (active is the empty product_empty_free offer), not real offers.
+        if (variant === 'closed' || variant === 'expired' || variant === 'active') continue;
 
         const resolved = resolveOfferContent(event, data);
         if (!resolved) continue;
