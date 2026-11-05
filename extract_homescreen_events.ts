@@ -216,9 +216,58 @@ export interface HomescreenEventTierData {
     descriptions?: string[];
 }
 
+export interface HomescreenEventRun {
+    /** First day of the run, YYYY-MM-DD (UTC), inclusive. */
+    startDate: string;
+    /** Last day of the run, YYYY-MM-DD (UTC), inclusive - exactly as announced ("November 12 to 15"). */
+    endDate: string;
+    /** ISO 8601 UTC: 00:00:00 on startDate. */
+    startUtc: string;
+    /** ISO 8601 UTC, exclusive: 00:00:00 on the day after endDate. */
+    endUtc: string;
+}
+
 export interface HomescreenEventData {
     eventName: string;
+    /** Announced run dates. Absent for events with no entry in HSE_RUN_DATES (GameConfig ships no schedule). */
+    schedule?: HomescreenEventRun[];
     tiers: Partial<Record<HomescreenEventTier, HomescreenEventTierData>>;
+}
+
+// ---------------------------------------------------------------------------
+// Announced run dates, keyed by the grouped event name (see splitEventName). GameConfig carries no
+// start/end times for these events, so they come from the patch announcement. Dates are inclusive
+// UTC days; add a new [start, end] pair whenever an event is announced (repeat runs are listed in
+// order). Entries below are the 1.44 announcement (all 2026).
+// ---------------------------------------------------------------------------
+
+const HSE_RUN_DATES: Record<string, [string, string][]> = {
+    rarity_training_rush: [
+        ['2026-11-12', '2026-11-15'],
+        ['2026-12-12', '2026-12-15'],
+    ],
+    squig_smash: [['2026-11-18', '2026-11-20']],
+    global_hse_blood_tithe: [['2026-11-23', '2026-11-28']],
+    hse_faction_boost_world_eaters: [['2026-11-23', '2026-11-28']],
+    // "Against the Tide" - the defeat_waves_2 config (the older defeat_waves shares its theme).
+    defeat_waves_2: [['2026-12-03', '2026-12-09']],
+};
+
+function addDays(isoDate: string, days: number): string {
+    const d = new Date(`${isoDate}T00:00:00Z`);
+    d.setUTCDate(d.getUTCDate() + days);
+    return d.toISOString().slice(0, 10);
+}
+
+function resolveSchedule(eventName: string): HomescreenEventRun[] | undefined {
+    const runs = HSE_RUN_DATES[eventName];
+    if (!runs) return undefined;
+    return runs.map(([startDate, endDate]) => ({
+        startDate,
+        endDate,
+        startUtc: `${startDate}T00:00:00Z`,
+        endUtc: `${addDays(endDate, 1)}T00:00:00Z`,
+    }));
 }
 
 function extractHomescreenEventData(data: any, eventName: string, terms: Map<string, string> | null): HomescreenEventData {
@@ -252,7 +301,8 @@ function extractHomescreenEventData(data: any, eventName: string, terms: Map<str
         };
     }
 
-    return { eventName, tiers };
+    const schedule = resolveSchedule(eventName);
+    return schedule ? { eventName, schedule, tiers } : { eventName, tiers };
 }
 
 export interface ExtractHomescreenEventParams {
