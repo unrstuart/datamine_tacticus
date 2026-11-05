@@ -8,6 +8,7 @@ import {
     ProgressRewardTier,
     SeasonalMissions,
 } from './seasonal_event_shared';
+import { extractEventTitle } from './extract_homescreen_events';
 import { loadSpriteFilesByLowercaseName, resolveSpriteCaseInsensitive } from './sprite_lookup';
 
 function globToRegex(pattern: string): RegExp {
@@ -206,6 +207,56 @@ export interface ShopEventWeek {
     progressChests?: ProgressRewardTier[];
     // Missions (daily/free/premium/battle-pass) that pay xp_seasonal into the milestone bar above.
     missions?: SeasonalMissions;
+    // Where the event currency comes from for a free-to-play player, and what the Bonus Shipment adds on top.
+    earnings?: ShopEventEarnings;
+    bonusShipment?: ShopEventBonusShipment;
+}
+
+export interface ShopEventEarningsSource {
+    /** The maxPayouts.ec key (or "<hse id>" for a home screen event). */
+    id: string;
+    label: string;
+    /** Max event currency this source pays a free-to-play player. */
+    amount: number;
+    /** "shop" = the event itself (milestones, free offers); "heroQuest"/"quest" = a quest event; "homeScreenEvent" = an HSE. */
+    kind: 'shop' | 'heroQuest' | 'quest' | 'homeScreenEvent';
+}
+
+export interface ShopEventEarnings {
+    currency: string;
+    /** Sum of every source (the game's own maxPayouts.ec, minus real-money offers). */
+    f2pTotal: number;
+    /** Sum of the sources of kind "shop" only. */
+    f2pShopOnly: number;
+    sources: ShopEventEarningsSource[];
+    /** Tooltip markup: one line per row separated by "\n"; <b>..</b> bold, <i>..</i> italic. No other tags. */
+    tooltip: string;
+}
+
+export interface ShopEventBonusPayoutSource {
+    id: string;
+    label: string;
+    /** How many separate currency payouts this source makes (each earns the per-payout bonus). */
+    payouts: number;
+    /** Whether the Bonus Shipment tooltip text lists this payout type as earning the bonus. */
+    listedInGame: boolean;
+}
+
+export interface ShopEventBonusShipment {
+    currency: string;
+    /** Currency paid immediately on purchase. */
+    instantAmount: number;
+    /** Currency from the premium mission chain, which the pass unlocks. */
+    premiumMissionsAmount: number;
+    /** Extra currency per payout (the pass's seasonalEcBonus). */
+    bonusPerPayout: number;
+    payoutSources: ShopEventBonusPayoutSource[];
+    /** instant + premium missions + bonus * payouts the game's tooltip lists (milestones, missions, offers, quest). */
+    total: number;
+    /** Same, if home screen event payouts also earn the bonus (the tooltip does not list them). */
+    totalWithHomeScreenEvents: number;
+    /** Tooltip markup: one line per row separated by "\n"; <b>..</b> bold, <i>..</i> italic. No other tags. */
+    tooltip: string;
 }
 
 export interface ShopEventOffer {
@@ -334,6 +385,168 @@ function findInterstitial(theme: string | undefined, assetsDir: string | undefin
     return resolveSpriteCaseInsensitive(loadSpriteFilesByLowercaseName(spritesDir), `ui_interstitial_${theme}.png`);
 }
 
+const DAYS_PER_WEEK = 7;
+
+const currencyAmount = (text: string | undefined, currency: string): number => {
+    const match = text?.match(new RegExp(`${currency}:(\\d+)`));
+    return match ? parseInt(match[1], 10) : 0;
+};
+const sumCurrency = (value: unknown, currency: string): number =>
+    [...JSON.stringify(value ?? '').matchAll(new RegExp(`${currency}:(\\d+)`, 'g'))].reduce((sum, m) => sum + parseInt(m[1], 10), 0);
+
+function tierPayouts(data: any, rewardProgressId: string | undefined, currency: string): number {
+    const tiers: { chestRewardId?: string }[] = data.clientGameConfig.loot.tieredProgressRewards[rewardProgressId ?? ''] ?? [];
+    return tiers.filter((tier) => currencyAmount(tier.chestRewardId, currency) > 0).length;
+}
+
+// "Grubak Zapspitta" -> "Grubak's Hero Quest"
+function heroQuestLabel(unitId: string | undefined, terms: Map<string, string> | null): string {
+    const first = (unitId && terms?.get(`Units/${unitId}_Name`)?.split(' ')[0]) || undefined;
+    return first ? `${first}'s Hero Quest` : 'Hero Quest';
+}
+
+function homeScreenEventConfig(data: any, id: string): any | undefined {
+    const events = data.clientGameConfig.liveEvents.idunLiveEventConfigs as any[];
+    const candidates = new Set([id, `hse_${id}`]);
+    return events.find((e) => e.eventType === 'homeScreenEvent' && candidates.has(e.eventName.replace(/_tier_(high|mid|low)$/, '')));
+}
+
+const fmt = (n: number) => n.toLocaleString('en-US');
+
+/**
+ * Per-week earnings and Bonus Shipment figures, built from the seasonal event's own `maxPayouts` (the game's
+ * totals) plus a count of the individual payouts behind each total.
+ */
+function resolveEarnings(
+    data: any,
+    seasonalConfig: any,
+    missions: SeasonalMissions | undefined,
+    terms: Map<string, string> | null
+): { earnings?: ShopEventEarnings; bonusShipment?: ShopEventBonusShipment } {
+    const ec = seasonalConfig.maxPayouts?.ec;
+    const currency: string | undefined = seasonalConfig.resourceId;
+    if (!ec || !currency) return {};
+
+    const sources: ShopEventEarningsSource[] = [];
+    const payoutSources: ShopEventBonusPayoutSource[] = [];
+    const liveEvents = data.clientGameConfig.liveEvents.idunLiveEventConfigs as any[];
+    const chests = data.clientGameConfig.loot.chests;
+
+    // Milestones.
+    if (ec.milestones > 0) {
+        sources.push({ id: 'milestones', label: 'Event milestones', amount: ec.milestones, kind: 'shop' });
+        payoutSources.push({
+            id: 'milestones',
+            label: 'Event milestones',
+            payouts: tierPayouts(data, seasonalConfig.rewardProgressId, currency),
+            listedInGame: true,
+        });
+    }
+
+    // Free offers: the daily free claim in the shop, plus any free product of this event that pays the currency.
+    if (ec.freeOffers > 0) {
+        sources.push({ id: 'freeOffers', label: 'Free daily offers', amount: ec.freeOffers, kind: 'shop' });
+        const merchant = data.clientGameConfig.shop.merchants[seasonalConfig.merchantId];
+        const dailyClaims = (merchant?.products ?? []).filter((variants: any[]) =>
+            variants.some((v) => currencyAmount(v.freeOffer, currency) > 0)
+        ).length;
+        const freeProducts = Object.entries<any>(data.clientGameConfig.shop.products).filter(
+            ([key, product]) => key.includes(seasonalConfig.theme) && /free/.test(key) && sumCurrency(product.rewards, currency) > 0
+        ).length;
+        payoutSources.push({
+            id: 'freeOffers',
+            label: 'Free daily offers',
+            payouts: dailyClaims * DAYS_PER_WEEK + freeProducts,
+            listedInGame: true,
+        });
+    }
+
+    // Quest event (hero quest, sync PvP, ...): a linear hero event whose chests pay this currency, or a plain key.
+    for (const [key, amount] of Object.entries<number>(ec)) {
+        if (typeof amount !== 'number' || amount <= 0) continue;
+        if (['milestones', 'freeOffers', 'premiumOffers', 'leaderboardDailyPayouts', 'leaderboardFinalPayout'].includes(key)) continue;
+        if (key === 'linearHeroEvent') {
+            const hero = liveEvents.find(
+                (e) =>
+                    e.eventType === 'linearHeroEvent' &&
+                    (e.milestones ?? []).some((m: any) => currencyAmount(JSON.stringify(chests[m.chestId] ?? ''), currency) > 0)
+            );
+            const label = heroQuestLabel(hero?.unitId, terms);
+            sources.push({ id: key, label, amount, kind: 'heroQuest' });
+            payoutSources.push({
+                id: key,
+                label,
+                payouts: (hero?.milestones ?? []).filter((m: any) => currencyAmount(JSON.stringify(chests[m.chestId] ?? ''), currency) > 0).length,
+                listedInGame: true,
+            });
+        } else {
+            const label = key === 'syncPvp' ? 'Sync PvP' : key;
+            sources.push({ id: key, label, amount, kind: 'quest' });
+            payoutSources.push({ id: key, label, payouts: 0, listedInGame: true });
+        }
+    }
+
+    // Home screen events.
+    let hsePayouts = 0;
+    for (const [id, amount] of Object.entries<number>(ec.homeScreenEvents ?? {})) {
+        if (amount <= 0) continue;
+        const hse = homeScreenEventConfig(data, id);
+        const label = (terms && extractEventTitle(terms.get(hse?.previewTitleLocaKey))) || id;
+        sources.push({ id, label, amount, kind: 'homeScreenEvent' });
+        const payouts = tierPayouts(data, hse?.rewardProgressId, currency);
+        hsePayouts += payouts;
+        payoutSources.push({ id, label, payouts, listedInGame: false });
+    }
+
+    const f2pTotal = sources.reduce((sum, s) => sum + s.amount, 0);
+    const f2pShopOnly = sources.filter((s) => s.kind === 'shop').reduce((sum, s) => sum + s.amount, 0);
+
+    const earningsLines = [
+        `<b>Free-to-play currency per week</b>`,
+        ...sources.map((s) => `${s.label}: <b>${fmt(s.amount)}</b>`),
+        `<b>Total: ${fmt(f2pTotal)}</b>`,
+        `<i>Maximum; home screen events only pay while they run.</i>`,
+    ];
+    const earnings: ShopEventEarnings = { currency, f2pTotal, f2pShopOnly, sources, tooltip: earningsLines.join('\n') };
+
+    // Bonus Shipment: the pass product, which carries the instant payout and the per-payout bonus.
+    const passOfferId: string | undefined = (seasonalConfig.initialOfferIds ?? [])[0];
+    const passOffer = passOfferId && (data.clientGameConfig.shop.offers as any[]).find((o) => o.offerId === passOfferId);
+    const passProduct = passOffer && data.clientGameConfig.shop.realMoneyProducts[passOffer.realMoneyProductId];
+    if (!passProduct) return { earnings };
+
+    const rewards: string[] = passProduct.rewards ?? [];
+    const instantAmount = rewards.reduce((sum, r) => sum + currencyAmount(r, currency), 0);
+    const bonusPerPayout = rewards.reduce((sum, r) => sum + (r.startsWith('seasonalEcBonus:') ? parseInt(r.split(':')[1], 10) : 0), 0);
+    const premiumMissionsAmount = sumCurrency(missions?.premium, currency);
+    const premiumPayouts = (missions?.premium ?? []).filter((q) => currencyAmount(JSON.stringify(q.rewards), currency) > 0).length;
+    payoutSources.splice(1, 0, { id: 'premiumMissions', label: 'Premium missions', payouts: premiumPayouts, listedInGame: true });
+
+    const listed = payoutSources.filter((p) => p.listedInGame).reduce((sum, p) => sum + p.payouts, 0);
+    const total = instantAmount + premiumMissionsAmount + bonusPerPayout * listed;
+    const totalWithHomeScreenEvents = total + bonusPerPayout * hsePayouts;
+
+    const bonusLines = [
+        `<b>Bonus Shipment</b>`,
+        `Paid up front: <b>${fmt(instantAmount)}</b>`,
+        `Premium missions: <b>${fmt(premiumMissionsAmount)}</b>`,
+        `Bonus: <b>+${bonusPerPayout}</b> on each payout`,
+        ...payoutSources.map((p) => `  ${p.label}: ${p.payouts} × ${bonusPerPayout} = <b>${fmt(p.payouts * bonusPerPayout)}</b>${p.listedInGame ? '' : ' <i>(may not count)</i>'}`),
+        `<b>Total: ${fmt(total)}</b> <i>(${fmt(totalWithHomeScreenEvents)} if home screen events count)</i>`,
+    ];
+    const bonusShipment: ShopEventBonusShipment = {
+        currency,
+        instantAmount,
+        premiumMissionsAmount,
+        bonusPerPayout,
+        payoutSources,
+        total,
+        totalWithHomeScreenEvents,
+        tooltip: bonusLines.join('\n'),
+    };
+    return { earnings, bonusShipment };
+}
+
 function extractShopEventData(
     data: any,
     eventName: string,
@@ -404,7 +617,9 @@ function extractShopEventData(
             }
         }
 
-        weeks.push({ week, merchant: merchantKey, subtitle, slots, milestoneRewards, progressChests, missions });
+        const { earnings, bonusShipment } = seasonalConfig ? resolveEarnings(data, seasonalConfig, missions, terms) : {};
+
+        weeks.push({ week, merchant: merchantKey, subtitle, slots, milestoneRewards, progressChests, missions, earnings, bonusShipment });
     }
 
     // The event's own name lives under SeasonalEvents/name_<theme>; the shop tab name is only a fallback.

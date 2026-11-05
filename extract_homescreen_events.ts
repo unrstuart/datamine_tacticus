@@ -18,7 +18,7 @@ function loadTerms(i2Path: string): Map<string, string> {
 
 // The interstitial header term reads like "<i>Faction Boost: Dark Angels</i> is here" - pull out
 // just the event name for display purposes.
-function extractEventTitle(term: string | undefined): string | undefined {
+export function extractEventTitle(term: string | undefined): string | undefined {
     if (!term) return undefined;
     const match = term.match(/<i>(.+?)<\/i>/);
     return match ? match[1] : term;
