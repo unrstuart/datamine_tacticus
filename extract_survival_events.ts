@@ -125,27 +125,34 @@ export interface SurvivalEventChest {
 // its own separate extractChests() in extract_le_metadata.ts). Rather than hardcode a second exact
 // template and risk the same silent breakage on the next new naming scheme, this matches on the
 // theme's own tokens appearing in the product-key prefix, whatever the surrounding template is.
-function findChestProductPrefix(products: Record<string, any>, theme: string): string | undefined {
-    const themeTokens = theme.split('_');
+// The theme is not always the right key: the 1.44 Crescendo events (season_crescendo_a_event / _b_event)
+// both keep theme "crescendo_01", but their products and quests are named after the event itself
+// (crescendo_a / crescendo_b). So the theme is tried first, then the event's own name stem.
+function findChestProductPrefix(products: Record<string, any>, theme: string, eventStem?: string): string | undefined {
     const prefixes = new Set(
         Object.keys(products)
             .filter((key) => /_progress_chest_\d+$/.test(key))
             .map((key) => key.replace(/_progress_chest_\d+$/, ''))
     );
-    const matches = [...prefixes].filter((prefix) => themeTokens.every((t) => prefix.split('_').includes(t)));
+    const matchesFor = (key: string) => {
+        const tokens = key.split('_');
+        return [...prefixes].filter((prefix) => tokens.every((t) => prefix.split('_').includes(t)));
+    };
+    let matches = matchesFor(theme);
+    if (matches.length !== 1 && eventStem) matches = matchesFor(eventStem);
     if (matches.length !== 1) {
         console.error(
-            `Couldn't uniquely resolve a progress-chest product prefix for theme "${theme}" (${matches.length} candidates: ${matches.join(', ') || 'none'}).`
+            `Couldn't uniquely resolve a progress-chest product prefix for theme "${theme}"${eventStem ? ` or event "${eventStem}"` : ''} (${matches.length} candidates: ${matches.join(', ') || 'none'}).`
         );
         return undefined;
     }
     return matches[0];
 }
 
-function extractChests(data: any, theme: string): SurvivalEventChest[] {
+function extractChests(data: any, theme: string, eventStem?: string): SurvivalEventChest[] {
     const products = data.clientGameConfig.shop.products;
     const chestDefs = data.clientGameConfig.loot.chests;
-    const prefix = findChestProductPrefix(products, theme);
+    const prefix = findChestProductPrefix(products, theme, eventStem);
     if (!prefix) return [];
     const fullPrefix = `${prefix}_progress_chest_`;
 
@@ -264,8 +271,12 @@ function extractSurvivalEventData(data: any, eventName: string, terms: Map<strin
     const offersById = new Map<string, any>(data.clientGameConfig.shop.offers.map((o: any) => [o.offerId, o]));
     const offers = resolveOffers(config, offersById, data.clientGameConfig.shop.realMoneyProducts);
 
-    const prefix = deriveEventPrefix(config.theme, deriveSurvivalEventWeek(config.eventName));
-    const missions = extractSeasonalMissions(data, prefix, config.questGroups ?? []);
+    // "season_crescendo_a_event" -> "crescendo_a": what the event's own quests and products are named after.
+    const eventStem = config.eventName.replace(/^season_/, '').replace(/_event$/, '');
+    const isEmpty = (m: SeasonalMissions) => !m.daily.length && !m.free.length && !m.premium.length && !m.battlePass.length;
+    const themePrefix = deriveEventPrefix(config.theme, deriveSurvivalEventWeek(config.eventName));
+    let missions = extractSeasonalMissions(data, themePrefix, config.questGroups ?? []);
+    if (isEmpty(missions)) missions = extractSeasonalMissions(data, eventStem, config.questGroups ?? []);
 
     const descriptions = terms
         ? [config.previewTitleLocaKey, config.previewSubtitleLocaKey, config.shortDescriptionLocaKey, config.longDescriptionLocaKey]
@@ -284,7 +295,7 @@ function extractSurvivalEventData(data: any, eventName: string, terms: Map<strin
         battle: battleSet[0],
         milestoneRewards,
         survivalPoints: extractSurvivalPoints(config.survival),
-        chests: extractChests(data, config.theme),
+        chests: extractChests(data, config.theme, eventStem),
         offers: Object.keys(offers).length > 0 ? offers : undefined,
         missions,
         chestId: config.chestId,
