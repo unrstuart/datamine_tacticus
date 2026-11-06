@@ -640,7 +640,7 @@ async function runAll(
         const events = discoverHomescreenEvents(data);
         for (const name of events.keys()) {
             runJob(results, `homescreen_event:${name}`, () => {
-                const eventData = extractHomescreenEvent({ gameconfigPath, eventName: name, i2Path });
+                const eventData = extractHomescreenEvent({ gameconfigPath, eventName: name, i2Path, assetsDir });
                 const filename = `${kebabCase(name)}.json`;
                 // No tacticusplanner destination is confirmed for these yet (plan-hse.tsx is a
                 // static calculator today, not data-driven) - this follows the same
@@ -716,6 +716,13 @@ async function runAll(
             const interstitial = JSON.parse(fs.readFileSync(job.outputPath!, 'utf-8')).interstitial;
             if (interstitial) {
                 assetRefs.push({ destRelPath: `misc/${interstitial}`, sourceAbsPath: path.join(assetsDir, 'sprites', interstitial) });
+            }
+        }
+        // Likewise homescreen events name their game mode icon by file name only.
+        for (const job of results.filter((r) => r.name.startsWith('homescreen_event:') && r.ok && r.outputPath)) {
+            const icon = JSON.parse(fs.readFileSync(job.outputPath!, 'utf-8')).gameModeIcon;
+            if (icon) {
+                assetRefs.push({ destRelPath: `misc/${icon}`, sourceAbsPath: path.join(assetsDir, 'sprites', icon) });
             }
         }
         const equipmentJob = results.find((r) => r.name === 'equipment_data');
@@ -1074,7 +1081,7 @@ async function runOne(name: string, flags: Record<string, string>, paths: Resolv
                 return;
             }
             const eventName = requireFlag(flags, 'event', 'Usage: extract_all.ts homescreen_event --gameconfig <p> --mode extract --event <name> [--i2 <p>]');
-            printJson(extractHomescreenEvent({ gameconfigPath: gc, eventName, i2Path: i2 }));
+            printJson(extractHomescreenEvent({ gameconfigPath: gc, eventName, i2Path: i2, assetsDir: paths.assetsDir }));
             return;
         }
         case 'incursion_enemies': {

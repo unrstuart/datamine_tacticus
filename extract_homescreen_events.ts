@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { loadSpriteFilesByLowercaseName, resolveSpriteCaseInsensitive } from './sprite_lookup';
 
 function globToRegex(pattern: string): RegExp {
     const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.');
@@ -231,6 +232,8 @@ export interface HomescreenEventData {
     eventName: string;
     /** Announced run dates. Absent for events with no entry in HSE_RUN_DATES (GameConfig ships no schedule). */
     schedule?: HomescreenEventRun[];
+    /** Game mode icon sprite file name (ui_gamemodeicon_*.png); absent when the assets have none for this theme. */
+    gameModeIcon?: string;
     tiers: Partial<Record<HomescreenEventTier, HomescreenEventTierData>>;
 }
 
@@ -270,7 +273,22 @@ function resolveSchedule(eventName: string): HomescreenEventRun[] | undefined {
     }));
 }
 
-function extractHomescreenEventData(data: any, eventName: string, terms: Map<string, string> | null): HomescreenEventData {
+// Sprites are named ui_gamemodeicon_<theme>, but sometimes without the theme's underscores
+// (training_rush -> trainingrush, defeat_waves_2 -> defeatwaves_2) or without the hse_ prefix / _weekN suffix (11th edition).
+function findGameModeIcon(theme: string | undefined, assetsDir: string | undefined): string | undefined {
+    if (!theme || !assetsDir) return undefined;
+    const spritesDir = `${assetsDir}/sprites`;
+    if (!fs.existsSync(spritesDir)) return undefined;
+    const sprites = loadSpriteFilesByLowercaseName(spritesDir);
+    const stem = theme.replace(/^hse_/, '').replace(/_week\d+$/, '');
+    for (const candidate of [theme, theme.replace(/_/g, ''), theme.replace(/_(?!\d+$)/g, ''), stem, stem.replace(/_/g, '')]) {
+        const file = resolveSpriteCaseInsensitive(sprites, `ui_gamemodeicon_${candidate}.png`);
+        if (file) return file;
+    }
+    return undefined;
+}
+
+function extractHomescreenEventData(data: any, eventName: string, terms: Map<string, string> | null, assetsDir?: string): HomescreenEventData {
     const events = data.clientGameConfig.liveEvents.idunLiveEventConfigs as any[];
     const matches = events.filter((e) => e.eventType === 'homeScreenEvent' && splitEventName(e.eventName).name === eventName);
     if (matches.length === 0) throw new Error(`No homescreen event found with name "${eventName}"`);
@@ -302,17 +320,20 @@ function extractHomescreenEventData(data: any, eventName: string, terms: Map<str
     }
 
     const schedule = resolveSchedule(eventName);
-    return schedule ? { eventName, schedule, tiers } : { eventName, tiers };
+    const theme = matches[0].theme as string | undefined;
+    const gameModeIcon = findGameModeIcon(theme, assetsDir);
+    return { eventName, ...(schedule ? { schedule } : {}), ...(gameModeIcon ? { gameModeIcon } : {}), tiers };
 }
 
 export interface ExtractHomescreenEventParams {
     gameconfigPath: string;
     eventName: string;
     i2Path?: string;
+    assetsDir?: string;
 }
 
-export function extractHomescreenEvent({ gameconfigPath, eventName, i2Path }: ExtractHomescreenEventParams): HomescreenEventData {
+export function extractHomescreenEvent({ gameconfigPath, eventName, i2Path, assetsDir }: ExtractHomescreenEventParams): HomescreenEventData {
     const data = JSON.parse(fs.readFileSync(gameconfigPath, 'utf-8'));
     const terms = i2Path ? loadTerms(i2Path) : null;
-    return extractHomescreenEventData(data, eventName, terms);
+    return extractHomescreenEventData(data, eventName, terms, assetsDir);
 }
