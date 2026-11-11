@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zapspitta's Quest</title>
+<style>
+  :root{--blur:20px}
+  html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:system-ui,sans-serif}
+  /* Fixed 16:9 frame (DaVinci Resolve's standard 1920x1080) scaled to fit the window, letterboxed in black.
+     Everything inside is sized in cqw/cqh (percent of this frame), so a 1920x1080 window is pixel-exact for screen capture. */
+  #frame{position:absolute;left:50%;top:50%;width:min(100vw,calc(100vh*16/9));height:min(100vh,calc(100vw*9/16));
+         transform:translate(-50%,-50%);container-type:size;overflow:hidden;background:#000}
+  #stage{position:absolute;inset:0}
+  #avatar{position:absolute;right:2cqw;top:2cqw;width:11cqh;height:11cqh;z-index:5;outline:.25cqh solid #000}
+  /* Blurred map: square, sized so its smallest page dimension is filled (cover), then overscanned a bit so the blur's soft edges are off-screen. */
+  #bg{position:absolute;left:50%;top:50%;width:max(100cqw,100cqh);height:max(100cqw,100cqh);
+      transform:translate(-50%,-50%) scale(1.15);background:url(zapspitta_quest_img/map.png) center/cover;filter:blur(var(--blur))}
+  .page{display:none;position:relative;height:100%;box-sizing:border-box;flex-direction:column;justify-content:center;align-items:center;gap:3.5cqh;padding:4cqh 6cqw;text-align:center}
+  .page.active{display:flex}
+  /* shared text treatment: white, heavy black shadow so it reads over the busy map */
+  .shadow{text-shadow:0 0 1.5cqh #000,0 0 1.5cqh #000,0 .4cqh .8cqh #000}
+  .head{color:#ffd21a;font-weight:900;font-size:7cqh;margin:0 0 1cqh;text-shadow:0 0 1.5cqh #000,0 0 1.5cqh #000,0 .4cqh .8cqh #000}
+  .page.title .head{font-size:11cqh}
+  .line{color:#fff;font-weight:800;font-size:5.8cqh;text-shadow:0 0 1.5cqh #000,0 0 1.5cqh #000,0 .4cqh .8cqh #000}
+  .line.sub{font-size:4.6cqh;font-weight:700;margin-top:-1.5cqh}
+  .page.left{align-items:flex-start;text-align:left;padding-left:10cqw}
+  .page.left .line.sub{margin-left:4cqw}
+  /* icon / portrait rows */
+  .tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:3cqh 2.5cqw;max-width:90cqw}
+  .tile{display:flex;flex-direction:column;align-items:center;width:17cqh}
+  .tile img{height:14cqh;width:14cqh;object-fit:contain;filter:drop-shadow(0 .5cqh 1cqh #000a)}
+  .tile.round img{border-radius:50%;object-fit:cover}
+  .tile span{margin-top:.8cqh;color:#fff;font-weight:700;font-size:2.6cqh;text-shadow:0 0 .6cqh #000,0 0 .6cqh #000;text-align:center;line-height:1.15}
+  .tile.big{width:22cqh}.tile.big img{height:18cqh;width:18cqh}
+  /* stat tiles */
+  .stats{display:flex;flex-wrap:wrap;justify-content:center;gap:3cqh 4cqw}
+  .stat{background:rgba(0,0,0,.5);border-radius:12px;padding:2.5cqh 3cqw;min-width:20cqw}
+  .stat b{display:block;color:#ffd21a;font-size:9cqh;font-weight:900}
+  .stat span{color:#fff;font-weight:700;font-size:3cqh}
+  /* placeholder for artwork we don't have yet (or screenshots to paste in) */
+  .missing,.shot{border:.5cqh dashed #ffd21a;border-radius:12px;background:rgba(0,0,0,.45);color:#ffd21a;font-weight:800;display:flex;align-items:center;justify-content:center;text-align:center;box-sizing:border-box}
+  .tile .missing{height:14cqh;width:14cqh;font-size:2cqh;padding:.5cqh}
+  .shot{width:80cqw;height:62cqh;font-size:4cqh;padding:2cqh}
+  .shotimg{max-width:80cqw;max-height:62cqh;border-radius:12px;box-shadow:0 1cqh 3cqh rgba(0,0,0,.6)}
+  .cap{color:#fff;font-weight:700;font-size:3.2cqh;text-shadow:0 0 1cqh #000,0 0 1cqh #000}
+  /* character pose on the right; pages that have one reserve room for it */
+  .pose{position:absolute;right:0;bottom:0;height:100cqh;width:44cqw;object-fit:contain;object-position:bottom right;pointer-events:none;filter:drop-shadow(0 1cqh 3cqh rgba(0,0,0,.6))}
+  .page.hasPose{padding-right:42cqw}
+  .page.hasPose.left{padding-left:6cqw}
+  /* compact pages: several rows on one page (Overview) */
+  .page.compact{gap:1.6cqh;padding:2cqh 4cqw}
+  .page.compact .head{font-size:5.5cqh;margin:0}
+  .page.compact .tiles{gap:1.2cqh .6cqw}
+  .page.compact .tile,.page.compact .tile.big{width:11cqh}
+  .page.compact .tile img,.page.compact .tile.big img{height:8.5cqh;width:8.5cqh}
+  .page.compact .tile span{font-size:1.9cqh;margin-top:.3cqh}
+  .page.compact .tile .missing{height:8.5cqh;width:8.5cqh;font-size:1.4cqh}
+  .page.compact .line{font-size:3.2cqh}
+  .page.compact .stats{gap:1.4cqh 1.2cqw;width:100%}
+  .page.compact .stat{padding:1.2cqh 1cqw;min-width:0;flex:1 1 0;box-sizing:border-box}
+  .page.compact.hasPose{padding-right:42cqw}
+  .page.compact .stat b{font-size:4.6cqh;white-space:nowrap}
+  .page.compact .stat span{font-size:2.1cqh}
+  /* roomy: compact layout with bigger type, for pages that only have a few things on them */
+  .page.compact.roomy{gap:3cqh}
+  .page.compact.roomy .head{font-size:7cqh}
+  .page.compact.roomy .tile,.page.compact.roomy .tile.big{width:17cqh}
+  .page.compact.roomy .tile img,.page.compact.roomy .tile.big img{height:13cqh;width:13cqh}
+  .page.compact.roomy .tile span{font-size:2.5cqh}
+  .page.compact.roomy .tile .missing{height:13cqh;width:13cqh;font-size:2cqh}
+  .page.compact.roomy .line{font-size:4.4cqh}
+  .page.compact.roomy .stat{padding:2cqh 1.4cqw}
+  .page.compact.roomy .stat b{font-size:7.5cqh}
+  .page.compact.roomy .stat span{font-size:2.8cqh}
+  .tiles.nowrap{flex-wrap:nowrap;gap:.5cqw}
+  .tiles.nowrap .tile,.page.compact .tiles.nowrap .tile{width:auto}
+  .tiles.nowrap .tile img,.page.compact .tiles.nowrap .tile img{height:8cqh;width:8cqh}
+  .tiles.nowrap .glyph{font-size:3.4cqh}
+  /* glyphs between/alongside icons (arrows, +, 'Skip:'), inline rows, small cost icon */
+  .glyph{color:#ffd21a;font-weight:900;font-size:7cqh;line-height:1;align-self:center;text-shadow:0 0 1cqh #000,0 0 1cqh #000,0 .4cqh .8cqh #000}
+  .page.compact .glyph{font-size:4.5cqh}
+  .row{display:flex;align-items:center;justify-content:center;gap:1.6cqw}
+  .page.left .row{justify-content:flex-start}
+  .rowimg img{height:10cqh;width:auto;display:block;filter:drop-shadow(0 .5cqh 1cqh #000a)}
+  .page.compact .rowimg img{height:7cqh}
+  .emoji{font-size:5.8cqh}
+  .stat span img.ec{height:1.2em;width:auto;vertical-align:-.25em}
+  .stat span.ico img.ec{height:5cqh;vertical-align:middle}
+  .page.compact .stat span.ico img.ec{height:4cqh}
+  .page.compact.roomy .stat span.ico img.ec{height:8cqh}
+  .tile span img.ec{height:1em;width:auto;object-fit:contain;vertical-align:-.15em;margin-right:.25em;filter:none}
+  .page.top{justify-content:flex-start;padding-top:3cqh}
+  .page.top .shotwrap{flex:1 1 0;min-height:0;width:100%;display:flex;align-items:flex-start;justify-content:center}
+  .page.top .shotimg{max-height:100%;max-width:100%;object-fit:contain;border-radius:12px;box-shadow:0 1cqh 3cqh rgba(0,0,0,.6)}
+  .page.top .shot{width:40cqw;height:50cqh;font-size:3cqh}
+  .tile.wide{width:25cqh}
+  .stat.small b{font-size:2.8cqh}
+  /* tiny section marker so it's easy to find your place while iterating */
+  #pos{display:none;position:fixed;right:1cqw;bottom:1cqh;color:#fff;opacity:.35;font:700 1.8cqh system-ui;z-index:9}
+  /* every non-title page: the title sits at one fixed spot at the top, the rest is centred in the space below it */
+  .page:not(.title){padding-top:14cqh}
+  .page:not(.title) .head{position:absolute;top:3cqh;left:0;right:0;margin:0;font-size:7cqh !important;line-height:1.1;text-align:center}
+  .page.hasPose:not(.title) .head{right:42cqw}
+  .page.hasPose .shot{width:52cqw;height:24cqh;font-size:3cqh}
+  .page.hasPose .shotimg{max-width:52cqw;max-height:32cqh}
+  .page.hasPose .shotwrap.big .shotimg{max-height:58cqh}
+  /* big: fewer, larger things on a page so they fill the space left of the replay footage */
+  .page.compact.roomy.big{gap:5cqh}
+  .page.compact.roomy.big .tile,.page.compact.roomy.big .tile.big{width:23cqh}
+  .page.compact.roomy.big .tile img,.page.compact.roomy.big .tile.big img{height:18cqh;width:18cqh}
+  .page.compact.roomy.big .tile span{font-size:3.4cqh;margin-top:1.2cqh}
+  .page.compact.roomy.big .tiles{gap:2cqh 1.5cqw;max-width:100%;flex-wrap:nowrap}
+  .page.compact.roomy.big .glyph{font-size:9cqh}
+  .page.compact.roomy.big .line{font-size:5cqh}
+  .page.compact.roomy.big .stats{gap:3cqh 2cqw}
+  .page.compact.roomy.big .stat{padding:3cqh 2cqw}
+  .page.compact.roomy.big .stat b{font-size:13cqh}
+  .page.compact.roomy.big .stat span{font-size:4cqh}
+  .page.compact.roomy.big .stat span img.ec{height:1.1em}
+</style></head><body>
+<div id="frame">
+<div id="bg"></div>
+<div id="stage"></div>
+<img id="avatar" src="zapspitta_quest_img/discord_avatar.webp" alt="">
+</div>
+<div id="pos"></div>
+<script>
+// ---------------------------------------------------------------------------
+// Page types - every page is one entry in PAGES and is shown whole.
+//   text:      {t:'text', head, lines:[...], left?}   a leading space on a line makes it a sub-point
+//   icons:     {t:'icons', head, tiles:[{img,label}], lines?}   img:null draws a "MISSING" placeholder
+//   portraits: {t:'portraits', head, tiles:[{img,label}]}       round character portraits
+//   stats:     {t:'stats', head, stats:[{big,label}]}
+//   shot:      {t:'shot', head, shot, caption}  a screenshot you paste in as zapspitta_quest_img/shots/<shot>.png
+//   title:     {t:'title', head, lines}
+//   any page may add pose:'<name>' - draws zapspitta_quest_img/pose_<name>.png on the right, content shifts left
+//   multi:     {t:'multi', head, compact?, parts:[icons|stats parts...]}  several rows on one page
+// ---------------------------------------------------------------------------
+const PAGES = [
+  {t:'title', pose:'zapspitta', head:"Zapspitta's Quest", lines:['Orks hero quest','Space hulk vs the T\'au']},
+
+  // ===== overview =====
+  {t:'multi', head:'Overview', compact:true, roomy:true, big:true, parts:[
+    {t:'icons', tiles:[{img:'zapspitta',label:'Zapspitta'},{img:'f_orks',label:'Friendly: Orks'},{glyph:'vs'},{img:'f_tau',label:"Enemy: T'au"}]},
+    {t:'icons', tiles:[{img:'upg_archeotech',label:'Legendary 2: Archeotech Remnant'},{img:'upg_inscription',label:'Mythic: Ancient Inscription'}]},
+  ]},
+
+  // ===== jar system =====
+  {t:'multi', head:'Jar system', compact:true, roomy:true, big:true, parts:[
+    {t:'icons', tiles:[{img:'upg_inscription',label:'Mythic: 1 per 6 battles'},{img:'upg_archeotech',label:'Others: 3 per 4 battles'}]},
+    {t:'text', lines:['Mythic guaranteed every six battles','Jar status is hidden at the start']},
+  ]},
+
+  // ===== skull harvest currency =====
+  {t:'multi', head:'Skull Harvest Currency', compact:true, roomy:true, big:true, parts:[
+    {t:'stats', stats:[{big:'4',label:'payouts'},{big:'40',label:'total',ec:true}]},
+    {t:'text', lines:['Open the penultimate crate']},
+  ]},
+
+  // ===== heroes =====
+  {t:'multi', head:'Heroes', compact:true, parts:[
+    {t:'text', lines:['100% clear']},
+    {t:'shot', shot:'heroes_100'},
+    {t:'text', lines:['Penultimate crate only']},
+    {t:'shot', shot:'heroes_penultimate'},
+  ]},
+
+  // ===== caveats =====
+  {t:'multi', head:'Caveats', compact:true, roomy:true, parts:[
+    {t:'text', lines:["Your units' battle fatigue","Shield and sniper drones' savior protocols"]},
+    {t:'portraits', tiles:[{img:'snappa',label:'Epic 1: Snappa active level 35'}]},
+  ]},
+
+  // ===== replays =====
+  {t:'text', head:'Replays', lines:['kharnage-replays.pages.dev','Link in the description']},
+
+  {t:'title', pose:'zapspitta', head:"Happy questin'", lines:['Questions or comments?','Below, or on the official Tacticus Discord']},
+];
+
+// ---------------------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------------------
+const stage = document.getElementById('stage');
+// Per-pose nudges. MOVE: x/y as a fraction of the pose's displayed width/height (+x right, +y down; overflow such as a
+// shadow is clipped by the frame). SCALE: size multiplier, anchored at the bottom right.
+const POSE_MOVE = {};
+const POSE_SCALE = {};
+const pages = [];   // each: {el, items:[element,...]}
+const mk = (cls, html) => { const d = document.createElement('div'); d.className = cls; if (html !== undefined) d.innerHTML = html; return d; };
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const tile = (t, extra='') => {
+  if (t.arrow || t.glyph) return mk('item glyph', esc(t.glyph || '→'));
+  const img = t.img ? `<img src="zapspitta_quest_img/${t.img}.png" alt="" onerror="this.outerHTML='<div class=missing>MISSING: ${esc(t.img)}</div>'">` : `<div class="missing">MISSING ICON</div>`;
+  const label = t.cost !== undefined ? (t.label ? `<span>${esc(t.label)}</span>` : '') + `<span>${t.qty ? esc(t.qty) + ' = ' : ''}<img class="ec" src="zapspitta_quest_img/event_currency.png" alt="">${esc(t.cost)}</span>` : (t.label ? `<span>${esc(t.label)}</span>` : '');
+  return mk('item tile ' + extra, img + label);
+};
+
+// Renders one icons/portraits/stats part into `el`, appending its elements to `items`.
+function renderPart(el, part, items, compact) {
+  if (part.t === 'icons' || part.t === 'portraits') {
+    const row = mk('tiles' + (part.nowrap ? ' nowrap' : '')); el.appendChild(row);
+    const big = (part.tiles.length <= 4 && !compact) ? 'big' : '';
+    part.tiles.forEach(t => { const d = tile(t, (part.t === 'portraits' ? 'round ' : '') + big + (part.wide ? ' wide' : '')); row.appendChild(d); items.push(d); });
+    (part.lines || []).forEach(l => { const d = mk('item line', esc(l)); el.appendChild(d); items.push(d); });
+  } else if (part.t === 'shot') {
+    const d = mk('item shotwrap');
+    d.innerHTML = `<img class="shotimg" src="zapspitta_quest_img/shots/${part.shot}.png" alt="" onerror="this.outerHTML='<div class=shot>SCREENSHOT<br>(zapspitta_quest_img/shots/${esc(part.shot)}.png)</div>'">`;
+    el.appendChild(d); items.push(d);
+  } else if (part.t === 'row') {
+    const row = mk('row'); el.appendChild(row);
+    part.items.forEach(it => {
+      const d = typeof it === 'string' ? mk('item line', esc(it))
+        : it.img ? mk('item rowimg', `<img src="zapspitta_quest_img/${it.img}.png" alt="">`)
+        : it.emoji ? mk('item line emoji', it.emoji) : mk('item glyph', esc(it.glyph));
+      row.appendChild(d); items.push(d);
+    });
+  } else if (part.t === 'text') {
+    (part.lines || []).forEach(l => { const d = mk('item line', esc(l)); el.appendChild(d); items.push(d); });
+  } else if (part.t === 'stats') {
+    const row = mk('stats'); el.appendChild(row);
+    part.stats.forEach(s => { const d = mk('item stat' + (s.small ? ' small' : ''), `<b>${esc(s.big)}</b><span${s.label ? '' : ' class="ico"'}>${esc(s.label)}${s.ec ? ' <img class="ec" src="zapspitta_quest_img/event_currency.png" alt="">' : ''}</span>`); row.appendChild(d); items.push(d); });
+  }
+}
+
+for (const p of PAGES) {
+  const el = mk('page ' + (p.t === 'title' ? 'title ' : '') + (p.left ? 'left ' : '') + (p.compact ? 'compact ' : '') + (p.roomy ? 'roomy ' : '') + (p.big ? 'big ' : '') + (p.top ? 'top' : ''));
+  if (!p.pose) el.classList.add('hasPose');   // right 42% stays empty for replay footage
+  if (p.pose) {
+    el.classList.add('hasPose');
+    // A nudged pose is sized by its own pixels (not the fixed box) so translateX(%) is a fraction of the image's width.
+    const mv = POSE_MOVE[p.pose], scale = POSE_SCALE[p.pose];
+    const k = scale || 1;   // translate % is of the unscaled box, so convert "of the displayed size" by the scale
+    const tf = [mv ? `translate(${(mv.x || 0) * k * 100}%, ${(mv.y || 0) * k * 100}%)` : '', scale ? `scale(${scale})` : ''].filter(Boolean).join(' ');
+    const style = tf ? ` style="width:auto;height:auto;max-width:44cqw;max-height:100cqh;transform:${tf};transform-origin:bottom right"` : '';
+    el.insertAdjacentHTML('beforeend', `<img class="pose" src="zapspitta_quest_img/pose_${p.pose}.png" alt=""${style}>`);
+  }
+  el.appendChild(mk('head', esc(p.head)));
+  const items = [];
+  if (p.t === 'text' || p.t === 'title') {
+    (p.lines || []).forEach(l => { const d = mk('item line' + (l.startsWith(' ') ? ' sub' : ''), esc(l.trim())); el.appendChild(d); items.push(d); });
+  } else if (p.t === 'multi') {
+    p.parts.forEach(part => renderPart(el, part, items, p.compact));
+  } else if (p.t === 'shot') {
+    // Drop a screenshot at zapspitta_quest_img/shots/<shot>.png and this swaps the placeholder for it.
+    const d = mk('item');
+    d.innerHTML = `<img class="shotimg" src="zapspitta_quest_img/shots/${p.shot}.png" alt="" onerror="this.outerHTML='<div class=shot>SCREENSHOT: ${esc(p.caption || p.shot)}<br>(zapspitta_quest_img/shots/${esc(p.shot)}.png)</div>'">`;
+    el.appendChild(d); items.push(d);
+    if (p.caption) { const c = mk('item cap', esc(p.caption)); el.appendChild(c); items.push(c); }
+  } else renderPart(el, p, items, false);
+  stage.appendChild(el);
+  pages.push({ el, items, head: p.head });
+}
+
+let p = 0;
+const show = () => {
+  pages.forEach((pg, i) => pg.el.classList.toggle('active', i === p));
+  document.getElementById('pos').textContent = `${p + 1}/${pages.length}`;
+};
+addEventListener('keydown', e => {
+  // Every page shows all of its content at once: right/space/PageDown = next page, left/PageUp = previous page.
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') p = Math.min(pages.length - 1, p + 1);
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') p = Math.max(0, p - 1);
+  else if (e.key === 'c') {
+    // Toggle the page counter (hidden by default so it never ends up in a screen capture).
+    const pos = document.getElementById('pos'); pos.style.display = pos.style.display === 'block' ? 'none' : 'block'; return;
+  } else return;
+  e.preventDefault(); show();
+});
+p = Math.max(0, Math.min(pages.length - 1, (parseInt(location.hash.slice(1)) || 1) - 1));   // #N jumps to page N
+show();
+</script></body></html>
